@@ -1,11 +1,14 @@
 {
-  "version": "0.17.0",
+  "version": "0.18.0",
   "date": "Oct 14, 2026",
-  "major": false,
+  "major": true,
   "notes": [
-    "34 new camp upgrades, 66 in all. Highlights: Patron (free first lanterns), Second wind (survive your last life once per run), Morning gift (start with free boons), High roller (better boon odds) and Trophy hand (an extra boon every 5th wave).",
-    "New Lore tab: one upgrade per lantern that boosts just that lantern. Each unlocks with its lantern.",
-    "Camp upgrade prices now climb faster at higher levels. Levels you already bought stay.",
-    "New Boons page on the main menu: see every boon in the game, sorted by rarity, with your odds of drawing each rarity and how many times you have picked each one."
-  ]
+    "Halloween event: the Hollow Harvest is live until November 3. Pick it on the Play page. It is endless and harder, with its own foes: Vampire bats, Jacks, Ghosts, Skeletons and the Pumpkin King every 5th wave.",
+    "Candy, a new currency, only drops in the event world. Every wave you clear pays candy, and harder difficulties pay more.",
+    "Event pass: a second tab on the Pass page with 25 free tiers. Unlock them in order with candy. 16 tiers hold new Event rarity skins with a red, white and black border, and the rest hold moonstones.",
+    "Every depth now introduces a new foe with its own trick: burrowing, shields, blinking, splitting, healing others, dodging shots and more. You meet it in the first wave of its world, and it keeps showing up deeper in.",
+    "Depths 1–10 and 11–20 are now collections, The Ember Road and The Deep Nights, which fold open and shut on the Play page. World cards show each world’s new foe.",
+    "Balance: foes drop about 40% less gold, and kill gold grows more slowly in later waves."
+  ],
+  "title": "Hollow Harvest"
 }

@@ -15,12 +15,13 @@ Once installed it runs full screen and works offline.
 ## Features
 
 - 12 lanterns, including 3 Season 1 exclusives (Moonwell, Hollow Bell, Eclipse)
-- 11 worlds, each with its own look and rule twist
+- 21 worlds, each with its own look, rule twist and new foe, grouped into collections
 - Campaign (20 waves) and Endless mode, where the world shifts every 5 waves
+- Limited-time events with their own world, currency and free 25-tier pass (Halloween: the Hollow Harvest)
 - Randomly generated trails every run
-- Boons after each wave, camp upgrades, lantern mastery 1–100, ascension perks at max level
+- Boons in five rarities after each wave, 66 camp upgrades, two upgrade paths per lantern, mastery 1–100 and ascensions
 - Player levels, moonstones, a shop with daily featured skins, and a 100-tier Season 1 pass
-- Skins from Common to Exotic with effects that grow with rarity
+- Skins from Common to Exotic (plus limited Event skins) with effects that grow with rarity
 
 ## Saves
 
