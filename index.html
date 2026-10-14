@@ -609,7 +609,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 
 
 <script>
-/* PWA: offline support and updates (Lanternfall v0.14.0) */
+/* PWA: offline support and updates (Lanternfall v0.15.0) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -722,7 +722,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
     </div>
     <div class="trackwrap"><div class="tlabs" aria-hidden="true"><span></span><span>Free</span><span class="prem">Premium</span></div><div class="track" id="track"></div></div>
     <div class="rdet" id="rdet" aria-live="polite"></div>
-    <p class="hint" style="margin:0">Every run's XP fills the pass, 100 XP per tier. Tap any reward to see it. Rewards you've reached glow green until you claim them.</p>
+    <p class="hint" style="margin:0">Every run's XP fills the pass. Tier 1 costs 100 XP and each tier after costs 1 more, up to 199. Tap any reward to see it. Rewards you've reached glow green until you claim them.</p>
   </section>
 
   <section class="panel view wide" data-view="shop" hidden>
@@ -988,7 +988,7 @@ const CARDS=[
 const RW=[10,4.5,1.6],RN=['Common','Rare','Mythic'];
 
 /* ---------- save ---------- */
-const VERSION='0.14.0';
+const VERSION='0.15.0';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -996,8 +996,11 @@ const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{}
 const lvNeed=L=>100+20*(L-1);
 function levelInfo(xp){let L=1,x=xp;while(x>=lvNeed(L)){x-=lvNeed(L);L++}return{L,into:x,need:lvNeed(L)}}
 const lvReward=L=>L%5===0?25:10;
-const PASS_TIER=100,PASS_COST=150;
-const passTier=()=>Math.min(100,Math.floor(meta.passXp/PASS_TIER));
+const PASS_COST=150;
+const tierCost=n=>100+(n-1);                 /* XP to go from tier n-1 to tier n: 100, 101, 102 ... 199 */
+const tierStart=n=>100*n+n*(n-1)/2;          /* total XP needed to reach tier n */
+const PASS_MAX_XP=tierStart(100);            /* 14,950 */
+const passTier=()=>{let k=0;while(k<100&&meta.passXp>=tierStart(k+1))k++;return k};
 const RANKS=[[1,'Wanderer'],[5,'Lamplighter'],[10,'Wickwarden'],[20,'Keeper of Flames'],[35,'Nightwatch'],[50,'Dawnbringer']];
 const rankOf=L=>RANKS.filter(r=>L>=r[0]).pop()[1];
 const EM='<span class="em"></span>',MS='<span class="msi"></span>';
@@ -1425,9 +1428,14 @@ function tStats(t){
 }
 const buildCost=t=>Math.round(TOWERS[t].cost*G.m.cost);
 const upCost=t=>Math.round(TOWERS[t.type].cost*(.7+.55*t.lvl)*G.m.cost);
+/* WAVE_LEN: how many times more foes a wave sends than the original design. Each regular foe gets 1/WAVE_LEN of the
+   health and gold, so a wave's total health and total gold stay the same while the wave lasts about WAVE_LEN times longer. */
+const WAVE_LEN=2,PULSE=8,PULSE_GAP=1.3;
+const clearBonus=()=>8+G.wave+3*ml('tithe');
 function makeWave(w){
-  const q=[],n=Math.floor((7+Math.floor(w*2.4))*(TM.swarm||1));
+  const q=[],n=Math.floor((7+Math.floor(w*2.4))*(TM.swarm||1)*WAVE_LEN);
   for(let i=0;i<n;i++){
+    if(i&&i%PULSE===0&&q.length)q[q.length-1].gap+=PULSE_GAP;   /* short breather between clumps */
     const r=Math.random();let t='moth';
     if(w>=2&&r<.24)t='wisp';
     else if(w>=3&&r<.24+Math.min(.35,w*.03))t='beetle';
@@ -1441,19 +1449,19 @@ function makeWave(w){
 }
 function spawn(type,at,mini){
   const f=FOES[type],w=G.wave,sc=Math.pow(1.22,w-1)*(1+.3*G.depth)*(mini?.45:1)*dOf(G.diff).hp*(type==='boss'?1-.04*ml('bane'):1)*(TM.hp||1);
-  const hp=f.hp*sc;
+  const hp=f.hp*sc/(type==='boss'?1:WAVE_LEN);
   const e={t:type,hp,max:hp,d:0,seg:0,x:G.path.pts[0][0],y:G.path.pts[0][1],ang:0,mini:!!mini,
     speed:f.speed*(1+.012*w)*(1+.04*G.depth)*(TM.speed||1)*dOf(G.diff).spd*(1-.02*ml('fog')),
     armor:f.armor?f.armor+Math.floor(w/2)+(TM.armor||0):0,
     lives:mini?4:(f.lives||1),
-    gold:Math.round(f.gold*(1+.05*(w-1))*(TM.gold||1)*(mini?.5:1)),
+    gold:f.gold*(1+.05*(w-1))*(TM.gold||1)*(mini?.5:1)/(type==='boss'?1:WAVE_LEN),
     slowT:0,slowF:0,poisT:0,pois:0,flash:0,ph:Math.random()*6};
   if(at){e.d=at.d;e.seg=at.seg;e.x=at.x;e.y=at.y}
   G.foes.push(e);return e;
 }
 function sendWave(){
   if(!G||G.state!=='build')return;
-  G.wave++;G.state='wave';G.q=makeWave(G.wave);G.qt=.2;hud(true);
+  G.wave++;G.state='wave';G.q=makeWave(G.wave);G.qn=G.q.length;G.midPaid=false;G.qt=.2;hud(true);
 }
 
 /* ---------- combat ---------- */
@@ -1465,12 +1473,12 @@ function hurt(e,dmg,raw,src){
   e.hp-=dmg;
   if(G.m.exec&&e.t!=='boss'&&e.hp<e.max*G.m.exec)e.hp=0;
   if(e.hp<=0){
-    e.dead=true;G.gold+=Math.round(e.gold*G.m.goldMul);
+    e.dead=true;G.gf=(G.gf||0)+e.gold*G.m.goldMul;{const g=Math.floor(G.gf);G.gold+=g;G.gf-=g}   /* fractions of gold carry over */
     if(e.t==='boss')G.bossKills++;
     G.kills=(G.kills||0)+1;
     if(src)G.mk[src]=(G.mk[src]||0)+1;
     if(e.poisAsc&&e.poisT>0)for(const o of G.foes)if(!o.dead&&o!==e&&Math.hypot(o.x-e.x,o.y-e.y)<1.3){o.pois=Math.max(o.poisT>0?o.pois:0,e.pois);o.poisT=3;o.poisSrc='venom';o.poisAsc=true}
-    if(e.t==='brood'){const n=TM.brood||3;for(let i=0;i<n;i++){const m=spawn('moth',e);m.hp=m.max=m.max*.45;m.gold=1;m.d=Math.max(0,e.d-.2*i)}}
+    if(e.t==='brood'){const n=TM.brood||3;for(let i=0;i<n;i++){const m=spawn('moth',e);m.hp=m.max=m.max*.45;m.gold=1/WAVE_LEN;m.d=Math.max(0,e.d-.2*i)}}
     puff(e.x,e.y,TH.foes[e.t],e.t==='boss'?26:8);
   }
 }
@@ -1532,6 +1540,8 @@ function step(dt){
   if(G.state==='wave'&&G.q.length){
     G.qt-=dt;
     if(G.qt<=0){const n=G.q.shift();spawn(n.t,null,n.mini);G.qt=n.gap}
+    if(!G.midPaid&&G.q.length<=G.qn/2){G.midPaid=true;const mb=Math.floor(clearBonus()/2);G.gold+=mb;
+      G.fx.push({k:'t',x:W/2,y:.9,txt:`Halfway +${mb} gold`,life:1.6,max:1.6,col:'#ffd75e'})}
   }
   const P=G.path;
   for(const e of G.foes){
@@ -1586,7 +1596,7 @@ function step(dt){
   if(G.state==='wave'&&!G.q.length&&!G.foes.length)endWave();
 }
 function endWave(){
-  G.gold+=8+G.wave+3*ml('tithe');
+  G.gold+=clearBonus()-(G.midPaid?Math.floor(clearBonus()/2):0);
   if(ml('compound'))G.gold+=Math.min(20*ml('compound'),Math.floor(G.gold*.01*ml('compound')));
   if(ml('regen')&&G.wave%5===0)G.lives+=ml('regen');
   for(const t of G.towers)if(t.type==='mint'){const g=tStats(t).income;G.gold+=g;G.fx.push({k:'t',x:t.x+.5,y:t.y+.2,txt:'+'+g,life:1.2,max:1.2,col:TOWERS.mint.color})}
@@ -1609,14 +1619,14 @@ function pathFrom(cells,pts){const cum=[0];for(let i=1;i<pts.length;i++)cum.push
 function snapRun(){
   if(!G||!G.endless||G.state!=='build')return;
   meta.endlessSave={v:1,depth:G.depth,world:G.world,diff:G.diff,wave:G.wave,lives:G.lives,gold:G.gold,bossKills:G.bossKills,kills:G.kills||0,ward:G.ward||0,
-    towers:G.towers.map(t=>({type:t.type,x:t.x,y:t.y,lvl:t.lvl,at:t.at||0,spent:t.spent})),path:{cells:G.path.cells,pts:G.path.pts},
+    gf:G.gf||0,towers:G.towers.map(t=>({type:t.type,x:t.x,y:t.y,lvl:t.lvl,at:t.at||0,spent:t.spent})),path:{cells:G.path.cells,pts:G.path.pts},
     m:G.m,taken:G.taken,mk:G.mk,used:[...G.used],at:Date.now()};
   save();
 }
 function resumeRun(){
   const r=meta.endlessSave;if(!r)return false;
   newRun(r.depth,true);applyTheme(r.world);
-  Object.assign(G,{world:r.world,diff:r.diff,wave:r.wave,lives:r.lives,gold:r.gold,bossKills:r.bossKills,kills:r.kills,ward:r.ward,
+  Object.assign(G,{gf:r.gf||0,world:r.world,diff:r.diff,wave:r.wave,lives:r.lives,gold:r.gold,bossKills:r.bossKills,kills:r.kills,ward:r.ward,
     m:Object.assign(G.m,r.m),taken:r.taken||{},mk:r.mk||{},used:new Set(r.used||[])});
   G.towers=(r.towers||[]).filter(t=>TOWERS[t.type]).map(t=>({type:t.type,x:t.x,y:t.y,lvl:t.lvl,at:t.at||undefined,spent:t.spent,cd:0}));
   G.path=pathFrom(r.path.cells,r.path.pts);G.amb=makeAmb();drawBG();
@@ -1666,7 +1676,7 @@ function endRun(win){
   let xp=0;for(let i=1;i<=cleared;i++)xp+=5+i;
   xp=Math.round((xp+G.bossKills*25+(win?100:0))*(1+.2*G.depth)*DF.rew*(1+.05*ml('school')));
   const lvBefore=levelInfo(meta.xp).L,tierBefore=passTier();
-  meta.xp+=xp;if(!seasonOver())meta.passXp=Math.min(meta.passXp+xp,PASS_TIER*100);
+  meta.xp+=xp;if(!seasonOver())meta.passXp=Math.min(meta.passXp+xp,PASS_MAX_XP);
   const lvAfter=levelInfo(meta.xp).L,tierAfter=passTier();
   let moon=0;for(let L=lvBefore+1;L<=lvAfter;L++)moon+=lvReward(L);
   const first=win&&!meta.cleared.includes(G.depth);if(first){meta.cleared.push(G.depth);moon+=20}
@@ -1677,7 +1687,7 @@ function endRun(win){
   if(G.endless)delete meta.endlessSave;
   /* mastery: 1 point per kill, plus 3 per wave cleared for every lantern type you built */
   meta.mastery=meta.mastery||{};const mUp=[];
-  for(const t of G.used){const before=mastInfo(t).L;meta.mastery[t]=(meta.mastery[t]||0)+Math.round(((G.mk[t]||0)+3*cleared)*(1+.1*ml('studious')));const after=mastInfo(t).L;if(after>before)mUp.push(`${TOWERS[t].name} ${before}→${after}`)}
+  for(const t of G.used){const before=mastInfo(t).L;meta.mastery[t]=(meta.mastery[t]||0)+Math.round(((G.mk[t]||0)/WAVE_LEN+3*cleared)*(1+.1*ml('studious')));const after=mastInfo(t).L;if(after>before)mUp.push(`${TOWERS[t].name} ${before}→${after}`)}
   save();
   $('#endTitle').textContent=win?'Dawn breaks':G.endless?`Endless: wave ${cleared}`:'The lanterns went dark';
   $('#ledger').innerHTML=(G.endless?`<span style="grid-column:1/3;color:var(--dim)">Best endless run: wave ${meta.bestEndless||0}</span>`:'')+
@@ -1737,6 +1747,7 @@ function renderProfile(){
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'0.15.0',d:'Oct 14, 2026',notes:['Waves last twice as long: twice as many foes, each with half the health and worth half the gold, so a wave is just as hard and pays the same.','Foes arrive in clumps with short pauses in between. Halfway through each wave you get half of the wave-clear gold.','Lantern mastery earns half a point per kill, so the extra foes don’t speed it up.','Pass tiers now cost a little more as you climb: 100 XP for tier 1, then 1 more each tier, up to 199 for tier 100.']},
   {v:'0.14.0',d:'Oct 14, 2026',notes:['Fixed the Season 1 story card on the Pass page being squashed, which hid its title and the Read the story button. Other pages could be squashed the same way and are fixed too.','The lantern tray is now grouped by role: Damage, Area, Control and Support, each with its own color.','Each lantern shows its role on the Lanterns page and when you tap it in a run.','The 1–9 hotkeys follow the new tray order.']},
   {v:'0.13.0',d:'Oct 14, 2026',notes:['Endless runs now save after every wave. Continue them any time from the Play page.','In Endless, the trail now stays the same all run. Only the world and its conditions change every 5 waves.','Mobile polish: no more accidental zooming (pinch, double-tap or tapping a text box), no stuck highlights after tapping, no pull-to-refresh or long-press menus, and the game pauses itself if you leave mid-wave.','PC controls: Space, 1–9 to pick lanterns, U to upgrade, M to merge, F for speed, P to pause, Esc or right-click to cancel.']},
   {v:'0.12.1',d:'Oct 14, 2026',notes:['The Lanterns page now fits on one screen with no up-and-down scrolling. Swipe sideways to move between lanterns, which snap into place while the ones beside them fade back.']},
@@ -1815,6 +1826,7 @@ function renderHow(){
     <li><b style="color:#9be3a9">Support</b> (Mint, Beacon) earns gold or boosts the lanterns around it.</li></ul></div>
   <div class="hc"><h3>Waves</h3><ul>
     <li>Press <b>Send wave</b> when you're ready. You can keep building during a wave.</li>
+    <li>Foes come in <b>clumps</b> with short pauses between them. Halfway through each wave you get half of the wave's gold bonus, and the rest when it's cleared.</li>
     <li><b>1×/2×/3×</b> changes game speed. <b>Auto</b> sends the next wave for you.</li>
     <li>On a computer: <b>Space</b> sends the next wave, <b>1–9</b> pick a lantern to place, <b>U</b> upgrades and <b>M</b> merges the selected lantern, <b>F</b> changes speed, <b>P</b> pauses and <b>Esc</b> or right-click cancels.</li></ul></div>
   <div class="hc"><h3>Boons</h3><p>After each wave, <b>pick one boon</b> from a hand of cards. They last for the rest of the run. Rare and Mythic boons are stronger but show up less often.</p></div>
@@ -2099,13 +2111,13 @@ function slotHTML(r){
 function slotCls(r){if(r.k==='skin')return ' rw r-'+skinOf(r).rar;if(r.k==='tower')return ' tw';return ''}
 let passSel=null,storyOpen=false;
 function renderPass(){
-  const tier=passTier(),into=meta.passXp-tier*PASS_TIER,done=tier>=100,P=meta.passPremium,over=seasonOver();
+  const tier=passTier(),into=meta.passXp-tierStart(tier),need=tierCost(tier+1),done=tier>=100,P=meta.passPremium,over=seasonOver();
   $('#story').innerHTML=`<div class="sh"><span class="sec" style="margin:0;color:#9fb0d8">Season 1</span><b>The Hollow Moon</b></div><p>${STORY[0]}</p>
     ${storyOpen?STORY.slice(1).map(p=>`<p>${p}</p>`).join(''):''}<button class="btn" id="storyBtn" aria-expanded="${storyOpen}">${storyOpen?'Show less':'Read the story'}</button>`;
   $('#psEnds').textContent=over?'Season 1 · ended':`Season 1 · ends in ${timeLeft()}`;
   $('#psTitle').textContent=P?'Premium pass':'Free pass';
-  $('#psBar').style.width=(done?100:into/PASS_TIER*100)+'%';
-  $('#psText').textContent=over?`Season 1 ended at tier ${tier}. You can still claim anything you reached.`:done?'Tier 100 reached. Every tier is complete.':`Tier ${tier} of 100 · ${into} / ${PASS_TIER} XP to tier ${tier+1}`;
+  $('#psBar').style.width=(done?100:into/need*100)+'%';
+  $('#psText').textContent=over?`Season 1 ended at tier ${tier}. You can still claim anything you reached.`:done?'Tier 100 reached. Every tier is complete.':`Tier ${tier} of 100 · ${into} / ${need} XP to tier ${tier+1}`;
   const b=$('#psBuy');
   if(P){b.textContent='Premium unlocked';b.disabled=true}else if(over){b.textContent='Premium closed';b.disabled=true}else{b.innerHTML=`Unlock Premium · ${MS} ${PASS_COST}`;b.disabled=meta.moon<PASS_COST}
   const n=claimable().length,c=$('#psClaim');c.textContent=n?`Claim all (${n})`:'Nothing to claim';c.disabled=!n;
@@ -2126,7 +2138,7 @@ function renderDet(){
   let status;
   if(cl)status=`<span class="hint" style="margin:0;color:var(--good)">Claimed</span>`;
   else if(can)status=`<button class="btn primary" data-claim="${L}:${i}">Claim</button>`;
-  else if(i>passTier())status=`<span class="hint" style="margin:0">Reach tier ${i} to claim${L==='p'&&!P?' (needs Premium)':''}. ${Math.max(0,i*PASS_TIER-meta.passXp)} XP to go.</span>`;
+  else if(i>passTier())status=`<span class="hint" style="margin:0">Reach tier ${i} to claim${L==='p'&&!P?' (needs Premium)':''}. ${Math.max(0,tierStart(i)-meta.passXp)} XP to go.</span>`;
   else status=`<span class="hint" style="margin:0">Unlock Premium to claim this reward.</span>`;
   const prev=(r.k==='skin'||r.k==='tower')?`<canvas data-t="${r.t}" data-s="${r.k==='skin'?r.id:'base'}" width="192" height="192" aria-hidden="true"></canvas>`:
     r.k==='theme'?`<span style="width:100%;height:100%;background:linear-gradient(${MENU_THEMES[r.id].bg},${mix(MENU_THEMES[r.id].bg,MENU_THEMES[r.id].acc,.4)})"></span>`:

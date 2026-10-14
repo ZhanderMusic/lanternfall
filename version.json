@@ -1,11 +1,11 @@
 {
-  "version": "0.14.0",
+  "version": "0.15.0",
   "date": "Oct 14, 2026",
   "major": false,
   "notes": [
-    "Fixed the Season 1 story card on the Pass page being squashed, which hid its title and the Read the story button. Other pages could be squashed the same way and are fixed too.",
-    "The lantern tray is now grouped by role: Damage, Area, Control and Support, each with its own color.",
-    "Each lantern shows its role on the Lanterns page and when you tap it in a run.",
-    "The 1–9 hotkeys follow the new tray order."
+    "Waves last twice as long: twice as many foes, each with half the health and worth half the gold, so a wave is just as hard and pays the same.",
+    "Foes arrive in clumps with short pauses in between. Halfway through each wave you get half of the wave-clear gold.",
+    "Lantern mastery earns half a point per kill, so the extra foes don’t speed it up.",
+    "Pass tiers now cost a little more as you climb: 100 XP for tier 1, then 1 more each tier, up to 199 for tier 100."
   ]
 }
