@@ -1,11 +1,13 @@
 {
-  "version": "0.15.0",
+  "version": "0.16.0",
   "date": "Oct 14, 2026",
-  "major": false,
+  "major": true,
   "notes": [
-    "Waves last twice as long: twice as many foes, each with half the health and worth half the gold, so a wave is just as hard and pays the same.",
-    "Foes arrive in clumps with short pauses in between. Halfway through each wave you get half of the wave-clear gold.",
-    "Lantern mastery earns half a point per kill, so the extra foes don’t speed it up.",
-    "Pass tiers now cost a little more as you climb: 100 XP for tier 1, then 1 more each tier, up to 199 for tier 100."
-  ]
+    "Every lantern has two upgrade paths with 5 tiers each, replacing the old 6 levels. Tap a lantern to open its upgrade panel.",
+    "Max both paths to ascend. Each lantern has three ascension types: its original perk plus two new ones.",
+    "Mastery unlocks upgrades: path 2 at 10, tier 4 at 20, tier 5 and the first ascension at 30, the second and third ascension types at 50 and 70, and a Radiant look at 100.",
+    "New upgrade effects include multi-target shots, crits, armor piercing, burns, marks that make foes take more damage, splash, and lingering fire, acid and ice on the trail.",
+    "Endless runs saved before this update can’t be continued."
+  ],
+  "title": "Paths"
 }
