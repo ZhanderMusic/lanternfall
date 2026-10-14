@@ -1,11 +1,11 @@
 {
-  "version": "0.13.0",
+  "version": "0.14.0",
   "date": "Oct 14, 2026",
   "major": false,
   "notes": [
-    "Endless runs now save after every wave. Continue them any time from the Play page.",
-    "In Endless, the trail now stays the same all run. Only the world and its conditions change every 5 waves.",
-    "Mobile polish: no more accidental zooming (pinch, double-tap or tapping a text box), no stuck highlights after tapping, no pull-to-refresh or long-press menus, and the game pauses itself if you leave mid-wave.",
-    "PC controls: Space, 1–9 to pick lanterns, U to upgrade, M to merge, F for speed, P to pause, Esc or right-click to cancel."
+    "Fixed the Season 1 story card on the Pass page being squashed, which hid its title and the Read the story button. Other pages could be squashed the same way and are fixed too.",
+    "The lantern tray is now grouped by role: Damage, Area, Control and Support, each with its own color.",
+    "Each lantern shows its role on the Lanterns page and when you tap it in a run.",
+    "The 1–9 hotkeys follow the new tray order."
   ]
 }

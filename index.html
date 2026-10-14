@@ -119,7 +119,9 @@ h2.big{font:400 52px/.9 var(--display);margin:0}
 #sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 #camp .view{position:relative;z-index:1}
 /* inner pages stay pinned to the top so short lists never make the page jump; only the title screen centers vertically */
-#camp .view:not([data-view=home]){margin:0 auto}
+#camp .view:not([data-view=home]){margin:0 auto;align-self:flex-start}
+#camp .view>*{flex-shrink:0}
+#camp .view[data-view=lanterns]>.car{flex-shrink:1}
 [data-view=home] .logo{font-size:clamp(68px,20vw,120px)}
 /* title screen: one centered column */
 #camp .view[data-view=home]{max-width:440px;align-items:center;text-align:center}
@@ -245,15 +247,23 @@ dl.stats dd{margin:0;font-family:var(--mono);text-align:right;font-variant-numer
 /* the tray keeps one fixed height in every state (build tray or lantern info) so the board never resizes or shifts */
 #tray{padding:8px 10px;height:156px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
 #tray::-webkit-scrollbar{display:none}
-@media (min-width:561px){#tray{height:132px}}
+@media (min-width:561px){#tray{height:142px}}
 #tray .tinfo h3{font-size:24px}
 #tray .nums{font-size:12px}
-.trh{margin:0 0 6px;font-size:12.5px;line-height:1.35}
+.trh{margin:0 0 4px;font-size:12.5px;line-height:1.3}
 .trh .how{color:var(--ink)}
-.pal{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 2px 4px;margin:0 -2px}
+.pal{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding:2px 2px 4px;margin:0 -2px}
+.pg{flex:none;display:flex;flex-direction:column;gap:3px}
+.pg+.pg{position:relative;padding-left:12px}
+.pg+.pg::before{content:"";position:absolute;left:0;top:4px;bottom:6px;width:1px;background:var(--line)}
+.pgl{display:flex;align-items:center;gap:6px;font:700 10px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--rc)}
+.pgl::before{content:"";width:7px;height:7px;border-radius:2px;background:var(--rc);box-shadow:0 0 6px var(--rc)}
+.pgr{display:flex;gap:6px}
+.rolec{display:inline-block;vertical-align:middle;margin-left:8px;font:700 10px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--rc);border:1px solid color-mix(in srgb,var(--rc) 55%,transparent);border-radius:999px;padding:3px 7px}
+.trh{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
 .pal::-webkit-scrollbar{display:none}
-.pc{all:unset;box-sizing:border-box;flex:0 0 auto;width:70px;padding:6px 4px 7px;border-radius:10px;background:var(--moss2);border:1px solid var(--line);
-  display:flex;flex-direction:column;align-items:center;gap:2px;cursor:grab;touch-action:pan-x;-webkit-user-select:none;user-select:none;transition:transform .12s}
+.pc{all:unset;box-sizing:border-box;flex:0 0 auto;width:70px;padding:5px 4px 5px;border-radius:10px;background:var(--moss2);border:1px solid var(--line);
+  display:flex;flex-direction:column;align-items:center;gap:1px;cursor:grab;touch-action:pan-x;-webkit-user-select:none;user-select:none;transition:transform .12s}
 .pc:focus-visible{outline:2px solid var(--flame);outline-offset:2px}
 .pc .pci{width:34px;height:34px}
 .pc .pn{font-size:11px;font-weight:700;white-space:nowrap;max-width:62px;overflow:hidden;text-overflow:ellipsis}
@@ -599,7 +609,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 
 
 <script>
-/* PWA: offline support and updates (Lanternfall v0.13.0) */
+/* PWA: offline support and updates (Lanternfall v0.14.0) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -828,6 +838,16 @@ const TOWERS={
     lore:'The one thing the Moth Queen fears: the moon’s shadow, turned against her.'}
 };
 const ORDER=['spark','cinder','frost','lance','venom','mint','bolt','beacon','comet','moonwell','bell','eclipse'];
+/* lantern roles: how the build tray groups them */
+const ROLES=[
+  {id:'dmg',name:'Damage',col:'#ff8a7a',desc:'Hits one foe hard.',t:['spark','lance','moonwell','eclipse']},
+  {id:'area',name:'Area',col:'#ffb547',desc:'Hits many foes at once.',t:['cinder','bolt','comet']},
+  {id:'ctrl',name:'Control',col:'#7fe3ff',desc:'Slows, freezes or poisons.',t:['frost','venom','bell']},
+  {id:'sup',name:'Support',col:'#9be3a9',desc:'Earns gold or boosts others.',t:['mint','beacon']}
+];
+const roleOf=t=>ROLES.find(r=>r.t.includes(t));
+/* the order lanterns appear in the tray (and the 1-9 hotkeys) */
+const palOrder=()=>ROLES.flatMap(r=>r.t.filter(unlocked));
 
 /* ---------- foes ---------- */
 const FOES={
@@ -968,7 +988,7 @@ const CARDS=[
 const RW=[10,4.5,1.6],RN=['Common','Rare','Mythic'];
 
 /* ---------- save ---------- */
-const VERSION='0.13.0';
+const VERSION='0.14.0';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -1717,6 +1737,7 @@ function renderProfile(){
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'0.14.0',d:'Oct 14, 2026',notes:['Fixed the Season 1 story card on the Pass page being squashed, which hid its title and the Read the story button. Other pages could be squashed the same way and are fixed too.','The lantern tray is now grouped by role: Damage, Area, Control and Support, each with its own color.','Each lantern shows its role on the Lanterns page and when you tap it in a run.','The 1–9 hotkeys follow the new tray order.']},
   {v:'0.13.0',d:'Oct 14, 2026',notes:['Endless runs now save after every wave. Continue them any time from the Play page.','In Endless, the trail now stays the same all run. Only the world and its conditions change every 5 waves.','Mobile polish: no more accidental zooming (pinch, double-tap or tapping a text box), no stuck highlights after tapping, no pull-to-refresh or long-press menus, and the game pauses itself if you leave mid-wave.','PC controls: Space, 1–9 to pick lanterns, U to upgrade, M to merge, F for speed, P to pause, Esc or right-click to cancel.']},
   {v:'0.12.1',d:'Oct 14, 2026',notes:['The Lanterns page now fits on one screen with no up-and-down scrolling. Swipe sideways to move between lanterns, which snap into place while the ones beside them fade back.']},
   {v:'0.12.0',d:'Oct 14, 2026',major:1,title:'The Deep Nights',
@@ -1787,6 +1808,11 @@ function renderHow(){
     <li>Ascend a <b>second copy</b> of the same lantern, then tap the first and <b>Merge</b> to make an <b>Ascended II</b>. Two Ascended II lanterns of the same type merge into an <b>Ascended III</b>. Each merge gives ×1.75 damage, ×1.2 fire rate and ×1.12 range.</li>
     <li><b>Tap a lantern</b> to upgrade it (up to level 6) or sell it for 60% back.</li>
     <li>Kills and cleared waves give you gold to spend.</li></ol></div>
+  <div class="hc"><h3>Lantern roles</h3><ul>
+    <li><b style="color:#ff8a7a">Damage</b> (Spark, Lance, Moonwell, Eclipse) hits one foe hard.</li>
+    <li><b style="color:#ffb547">Area</b> (Cinder, Bolt, Comet) hits many foes at once.</li>
+    <li><b style="color:#7fe3ff">Control</b> (Frost, Venom, Hollow Bell) slows, freezes or poisons.</li>
+    <li><b style="color:#9be3a9">Support</b> (Mint, Beacon) earns gold or boosts the lanterns around it.</li></ul></div>
   <div class="hc"><h3>Waves</h3><ul>
     <li>Press <b>Send wave</b> when you're ready. You can keep building during a wave.</li>
     <li><b>1×/2×/3×</b> changes game speed. <b>Auto</b> sends the next wave for you.</li>
@@ -1946,7 +1972,7 @@ function slideHTML(t){
     `<button class="btn primary" data-buy="${t}:${pid}" ${!canBuy(sk)?'disabled':''}>Buy · ${priceHTML(sk)}</button>`;
   return `<article class="slide${un?'':' locked'}" data-t="${t}" style="--tc:${base}" aria-label="${T.name}">
     <div class="stage"><canvas data-prev="${t}" width="360" height="360" aria-hidden="true"></canvas>${un?'':'<span class="lockt">Locked</span>'}</div>
-    <div class="info"><span class="sec" style="margin:0">${T.pass?'Season 1 lantern':`Lantern ${i+1} of ${ORDER.length}`}</span><h3 style="color:${base}">${T.name}</h3><p>${T.desc}</p>${T.lore?`<p class="lore">${T.lore}</p>`:''}
+    <div class="info"><span class="sec" style="margin:0">${T.pass?'Season 1 lantern':`Lantern ${i+1} of ${ORDER.length}`}</span> <span class="rolec" style="--rc:${roleOf(t).col}">${roleOf(t).name}</span><h3 style="color:${base}">${T.name}</h3><p>${T.desc}</p>${T.lore?`<p class="lore">${T.lore}</p>`:''}
       <dl class="stats">${rows.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl></div>
     <div class="sx">      ${(()=>{const mi=mastInfo(t),mb=mastBonus(mi.L),bd=mastBadge(mi.L),nm=[25,50,75,100].find(x=>x>mi.L);
         return `<div class="mast"><div class="mr"><span>Mastery <b>${mi.L}</b> / ${MAST_MAX}${bd?` · ${bd}`:''}</span><span>${mi.L>=MAST_MAX?'Maxed':`${mi.into} / ${mi.need}`}</span></div>
@@ -2332,7 +2358,7 @@ addEventListener('keydown',e=>{
   if(e.code==='Space'&&G.state==='build'&&!paused){e.preventDefault();sendWave();return}
   if(e.key==='Escape'){if(!$('#menu').hidden){paused=false;hide('menu')}else if(armT||G.sel){armT=null;G.sel=null;renderTray()}else if(G.state==='wave'||G.state==='build')$('#menuBtn').click();return}
   if(paused||G.state==='cards')return;
-  const k=e.key.toLowerCase(),own=ORDER.filter(unlocked),i='1234567890-='.indexOf(k);
+  const k=e.key.toLowerCase(),own=palOrder(),i='1234567890-='.indexOf(k);
   if(i>=0&&own[i]){armT=armT===own[i]?null:own[i];G.sel=null;renderTray();return}
   if(k==='u'&&G.sel){const b=document.querySelector('#tray [data-act=up]');if(b&&!b.disabled)b.click();return}
   if(k==='m'&&G.sel){const b=document.querySelector('#tray [data-act=asc]');if(b&&!b.disabled)b.click();return}
@@ -2359,8 +2385,9 @@ function renderTray(){
   const tr=$('#tray'),s=G.sel,own=ORDER.filter(unlocked);
   if(!s){
     tr.innerHTML=`<p class="hint trh"><b>${TH.name}${G.endless?' · Endless':''} · <span style="color:${dOf(G.diff).col}">${dOf(G.diff).name}</span>.</b> ${TH.twist} <span class="how">${armT?`Tap a grassy tile to place ${TOWERS[armT].name}.`:'Drag a lantern onto the grass.'}</span></p>
-    <div class="pal" id="pal">${own.map(t=>`<button class="pc${armT===t?' arm':''}" data-drag="${t}" data-cost="${buildCost(t)}" aria-label="${TOWERS[t].name}, ${buildCost(t)} gold. Drag onto a tile, or tap then tap a tile.">
-      <canvas class="pci" data-pci="${t}" width="64" height="64" aria-hidden="true"></canvas><span class="pn">${TOWERS[t].name}</span><span class="pcost">${buildCost(t)}</span></button>`).join('')}</div>`;
+    <div class="pal" id="pal">${ROLES.map(r=>{const ts=r.t.filter(unlocked);if(!ts.length)return '';
+      return `<div class="pg" role="group" aria-label="${r.name} lanterns" style="--rc:${r.col}"><span class="pgl">${r.name}</span><div class="pgr">${ts.map(t=>`<button class="pc${armT===t?' arm':''}" data-drag="${t}" data-cost="${buildCost(t)}" aria-label="${TOWERS[t].name}, ${r.name}, ${buildCost(t)} gold. Drag onto a tile, or tap then tap a tile.">
+      <canvas class="pci" data-pci="${t}" width="64" height="64" aria-hidden="true"></canvas><span class="pn">${TOWERS[t].name}</span><span class="pcost">${buildCost(t)}</span></button>`).join('')}</div></div>`}).join('')}</div>`;
     tr.querySelectorAll('canvas[data-pci]').forEach(c=>{const t=c.dataset.pci,x=c.getContext('2d'),col=TOWERS[t].color;
       x.fillStyle='#090d0e';x.beginPath();x.arc(32,32,21,0,7);x.fill();x.strokeStyle=col;x.lineWidth=3;x.stroke();lantern(t,32,32,col,x,62)});
   }else{
@@ -2376,7 +2403,7 @@ function renderTray(){
         ty==='lance'?` · pierce ${st.pierce}`:ty==='venom'?` · poison ${st.poison.toFixed(1)}/s`:ty==='spark'&&G.m.crit?` · crit ${Math.round(G.m.crit*100)}%`:'';
       nums=`dmg ${st.dmg.toFixed(1)} · ${st.rate.toFixed(2)}/s · range ${st.range.toFixed(1)}${extra}`;
     }
-    tr.innerHTML=`<div class="tinfo"><div class="tmain"><h3 style="color:${TOWERS[ty].color}">${TOWERS[ty].name}<span class="pips${mx?' asc':''}">${Array.from({length:MAXL},(_,i)=>`<i class="${i<t.lvl?'on':''}"></i>`).join('')}</span>${mx?`<span class="ascb at${ascTier(t)}">${ASC_NAME[ascTier(t)]}</span>`:''}</h3>
+    tr.innerHTML=`<div class="tinfo"><div class="tmain"><h3 style="color:${TOWERS[ty].color}">${TOWERS[ty].name}<span class="rolec" style="--rc:${roleOf(ty).col}">${roleOf(ty).name}</span><span class="pips${mx?' asc':''}">${Array.from({length:MAXL},(_,i)=>`<i class="${i<t.lvl?'on':''}"></i>`).join('')}</span>${mx?`<span class="ascb at${ascTier(t)}">${ASC_NAME[ascTier(t)]}</span>`:''}</h3>
       <div class="nums">${nums}</div>
       <div class="perk${mx?' on':''}">${mx?'':'At max level · '}${ASC[ty]}</div>
       ${mx?(()=>{const T=ascTier(t),pt=ascPartner(t);if(T>=ASC_MAX)return `<div class="perk on">Fully ascended: ×${ascBoost(t).dmg.toFixed(2)} damage, ×${ascBoost(t).rate.toFixed(2)} fire rate, ×${ascBoost(t).range.toFixed(2)} range.</div>`;
