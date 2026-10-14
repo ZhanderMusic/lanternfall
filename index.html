@@ -171,6 +171,7 @@ h2.big{font:400 52px/.9 var(--display);margin:0}
   .cards{flex-direction:column;flex-wrap:nowrap;gap:9px}.cards .bn{flex:none;max-width:none}
   .cards.many{gap:7px}.cards.many .bn{padding:9px 12px;gap:12px}.cards.many .bsig{width:44px;height:44px}.cards.many .bsig svg{width:22px;height:22px}
   .cards.many .nm{font-size:19px}.cards.many p{font-size:12.5px;line-height:1.3}.cards.many .btx{gap:3px}
+  .cards.lots{gap:6px}.cards.lots .bn{padding:7px 11px}.cards.lots .bsig{width:38px;height:38px}.cards.lots .bsig svg{width:20px;height:20px}.cards.lots .nm{font-size:17px}.cards.lots p{font-size:12px}.cards.lots .rt{padding:2px 6px}
   .bn{flex-direction:row;text-align:left;align-items:center;min-height:0;padding:12px 14px;gap:14px}
   .bsig{width:54px;height:54px}.bsig svg{width:27px;height:27px}
   .btx{align-items:flex-start;gap:4px}.btop{justify-content:flex-start}
@@ -810,7 +811,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 
 
 <script>
-/* PWA: offline support and updates (Lanternfall v0.16.0) */
+/* PWA: offline support and updates (Lanternfall v0.17.0) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -1127,6 +1128,10 @@ const META=[
   {id:'tithe',cat:'eco',name:'Wave tithe',max:10,base:5,g:1.45,text:l=>`+3 gold for every wave you clear. Now +${l*3}.`},
   {id:'thrift',cat:'eco',name:'Thrift',max:10,base:7,g:1.5,text:l=>`Lanterns and upgrades cost 2% less. Now −${l*2}%.`},
   {id:'salvage',cat:'eco',name:'Salvage',max:5,base:6,g:1.6,text:l=>`Selling refunds 4% more. Now ${60+l*4}% back.`},
+  {id:'bountyb',cat:'eco',name:'Bounty board',max:6,base:8,g:1.55,text:l=>`Snuffing a boss pays +15 gold. Now +${l*15}.`},
+  {id:'midpay',cat:'eco',name:'Midnight pay',max:5,base:7,g:1.55,text:l=>`The halfway bonus in each wave pays 20% more. Now +${l*20}%.`},
+  {id:'appraiser',cat:'eco',name:'Appraiser',max:8,base:8,g:1.5,text:l=>`Path upgrades cost 2% less. Now −${l*2}%.`},
+  {id:'patron',cat:'eco',name:'Patron',max:2,base:45,g:2.2,text:l=>l>1?'The first 2 lanterns you build each run are free.':'The first lantern you build each run is free. Level 2 makes the first two free.'},
   {id:'compound',cat:'eco',name:'Compound',max:5,base:10,g:1.7,text:l=>`After each wave, earn 1% interest on your gold (up to 20 per level). Now ${l}%.`},
   /* Offense */
   {id:'whet',cat:'off',name:'Whetstone',max:10,base:5,g:1.5,text:l=>`+6% tower damage. Now +${l*6}%.`},
@@ -1135,12 +1140,21 @@ const META=[
   {id:'keen',cat:'off',name:'Keen eye',max:10,base:6,g:1.5,text:l=>`Shots get a 1.5% chance to hit for double damage. Now ${(l*1.5).toFixed(1)}%.`},
   {id:'focus',cat:'off',name:'Boss hunter',max:10,base:6,g:1.5,text:l=>`+5% damage to bosses. Now +${l*5}%.`},
   {id:'breaker',cat:'off',name:'Armor breaker',max:10,base:7,g:1.5,text:l=>`Enemy armor is 5% weaker. Now −${l*5}%.`},
+  {id:'lastlight',cat:'off',name:'Last light',max:5,base:7,g:1.55,text:l=>`With 5 lives or fewer, towers deal +8% damage. Now +${l*8}%.`},
+  {id:'heavy',cat:'off',name:'Heavy hits',max:6,base:8,g:1.55,text:l=>`Critical hits deal 15% more damage. Now +${l*15}%.`},
+  {id:'tempered',cat:'off',name:'Tempered',max:5,base:9,g:1.55,text:l=>`Lanterns with a path at tier 5 deal +5% damage. Now +${l*5}%.`},
+  {id:'swarmb',cat:'off',name:'Swarm breaker',max:8,base:6,g:1.5,text:l=>`+4% damage to foes that aren't bosses. Now +${l*4}%.`},
+  {id:'piercer',cat:'off',name:'Piercing light',max:5,base:9,g:1.6,text:l=>`Shots ignore 2 points of armor. Now ${l*2}.`},
   {id:'reaper',cat:'off',name:'Reaper',max:3,base:15,g:2,text:l=>`Non-boss foes below 3% health are snuffed instantly. Now ${l*3}%.`},
   /* Defense */
   {id:'hearth',cat:'def',name:'Hearthstones',max:5,base:6,g:1.7,text:l=>`+2 starting lives. Now +${l*2}.`},
   {id:'ward',cat:'def',name:'Warding stones',max:3,base:12,g:1.9,text:l=>`The first foe to slip through each run costs no lives. Now ${l} per run.`},
   {id:'regen',cat:'def',name:'Healing hearth',max:3,base:10,g:1.9,text:l=>`Recover 1 life after every 5th wave. Now +${l}.`},
   {id:'fog',cat:'def',name:'Fog lanterns',max:5,base:8,g:1.6,text:l=>`Foes move 2% slower. Now −${l*2}%.`},
+  {id:'smallfry',cat:'def',name:'Small fry',max:8,base:7,g:1.5,text:l=>`Foes that aren't bosses have 2% less health. Now −${l*2}%.`},
+  {id:'rally',cat:'def',name:'Rally',max:2,base:14,g:2,text:l=>`Recover a life each time you snuff a boss. Now +${l}.`},
+  {id:'stout',cat:'def',name:'Stout gate',max:4,base:10,g:1.7,text:l=>`Bosses that slip through cost 1 fewer life. Now −${l}.`},
+  {id:'secondwind',cat:'def',name:'Second wind',max:1,base:120,g:1,text:()=>'Once per run, when you would lose your last life, keep going with 3 lives.'},
   {id:'bane',cat:'def',name:'Giant’s bane',max:5,base:9,g:1.6,text:l=>`Bosses have 4% less health. Now −${l*4}%.`},
   /* Run & boons */
   {id:'reroll',cat:'run',name:'Second thoughts',max:3,base:12,g:2,text:l=>`One more reroll per boon pick. Now ${l}.`},
@@ -1148,6 +1162,10 @@ const META=[
   {id:'fifth',cat:'run',name:'Widest fan',max:1,base:90,g:1,need:'fourth',text:()=>'See 5 boons after each wave. Needs Wider fan.'},
   {id:'luck',cat:'run',name:'Lucky draw',max:5,base:8,g:1.6,text:l=>`Rare and better boons show up 15% more often. Now +${l*15}%.`},
   {id:'patient',cat:'run',name:'Patience',max:4,base:6,g:1.6,text:l=>`Skipping a boon pays 25 more gold. Now ${25+l*25} gold.`},
+  {id:'highroll',cat:'run',name:'High roller',max:5,base:10,g:1.6,text:l=>`Legendary and better boons show up 12% more often. Now +${l*12}%.`},
+  {id:'gift',cat:'run',name:'Morning gift',max:2,base:30,g:2.2,text:l=>`Start every run with ${l>1?l:'a'} random Common boon${l>1?'s':''}.${l?'':' Each level adds one.'}`},
+  {id:'boongold',cat:'run',name:'Boon bounty',max:5,base:6,g:1.55,text:l=>`Picking a boon also pays 5 gold. Now +${l*5}.`},
+  {id:'trophyfan',cat:'run',name:'Trophy hand',max:1,base:70,g:1,text:()=>'After every 5th wave, see one more boon.'},
   {id:'headstart',cat:'run',name:'Head start',max:1,base:35,g:1,text:()=>'Pick a free boon before the first wave of every run.'},
   /* Lanterns */
   {id:'blast',ic:'burst',cat:'lan',name:'Wide burst',max:6,base:6,g:1.55,text:l=>`Cinder and Comet bursts are 5% wider. Now +${l*5}%.`},
@@ -1155,12 +1173,30 @@ const META=[
   {id:'toxin',cat:'lan',name:'Toxicology',max:8,base:6,g:1.5,text:l=>`Venom and burn damage +8%. Now +${l*8}%.`},
   {id:'conductor',cat:'lan',name:'Conductor',max:3,base:12,g:1.9,text:l=>`Bolt chains to 1 more foe. Now +${l}.`},
   {id:'veteran',cat:'lan',name:'Veteran lanterns',max:1,base:80,g:1,text:()=>'New lanterns come with their first path 1 upgrade for free.'},
+  {id:'forge',cat:'lan',name:'Forgemaster',max:5,base:10,g:1.6,text:l=>`Ascensions cost 6% less. Now −${l*6}%.`},
+  /* Lantern lore: one per lantern, unlocks with the lantern */
+  {id:'lo_spark',cat:'lore',tw:'spark',name:'Spark lore',max:6,base:9,g:1.55,text:l=>`Spark deals +5% damage. Now +${l*5}%.`},
+  {id:'lo_cinder',cat:'lore',tw:'cinder',name:'Cinder lore',max:6,base:9,g:1.55,text:l=>`Cinder deals +5% damage. Now +${l*5}%.`},
+  {id:'lo_frost',cat:'lore',tw:'frost',name:'Frost lore',max:6,base:9,g:1.55,text:l=>`Frost deals +5% damage. Now +${l*5}%.`},
+  {id:'lo_lance',cat:'lore',tw:'lance',name:'Lance lore',max:6,base:9,g:1.55,text:l=>`Lance deals +5% damage. Now +${l*5}%.`},
+  {id:'lo_venom',cat:'lore',tw:'venom',name:'Venom lore',max:6,base:9,g:1.55,text:l=>`Venom deals +5% damage. Now +${l*5}%.`},
+  {id:'lo_mint',cat:'lore',tw:'mint',name:'Mint lore',max:6,base:9,g:1.55,text:l=>`Mints earn 8% more gold. Now +${l*8}%.`},
+  {id:'lo_bolt',cat:'lore',tw:'bolt',name:'Bolt lore',max:6,base:9,g:1.55,text:l=>`Bolt deals +5% damage. Now +${l*5}%.`},
+  {id:'lo_beacon',cat:'lore',tw:'beacon',name:'Beacon lore',max:6,base:9,g:1.55,text:l=>`Beacon boosts are 1 point stronger. Now +${l}.`},
+  {id:'lo_comet',cat:'lore',tw:'comet',name:'Comet lore',max:6,base:9,g:1.55,text:l=>`Comet deals +5% damage. Now +${l*5}%.`},
+  {id:'lo_moonwell',cat:'lore',tw:'moonwell',name:'Moonwell lore',max:6,base:9,g:1.55,text:l=>`Moonwell deals +5% damage. Now +${l*5}%.`},
+  {id:'lo_bell',cat:'lore',tw:'bell',name:'Hollow Bell lore',max:6,base:9,g:1.55,text:l=>`Hollow Bell deals +5% damage. Now +${l*5}%.`},
+  {id:'lo_eclipse',cat:'lore',tw:'eclipse',name:'Eclipse lore',max:6,base:9,g:1.55,text:l=>`Eclipse deals +5% damage. Now +${l*5}%.`},
   /* Progress */
   {id:'jar',cat:'pro',name:'Ember jar',max:10,base:8,g:1.5,text:l=>`+10% embers per run. Now +${l*10}%.`},
   {id:'school',cat:'pro',name:'Night school',max:10,base:8,g:1.5,text:l=>`+5% XP per run. Now +${l*5}%.`},
-  {id:'studious',cat:'pro',name:'Studious',max:10,base:7,g:1.5,text:l=>`+10% lantern mastery points. Now +${l*10}%.`}
+  {id:'studious',cat:'pro',name:'Studious',max:10,base:7,g:1.5,text:l=>`+10% lantern mastery points. Now +${l*10}%.`},
+  {id:'trophy',cat:'pro',name:'Trophy hunter',max:5,base:9,g:1.55,text:l=>`+1 ember for every boss you snuff. Now +${l}.`},
+  {id:'longnight',cat:'pro',name:'Long night',max:5,base:10,g:1.55,text:l=>`+8% embers and XP from Endless runs. Now +${l*8}%.`},
+  {id:'daring',cat:'pro',name:'Daring',max:5,base:10,g:1.55,text:l=>`+6% embers and XP on Hard and Nightmare. Now +${l*6}%.`},
+  {id:'pathfinder',cat:'pro',name:'Pathfinder',max:4,base:15,g:1.7,text:l=>`Beating a world for the first time gives 5 more moonstones. Now +${l*5}.`}
 ];
-const UCATS=[['all','All'],['eco','Economy'],['off','Offense'],['def','Defense'],['run','Run & boons'],['lan','Lanterns'],['pro','Progress']];
+const UCATS=[['all','All'],['eco','Economy'],['off','Offense'],['def','Defense'],['run','Run & boons'],['lan','Lanterns'],['lore','Lore'],['pro','Progress']];
 const sellRate=()=>.6+.04*ml('salvage');
 const UNLOCKS=ORDER.filter(t=>TOWERS[t].unlock).map(t=>({id:'u_'+t,t,name:TOWERS[t].name,max:1,base:TOWERS[t].unlock,g:1,text:()=>TOWERS[t].desc}));
 
@@ -1211,7 +1247,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='0.16.0';
+const VERSION='0.17.0';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -1272,7 +1308,7 @@ addEventListener('pointerdown',()=>{if(!persistAsked&&storeInfo.persisted===fals
 let meta=load();
 const ml=id=>meta.up[id]||0;
 const unlocked=t=>TOWERS[t].pass?!!(meta.ptow&&meta.ptow[t]):(!TOWERS[t].unlock||ml('u_'+t)>0);
-const mcost=(m,l)=>Math.round(m.base*Math.pow(m.g,l));
+const mcost=(m,l)=>Math.round(m.base*Math.pow(m.g*1.04,l)*(1+.015*l));   /* camp upgrades get steeper with each level */
 
 /* ---------- version checking: the installed app compares itself with version.json published next to it on GitHub ---------- */
 function cmpVer(a,b){const x=String(a).split('.').map(Number),y=String(b).split('.').map(Number);for(let i=0;i<3;i++){const d=(x[i]||0)-(y[i]||0);if(d)return d}return 0}
@@ -1587,7 +1623,7 @@ function newRun(depth,endless){
     towers:[],foes:[],shots:[],fx:[],q:[],qt:0,path:genPath(),sel:null,bossKills:0,time:0,amb:makeAmb(),
     m:{dmg:1,rate:1,range:1,goldMul:1+.05*ml('purse'),interest:0,crit:0,splash:1+.05*ml('blast'),chill:0,chain:ml('conductor'),cost:1-.02*ml('thrift'),
        boss:1+.05*ml('focus'),exec:.03*ml('reaper'),armor:1-.05*ml('breaker'),
-       pierce:0,lance:1,poison:1+.08*ml('toxin'),income:1,aura:0,comet:1},taken:{},ward:ml('ward'),
+       pierce:0,lance:1,poison:1+.08*ml('toxin'),income:1,aura:0,comet:1},taken:{},ward:ml('ward'),patron:ml('patron'),sw:ml('secondwind'),
     mast:Object.fromEntries(ORDER.map(t=>[t,mastInfo(t).L])),mk:{},used:new Set()};
   drawBG();
 }
@@ -1693,7 +1729,7 @@ const mastBadge=L=>L>=100?'Radiant':L>=75?'Gold':L>=50?'Silver':L>=25?'Bronze':'
 /* auras: Beacons (and a few ascensions) boost lanterns around them */
 function auraOf(b){
   const f=tFx(b);
-  if(b.type==='beacon')return{R:1+(f.auraR||0)+(asc1(b)?1:0),dmg:.15+(f.aura||0)+G.m.aura+ascBoost(b).aura,rate:.08+(f.auraRate||0),range:f.auraRange||0,crit:f.auraCrit||0,mark:f.auraMark||0};
+  if(b.type==='beacon')return{R:1+(f.auraR||0)+(asc1(b)?1:0),dmg:.15+(f.aura||0)+G.m.aura+ascBoost(b).aura+.01*ml('lo_beacon'),rate:.08+(f.auraRate||0),range:f.auraRange||0,crit:f.auraCrit||0,mark:f.auraMark||0};
   if(f.auraRate)return{R:f.auraR||1,dmg:0,rate:f.auraRate,range:0,crit:0,mark:0};
   return null;
 }
@@ -1706,9 +1742,10 @@ function auraAt(t){
 function tStats(t){
   const d=TOWERS[t.type],m=G.m,f=tFx(t),A=asc1(t),mb=mastBonus((G.mast&&G.mast[t.type])||1),ab=ascBoost(t),core=Math.pow(CORE_DMG,f.n);
   if(t.type==='beacon'){const o=auraOf(t);return{aura:Math.round(o.dmg*100),arate:Math.round(o.rate*100),radius:o.R,arange:o.range,acrit:o.crit,amark:o.mark}}
-  if(t.type==='mint')return{income:Math.round(8*f.income*m.income*(A?2:1)*(1+mb.dmg)*ab.dmg),interest:f.interest||0,interestCap:f.interestCap||0,bounty:f.bounty||0,goldAura:f.goldAura||0,goldAuraR:f.goldAuraR||1,jackpot:f.jackpot||0};
+  if(t.type==='mint')return{income:Math.round(8*f.income*m.income*(A?2:1)*(1+mb.dmg)*ab.dmg*(1+.08*ml('lo_mint'))),interest:f.interest||0,interestCap:f.interestCap||0,bounty:f.bounty||0,goldAura:f.goldAura||0,goldAuraR:f.goldAuraR||1,jackpot:f.jackpot||0};
   const a=auraAt(t);
-  let dmg=d.dmg*f.dmg*core*(1+.06*ml('whet'))*m.dmg*a.dmg*(1+mb.dmg)*ab.dmg;
+  const perm=(1+.05*ml('lo_'+t.type))*(G.lives<=5?1+.08*ml('lastlight'):1)*(t.p&&(t.p[0]>=5||t.p[1]>=5)?1+.05*ml('tempered'):1);
+  let dmg=d.dmg*f.dmg*core*(1+.06*ml('whet'))*m.dmg*a.dmg*(1+mb.dmg)*ab.dmg*perm;
   let rate=d.rate*f.rate*(1+.05*ml('bellows'))*m.rate*a.rate*(1+mb.rate)*ab.rate;
   if(t.type==='bolt')dmg*=TM.bolt||1;
   if(t.type==='lance')dmg*=m.lance;
@@ -1720,16 +1757,16 @@ function tStats(t){
     chain:(d.chain||0)+(f.chain||0)+m.chain+(A&&t.type==='bolt'?3:0),chainKeep:f.chainKeep,
     pierce:A&&t.type==='lance'?999:(d.pierce||0)+(f.pierce||0)+m.pierce,
     stun:(d.stun||0)*f.stun*(A&&t.type==='bell'?2:1),pct:((d.pct||0)+(f.pct||0))*(A&&t.type==='eclipse'?2:1),
-    poison:(d.poison||0)*f.poison*core*m.poison*a.dmg*(1+.06*ml('whet'))*(1+mb.dmg)*ab.dmg,poisT:3*f.poisT,
-    crit:(f.crit||0)+a.crit+(t.type==='spark'?m.crit:0),critX:f.critX,ap:f.ap||0,multi:f.multi||0,
+    poison:(d.poison||0)*f.poison*core*m.poison*a.dmg*(1+.06*ml('whet'))*(1+mb.dmg)*ab.dmg*perm,poisT:3*f.poisT,
+    crit:(f.crit||0)+a.crit+(t.type==='spark'?m.crit:0),critX:f.critX,ap:(f.ap||0)+2*ml('piercer'),multi:f.multi||0,
     burn:f.burn||0,chill:f.chill||0,chillT:f.chillT||1,mark:(f.mark||0)+a.mark,markT:f.markT||2,stunHit:f.stunHit||0,
     splashR:f.splashR||0,splashF:f.splashF||0,zoneR:f.zoneR||0,zoneDps:f.zoneDps||0,zoneSlow:f.zoneSlow||0,zoneT:f.zoneT||2,
     exec:f.exec||0,bossX:f.bossX,goldX:f.goldX,frenzy:f.frenzy||0,heatX:f.heatX,heatMax:f.heatMax||0,keepHeat:f.keepHeat||0
   };
 }
-const buildCost=t=>Math.round(TOWERS[t].cost*G.m.cost);
-const upTierCost=(type,tier)=>Math.round(TOWERS[type].cost*TIER_K[tier-1]*G.m.cost);
-const ascCost=type=>Math.round(TOWERS[type].cost*ASC_K*G.m.cost);
+const buildCost=t=>G.patron>0?0:Math.round(TOWERS[t].cost*G.m.cost);
+const upTierCost=(type,tier)=>Math.round(TOWERS[type].cost*TIER_K[tier-1]*G.m.cost*(1-.02*ml('appraiser')));
+const ascCost=type=>Math.round(TOWERS[type].cost*ASC_K*G.m.cost*(1-.06*ml('forge')));
 /* WAVE_LEN: how many times more foes a wave sends than the original design. Each regular foe gets 1/WAVE_LEN of the
    health and gold, so a wave's total health and total gold stay the same while the wave lasts about WAVE_LEN times longer. */
 const WAVE_LEN=2,PULSE=8,PULSE_GAP=1.3;
@@ -1750,7 +1787,7 @@ function makeWave(w){
   return q;
 }
 function spawn(type,at,mini){
-  const f=FOES[type],w=G.wave,sc=Math.pow(1.22,w-1)*(1+.3*G.depth)*(mini?.45:1)*dOf(G.diff).hp*(type==='boss'?1-.04*ml('bane'):1)*(TM.hp||1);
+  const f=FOES[type],w=G.wave,sc=Math.pow(1.22,w-1)*(1+.3*G.depth)*(mini?.45:1)*dOf(G.diff).hp*(type==='boss'?1-.04*ml('bane'):1-.02*ml('smallfry'))*(TM.hp||1);
   const hp=f.hp*sc/(type==='boss'?1:WAVE_LEN);
   const e={t:type,hp,max:hp,d:0,seg:0,x:G.path.pts[0][0],y:G.path.pts[0][1],ang:0,mini:!!mini,
     speed:f.speed*(1+.012*w)*(1+.04*G.depth)*(TM.speed||1)*dOf(G.diff).spd*(1-.02*ml('fog')),
@@ -1769,7 +1806,7 @@ function sendWave(){
 /* ---------- combat ---------- */
 function hurt(e,dmg,raw,src,st){
   if(e.dead)return;
-  if(e.t==='boss')dmg*=G.m.boss*(st?st.bossX:1);
+  if(e.t==='boss')dmg*=G.m.boss*(st?st.bossX:1);else if(ml('swarmb'))dmg*=1+.04*ml('swarmb');
   if(e.markT>0)dmg*=e.markX||1;
   if(G.frostAsc&&e.slowT>0)dmg*=1.3;
   if(!raw){const ar=Math.max(0,e.armor*G.m.armor-(st?st.ap:0));dmg=Math.max(dmg*.3,dmg-ar);e.flash=.08}
@@ -1780,7 +1817,7 @@ function hurt(e,dmg,raw,src,st){
     e.dead=true;
     let gm=G.m.goldMul*(st?st.goldX:1);for(const a of G.gAura||[])if(Math.abs(e.x-a.x)<=a.R+.5&&Math.abs(e.y-a.y)<=a.R+.5)gm*=1+a.X;
     G.gf=(G.gf||0)+e.gold*gm;{const g=Math.floor(G.gf);G.gold+=g;G.gf-=g}   /* fractions of gold carry over */
-    if(e.t==='boss'){G.bossKills++;if(G.bounty)G.gold+=G.bounty}
+    if(e.t==='boss'){G.bossKills++;if(G.bounty)G.gold+=G.bounty;G.gold+=15*ml('bountyb');G.lives+=ml('rally')}
     G.kills=(G.kills||0)+1;
     if(src)G.mk[src]=(G.mk[src]||0)+1;
     if(e.poisAsc&&e.poisT>0)for(const o of G.foes)if(!o.dead&&o!==e&&Math.hypot(o.x-e.x,o.y-e.y)<1.3){o.pois=Math.max(o.poisT>0?o.pois:0,e.pois);o.poisT=3;o.poisSrc='venom';o.poisAsc=true}
@@ -1824,6 +1861,7 @@ function fire(t,s,tg){
   let dmg=s.dmg,crit=false;
   if(ml('keen')&&Math.random()<.015*ml('keen')){dmg*=2;crit=true}
   if(s.crit&&Math.random()<s.crit){dmg*=s.critX;crit=true}
+  if(crit&&ml('heavy'))dmg*=1+.15*ml('heavy');
   if(t.type==='spark'){t.n=(t.n||0)+1;if(A&&t.n%5===0){dmg*=4;crit=true}}
   if(t.type==='eclipse'){
     strike(tg,s,dmg+tg.max*s.pct,src);splashAround(tg.x,tg.y,s,dmg,src,tg);dropZone(tg.x,tg.y,s,dmg,src);
@@ -1889,8 +1927,8 @@ function step(dt){
   if(G.state==='wave'&&G.q.length){
     G.qt-=dt;
     if(G.qt<=0){const n=G.q.shift();spawn(n.t,null,n.mini);G.qt=n.gap}
-    if(!G.midPaid&&G.q.length<=G.qn/2){G.midPaid=true;const mb=Math.floor(clearBonus()/2);G.gold+=mb;
-      G.fx.push({k:'t',x:W/2,y:.9,txt:`Halfway +${mb} gold`,life:1.6,max:1.6,col:'#ffd75e'})}
+    if(!G.midPaid&&G.q.length<=G.qn/2){G.midPaid=true;const mb=Math.floor(clearBonus()/2);G.gold+=mb+Math.floor(mb*.2*ml('midpay'));
+      G.fx.push({k:'t',x:W/2,y:.9,txt:`Halfway +${mb+Math.floor(mb*.2*ml('midpay'))} gold`,life:1.6,max:1.6,col:'#ffd75e'})}
   }
   const P=G.path;
   for(const e of G.foes){
@@ -1902,7 +1940,7 @@ function step(dt){
     if(e.stunT>0){e.stunT-=dt;e.flash=Math.max(0,e.flash-dt);continue}
     e.flash=Math.max(0,e.flash-dt);
     e.d+=e.speed*(e.slowT>0?1-e.slowF:1)*dt;
-    if(e.d>=P.total){e.dead=true;if(G.ward>0){G.ward--;G.fx.push({k:'r',x:e.x,y:Math.min(e.y,H-.5),r:1,life:.6,max:.6,col:'#9be3a9'});toast('Warding stone','A foe slipped through but cost no lives.')}else G.lives-=e.lives;continue}
+    if(e.d>=P.total){e.dead=true;if(G.ward>0){G.ward--;G.fx.push({k:'r',x:e.x,y:Math.min(e.y,H-.5),r:1,life:.6,max:.6,col:'#9be3a9'});toast('Warding stone','A foe slipped through but cost no lives.')}else G.lives-=e.t==='boss'?Math.max(1,e.lives-ml('stout')):e.lives;continue}
     while(e.seg<P.pts.length-2&&e.d>P.cum[e.seg+1])e.seg++;
     const a=P.pts[e.seg],b=P.pts[e.seg+1],L=P.cum[e.seg+1]-P.cum[e.seg],k=(e.d-P.cum[e.seg])/L;
     e.x=a[0]+(b[0]-a[0])*k;e.y=a[1]+(b[1]-a[1])*k;e.ang=Math.atan2(b[1]-a[1],b[0]-a[0]);
@@ -1951,6 +1989,7 @@ function step(dt){
   G.foes=G.foes.filter(e=>!e.dead);
   for(const f of G.fx){f.life-=dt;if(f.k==='p'||f.k==='m'){f.x+=f.vx*dt;f.y+=f.vy*dt;f.vx*=.92;f.vy*=.92}if(f.k==='t')f.y-=.6*dt}
   G.fx=G.fx.filter(f=>f.life>0);
+  if(G.lives<=0&&G.sw>0){G.sw=0;G.lives=3;toast('Second wind','The lanterns flare back to life. You have 3 lives left.')}
   if(G.lives<=0){G.lives=0;endRun(false);return}
   if(G.state==='wave'&&!G.q.length&&!G.foes.length)endWave();
 }
@@ -1980,7 +2019,7 @@ function pathFrom(cells,pts){const cum=[0];for(let i=1;i<pts.length;i++)cum.push
   return{cells,pts,cum,total:cum[cum.length-1],set:new Set(cells.map(([a,b])=>a+','+b))}}
 function snapRun(){
   if(!G||G.state!=='build')return;
-  meta[saveKey(G.endless)]={v:2,depth:G.depth,world:G.world,diff:G.diff,wave:G.wave,lives:G.lives,gold:G.gold,bossKills:G.bossKills,kills:G.kills||0,ward:G.ward||0,
+  meta[saveKey(G.endless)]={v:2,depth:G.depth,world:G.world,diff:G.diff,wave:G.wave,lives:G.lives,gold:G.gold,bossKills:G.bossKills,kills:G.kills||0,ward:G.ward||0,patron:G.patron||0,sw:G.sw||0,
     gf:G.gf||0,towers:G.towers.map(t=>({type:t.type,x:t.x,y:t.y,p:(t.p||[0,0]).slice(),ak:t.ak==null?null:t.ak,at:t.at||0,spent:t.spent})),path:{cells:G.path.cells,pts:G.path.pts},
     m:G.m,taken:G.taken,mk:G.mk,used:[...G.used],at:Date.now()};
   save();
@@ -1989,7 +2028,7 @@ function resumeRun(endless){
   const k=saveKey(endless),r=meta[k];if(!r)return false;
   if(r.v!==2){delete meta[k];save();return false}
   newRun(r.depth,endless);applyTheme(r.world);
-  Object.assign(G,{gf:r.gf||0,world:r.world,diff:r.diff,wave:r.wave,lives:r.lives,gold:r.gold,bossKills:r.bossKills,kills:r.kills,ward:r.ward,
+  Object.assign(G,{gf:r.gf||0,world:r.world,diff:r.diff,wave:r.wave,lives:r.lives,gold:r.gold,bossKills:r.bossKills,kills:r.kills,ward:r.ward,patron:r.patron||0,sw:r.sw||0,
     m:Object.assign(G.m,r.m),taken:r.taken||{},mk:r.mk||{},used:new Set(r.used||[])});
   G.towers=(r.towers||[]).filter(t=>TOWERS[t.type]).map(t=>({type:t.type,x:t.x,y:t.y,p:(t.p||[0,0]).slice(),ak:t.ak==null?undefined:t.ak,at:t.at||undefined,spent:t.spent,cd:0}));
   G.path=pathFrom(r.path.cells,r.path.pts);G.amb=makeAmb();drawBG();
@@ -2001,7 +2040,7 @@ function toast(title,body){const el=$('#toast');el.innerHTML=`<b>${title}</b><sp
 /* ---------- boons ---------- */
 function offerCards(){
   const pool=CARDS.filter(c=>(!c.need||unlocked(c.need))&&!(c.once&&G.taken[c.id]));
-  const n=3+ml('fourth')+ml('fifth'),pick=[],lk=1+.15*ml('luck'),wt=c=>RW[c.rar]*(c.rar?lk:1);
+  const n=3+ml('fourth')+ml('fifth')+(G.wave&&G.wave%5===0?ml('trophyfan'):0),pick=[],lk=1+.15*ml('luck'),hr=1+.12*ml('highroll'),wt=c=>RW[c.rar]*(c.rar?lk:1)*(c.rar>=2?hr:1);
   while(pick.length<n&&pick.length<pool.length){
     const avail=pool.filter(c=>!pick.includes(c));
     let tot=avail.reduce((a,c)=>a+wt(c),0),r=Math.random()*tot;
@@ -2010,7 +2049,7 @@ function offerCards(){
   $('#pickSub').textContent=G.wave===0?`${TH.name} · head start · pick a boon before the first wave`:G.endless?`${TH.name} · wave ${G.wave} cleared · ${G.shiftNext?'the world shifts after this pick':`world shifts in ${5-G.wave%5} wave${5-G.wave%5>1?'s':''}`}`:`${TH.name} · wave ${G.wave} cleared · ${MAXW-G.wave} to go`;
   const top=Math.max(0,...pick.map(c=>c.rar));$('#pick').style.setProperty('--hc',RC[top]);
   const fx=c=>c.rar<3?'':`<span class="bfx" aria-hidden="true">${Array.from({length:c.rar===4?14:8},()=>`<i style="left:${(Math.random()*100).toFixed(1)}%;--t:${(2.2+Math.random()*2.4).toFixed(2)}s;--dl:${(-Math.random()*4).toFixed(2)}s;--x:${(Math.random()*30-15).toFixed(0)}px"></i>`).join('')}</span>`;
-  const cs=$('#cards');cs.classList.remove('chosen');cs.classList.toggle('many',pick.length>3);
+  const cs=$('#cards');cs.classList.remove('chosen');cs.classList.toggle('many',pick.length>3);cs.classList.toggle('lots',pick.length>5);
   cs.innerHTML=pick.map((c,i)=>{const tx=typeof c.text==='function'?c.text(G):c.text;
     return `<button class="bn rk${c.rar}" data-i="${i}" style="--d:${i*70}ms" aria-label="${RN[c.rar]} boon: ${c.name}. ${tx}">${fx(c)}<span class="bwm" aria-hidden="true">${bIcon(c)}</span><span class="bsig">${bIcon(c)}</span><span class="btx"><span class="btop"><span class="rt r-${RK[c.rar]}">${RN[c.rar]}</span>${c.need?`<span class="bfor"><i style="background:${TOWERS[c.need].color};color:${TOWERS[c.need].color}"></i>${TOWERS[c.need].name}</span>`:''}</span><b class="nm">${c.name}</b><p>${tx}</p></span></button>`}).join('');
   cs.onclick=e=>{const b=e.target.closest('.bn');if(!b||cs.classList.contains('chosen'))return;cs.classList.add('chosen');b.classList.add('pk');
@@ -2022,7 +2061,7 @@ function offerCards(){
   show('pick');
 }
 function takeCard(c){
-  if(c){c.ap(G.m,G);G.taken[c.id]=(G.taken[c.id]||0)+1}else G.gold+=25+25*ml('patient');
+  if(c){c.ap(G.m,G);G.taken[c.id]=(G.taken[c.id]||0)+1;G.gold+=5*ml('boongold')}else G.gold+=25+25*ml('patient');
   hide('pick');G.state='build';
   if(G.shiftNext){G.shiftNext=false;shiftWorld()}
   snapRun();
@@ -2038,18 +2077,18 @@ function endRun(win){
   const cleared=win?MAXW:Math.max(0,G.wave-(G.state==='wave'?1:0));
   G.state='over';
   let base=0;for(let i=1;i<=cleared;i++)base+=1+Math.floor(i/5);
-  const DF=dOf(G.diff),boss=G.bossKills*3,vic=win?15:0,mult=(1+.1*ml('jar'))*(1+.25*G.depth)*DF.rew;
+  const DF=dOf(G.diff),boss=G.bossKills*(3+ml('trophy')),vic=win?15:0,perk=(G.endless?1+.08*ml('longnight'):1)*(G.diff==='hard'||G.diff==='nightmare'?1+.06*ml('daring'):1),mult=(1+.1*ml('jar'))*(1+.25*G.depth)*DF.rew*perk;
   const total=Math.round((base+boss+vic)*mult);
   meta.embers+=total;meta.runs++;
   const newD=win&&G.depth>=meta.maxDepth&&meta.maxDepth<MAXD;
   if(newD)meta.maxDepth=G.depth+1;
   let xp=0;for(let i=1;i<=cleared;i++)xp+=5+i;
-  xp=Math.round((xp+G.bossKills*25+(win?100:0))*(1+.2*G.depth)*DF.rew*(1+.05*ml('school')));
+  xp=Math.round((xp+G.bossKills*25+(win?100:0))*(1+.2*G.depth)*DF.rew*(1+.05*ml('school'))*perk);
   const lvBefore=levelInfo(meta.xp).L,tierBefore=passTier();
   meta.xp+=xp;if(!seasonOver())meta.passXp=Math.min(meta.passXp+xp,PASS_MAX_XP);
   const lvAfter=levelInfo(meta.xp).L,tierAfter=passTier();
   let moon=0;for(let L=lvBefore+1;L<=lvAfter;L++)moon+=lvReward(L);
-  const first=win&&!meta.cleared.includes(G.depth);if(first){meta.cleared.push(G.depth);moon+=20}
+  const first=win&&!meta.cleared.includes(G.depth);if(first){meta.cleared.push(G.depth);moon+=20+5*ml('pathfinder')}
   meta.moon+=moon;
   const st=meta.stats||(meta.stats={}),add=(k,v)=>{st[k]=(st[k]||0)+v};
   add('wins',win?1:0);add('bosses',G.bossKills);add('kills',G.kills||0);add('moon',moon);add('embers',total);add('waves',cleared);
@@ -2117,6 +2156,7 @@ function renderProfile(){
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'0.17.0',d:'Oct 14, 2026',notes:['34 new camp upgrades, 66 in all. Highlights: Patron (free first lanterns), Second wind (survive your last life once per run), Morning gift (start with free boons), High roller (better boon odds) and Trophy hand (an extra boon every 5th wave).','New Lore tab: one upgrade per lantern that boosts just that lantern. Each unlocks with its lantern.','Camp upgrade prices now climb faster at higher levels. Levels you already bought stay.']},
   {v:'0.16.0',d:'Oct 14, 2026',major:1,title:'Paths',
    hl:[['Upgrade paths','Every lantern now has two upgrade paths with 5 tiers each, 120 upgrades in all. Max both to ascend.'],
        ['Ascension types','Each lantern has three ways to ascend. Pick one when you max both paths.'],
@@ -2270,6 +2310,8 @@ $('#start').onclick=()=>{
   delete meta[k];
   newRun(meta.depth,meta.mode==='endless');armT=null;hide('camp');paused=false;renderTray();hud(true);
   if(G.endless)toast(`Endless · ${TH.name}`,'The world shifts every 5 waves. How long can you hold?');
+  if(ml('gift')){const pool=CARDS.filter(c=>c.rar===0),got=[];for(let i=0;i<ml('gift');i++){const c=pool[Math.floor(Math.random()*pool.length)];c.ap(G.m,G);G.taken[c.id]=(G.taken[c.id]||0)+1;got.push(c.name)}
+    if(!G.endless)toast('Morning gift',got.join(' and '))}
   if(ml('headstart')){G.state='cards';G.rerolls=ml('reroll');offerCards()}else snapRun()};
 $('#toCamp').onclick=()=>{hide('end');campPreview();show('camp');go('home')};
 
@@ -2313,14 +2355,38 @@ const UPIC={
   fifth:['#7dffb0',UG.fan5],luck:['#7dff9a',UG.clover],patient:['#e8d7a8',UG.glass],headstart:['#ff8fd0',UG.flag],
   blast:['#ff7a3d',UG.burst],frostbite:['#7fe3ff',UG.flake],toxin:['#a6ff5c',UG.drop],conductor:['#c3a6ff',UG.bolt],veteran:['#ffd75e',UG.rank],
   jar:['#ffb547','<path d="M8 3h8M9.2 3v3L6 9.2V19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9.2L14.8 6V3"/><path d="M12 12.2c-1.6 1.2-1.6 3.2 0 4.3 1.6-1.1 1.6-3.1 0-4.3z"/>'],
-  school:['#9fd0ff',UG.book],studious:['#ffd36b',UG.medal]
+  school:['#9fd0ff',UG.book],studious:['#ffd36b',UG.medal],
+  bountyb:['#ffcf4a','<path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/><circle cx="17" cy="17" r="2.2"/>'],
+  midpay:['#ffd98a','<path d="M18 14.5A7 7 0 1 1 9.5 6a5.5 5.5 0 0 0 8.5 8.5z"/><path d="M15 3.5v4M13 5.5h4"/>'],
+  appraiser:['#f2b45a','<circle cx="10" cy="10" r="6"/><path d="M14.5 14.5 20 20M8 10h4M10 8v4"/>'],
+  patron:['#ffd75e','<path d="M4 20h16M6 20V10l6-5 6 5v10"/><path d="M10 20v-5h4v5"/>'],
+  lastlight:['#ff9a4a','<path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6 1 2.6 2 3 0-3-.5-5.5.5-8z"/><path d="M3 21h18"/>'],
+  heavy:['#ff7a6b','<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.8l-5.3 2.6 1.2-6-4.5-4.1 6-.7z"/><circle cx="12" cy="12" r="1.5"/>'],
+  tempered:['#d6e1ee','<path d="M4 18l9-9M13 9l2-5 5 5-5 2z"/><path d="M3 21h8"/>'],
+  swarmb:['#c9e07a','<circle cx="6" cy="8" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="9" cy="13" r="2"/><circle cx="15" cy="13" r="2"/><path d="M4 21 20 15"/>'],
+  piercer:['#bfe3ff','<path d="M3 12h15M14 8l4 4-4 4"/><path d="M9 6v12"/>'],
+  smallfry:['#a9c4cf','<circle cx="12" cy="12" r="3"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3"/>'],
+  rally:['#ff9ab0','<path d="M6 21V4M6 4h11l-2.5 4L17 12H6"/>'],
+  stout:['#e0a07a','<path d="M4 21V9l8-5 8 5v12"/><path d="M4 21h16M9 21v-6h6v6M12 15v6"/>'],
+  secondwind:['#9be3a9','<path d="M3 9h11a3 3 0 1 0-3-3"/><path d="M3 15h15a3 3 0 1 1-3 3"/><path d="M19 4v4M17 6h4"/>'],
+  highroll:['#f5c542','<rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.2"/><circle cx="15" cy="15" r="1.2"/><circle cx="15" cy="9" r="1.2"/><circle cx="9" cy="15" r="1.2"/>'],
+  gift:['#ff8fd0','<rect x="4" y="9" width="16" height="11" rx="1"/><path d="M3 9h18M12 9v11M12 9c-2-4-6-4-6-1.5S10 9 12 9c2 0 6 1 6-1.5S14 5 12 9"/>'],
+  boongold:['#ffcf4a','<rect x="5" y="3" width="11" height="15" rx="1.5"/><circle cx="16" cy="17" r="4"/><path d="M16 15.5v3"/>'],
+  trophyfan:['#7dffb0','<path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8"/>'],
+  forge:['#ffb547','<path d="M4 14h12l3-4H8zM7 14v3h7v-3M9 17l-1 4M12 17l1 4"/><path d="M17 3l-2 3"/>'],
+  trophy:['#ffd75e','<path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8"/>'],
+  longnight:['#9fb4ff','<path d="M18 14.5A7 7 0 1 1 9.5 6a5.5 5.5 0 0 0 8.5 8.5z"/><path d="M4 21h16"/>'],
+  daring:['#ff6b6b',UG.skull],
+  pathfinder:['#9be3a9','<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>']
 };
+const LORE_IC='<rect x="8" y="9" width="8" height="11" rx="1.6"/><path d="M10 9V7h4v2M12 7V4M8 13h8"/><path d="M12 15.2c-.9.7-.9 1.8 0 2.4.9-.6.9-1.7 0-2.4z"/>';
+ORDER.forEach(t=>{UPIC['lo_'+t]=[TOWERS[t].color,LORE_IC]});
 let upCat='all';
 function upCard(m){
-  const l=ml(m.id),mx=l>=m.max,c=mcost(m,l),[col,ic]=UPIC[m.id]||['#ffb547',UG.coin],lock=m.need&&!ml(m.need);
+  const l=ml(m.id),mx=l>=m.max,c=mcost(m,l),[col,ic]=UPIC[m.id]||['#ffb547',UG.coin],lock=(m.need&&!ml(m.need))||(m.tw&&!unlocked(m.tw));
   return `<div class="ug${mx?' maxed':''}${lock?' lockd':''}" style="--ic:${col}"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">${ic}</svg></div>
     <div><div class="un">${m.name}<span class="lv">${l}/${m.max}</span></div>
-    <div class="lvbar">${Array.from({length:m.max},(_,i)=>`<i class="${i<l?'on':''}"></i>`).join('')}</div><p>${m.text(l)}</p></div>
+    <div class="lvbar">${Array.from({length:m.max},(_,i)=>`<i class="${i<l?'on':''}"></i>`).join('')}</div><p>${m.text(l)}${m.tw&&!unlocked(m.tw)?` Unlock ${TOWERS[m.tw].name} first.`:''}</p></div>
     <button class="btn ubuy" data-id="${m.id}" ${mx||lock||meta.embers<c?'disabled':''} aria-label="${mx?'Maxed':lock?'Locked':`Buy ${m.name} for ${c} embers`}">${mx?'Max':lock?'Locked':`<span class="em"></span>${c}`}</button></div>`;
 }
 function renderUps(){
@@ -2884,7 +2950,7 @@ function renderSheet(){
   sh.hidden=false;afford();
 }
 function buildAt(type,x,y){
-  const c=buildCost(type);if(G.gold<c||!canPlace(x,y))return false;G.gold-=c;
+  const c=buildCost(type);if(G.gold<c||!canPlace(x,y))return false;G.gold-=c;if(G.patron>0)G.patron--;
   G.towers.push({type,x,y,p:[ml('veteran')?1:0,0],cd:0,spent:c});G.used.add(type);
   puff(x+.5,y+.5,TOWERS[type].color,10);G.fx.push({k:'r',x:x+.5,y:y+.5,r:.6,life:.3,max:.3,col:TOWERS[type].color});
   hud();return true;

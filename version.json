@@ -1,17 +1,10 @@
 {
-  "version": "0.16.0",
+  "version": "0.17.0",
   "date": "Oct 14, 2026",
-  "major": true,
+  "major": false,
   "notes": [
-    "Every lantern has two upgrade paths with 5 tiers each, replacing the old 6 levels. Tap a lantern to open its upgrade panel.",
-    "Max both paths to ascend. Each lantern has three ascension types: its original perk plus two new ones.",
-    "Mastery unlocks upgrades: path 2 at 10, tier 4 at 20, tier 5 and the first ascension at 30, the second and third ascension types at 50 and 70, and a Radiant look at 100.",
-    "New upgrade effects include multi-target shots, crits, armor piercing, burns, marks that make foes take more damage, splash, and lingering fire, acid and ice on the trail.",
-    "The Lanterns page is grouped by role with Damage, Area, Control and Support tabs. Each lantern has Skins, Mastery and Paths sections: see what every mastery level unlocks, and tap any tier or ascension for details.",
-    "Boons have a new look and five rarities like skins: Common, Rare, Legendary, Mythic and Exotic. Higher rarities glow, shimmer and sparkle, and the screen shows the boons you have taken this run.",
-    "New boons: Twin wicks (Legendary), plus First light and Moonfall, the first Exotic boons. Hoard and Giant slayer are now Legendary.",
-    "Campaign runs now save after every wave too. Continue them from the Play page, and use Save and quit in the pause menu to step away. You can keep one campaign and one endless run saved at the same time.",
-    "Endless runs saved before this update can’t be continued."
-  ],
-  "title": "Paths"
+    "34 new camp upgrades, 66 in all. Highlights: Patron (free first lanterns), Second wind (survive your last life once per run), Morning gift (start with free boons), High roller (better boon odds) and Trophy hand (an extra boon every 5th wave).",
+    "New Lore tab: one upgrade per lantern that boosts just that lantern. Each unlocks with its lantern.",
+    "Camp upgrade prices now climb faster at higher levels. Levels you already bought stay."
+  ]
 }
