@@ -32,12 +32,12 @@
 [hidden]{display:none!important}
 html,body{height:100%;overscroll-behavior:none;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{touch-action:manipulation;-webkit-touch-callout:none}
-button,a,.pc,.skt,.wc,.card,.dif,.mode,.uct,.thc,.ps,.player{touch-action:manipulation}
+button,a,.pc,.skt,.wc,.bn,.dif,.mode,.uct,.thc,.ps,.player{touch-action:manipulation}
 img,canvas{-webkit-touch-callout:none;-webkit-user-drag:none}
 @media (hover:none){
   .btn:hover:not(:disabled){border-color:var(--line)}
   .btn.primary:hover:not(:disabled){border-color:var(--flame)}
-  .card:hover{transform:none;border-color:var(--line)}
+  .bn:hover{transform:none}
   button.player:hover{border-color:var(--line)}
 }
 body{margin:0}
@@ -104,13 +104,85 @@ canvas#cv{display:block;border-radius:8px;touch-action:none;box-shadow:0 0 0 1px
 .up .btn{grid-row:1/3;grid-column:2;font-family:var(--mono);font-weight:500;min-width:64px}
 .up.maxed .btn{color:var(--good)}
 h2.big{font:400 52px/.9 var(--display);margin:0}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.card{all:unset;box-sizing:border-box;cursor:pointer;background:var(--moss2);border:1px solid var(--line);border-top:4px solid var(--dim);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:6px;min-height:130px;transition:transform .12s}
-.card:hover,.card:focus-visible{transform:translateY(-3px);border-color:var(--flame)}
-.card.r1{border-top-color:var(--rare1)}.card.r2{border-top-color:var(--rare2)}
-.card .rr{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
-.card .nm{font:400 26px/1 var(--display)}
-.card p{margin:0;font-size:14px;color:var(--dim);line-height:1.35}
+.cards{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.cards .bn{flex:1 1 150px;max-width:250px}
+#pick{--hc:#9aa3a9;isolation:isolate;background:color-mix(in srgb,var(--night) 95%,transparent)}
+#pick::before{content:"";position:fixed;inset:-50%;z-index:-1;pointer-events:none;opacity:.5;
+  background:repeating-conic-gradient(from 0deg at 50% 50%,color-mix(in srgb,var(--hc) 9%,transparent) 0 6deg,transparent 6deg 18deg);
+  -webkit-mask:radial-gradient(circle at 50% 50%,#000 0,transparent 42%);mask:radial-gradient(circle at 50% 50%,#000 0,transparent 42%);animation:spin 90s linear infinite}
+#pick::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(60% 45% at 50% 48%,color-mix(in srgb,var(--hc) 14%,transparent),transparent 70%)}
+#pick .panel{max-width:1080px;gap:16px}
+.phd{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
+.phd .sec{margin:0}
+.phd h2.big{font-size:clamp(40px,11vw,56px)}
+.phd .orn{display:flex;align-items:center;gap:10px;width:min(320px,80%);color:var(--flame)}
+.phd .orn::before,.phd .orn::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--flame) 60%,transparent))}
+.phd .orn::after{transform:scaleX(-1)}
+.phd .orn svg{width:14px;height:14px;filter:drop-shadow(0 0 6px var(--flame))}
+.bn{all:unset;box-sizing:border-box;position:relative;overflow:hidden;cursor:pointer;border-radius:14px;border:2px solid transparent;
+  --bc:#9aa3a9;--rb:linear-gradient(#5d646a,#5d646a);
+  background:radial-gradient(130% 70% at 50% 0%,color-mix(in srgb,var(--bc) 20%,transparent),transparent 65%) padding-box,linear-gradient(var(--moss2),var(--moss)) padding-box,var(--rb) border-box;
+  background-size:100% 100%,100% 100%,200% 100%;
+  display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:20px 14px 16px;min-height:250px;
+  transition:transform .15s,box-shadow .15s,opacity .25s;animation:bnIn .5s cubic-bezier(.2,.9,.3,1.25) both;animation-delay:var(--d,0ms)}
+.bn:hover,.bn:focus-visible{transform:translateY(-4px);box-shadow:0 10px 30px -12px var(--bc),0 0 0 1px color-mix(in srgb,var(--bc) 50%,transparent)}
+.bn.rk1{--bc:#4f9bff;--rb:linear-gradient(#3d8bff,#3d8bff)}
+.bn.rk2{--bc:#f5c542;--rb:linear-gradient(120deg,#c8901c,#ffe28a 50%,#c8901c);box-shadow:0 0 22px -10px #f5c542}
+.bn.rk3{--bc:#4fb4ff;--rb:linear-gradient(110deg,#1838ff 0%,#4fb4ff 25%,#c9ecff 33%,#1838ff 50%,#4fb4ff 75%,#c9ecff 83%,#1838ff 100%);box-shadow:0 0 26px -8px #2f6bff;animation:bnIn .5s cubic-bezier(.2,.9,.3,1.25) both,bnShine 2.6s linear infinite;animation-delay:var(--d,0ms),0s}
+.bn.rk4{--bc:#c08bff;--rb:linear-gradient(110deg,#8a3dff 0%,#3d8bff 16.6%,#ffffff 33.3%,#8a3dff 50%,#3d8bff 66.6%,#ffffff 83.3%,#8a3dff 100%);box-shadow:0 0 30px -6px rgba(150,110,255,.8);animation:bnIn .5s cubic-bezier(.2,.9,.3,1.25) both,bnShine 1.6s linear infinite;animation-delay:var(--d,0ms),0s}
+@keyframes bnIn{from{opacity:0;transform:translateY(24px) scale(.94)}}
+@keyframes bnShine{to{background-position:0 0,0 0,-200% 0}}
+.bsig{position:relative;flex:none;width:72px;height:72px;border-radius:50%;display:grid;place-items:center;color:var(--bc);
+  background:radial-gradient(circle,color-mix(in srgb,var(--bc) 26%,transparent) 0,transparent 70%);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--bc) 55%,transparent)}
+.bsig svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--bc) 70%,transparent))}
+.bn.rk2 .bsig::before,.bn.rk3 .bsig::before,.bn.rk4 .bsig::before{content:"";position:absolute;inset:-7px;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--bc) 70%,transparent);animation:spin 14s linear infinite}
+.bn.rk3 .bsig::after,.bn.rk4 .bsig::after{content:"";position:absolute;inset:-13px;border-radius:50%;background:conic-gradient(from 0deg,transparent,color-mix(in srgb,var(--bc) 55%,transparent),transparent 30%,transparent 50%,color-mix(in srgb,var(--bc) 55%,transparent),transparent 80%);
+  -webkit-mask:radial-gradient(circle,transparent 62%,#000 64%,#000 70%,transparent 72%);mask:radial-gradient(circle,transparent 62%,#000 64%,#000 70%,transparent 72%);animation:spin 4s linear infinite reverse}
+.bn.rk4 .bsig{animation:exc 4.5s ease-in-out infinite}
+@keyframes exc{0%,100%{color:#c08bff}33%{color:#7fb2ff}66%{color:#f1e9ff}}
+.bwm{position:absolute;right:-26px;bottom:-30px;width:150px;height:150px;color:var(--bc);opacity:.07;transform:rotate(-14deg);pointer-events:none}
+.bwm svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+.btx{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.bn .rt{font-size:9.5px}
+.bn .nm{font:400 25px/1 var(--display);color:var(--ink)}
+.bn.rk2 .nm{color:#ffe7a3;text-shadow:0 0 14px rgba(245,197,66,.35)}
+.bn.rk3 .nm{color:#d4ecff;text-shadow:0 0 14px rgba(79,180,255,.45)}
+.bn.rk4 .nm{background:linear-gradient(90deg,#d6b3ff,#9cc8ff,#fff,#d6b3ff);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:bnShine 3s linear infinite}
+.bn p{margin:0;font-size:13.5px;color:var(--dim);line-height:1.38}
+.btop{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px}
+.bfor{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:2px 8px 2px 5px}
+.bfor i{width:8px;height:8px;border-radius:50%;box-shadow:0 0 6px currentColor}
+.bfx{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.bfx i{position:absolute;bottom:-6px;width:3px;height:3px;border-radius:50%;background:var(--bc);box-shadow:0 0 6px 1px var(--bc);opacity:0;animation:rise var(--t,3s) linear infinite;animation-delay:var(--dl,0s)}
+.bn.rk4 .bfx i:nth-child(3n){background:#fff;box-shadow:0 0 6px 1px #fff}
+.bn.rk4 .bfx i:nth-child(3n+1){background:#5aa0ff;box-shadow:0 0 6px 1px #5aa0ff}
+@keyframes rise{10%{opacity:.9}80%{opacity:.6}to{opacity:0;transform:translate(var(--x,0),-260px)}}
+.bn.rk2::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 35%,rgba(255,230,160,.16) 50%,transparent 65%);background-size:250% 100%;background-position:150% 0;animation:sheen 3.2s ease-in-out infinite 1s}
+@keyframes sheen{40%,to{background-position:-50% 0}}
+.cards.chosen .bn{pointer-events:none}
+.cards.chosen .bn:not(.pk){opacity:.15;transform:scale(.96)}
+.bn.pk{transform:scale(1.04);box-shadow:0 0 0 2px var(--bc),0 0 40px -6px var(--bc)}
+.taken{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;font-size:11px;color:var(--dim)}
+.taken b{font-weight:500;letter-spacing:.12em;text-transform:uppercase;font-size:10px;margin-right:2px;align-self:center}
+.taken span{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:999px;padding:2px 8px;background:var(--moss)}
+.taken span i{width:6px;height:6px;border-radius:50%;background:var(--c)}
+#pick .row{justify-content:center}
+@media (max-width:560px){
+  .cards{flex-direction:column;flex-wrap:nowrap;gap:9px}.cards .bn{flex:none;max-width:none}
+  .cards.many{gap:7px}.cards.many .bn{padding:9px 12px;gap:12px}.cards.many .bsig{width:44px;height:44px}.cards.many .bsig svg{width:22px;height:22px}
+  .cards.many .nm{font-size:19px}.cards.many p{font-size:12.5px;line-height:1.3}.cards.many .btx{gap:3px}
+  .bn{flex-direction:row;text-align:left;align-items:center;min-height:0;padding:12px 14px;gap:14px}
+  .bsig{width:54px;height:54px}.bsig svg{width:27px;height:27px}
+  .btx{align-items:flex-start;gap:4px}.btop{justify-content:flex-start}
+  .bn .nm{font-size:22px}.bn p{font-size:13px}
+  .bwm{width:110px;height:110px;right:-18px;bottom:-34px}
+  @keyframes rise{10%{opacity:.9}80%{opacity:.6}to{opacity:0;transform:translate(var(--x,0),-120px)}}
+}
+@media (max-width:560px) and (max-height:760px){
+  #pick .panel{gap:10px}.phd{gap:3px}.phd h2.big{font-size:38px}.phd .orn{display:none}
+  .cards.many .bwm{display:none}#pick:has(.cards.many) .taken{display:none}
+}
+@media (prefers-reduced-motion:reduce){.bn,.bn.rk3,.bn.rk4,.bn.rk4 .nm,.bn.rk4 .bsig,.bsig::before,.bsig::after,.bn::after,.bfx i,#pick::before{animation:none!important}.bfx{display:none}}
 .ledger{font-family:var(--mono);font-size:14px;display:grid;grid-template-columns:1fr auto;gap:4px 16px;background:var(--moss);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-variant-numeric:tabular-nums}
 .ledger .tot{border-top:1px solid var(--line);padding-top:6px;color:var(--flame)}
 .ver{font-family:var(--mono);font-size:11px;color:var(--dim)}
@@ -733,7 +805,7 @@ textarea,input[type=text]{font:500 16px/1.4 var(--mono);color:var(--ink);backgro
 input[type=text]{flex:1;min-width:0;width:auto;font-size:16px;text-transform:uppercase}
 textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 @media (max-width:420px){.stat b{font-size:15px}.btn{padding:8px 10px}}
-@media (prefers-reduced-motion:reduce){#send.ready{animation:none}.card{transition:none}body{transition:none}}
+@media (prefers-reduced-motion:reduce){#send.ready{animation:none}.bn{transition:none}body{transition:none}}
 </style>
 
 
@@ -920,8 +992,9 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
 
 <div class="ov" id="pick" hidden>
   <div class="panel">
-    <div><div class="sec" id="pickSub">Wave cleared</div><h2 class="big">Choose a boon</h2></div>
+    <div class="phd"><div class="sec" id="pickSub">Wave cleared</div><h2 class="big">Choose a boon</h2><div class="orn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z"/></svg></div></div>
     <div class="cards" id="cards"></div>
+    <div class="taken" id="taken" hidden></div>
     <div class="row"><button class="btn" id="reroll">Reroll</button><button class="btn" id="skip">Skip (+25 gold)</button></div>
   </div>
 </div>
@@ -1072,11 +1145,11 @@ const META=[
   {id:'reroll',cat:'run',name:'Second thoughts',max:3,base:12,g:2,text:l=>`One more reroll per boon pick. Now ${l}.`},
   {id:'fourth',cat:'run',name:'Wider fan',max:1,base:40,g:1,text:()=>'See 4 boons after each wave instead of 3.'},
   {id:'fifth',cat:'run',name:'Widest fan',max:1,base:90,g:1,need:'fourth',text:()=>'See 5 boons after each wave. Needs Wider fan.'},
-  {id:'luck',cat:'run',name:'Lucky draw',max:5,base:8,g:1.6,text:l=>`Rare and Mythic boons show up 15% more often. Now +${l*15}%.`},
+  {id:'luck',cat:'run',name:'Lucky draw',max:5,base:8,g:1.6,text:l=>`Rare and better boons show up 15% more often. Now +${l*15}%.`},
   {id:'patient',cat:'run',name:'Patience',max:4,base:6,g:1.6,text:l=>`Skipping a boon pays 25 more gold. Now ${25+l*25} gold.`},
   {id:'headstart',cat:'run',name:'Head start',max:1,base:35,g:1,text:()=>'Pick a free boon before the first wave of every run.'},
   /* Lanterns */
-  {id:'blast',cat:'lan',name:'Wide burst',max:6,base:6,g:1.55,text:l=>`Cinder and Comet bursts are 5% wider. Now +${l*5}%.`},
+  {id:'blast',ic:'burst',cat:'lan',name:'Wide burst',max:6,base:6,g:1.55,text:l=>`Cinder and Comet bursts are 5% wider. Now +${l*5}%.`},
   {id:'frostbite',cat:'lan',name:'Frostbite',max:5,base:6,g:1.55,text:l=>`Frost slows 3% more. Now +${l*3}%.`},
   {id:'toxin',cat:'lan',name:'Toxicology',max:8,base:6,g:1.5,text:l=>`Venom and burn damage +8%. Now +${l*8}%.`},
   {id:'conductor',cat:'lan',name:'Conductor',max:3,base:12,g:1.9,text:l=>`Bolt chains to 1 more foe. Now +${l}.`},
@@ -1093,29 +1166,48 @@ const UNLOCKS=ORDER.filter(t=>TOWERS[t].unlock).map(t=>({id:'u_'+t,t,name:TOWERS
 /* ---------- boons ---------- */
 const windfall=g=>60+g.wave*10;
 const CARDS=[
-  {id:'flame',name:'Fiercer flame',rar:0,text:'All towers deal +15% damage.',ap:m=>m.dmg*=1.15},
-  {id:'quick',name:'Quick hands',rar:0,text:'All towers fire 12% faster.',ap:m=>m.rate*=1.12},
-  {id:'poles',name:'Tall poles',rar:0,text:'All towers reach 10% farther.',ap:m=>m.range*=1.1},
-  {id:'scav',name:'Scavenger',rar:0,text:'Kills give 25% more gold.',ap:m=>m.goldMul*=1.25},
-  {id:'mend',name:'Mended fence',rar:0,text:'Gain 4 lives.',ap:(m,g)=>g.lives+=4},
-  {id:'wind',name:'Windfall',rar:0,text:g=>`Gain ${windfall(g)} gold now.`,ap:(m,g)=>g.gold+=windfall(g)},
-  {id:'hoard',name:'Hoard',rar:1,text:'After each wave, earn 8% interest on your gold (up to 30).',ap:m=>m.interest+=1},
-  {id:'cheap',name:'Bargain oil',rar:1,text:'Towers and upgrades cost 10% less.',ap:m=>m.cost*=.9},
-  {id:'crit',name:'Lucky sparks',rar:1,need:'spark',text:'Spark darts gain 12% chance to deal triple damage.',ap:m=>m.crit+=.12},
+  {id:'flame',ic:'flame',name:'Fiercer flame',rar:0,text:'All towers deal +15% damage.',ap:m=>m.dmg*=1.15},
+  {id:'quick',ic:'fast',name:'Quick hands',rar:0,text:'All towers fire 12% faster.',ap:m=>m.rate*=1.12},
+  {id:'poles',ic:'range',name:'Tall poles',rar:0,text:'All towers reach 10% farther.',ap:m=>m.range*=1.1},
+  {id:'scav',ic:'coin',name:'Scavenger',rar:0,text:'Kills give 25% more gold.',ap:m=>m.goldMul*=1.25},
+  {id:'mend',ic:'heart',name:'Mended fence',rar:0,text:'Gain 4 lives.',ap:(m,g)=>g.lives+=4},
+  {id:'wind',ic:'bag',name:'Windfall',rar:0,text:g=>`Gain ${windfall(g)} gold now.`,ap:(m,g)=>g.gold+=windfall(g)},
+  {id:'hoard',name:'Hoard',rar:2,ic:'chest',text:'After each wave, earn 8% interest on your gold (up to 30).',ap:m=>m.interest+=1},
+  {id:'cheap',ic:'tag',name:'Bargain oil',rar:1,text:'Towers and upgrades cost 10% less.',ap:m=>m.cost*=.9},
+  {id:'crit',ic:'star',name:'Lucky sparks',rar:1,need:'spark',text:'Spark darts gain 12% chance to deal triple damage.',ap:m=>m.crit+=.12},
   {id:'blast',name:'Wide blasts',rar:1,need:'cinder',text:'Cinder and Comet bursts are 30% wider.',ap:m=>m.splash*=1.3},
-  {id:'chill',name:'Deep chill',rar:1,need:'frost',text:'Frost slows 15% more and lasts longer.',ap:m=>m.chill+=1},
-  {id:'fork',name:'Forked bolts',rar:1,need:'bolt',text:'Bolt lightning leaps to 2 more foes.',ap:m=>m.chain+=2},
-  {id:'barb',name:'Barbed tips',rar:1,need:'lance',text:'Lance spears pierce 2 more foes and hit 20% harder.',ap:m=>{m.pierce+=2;m.lance*=1.2}},
-  {id:'viru',name:'Virulence',rar:1,need:'venom',text:'Venom poison deals 50% more damage.',ap:m=>m.poison*=1.5},
-  {id:'mintx',name:'Struck coin',rar:1,need:'mint',text:'Mints earn 50% more gold.',ap:m=>m.income*=1.5},
-  {id:'beam',name:'Bright beacons',rar:1,need:'beacon',text:'Beacon boosts are 10 points stronger.',ap:m=>m.aura+=.1},
-  {id:'shower',name:'Meteor shower',rar:1,need:'comet',text:'Comets fire 30% faster.',ap:m=>m.comet*=1.3},
-  {id:'giant',name:'Giant slayer',rar:1,text:'Towers deal 40% more damage to bosses.',ap:m=>m.boss*=1.4},
-  {id:'exec',name:'Snuff out',rar:2,once:1,text:'Non-boss foes below 12% health are snuffed instantly.',ap:m=>{m.exec=Math.max(m.exec,.12)}},
-  {id:'surge',name:'Surge',rar:2,text:'Every lantern you own gets a free upgrade on its lower path.',ap:(m,g)=>g.towers.forEach(t=>freeUpgrade(t))},
-  {id:'rot',name:'Armor rot',rar:2,once:1,text:'All enemy armor is halved.',ap:m=>m.armor*=.5}
+  {id:'chill',ic:'snow',name:'Deep chill',rar:1,need:'frost',text:'Frost slows 15% more and lasts longer.',ap:m=>m.chill+=1},
+  {id:'fork',ic:'bolt',name:'Forked bolts',rar:1,need:'bolt',text:'Bolt lightning leaps to 2 more foes.',ap:m=>m.chain+=2},
+  {id:'barb',ic:'arrow',name:'Barbed tips',rar:1,need:'lance',text:'Lance spears pierce 2 more foes and hit 20% harder.',ap:m=>{m.pierce+=2;m.lance*=1.2}},
+  {id:'viru',ic:'drop',name:'Virulence',rar:1,need:'venom',text:'Venom poison deals 50% more damage.',ap:m=>m.poison*=1.5},
+  {id:'mintx',ic:'stack',name:'Struck coin',rar:1,need:'mint',text:'Mints earn 50% more gold.',ap:m=>m.income*=1.5},
+  {id:'beam',ic:'sun',name:'Bright beacons',rar:1,need:'beacon',text:'Beacon boosts are 10 points stronger.',ap:m=>m.aura+=.1},
+  {id:'shower',ic:'comet',name:'Meteor shower',rar:1,need:'comet',text:'Comets fire 30% faster.',ap:m=>m.comet*=1.3},
+  {id:'giant',name:'Giant slayer',rar:2,ic:'crown',text:'Towers deal 40% more damage to bosses.',ap:m=>m.boss*=1.4},
+  {id:'exec',name:'Snuff out',rar:3,ic:'snuff',once:1,text:'Non-boss foes below 12% health are snuffed instantly.',ap:m=>{m.exec=Math.max(m.exec,.12)}},
+  {id:'surge',name:'Surge',rar:3,ic:'surge',text:'Every lantern you own gets a free upgrade on its lower path.',ap:(m,g)=>g.towers.forEach(t=>freeUpgrade(t))},
+  {id:'rot',name:'Armor rot',rar:3,ic:'rot',once:1,text:'All enemy armor is halved.',ap:m=>m.armor*=.5},
+  {id:'twin',name:'Twin wicks',rar:2,ic:'twin',text:'All towers fire 22% faster.',ap:m=>m.rate*=1.22},
+  {id:'dawn',name:'First light',rar:4,ic:'dawn',once:1,text:'All towers deal 40% more damage and fire 15% faster.',ap:m=>{m.dmg*=1.4;m.rate*=1.15}},
+  {id:'moonfall',name:'Moonfall',rar:4,ic:'moon',once:1,text:'Every lantern you own gets a free upgrade on both paths, and you gain 8 lives.',ap:(m,g)=>{g.towers.forEach(t=>{freeUpgrade(t);freeUpgrade(t)});g.lives+=8}}
 ];
-const RW=[10,4.5,1.6],RN=['Common','Rare','Mythic'];
+const RW=[10,4.5,2,.9,.28],RN=['Common','Rare','Legendary','Mythic','Exotic'],RK=['common','rare','legendary','mythic','exotic'],RC=['#9aa3a9','#4f9bff','#f5c542','#4fb4ff','#c08bff'];
+const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6 1 2.6 2 3 0-3-.5-5.5.5-8z',
+  fast:'M5 6l6 6-6 6M12 6l6 6-6 6',range:'M12 2v4M12 18v4M2 12h4M18 12h4M12 5a7 7 0 1 0 0 14a7 7 0 1 0 0-14M12 10a2 2 0 1 0 0 4a2 2 0 1 0 0-4',
+  coin:'M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16M12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8',heart:'M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z',
+  bag:'M9 4h6l-1.5 3h-3zM8 7h8l2 3c2 3.5 1 10-6 10S4 13.5 6 10zM10 14h4',chest:'M4 11h16v8H4zM4 11c0-4 3.5-6 8-6s8 2 8 6M11 13h2v2h-2zM4 15h7M13 15h7',
+  tag:'M3 12V4h8l10 10-8 8zM7.5 7a1.5 1.5 0 1 0 0 3a1.5 1.5 0 1 0 0-3',star:'M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.8l-5.3 2.6 1.2-6-4.5-4.1 6-.7z',
+  burst:'M12 2v5M12 17v5M2 12h5M17 12h5M5 5l3.5 3.5M15.5 15.5 19 19M19 5l-3.5 3.5M8.5 15.5 5 19M12 9.5a2.5 2.5 0 1 0 0 5a2.5 2.5 0 1 0 0-5',
+  snow:'M12 2v20M3.3 7l17.4 10M3.3 17 20.7 7M9 4l3 2 3-2M9 20l3-2 3 2',bolt:'M13 2 4 14h7l-1 8 9-12h-7z',arrow:'M4 20 20 4M20 4h-7M20 4v7M6 14l4 4M9 11l4 4',
+  drop:'M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11zM9.5 14.5a2.5 2.5 0 0 0 2.5 2.5',stack:'M5 7a7 3 0 1 0 14 0a7 3 0 1 0-14 0M5 7v5c0 1.7 3 3 7 3s7-1.3 7-3V7M5 12v5c0 1.7 3 3 7 3s7-1.3 7-3v-5',
+  sun:'M12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1',
+  comet:'M16 5a3 3 0 1 0 0 6a3 3 0 1 0 0-6M13.5 10.5 4 20M12 7 5 14M17 12l-7 7',crown:'M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5zM5 16h14',
+  snuff:'M9 11h6v9H9zM12 11V8M12 3c1 1.5 1.5 2.7 0 4.2-1.5-1.5-1-2.7 0-4.2zM4 4l16 16',surge:'M12 3l7 7h-4v4H9v-4H5zM8 18h8M8 21h8',
+  rot:'M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6zM12 3l-1 6 3 3-2 4',
+  twin:'M8 4c.6 2 3 3 3 6a3 3 0 0 1-6 0c0-1.5 1-2.5 1.5-3 .2 1 .6 1.5 1.2 1.8 0-1.8-.3-3.3.3-4.8zM16 4c.6 2 3 3 3 6a3 3 0 0 1-6 0c0-1.5 1-2.5 1.5-3 .2 1 .6 1.5 1.2 1.8 0-1.8-.3-3.3.3-4.8zM5 19h14',
+  dawn:'M3 17h18M6 21h12M7 17a5 5 0 0 1 10 0M12 5v3M5.6 9.6l2 2M18.4 9.6l-2 2M2.5 13.5h2M19.5 13.5h2',
+  moon:'M19 14.5A7.5 7.5 0 1 1 9.5 5a6 6 0 0 0 9.5 9.5zM17 3v3M15.5 4.5h3M20 8v2M19 9h2'};
+const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
 const VERSION='0.16.0';
@@ -1914,8 +2006,15 @@ function offerCards(){
     for(const c of avail){r-=wt(c);if(r<=0){pick.push(c);break}}
   }
   $('#pickSub').textContent=G.wave===0?`${TH.name} · head start · pick a boon before the first wave`:G.endless?`${TH.name} · wave ${G.wave} cleared · ${G.shiftNext?'the world shifts after this pick':`world shifts in ${5-G.wave%5} wave${5-G.wave%5>1?'s':''}`}`:`${TH.name} · wave ${G.wave} cleared · ${MAXW-G.wave} to go`;
-  $('#cards').innerHTML=pick.map((c,i)=>`<button class="card r${c.rar}" data-i="${i}"><span class="rr">${RN[c.rar]}</span><span class="nm">${c.name}</span><p>${typeof c.text==='function'?c.text(G):c.text}</p></button>`).join('');
-  $('#cards').onclick=e=>{const b=e.target.closest('.card');if(!b)return;takeCard(pick[+b.dataset.i])};
+  const top=Math.max(0,...pick.map(c=>c.rar));$('#pick').style.setProperty('--hc',RC[top]);
+  const fx=c=>c.rar<3?'':`<span class="bfx" aria-hidden="true">${Array.from({length:c.rar===4?14:8},()=>`<i style="left:${(Math.random()*100).toFixed(1)}%;--t:${(2.2+Math.random()*2.4).toFixed(2)}s;--dl:${(-Math.random()*4).toFixed(2)}s;--x:${(Math.random()*30-15).toFixed(0)}px"></i>`).join('')}</span>`;
+  const cs=$('#cards');cs.classList.remove('chosen');cs.classList.toggle('many',pick.length>3);
+  cs.innerHTML=pick.map((c,i)=>{const tx=typeof c.text==='function'?c.text(G):c.text;
+    return `<button class="bn rk${c.rar}" data-i="${i}" style="--d:${i*70}ms" aria-label="${RN[c.rar]} boon: ${c.name}. ${tx}">${fx(c)}<span class="bwm" aria-hidden="true">${bIcon(c)}</span><span class="bsig">${bIcon(c)}</span><span class="btx"><span class="btop"><span class="rt r-${RK[c.rar]}">${RN[c.rar]}</span>${c.need?`<span class="bfor"><i style="background:${TOWERS[c.need].color};color:${TOWERS[c.need].color}"></i>${TOWERS[c.need].name}</span>`:''}</span><b class="nm">${c.name}</b><p>${tx}</p></span></button>`}).join('');
+  cs.onclick=e=>{const b=e.target.closest('.bn');if(!b||cs.classList.contains('chosen'))return;cs.classList.add('chosen');b.classList.add('pk');
+    setTimeout(()=>takeCard(pick[+b.dataset.i]),matchMedia('(prefers-reduced-motion:reduce)').matches?60:340)};
+  const tk=Object.entries(G.taken||{}).map(([id,n])=>[CARDS.find(c=>c.id===id),n]).filter(x=>x[0]).sort((a,b)=>b[0].rar-a[0].rar);
+  const te=$('#taken');te.hidden=!tk.length;te.innerHTML=tk.length?`<b>This run</b>${tk.map(([c,n])=>`<span style="--c:${RC[c.rar]}"><i></i>${c.name}${n>1?` ×${n}`:''}</span>`).join('')}`:'';
   $('#skip').textContent=`Skip (+${25+25*ml('patient')} gold)`;
   const rb=$('#reroll');rb.hidden=!ml('reroll');rb.disabled=G.rerolls<=0;rb.textContent=`Reroll (${G.rerolls})`;
   show('pick');
@@ -2021,7 +2120,7 @@ const CHANGELOG=[
        ['Ascension types','Each lantern has three ways to ascend. Pick one when you max both paths.'],
        ['Mastery unlocks','Mastery now unlocks path 2, tiers 4 and 5, and each ascension type as you play.'],
        ['New Lanterns page','Lanterns are grouped by role, and each one shows its mastery road and both upgrade paths.']],
-   notes:['Every lantern has two upgrade paths with 5 tiers each, replacing the old 6 levels. Tap a lantern to open its upgrade panel.','Max both paths to ascend. Each lantern has three ascension types: its original perk plus two new ones.','Mastery unlocks upgrades: path 2 at 10, tier 4 at 20, tier 5 and the first ascension at 30, the second and third ascension types at 50 and 70, and a Radiant look at 100.','New upgrade effects include multi-target shots, crits, armor piercing, burns, marks that make foes take more damage, splash, and lingering fire, acid and ice on the trail.','The Lanterns page is grouped by role with Damage, Area, Control and Support tabs. Each lantern has Skins, Mastery and Paths sections: see what every mastery level unlocks, and tap any tier or ascension for details.','Endless runs saved before this update can’t be continued.']},
+   notes:['Every lantern has two upgrade paths with 5 tiers each, replacing the old 6 levels. Tap a lantern to open its upgrade panel.','Max both paths to ascend. Each lantern has three ascension types: its original perk plus two new ones.','Mastery unlocks upgrades: path 2 at 10, tier 4 at 20, tier 5 and the first ascension at 30, the second and third ascension types at 50 and 70, and a Radiant look at 100.','New upgrade effects include multi-target shots, crits, armor piercing, burns, marks that make foes take more damage, splash, and lingering fire, acid and ice on the trail.','The Lanterns page is grouped by role with Damage, Area, Control and Support tabs. Each lantern has Skins, Mastery and Paths sections: see what every mastery level unlocks, and tap any tier or ascension for details.','Boons have a new look and five rarities like skins: Common, Rare, Legendary, Mythic and Exotic. Higher rarities glow, shimmer and sparkle, and the screen shows the boons you have taken this run.','New boons: Twin wicks (Legendary), plus First light and Moonfall, the first Exotic boons. Hoard and Giant slayer are now Legendary.','Endless runs saved before this update can’t be continued.']},
   {v:'0.15.0',d:'Oct 14, 2026',notes:['Waves last twice as long: twice as many foes, each with half the health and worth half the gold, so a wave is just as hard and pays the same.','Foes arrive in clumps with short pauses in between. Halfway through each wave you get half of the wave-clear gold.','Lantern mastery earns half a point per kill, so the extra foes don’t speed it up.','Pass tiers now cost a little more as you climb: 100 XP for tier 1, then 1 more each tier, up to 199 for tier 100.']},
   {v:'0.14.0',d:'Oct 14, 2026',notes:['Fixed the Season 1 story card on the Pass page being squashed, which hid its title and the Read the story button. Other pages could be squashed the same way and are fixed too.','The lantern tray is now grouped by role: Damage, Area, Control and Support, each with its own color.','Each lantern shows its role on the Lanterns page and when you tap it in a run.','The 1–9 hotkeys follow the new tray order.']},
   {v:'0.13.0',d:'Oct 14, 2026',notes:['Endless runs now save after every wave. Continue them any time from the Play page.','In Endless, the trail now stays the same all run. Only the world and its conditions change every 5 waves.','Mobile polish: no more accidental zooming (pinch, double-tap or tapping a text box), no stuck highlights after tapping, no pull-to-refresh or long-press menus, and the game pauses itself if you leave mid-wave.','PC controls: Space, 1–9 to pick lanterns, U to upgrade, M to merge, F for speed, P to pause, Esc or right-click to cancel.']},
@@ -2104,7 +2203,7 @@ function renderHow(){
     <li>Foes come in <b>clumps</b> with short pauses between them. Halfway through each wave you get half of the wave's gold bonus, and the rest when it's cleared.</li>
     <li><b>1×/2×/3×</b> changes game speed. <b>Auto</b> sends the next wave for you.</li>
     <li>On a computer: <b>Space</b> sends the next wave, <b>1–9</b> pick a lantern to place, <b>U</b> and <b>I</b> upgrade the selected lantern's two paths, <b>M</b> merges, <b>F</b> changes speed, <b>P</b> pauses and <b>Esc</b> or right-click cancels.</li></ul></div>
-  <div class="hc"><h3>Boons</h3><p>After each wave, <b>pick one boon</b> from a hand of cards. They last for the rest of the run. Rare and Mythic boons are stronger but show up less often.</p></div>
+  <div class="hc"><h3>Boons</h3><p>After each wave, <b>pick one boon</b> from a hand of cards. They last for the rest of the run. Boons come in five rarities: Common, Rare, Legendary, Mythic and Exotic. Rarer ones are stronger but show up less often.</p></div>
   <div class="hc full"><h3>Foes</h3><div class="foes">${FOEINFO.map(([k,n,d])=>`<div class="foe"><canvas data-foe="${k}" width="88" height="88" aria-hidden="true"></canvas><b>${n}</b><span>${d}</span></div>`).join('')}</div></div>
   <div class="hc"><h3>Embers &amp; camp</h3><p>Every run pays out <b>embers</b>, win or lose. Spend them on new lanterns, skins and camp upgrades that make every future run stronger.</p></div>
   <div class="hc"><h3>Levels &amp; moonstones</h3><p>Every run earns <b>XP</b> for waves cleared, bosses beaten and wins, with a bonus in deeper worlds. The same XP raises your <b>player level</b> and your <b>Pass tier</b>. Level ups and first-time world clears give <b>moonstones</b>, which you spend in the Shop.</p></div>
