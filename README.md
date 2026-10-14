@@ -19,7 +19,7 @@ Once installed it runs full screen and works offline.
 - Campaign (20 waves) and Endless mode, where the world shifts every 5 waves
 - Limited-time events with their own world, currency and free 25-tier pass (Halloween: the Hollow Harvest)
 - Randomly generated trails every run
-- Boons in five rarities after each wave, 66 camp upgrades, two upgrade paths per lantern, mastery 1–100 and ascensions
+- Boons in five rarities earned with boon XP, 67 camp upgrades, two upgrade paths per lantern, mastery 1–100 and ascensions
 - Player levels, moonstones, a shop with daily featured skins, and a 100-tier Season 1 pass
 - Skins from Common to Exotic (plus limited Event skins) with effects that grow with rarity
 

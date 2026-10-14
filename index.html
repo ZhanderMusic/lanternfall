@@ -128,10 +128,10 @@ h2.big{font:400 52px/.9 var(--display);margin:0}
 .bn:hover,.bn:focus-visible{transform:translateY(-4px);box-shadow:0 10px 30px -12px var(--bc),0 0 0 1px color-mix(in srgb,var(--bc) 50%,transparent)}
 .bn.rk1{--bc:#4f9bff;--rb:linear-gradient(#3d8bff,#3d8bff)}
 .bn.rk2{--bc:#f5c542;--rb:linear-gradient(120deg,#c8901c,#ffe28a 50%,#c8901c);box-shadow:0 0 22px -10px #f5c542}
-.bn.rk3{--bc:#4fb4ff;--rb:linear-gradient(110deg,#1838ff 0%,#4fb4ff 25%,#c9ecff 33%,#1838ff 50%,#4fb4ff 75%,#c9ecff 83%,#1838ff 100%);box-shadow:0 0 26px -8px #2f6bff;animation:bnIn .5s cubic-bezier(.2,.9,.3,1.25) both,bnShine 2.6s linear infinite;animation-delay:var(--d,0ms),0s}
-.bn.rk4{--bc:#c08bff;--rb:linear-gradient(110deg,#8a3dff 0%,#3d8bff 16.6%,#ffffff 33.3%,#8a3dff 50%,#3d8bff 66.6%,#ffffff 83.3%,#8a3dff 100%);box-shadow:0 0 30px -6px rgba(150,110,255,.8);animation:bnIn .5s cubic-bezier(.2,.9,.3,1.25) both,bnShine 1.6s linear infinite;animation-delay:var(--d,0ms),0s}
+.bn.rk3{--bc:#4fb4ff;--rb:linear-gradient(90deg,#1838ff 0%,#4fb4ff 25%,#c9ecff 33%,#1838ff 50%,#4fb4ff 75%,#c9ecff 83%,#1838ff 100%);box-shadow:0 0 26px -8px #2f6bff;animation:bnIn .5s cubic-bezier(.2,.9,.3,1.25) both,bnShine 2.6s linear infinite;animation-delay:var(--d,0ms),0s}
+.bn.rk4{--bc:#c08bff;--rb:linear-gradient(90deg,#8a3dff 0%,#3d8bff 16.6%,#ffffff 33.3%,#8a3dff 50%,#3d8bff 66.6%,#ffffff 83.3%,#8a3dff 100%);box-shadow:0 0 30px -6px rgba(150,110,255,.8);animation:bnIn .5s cubic-bezier(.2,.9,.3,1.25) both,bnShine 1.6s linear infinite;animation-delay:var(--d,0ms),0s}
 @keyframes bnIn{from{opacity:0;transform:translateY(24px) scale(.94)}}
-@keyframes bnShine{to{background-position:0 0,0 0,-200% 0}}
+@keyframes bnShine{from{background-position:0 0,0 0,0 0}to{background-position:0 0,0 0,-100% 0}}
 .bsig{position:relative;flex:none;width:72px;height:72px;border-radius:50%;display:grid;place-items:center;color:var(--bc);
   background:radial-gradient(circle,color-mix(in srgb,var(--bc) 26%,transparent) 0,transparent 70%);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--bc) 55%,transparent)}
 .bsig svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--bc) 70%,transparent))}
@@ -147,7 +147,7 @@ h2.big{font:400 52px/.9 var(--display);margin:0}
 .bn .nm{font:400 25px/1 var(--display);color:var(--ink)}
 .bn.rk2 .nm{color:#ffe7a3;text-shadow:0 0 14px rgba(245,197,66,.35)}
 .bn.rk3 .nm{color:#d4ecff;text-shadow:0 0 14px rgba(79,180,255,.45)}
-.bn.rk4 .nm{background:linear-gradient(90deg,#d6b3ff,#9cc8ff,#fff,#d6b3ff);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:bnShine 3s linear infinite}
+.bn.rk4 .nm{background:linear-gradient(90deg,#d6b3ff 0%,#9cc8ff 16.6%,#fff 33.3%,#d6b3ff 50%,#9cc8ff 66.6%,#fff 83.3%,#d6b3ff 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:txtShine 3s linear infinite}
 .bn p{margin:0;font-size:13.5px;color:var(--dim);line-height:1.38}
 .btop{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px}
 .bfor{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:2px 8px 2px 5px}
@@ -179,6 +179,14 @@ h2.big{font:400 52px/.9 var(--display);margin:0}
   .bwm{width:110px;height:110px;right:-18px;bottom:-34px}
   @keyframes rise{10%{opacity:.9}80%{opacity:.6}to{opacity:0;transform:translate(var(--x,0),-120px)}}
 }
+.bxb{position:relative;overflow:hidden;isolation:isolate}
+.bxb i{position:absolute;left:0;top:0;bottom:0;width:0;background:color-mix(in srgb,#b48cff 35%,transparent);z-index:-1;transition:width .3s}
+.bxb b{font-family:var(--mono);font-weight:500}
+.bxb.rdy{border-color:#c08bff;color:#e6d4ff;box-shadow:0 0 14px -2px #b48cff;animation:bxpulse 1.4s ease-in-out infinite}
+@keyframes bxpulse{50%{box-shadow:0 0 22px 2px #b48cff}}
+.bxp{display:flex;flex-direction:column;gap:6px}#bxBar{background:linear-gradient(90deg,#8a3dff,#c08bff)}
+.bxlist{display:flex;flex-direction:column;gap:8px;max-height:52vh;overflow:auto}
+@media (prefers-reduced-motion:reduce){.bxb.rdy{animation:none}}
 #bcats .uct{display:inline-flex;align-items:center;gap:6px}
 #bcats .uct .bn2{font:500 11px/1 var(--mono);opacity:.7}
 .bdot{width:8px;height:8px;border-radius:50%;background:var(--rc);box-shadow:0 0 6px var(--rc);display:inline-block}
@@ -354,6 +362,7 @@ dl.stats dd{margin:0;font-family:var(--mono);text-align:right;font-variant-numer
 .slide .skt .sw{width:22px;height:22px}
 .slide .skt .sn{font-size:10px;line-height:1.15;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 3px;box-sizing:border-box}
 .slide .skt .sp{font-size:9.5px}
+.slide .skins.many{grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}.slide .skins.many .skt{padding:5px 1px 4px;gap:2px}.slide .skins.many .skt .sw{width:18px;height:18px}.slide .skins.many .skt .sn{font-size:9.5px;padding:0 2px}.slide .skins.many .skt .sp{font-size:9.5px}
 @media (min-width:640px){.slide .skins{grid-template-columns:repeat(9,minmax(0,1fr))}}
 .skt{min-width:0}
 .skt .sn{overflow-wrap:break-word;font-size:11.5px;letter-spacing:-.01em}
@@ -372,8 +381,8 @@ dl.stats dd{margin:0;font-family:var(--mono);text-align:right;font-variant-numer
 .r-rare{--rb:linear-gradient(#3d8bff,#3d8bff)}
 .r-legendary{--rb:linear-gradient(#f5c542,#f5c542)}
 .r-mythic{--rb:linear-gradient(135deg,#1838ff,#4fb4ff 50%,#1838ff)}
-.r-celestial{--rb:linear-gradient(110deg,#2f7bff 0%,#ffffff 25%,#2f7bff 50%,#ffffff 75%,#2f7bff 100%)}
-.r-event{--rb:linear-gradient(110deg,#d0021b 0%,#ffffff 16.6%,#0a0a0a 33.3%,#d0021b 50%,#ffffff 66.6%,#0a0a0a 83.3%,#d0021b 100%)}
+.r-celestial{--rb:linear-gradient(90deg,#2f7bff 0%,#ffffff 25%,#2f7bff 50%,#ffffff 75%,#2f7bff 100%)}
+.r-event{--rb:linear-gradient(90deg,#d0021b 0%,#ffffff 16.6%,#0a0a0a 33.3%,#d0021b 50%,#ffffff 66.6%,#0a0a0a 83.3%,#d0021b 100%)}
 .skt.r-event{animation:shine 2s linear infinite;box-shadow:0 0 14px -4px rgba(208,2,27,.75)}
 .rt.r-event,.fc.r-event,.track .ps.rw.r-event,.es.rw.r-event{animation:shine 2.2s linear infinite}
 .cdy{display:inline-block;width:18px;height:11px;vertical-align:-1px;flex:none;filter:drop-shadow(0 0 3px rgba(255,122,26,.6))}
@@ -413,10 +422,17 @@ dl.stats dd{margin:0;font-family:var(--mono);text-align:right;font-variant-numer
 .evf{display:grid;grid-template-columns:48px 1fr;gap:2px 8px;align-items:center;background:rgba(0,0,0,.25);border-radius:8px;padding:6px 8px}
 .evf canvas{grid-row:1/3;width:48px;height:48px}.evf b{font-size:13px}.evf small{font-size:11px;color:var(--dim);line-height:1.3}
 .cdl{color:#ffb070}
-.r-exotic{--rb:linear-gradient(110deg,#8a3dff 0%,#3d8bff 16.6%,#ffffff 33.3%,#8a3dff 50%,#3d8bff 66.6%,#ffffff 83.3%,#8a3dff 100%)}
+.evshop{border-radius:14px;border:1px solid #5a2a14;padding:14px;display:flex;flex-direction:column;gap:12px;background:radial-gradient(circle at 92% 12%,rgba(255,150,60,.28) 0 22px,transparent 60px),linear-gradient(160deg,#24120e,#0e090b 70%)}
+.esh{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:flex-end}
+.esh b{display:block;font:400 36px/1 var(--display);color:#ffb070;text-shadow:0 0 16px rgba(255,120,40,.45)}.esh p{margin:4px 0 0;color:#e0c8b8;font-size:13.5px;max-width:46ch}
+.ebun{display:flex;flex-direction:column;align-items:flex-end;gap:4px}.ebun small{color:#ffb070;font-size:12px}.ebun .eold{text-decoration:line-through;color:var(--dim);font:500 12px var(--mono)}
+.evfeat{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.hwthm{display:block;width:100%;aspect-ratio:1;border-radius:10px;background:radial-gradient(circle at 70% 28%,#ffb060 0 14%,rgba(255,122,26,.35) 15% 24%,transparent 25%),linear-gradient(#2a0f24,#140814 60%,#0a040a)}
+.r-exotic{--rb:linear-gradient(90deg,#8a3dff 0%,#3d8bff 16.6%,#ffffff 33.3%,#8a3dff 50%,#3d8bff 66.6%,#ffffff 83.3%,#8a3dff 100%)}
 .skt.r-celestial{animation:shine 2.8s linear infinite}
 .skt.r-exotic{animation:shine 1.8s linear infinite;box-shadow:0 0 16px -4px rgba(150,110,255,.75)}
-@keyframes shine{to{background-position:0 0,-100% 0}}
+@keyframes shine{from{background-position:0 0,0 0}to{background-position:0 0,-100% 0}}
+@keyframes txtShine{from{background-position:0 0}to{background-position:-100% 0}}
 @keyframes spin{to{transform:rotate(1turn)}}
 .rt{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;padding:3px 7px;border-radius:999px;border:1.5px solid transparent;background:linear-gradient(var(--moss),var(--moss)) padding-box,var(--rb) border-box;background-size:100% 100%,200% 100%}
 .rt.r-celestial,.rt.r-exotic{animation:shine 2.4s linear infinite}
@@ -715,7 +731,7 @@ button.ps{font:inherit;color:inherit;cursor:pointer;padding:0;box-sizing:border-
 .ps .twd{width:30px;height:30px;border-radius:50%;background:#090d0e;border:2px solid var(--tc);box-shadow:0 0 12px var(--tc)}
 .track .ps.rw{border:2px solid transparent;background:linear-gradient(var(--moss),var(--moss)) padding-box,var(--rb) border-box;background-size:100% 100%,200% 100%}
 .track .ps.rw.r-exotic,.track .ps.rw.r-celestial{animation:shine 2.2s linear infinite}
-.track .ps.tw{border:2px solid transparent;background:radial-gradient(circle,color-mix(in srgb,var(--tc) 22%,var(--moss)),var(--moss) 70%) padding-box,linear-gradient(110deg,#ffd75e 0%,#ffffff 25%,#ffd75e 50%,#ffffff 75%,#ffd75e 100%) border-box;background-size:100% 100%,200% 100%;animation:shine 2.4s linear infinite;box-shadow:0 0 18px -4px #ffd75e}
+.track .ps.tw{border:2px solid transparent;background:radial-gradient(circle,color-mix(in srgb,var(--tc) 22%,var(--moss)),var(--moss) 70%) padding-box,linear-gradient(90deg,#ffd75e 0%,#ffffff 25%,#ffd75e 50%,#ffffff 75%,#ffd75e 100%) border-box;background-size:100% 100%,200% 100%;animation:shine 2.4s linear infinite;box-shadow:0 0 18px -4px #ffd75e}
 .track .ps.can{box-shadow:0 0 0 2px var(--good),0 0 14px -2px var(--good)}
 .track .ps.cl{opacity:.4}
 .track .ps.cl::after{content:"✓";position:absolute;bottom:4px;right:6px;font:700 12px/1 var(--body);color:var(--good)}
@@ -835,7 +851,7 @@ hr.sep{border:0;border-top:1px solid var(--line);margin:4px 0;width:100%}
 .mj-panel{position:relative;width:100%;max-width:440px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
 .mj-kick{font:700 12px/1 var(--body);letter-spacing:.5em;text-transform:uppercase;color:var(--flame);padding-left:.5em}
 .mj-title{margin:0;font:400 clamp(54px,17vw,92px)/.9 var(--display);text-wrap:balance;
-  background:linear-gradient(100deg,var(--flame) 0%,#fff6dc 25%,var(--flame) 50%,#fff6dc 75%,var(--flame) 100%);background-size:200% 100%;
+  background:linear-gradient(90deg,var(--flame) 0%,#fff6dc 25%,var(--flame) 50%,#fff6dc 75%,var(--flame) 100%);background-size:200% 100%;
   -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 24px color-mix(in srgb,var(--flame) 60%,transparent))}
 .mj-ver{font-family:var(--mono);font-size:12px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:5px 12px;background:rgba(0,0,0,.35)}
 .mj-list{list-style:none;margin:8px 0 4px;padding:0;display:flex;flex-direction:column;gap:8px;width:100%;text-align:left}
@@ -901,7 +917,7 @@ hr.sep{border:0;border-top:1px solid var(--line);margin:4px 0;width:100%}
 .log li.maj{border-color:var(--flame);background:linear-gradient(160deg,color-mix(in srgb,var(--flame) 14%,var(--moss)),var(--moss) 60%)}
 .majb{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
 .majb span{font:700 10px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;color:#140e06;padding:5px 9px;border-radius:999px;
-  background:linear-gradient(100deg,var(--flame),#fff1c4,var(--flame));background-size:200% 100%;animation:shine 2.4s linear infinite}
+  background:linear-gradient(90deg,var(--flame) 0%,#fff1c4 25%,var(--flame) 50%,#fff1c4 75%,var(--flame) 100%);background-size:200% 100%;animation:txtShine 2.4s linear infinite}
 .majb b{font:400 26px/1 var(--display);color:var(--flame);flex:1}
 .majb .btn{padding:6px 12px;font-size:12px}
 #upd.isMajor .panel{border:1px solid var(--flame);border-radius:14px;padding:18px;background:linear-gradient(160deg,color-mix(in srgb,var(--flame) 14%,var(--moss)),var(--moss) 70%)}
@@ -922,7 +938,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 
 
 <script>
-/* PWA: offline support and updates (Lanternfall v0.18.0) */
+/* PWA: offline support and updates (Lanternfall v0.18.1) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -937,6 +953,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
     <button class="btn" id="auto" title="Send waves automatically">Auto: off</button>
     <button class="btn primary" id="send">Send wave 1</button>
     <button class="btn" id="menuBtn" aria-label="Menu">Menu</button>
+    <button class="btn bxb" id="boonBtn" aria-label="Boons"><i id="bxFill"></i><span>Boons <b id="bxLv">0</b></span></button>
   </div>
   <div id="board"><canvas id="cv"></canvas><div class="toast" id="toast" role="status" hidden></div></div>
   <div id="tray"></div>
@@ -1066,6 +1083,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
   <section class="panel view wide" data-view="shop" hidden>
     <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">Shop</h2><span class="pills"><span class="pill">Embers <b class="embersN">0</b></span><span class="pill">Moonstones <b class="moonN mb">0</b></span></span></header>
     <div id="shopPass"></div>
+    <div id="evShop"></div>
     <div class="sec">Featured skins · 25% off · <span id="shopTimer"></span></div>
     <div class="feat" id="feat"></div>
     <div class="sec">Ember packs</div>
@@ -1085,7 +1103,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
 
   <section class="panel view wide" data-view="boons" hidden>
     <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">Boons</h2></header>
-    <p class="hint" style="margin:0">After every wave you pick one boon from a hand of cards. Boons last for the rest of the run. Rarer boons are stronger but show up less often.</p>
+    <p class="hint" style="margin:0">Snuffing foes and upgrading lanterns fills your boon XP. Each time it levels up you pick one boon from a hand of cards, and each level takes a little more XP than the last. Boons last for the rest of the run. Rarer boons are stronger but show up less often.</p>
     <div class="ucats" id="bcats" role="tablist" aria-label="Boon rarities"></div>
     <div id="bodds" class="bodds"></div>
     <div class="bxgrid" id="bxgrid"></div>
@@ -1140,6 +1158,15 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
     <div class="cards" id="cards"></div>
     <div class="taken" id="taken" hidden></div>
     <div class="row"><button class="btn" id="reroll">Reroll</button><button class="btn" id="skip">Skip (+25 gold)</button></div>
+  </div>
+</div>
+
+<div class="ov" id="boonsOv" hidden>
+  <div class="panel" style="max-width:520px">
+    <div class="phd"><div class="sec" id="bxSub">Boon level 0</div><h2 class="big">Your boons</h2></div>
+    <div class="bxp"><div class="xpbar"><i id="bxBar"></i></div><span class="hint" style="margin:0" id="bxText"></span></div>
+    <div class="bxlist" id="bxList"></div>
+    <button class="btn primary" id="bxClose">Back to the trail</button>
   </div>
 </div>
 
@@ -1231,7 +1258,7 @@ const FOES={
   ghost:{ev:1,name:'Ghost',hp:30,speed:1.2,gold:4,r:.25,armor:0,col:'#eef0ff',sh:'ghost',phase:[3,.9],noSlow:1,tip:'Fades out now and then, and slows pass right through it.'},
   skeleton:{ev:1,name:'Skeleton',hp:50,speed:.9,gold:5,r:.27,armor:3,col:'#e8e2d0',sh:'skull',revive:.4,tip:'Pulls itself back together once after being snuffed.'}
 };
-const GOLD_K=.6;   /* gold per kill, trimmed in 0.18.0 */
+const GOLD_K=.5;   /* gold per kill, trimmed in 0.18.0 */
 const NEWFOES=Object.keys(FOES).filter(k=>FOES[k].intro);
 const introAt=d=>NEWFOES.find(k=>FOES[k].intro===d);
 
@@ -1295,10 +1322,10 @@ const dOf=k=>DIFF[k]||DIFF.normal;
 /* ---------- camp upgrades ---------- */
 const META=[
   /* Economy */
-  {id:'kindling',cat:'eco',name:'Kindling',max:8,base:4,g:1.55,text:l=>`Start runs with +25 gold. Now +${l*25}.`},
-  {id:'purse',cat:'eco',name:'Deep purse',max:10,base:5,g:1.45,text:l=>`Kills give +5% gold. Now +${l*5}%.`},
-  {id:'tithe',cat:'eco',name:'Wave tithe',max:10,base:5,g:1.45,text:l=>`+3 gold for every wave you clear. Now +${l*3}.`},
-  {id:'thrift',cat:'eco',name:'Thrift',max:10,base:7,g:1.5,text:l=>`Lanterns and upgrades cost 2% less. Now −${l*2}%.`},
+  {id:'kindling',cat:'eco',name:'Kindling',max:8,base:4,g:1.55,text:l=>`Start runs with +20 gold. Now +${l*20}.`},
+  {id:'purse',cat:'eco',name:'Deep purse',max:10,base:5,g:1.45,text:l=>`Kills give +3% gold. Now +${l*3}%.`},
+  {id:'tithe',cat:'eco',name:'Wave tithe',max:10,base:5,g:1.45,text:l=>`+2 gold for every wave you clear. Now +${l*2}.`},
+  {id:'thrift',cat:'eco',name:'Thrift',max:10,base:7,g:1.5,text:l=>`Lanterns and upgrades cost 1.5% less. Now −${(l*1.5).toFixed(1)}%.`},
   {id:'salvage',cat:'eco',name:'Salvage',max:5,base:6,g:1.6,text:l=>`Selling refunds 4% more. Now ${60+l*4}% back.`},
   {id:'bountyb',cat:'eco',name:'Bounty board',max:6,base:8,g:1.55,text:l=>`Snuffing a boss pays +15 gold. Now +${l*15}.`},
   {id:'midpay',cat:'eco',name:'Midnight pay',max:5,base:7,g:1.55,text:l=>`The halfway bonus in each wave pays 20% more. Now +${l*20}%.`},
@@ -1306,12 +1333,12 @@ const META=[
   {id:'patron',cat:'eco',name:'Patron',max:2,base:45,g:2.2,text:l=>l>1?'The first 2 lanterns you build each run are free.':'The first lantern you build each run is free. Level 2 makes the first two free.'},
   {id:'compound',cat:'eco',name:'Compound',max:5,base:10,g:1.7,text:l=>`After each wave, earn 1% interest on your gold (up to 20 per level). Now ${l}%.`},
   /* Offense */
-  {id:'whet',cat:'off',name:'Whetstone',max:10,base:5,g:1.5,text:l=>`+6% tower damage. Now +${l*6}%.`},
-  {id:'bellows',cat:'off',name:'Bellows',max:8,base:6,g:1.55,text:l=>`+5% fire rate. Now +${l*5}%.`},
+  {id:'whet',cat:'off',name:'Whetstone',max:10,base:5,g:1.5,text:l=>`+4% tower damage. Now +${l*4}%.`},
+  {id:'bellows',cat:'off',name:'Bellows',max:8,base:6,g:1.55,text:l=>`+3% fire rate. Now +${l*3}%.`},
   {id:'wick',cat:'off',name:'Long wicks',max:6,base:6,g:1.6,text:l=>`+4% tower range. Now +${l*4}%.`},
   {id:'keen',cat:'off',name:'Keen eye',max:10,base:6,g:1.5,text:l=>`Shots get a 1.5% chance to hit for double damage. Now ${(l*1.5).toFixed(1)}%.`},
   {id:'focus',cat:'off',name:'Boss hunter',max:10,base:6,g:1.5,text:l=>`+5% damage to bosses. Now +${l*5}%.`},
-  {id:'breaker',cat:'off',name:'Armor breaker',max:10,base:7,g:1.5,text:l=>`Enemy armor is 5% weaker. Now −${l*5}%.`},
+  {id:'breaker',cat:'off',name:'Armor breaker',max:10,base:7,g:1.5,text:l=>`Enemy armor is 4% weaker. Now −${l*4}%.`},
   {id:'lastlight',cat:'off',name:'Last light',max:5,base:7,g:1.55,text:l=>`With 5 lives or fewer, towers deal +8% damage. Now +${l*8}%.`},
   {id:'heavy',cat:'off',name:'Heavy hits',max:6,base:8,g:1.55,text:l=>`Critical hits deal 15% more damage. Now +${l*15}%.`},
   {id:'tempered',cat:'off',name:'Tempered',max:5,base:9,g:1.55,text:l=>`Lanterns with a path at tier 5 deal +5% damage. Now +${l*5}%.`},
@@ -1337,7 +1364,8 @@ const META=[
   {id:'highroll',cat:'run',name:'High roller',max:5,base:10,g:1.6,text:l=>`Legendary and better boons show up 12% more often. Now +${l*12}%.`},
   {id:'gift',cat:'run',name:'Morning gift',max:2,base:30,g:2.2,text:l=>`Start every run with ${l>1?l:'a'} random Common boon${l>1?'s':''}.${l?'':' Each level adds one.'}`},
   {id:'boongold',cat:'run',name:'Boon bounty',max:5,base:6,g:1.55,text:l=>`Picking a boon also pays 5 gold. Now +${l*5}.`},
-  {id:'trophyfan',cat:'run',name:'Trophy hand',max:1,base:70,g:1,text:()=>'After every 5th wave, see one more boon.'},
+  {id:'scholar',cat:'run',name:'Boon scholar',max:5,base:10,g:1.6,text:l=>`+8% boon XP from kills and upgrades. Now +${l*8}%.`},
+  {id:'trophyfan',cat:'run',name:'Trophy hand',max:1,base:70,g:1,text:()=>'Boon picks after every 5th wave show one more boon.'},
   {id:'headstart',cat:'run',name:'Head start',max:1,base:35,g:1,text:()=>'Pick a free boon before the first wave of every run.'},
   /* Lanterns */
   {id:'blast',ic:'burst',cat:'lan',name:'Wide burst',max:6,base:6,g:1.55,text:l=>`Cinder and Comet bursts are 5% wider. Now +${l*5}%.`},
@@ -1419,7 +1447,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='0.18.0';
+const VERSION='0.18.1';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -1480,7 +1508,7 @@ addEventListener('pointerdown',()=>{if(!persistAsked&&storeInfo.persisted===fals
 let meta=load();
 const ml=id=>meta.up[id]||0;
 const unlocked=t=>TOWERS[t].pass?!!(meta.ptow&&meta.ptow[t]):(!TOWERS[t].unlock||ml('u_'+t)>0);
-const mcost=(m,l)=>Math.round(m.base*Math.pow(m.g*1.04,l)*(1+.015*l));   /* camp upgrades get steeper with each level */
+const mcost=(m,l)=>Math.round(m.base*1.6*Math.pow(m.g*1.07,l)*(1+.02*l));   /* camp upgrades get steeper with each level */
 
 /* ---------- version checking: the installed app compares itself with version.json published next to it on GitHub ---------- */
 function cmpVer(a,b){const x=String(a).split('.').map(Number),y=String(b).split('.').map(Number);for(let i=0;i<3;i++){const d=(x[i]||0)-(y[i]||0);if(d)return d}return 0}
@@ -1647,7 +1675,31 @@ const EVSK=[['spark','ev_wick','Candle Wick','#ffb347','#fff3c4'],['cinder','ev_
   ['comet','ev_blood','Blood Moon','#ff2e3b','#ffd0c0'],['cinder','ev_bonfire','Bonfire Night','#ff3b2f','#ffd36b'],['moonwell','ev_harvest','Harvest Moon','#ffb84a','#fff0c8'],
   ['frost','ev_silk','Spider Silk','#f4f4f8','#6a6a80'],['bell','ev_toll','Midnight Toll','#d8d0ff','#7a2bd8'],['lance','ev_scythe','Reaper’s Scythe','#c4c8d4','#7a0a18'],
   ['eclipse','ev_pumpkin','Pumpkin Eclipse','#ff7a1a','#2a0a04']];
-EVSK.forEach(([t,id,name,color,col2])=>SKINS[t].push({id,name,rar:'event',color,col2,ev:1}));
+const EVMO=['pumpkin','bat','ghost','candy'];
+EVSK.forEach(([t,id,name,color,col2],i)=>SKINS[t].push({id,name,rar:'event',color,col2,cycle:[color,col2,/ff7a1a|ff8a3d|ffb/.test(color)?'#8a3be8':'#ff7a1a'],ev:1,mo:EVMO[i%4]}));
+/* Hallow's Eve: the event shop set, sold one by one or as a bundle while the event runs */
+const HWSK=[['spark','hw_corn','Candy Corn',['#ffd23d','#ff7a1a','#fff4e0']],['cinder','hw_cauldron','Cauldron Fire',['#7dff3a','#ff7a1a','#ffe08a']],
+  ['frost','hw_phantom','Phantom Frost',['#e8f0ff','#b48cff','#ffffff']],['lance','hw_pike','Headless Pike',['#ff7a1a','#c0c8d8','#fff0d0']],
+  ['venom','hw_apple','Poison Apple',['#ff2e3b','#7dff3a','#ffffff']],['mint','hw_bar','Full-Size Bar',['#ffb04d','#8a3be8','#ffe08a']],
+  ['bolt','hw_frank','Frankenbolt',['#9bff5a','#5a8aff','#ffffff']],['beacon','hw_wisp','Wisp Lamp',['#5affc8','#b48cff','#ffffff']],
+  ['comet','hw_broom','Witch’s Broom',['#b48cff','#ff7a1a','#ffe08a']],['moonwell','hw_well','Haunted Well',['#9bffd0','#8a3be8','#ffffff']],
+  ['bell','hw_bell','Graveyard Bell',['#c8c8d8','#ff7a1a','#ffffff']],['eclipse','hw_eve','Blood Moon Eve',['#ff2e3b','#ff9a3d','#ffffff']]];
+const HW_PRICE=75,HW_THEME=50,HW_BUNDLE=450;
+HWSK.forEach(([t,id,name,cy],i)=>SKINS[t].push({id,name,rar:'event',color:cy[0],col2:cy[1],cycle:cy,evShop:1,moon:HW_PRICE,mo:EVMO[(i+1)%4]}));
+/* shop-only skins: they only show up in the hourly featured rotation */
+const SHSK={spark:[['Ember Sprite','#ffb04d','#fff0c0'],['Glacier Spark','#5ad0ff','#e0fbff'],['Starling','#fff6d6','#bcd8ff']],
+  cinder:[['Coal Crown','#ff6a2a','#ffd08a'],['Ashfall','#a08a90','#ffb36b'],['Sunforge','#ffe0a0','#ffffff']],
+  frost:[['Snowglobe','#dff6ff','#8ad0ff'],['Permafrost','#2a6bff','#bff4ff'],['Comet Ice','#e8f4ff','#ffffff']],
+  lance:[['Gilded Pike','#ffcf5a','#fff4d0'],['Night Lance','#6a5ad0','#a88cff'],['Sunspear','#fff0c8','#ffffff']],
+  venom:[['Thornvine','#5aff6a','#d8ff8a'],['Nightshade','#8a3fd8','#ff5ad8'],['Dewdrop','#c8fff0','#ffffff']],
+  mint:[['Gold Rush','#ffd23d','#fff6c0'],['Ruby Vault','#e8305a','#ff9ab0'],['Silver Moon','#f0f4ff','#ffffff']],
+  bolt:[['Static','#ffe84a','#fffbd0'],['Thunderhead','#5a5ad8','#8ad8ff'],['Ion','#d8f0ff','#ffffff']],
+  beacon:[['Lighthouse','#ffd07a','#fff4d8'],['Rose Signal','#ff3d7a','#ffc0dc'],['Dawnlight','#fff4ea','#ffffff']],
+  comet:[['Meteorite','#ffb04d','#ffe8b0'],['Dark Matter','#6a4fd0','#c09aff'],['Polar Light','#d0e8ff','#ffffff']],
+  moonwell:[['Silver Spring','#e8e0c8','#ffffff'],['Tidepool','#1fa8c8','#8af0ff'],['Moonbeam','#f8f4ff','#ffffff']],
+  bell:[['Brass Bell','#e0a83d','#fff0c0'],['Funeral Toll','#7a5aa0','#c8a8ff'],['Choirlight','#fff8e8','#ffffff']],
+  eclipse:[['Solar Flare','#ffb03d','#fff0a8'],['Umbra','#9a3ad8','#ff5a8a'],['Halo Ring','#ffffff','#ffe8c0']]};
+ORDER.forEach(t=>SHSK[t].forEach(([name,color,col2],i)=>SKINS[t].push({id:['sh_l','sh_m','sh_c'][i],name,rar:['legendary','mythic','celestial'][i],color,col2,moon:[45,80,130][i],shopOnly:1})));
 ORDER.forEach(t=>SKINS[t].forEach(s=>{s.tw=t}));
 const SEASON={n:1,name:'The Hollow Moon',end:new Date(2026,10,1,0,0,0)};
 /* limited-time events: their own world, currency and 25-tier pass */
@@ -1659,7 +1711,7 @@ const EVR=(()=>{const sk=EVSK.map(([t,id])=>({k:'skin',t,id})),out=[null],mo=[10
 const evCost=i=>Math.round(15+1.5*(i-1));
 const seasonOver=()=>Date.now()>=SEASON.end.getTime();
 const priceOf=(s,k=1)=>Math.round((s.moon||s.cost)*k);
-const canBuy=(s,k=1,shop)=>!s.code&&!s.ev&&(shop||!s.pass)&&(s.moon?meta.moon:meta.embers)>=priceOf(s,k);
+const canBuy=(s,k=1,shop)=>!s.code&&!s.ev&&(shop||(!s.pass&&!s.shopOnly&&!s.evShop))&&(!s.evShop||evLive())&&(s.moon?meta.moon:meta.embers)>=priceOf(s,k);
 const priceHTML=(s,k=1)=>`${s.moon?MS:EM} ${priceOf(s,k)}`;
 function pay(s,k=1){if(s.moon)meta.moon-=priceOf(s,k);else meta.embers-=priceOf(s,k)}
 const ownsSkin=(t,id)=>id==='base'||!!meta.owned[t+':'+id];
@@ -1679,7 +1731,7 @@ function skinColor(s,T){
    Celestial (3): + light rays, orbiting star sparkles, random twinkles, more motes, sparkling shot trails
    Exotic    (4): + color cycling everything, rainbow rays, shockwave ripples, comet ribbon orbit,
                   floating crown shards, prism shots that shed sparks                                  */
-const RLV={legendary:1,mythic:2,celestial:3,event:3,exotic:4};
+const RLV={legendary:1,mythic:2,celestial:3,event:4,exotic:4};
 const rlv=s=>RLV[s&&s.rar]||0;
 function fxCol(s,T,k){if(s.cycle){const n=s.cycle.length;return s.cycle[(Math.floor(T*.8)+k)%n]}return k%2&&s.col2?s.col2:s.color}
 /* the signature particle each tower's skins shed */
@@ -1696,6 +1748,12 @@ function motif(c,m,x,y,r,col){
     case 'ring':c.arc(x,y,r*1.1,0,7);c.stroke();break;
     case 'tail':c.arc(x,y,r*.7,0,7);c.fill();c.globalAlpha*=.6;c.beginPath();c.moveTo(x,y);c.lineTo(x+r*1.6,y+r*1.6);c.stroke();break;
     case 'crescent':c.arc(x,y,r*1.1,-Math.PI/2,Math.PI/2,false);c.arc(x+r*.45,y,r*.9,Math.PI/2,-Math.PI/2,true);c.closePath();c.fill();break;
+    case 'pumpkin':c.ellipse(x-r*.5,y,r*.6,r*.85,0,0,7);c.ellipse(x+r*.5,y,r*.6,r*.85,0,0,7);c.ellipse(x,y,r*.6,r*.9,0,0,7);c.fill();c.fillStyle='#3a5a2a';c.fillRect(x-r*.12,y-r*1.25,r*.24,r*.4);break;
+    case 'bat':{const f=Math.sin(performance.now()/60+x)*.5;c.moveTo(x,y);c.quadraticCurveTo(x+r*.8,y-r*(1.1+f),x+r*1.8,y-r*.3);c.quadraticCurveTo(x+r*1.1,y+r*.1,x+r*.8,y+r*.5);c.quadraticCurveTo(x+r*.4,y+r*.15,x,y+r*.4);
+      c.quadraticCurveTo(x-r*.4,y+r*.15,x-r*.8,y+r*.5);c.quadraticCurveTo(x-r*1.1,y+r*.1,x-r*1.8,y-r*.3);c.quadraticCurveTo(x-r*.8,y-r*(1.1+f),x,y);c.fill();break}
+    case 'ghost':c.arc(x,y-r*.2,r*.9,Math.PI,0);c.lineTo(x+r*.9,y+r);c.lineTo(x+r*.45,y+r*.7);c.lineTo(x,y+r);c.lineTo(x-r*.45,y+r*.7);c.lineTo(x-r*.9,y+r);c.closePath();c.fill();
+      c.fillStyle='rgba(20,10,30,.8)';c.beginPath();c.arc(x-r*.3,y-r*.25,r*.16,0,7);c.arc(x+r*.3,y-r*.25,r*.16,0,7);c.fill();break;
+    case 'candy':c.moveTo(x,y-r*1.4);c.lineTo(x+r*.9,y+r*.9);c.lineTo(x-r*.9,y+r*.9);c.closePath();c.fill();c.globalAlpha*=.6;c.fillStyle='#ffffff';c.beginPath();c.moveTo(x-r*.55,y+r*.15);c.lineTo(x+r*.55,y+r*.15);c.lineTo(x+r*.35,y-r*.35);c.lineTo(x-r*.35,y-r*.35);c.closePath();c.fill();break;
     case 'note':c.arc(x-r*.3,y+r*.7,r*.55,0,7);c.fill();c.beginPath();c.moveTo(x+r*.2,y+r*.7);c.lineTo(x+r*.2,y-r*1.2);c.lineTo(x+r*.9,y-r*.8);c.stroke();break;
     default:star4(c,x,y,r*1.4);
   }
@@ -1709,6 +1767,10 @@ function skinFxBack(c,s,cx,cy,SS,T){
     for(let i=0;i<n;i++){const a=T*(L>=4?.55:.35)+i*Math.PI*2/n,len=SS*(.7+.14*Math.sin(T*3+i*1.3));
       c.strokeStyle=hexA(L>=4?fxCol(s,T,i):col,.17);c.lineWidth=Math.max(1,SS*.06);
       c.beginPath();c.moveTo(cx+Math.cos(a)*SS*.38,cy+Math.sin(a)*SS*.38);c.lineTo(cx+Math.cos(a)*len,cy+Math.sin(a)*len);c.stroke()}}
+  if(s.rar==='event'){   /* blood-moon halo and a slow ring of embers */
+    const pr=.5+.5*Math.sin(T*1.6),g=c.createRadialGradient(cx,cy,SS*.2,cx,cy,SS*.85);g.addColorStop(0,hexA('#ff2e1f',.0));g.addColorStop(.55,hexA('#ff4a1a',.12+.08*pr));g.addColorStop(1,hexA('#3a0010',0));
+    c.fillStyle=g;c.beginPath();c.arc(cx,cy,SS*.85,0,7);c.fill();
+    c.strokeStyle=hexA('#d0021b',.35+.2*pr);c.lineWidth=Math.max(1,SS*.03);c.setLineDash([SS*.02,SS*.06]);c.lineDashOffset=T*SS*.2;c.beginPath();c.arc(cx,cy,SS*.6,0,7);c.stroke();c.setLineDash([])}
   if(L>=4)for(let k=0;k<2;k++){const p=(T*.55+k*.5)%1;c.strokeStyle=hexA(fxCol(s,T,k),(1-p)*.5);c.lineWidth=Math.max(1,SS*.04*(1-p));
     c.beginPath();c.arc(cx,cy,SS*(.36+p*.64),0,7);c.stroke()}
   c.restore();
@@ -1723,22 +1785,30 @@ function skinFx(c,s,cx,cy,SS,T){
     c.beginPath();c.arc(cx,cy,SS*.52,0,7);c.stroke();c.setLineDash([]);
     const n=L>=4?8:L>=3?5:3;c.globalCompositeOperation='lighter';
     for(let k=0;k<n;k++){const p=(T*.45+k/n)%1,x=cx+Math.sin(k*2.4+T*1.3)*SS*.32,y=cy+SS*.35-p*SS*1.05;
-      motif(c,MOTIF[s.tw],x,y,Math.max(1,SS*(.03+.016*(k%2))),hexA(L>=4?fxCol(s,T,k):hi,Math.sin(p*Math.PI)*.95))}
+      motif(c,s.mo||MOTIF[s.tw],x,y,Math.max(1,SS*(.03+.016*(k%2))),hexA(L>=4?fxCol(s,T,k):hi,Math.sin(p*Math.PI)*.95))}
     c.globalCompositeOperation='source-over';
   }
   if(L>=3){
     const n=L>=4?6:4,R=SS*.5;
     for(let i=0;i<n;i++){const a=T*1.2+i*Math.PI*2/n,x=cx+Math.cos(a)*R,y=cy+Math.sin(a)*R*.55,sz=SS*.065*(.6+.4*Math.sin(T*4+i*1.7));
-      if(L>=4)motif(c,MOTIF[s.tw],x,y,sz*.8,fxCol(s,T,i));else{c.fillStyle='#ffffff';star4(c,x,y,sz)}}
+      if(L>=4)motif(c,s.mo||MOTIF[s.tw],x,y,sz*.8,fxCol(s,T,i));else{c.fillStyle='#ffffff';star4(c,x,y,sz)}}
     for(let k=0;k<(L>=4?4:3);k++){const q=T*.7+k*.37,p=q%1,sd=Math.floor(q)*7.3+k*13.1;
       c.fillStyle='#ffffff';star4(c,cx+Math.sin(sd)*SS*.55,cy+Math.cos(sd*1.7)*SS*.55,SS*.085*Math.sin(p*Math.PI))}
   }
+  if(s.rar==='event'){   /* bats circling, ghosts drifting up, and a jack-o'-lantern flicker below */
+    c.globalCompositeOperation='source-over';
+    for(let i=0;i<3;i++){const a=T*(.9+i*.15)+i*2.1,R=SS*(.6+.06*Math.sin(T+i)),x=cx+Math.cos(a)*R,y=cy+Math.sin(a)*R*.5-SS*.12;
+      motif(c,'bat',x,y,Math.max(1,SS*.045),i===1?'#1a0a14':hexA('#120812',.92));c.strokeStyle=hexA('#ff7a1a',.5);c.lineWidth=.8;c.stroke()}
+    for(let k=0;k<2;k++){const p=(T*.3+k*.5)%1;motif(c,'ghost',cx+Math.sin(T*1.1+k*3)*SS*.35,cy+SS*.2-p*SS*.95,Math.max(1,SS*.05),hexA('#f4f0ff',Math.sin(p*Math.PI)*.75))}
+    const fl=.55+.45*Math.abs(Math.sin(T*9)*Math.sin(T*3.3));const jg=c.createRadialGradient(cx,cy+SS*.42,0,cx,cy+SS*.42,SS*.3);jg.addColorStop(0,hexA('#ff9a3d',.45*fl));jg.addColorStop(1,hexA('#ff7a1a',0));
+    c.globalCompositeOperation='lighter';c.fillStyle=jg;c.fillRect(cx-SS*.3,cy+SS*.12,SS*.6,SS*.6);c.globalCompositeOperation='source-over';
+    motif(c,'pumpkin',cx,cy+SS*.46,Math.max(1,SS*.05),hexA('#ff7a1a',.9))}
   if(L>=4){
     c.globalCompositeOperation='lighter';
     for(let j=0;j<16;j++){const a=-T*2.2+j*.12;c.fillStyle=hexA(fxCol(s,T,j>>2),(1-j/16)*.85);
       c.beginPath();c.arc(cx+Math.cos(a)*SS*.64,cy+Math.sin(a)*SS*.64*.45-SS*.04,Math.max(.8,SS*.045*(1-j/20)),0,7);c.fill()}
     for(let i=0;i<3;i++){const a=-Math.PI/2+(i-1)*.5,r=SS*(.55+.04*Math.sin(T*3+i)),x=cx+Math.cos(a)*r,y=cy+Math.sin(a)*r-SS*.04;
-      motif(c,MOTIF[s.tw],x,y,SS*.055,hexA(fxCol(s,T,i),.95))}
+      motif(c,s.mo||MOTIF[s.tw],x,y,SS*.055,hexA(fxCol(s,T,i),.95))}
     c.globalCompositeOperation='source-over';
   }
   c.restore();
@@ -1809,11 +1879,11 @@ function genPathSnake(){
 }
 function newRun(depth,endless){
   applyTheme(depth);
-  G={depth,world:depth,endless:!!endless,diff:DIFF[meta.diff]?meta.diff:'normal',wave:0,state:'build',lives:Math.max(5,15+2*ml('hearth')+dOf(meta.diff).lives),gold:80+25*ml('kindling'),
+  G={depth,world:depth,endless:!!endless,diff:DIFF[meta.diff]?meta.diff:'normal',wave:0,state:'build',lives:Math.max(5,15+2*ml('hearth')+dOf(meta.diff).lives),gold:100+20*ml('kindling'),
     towers:[],foes:[],shots:[],fx:[],q:[],qt:0,path:genPath(),sel:null,bossKills:0,time:0,amb:makeAmb(),
-    m:{dmg:1,rate:1,range:1,goldMul:1+.05*ml('purse'),interest:0,crit:0,splash:1+.05*ml('blast'),chill:0,chain:ml('conductor'),cost:1-.02*ml('thrift'),
-       boss:1+.05*ml('focus'),exec:.03*ml('reaper'),armor:1-.05*ml('breaker'),
-       pierce:0,lance:1,poison:1+.08*ml('toxin'),income:1,aura:0,comet:1},taken:{},ward:ml('ward'),patron:ml('patron'),sw:ml('secondwind'),
+    m:{dmg:1,rate:1,range:1,goldMul:1+.03*ml('purse'),interest:0,crit:0,splash:1+.05*ml('blast'),chill:0,chain:ml('conductor'),cost:1-.015*ml('thrift'),
+       boss:1+.05*ml('focus'),exec:.03*ml('reaper'),armor:1-.04*ml('breaker'),
+       pierce:0,lance:1,poison:1+.08*ml('toxin'),income:1,aura:0,comet:1},taken:{},bxp:0,blv:0,bpend:0,ward:ml('ward'),patron:ml('patron'),sw:ml('secondwind'),
     mast:Object.fromEntries(ORDER.map(t=>[t,mastInfo(t).L])),mk:{},used:new Set()};
   drawBG();
 }
@@ -1839,7 +1909,7 @@ const ASC={ /* each lantern's first ascension type (unlocked at Mastery 30) */
    highest wins (critX, chainKeep, keepHeat, markT, zoneT, chillT, goldAuraR), everything else adds. */
 const FX_MUL=new Set(['dmg','rate','splash','slowT','poison','poisT','stun','income','bossX','goldX','heatX']);
 const FX_MAX=new Set(['critX','chainKeep','keepHeat','markT','zoneT','chillT','goldAuraR']);
-const TIER_K=[.55,.8,1.2,1.9,3],ASC_K=2.5,CORE_DMG=1.17,CORE_RANGE=.05,ASC_MAST=[30,50,70];
+const TIER_K=[.65,.95,1.45,2.3,3.6],ASC_K=3,CORE_DMG=1.17,CORE_RANGE=.05,ASC_MAST=[30,50,70];
 /* balance: damage and fire-rate boosts from tiers are softened (x^0.75) so they don't stack out of control, and extra targets from multi-shot upgrades take half damage */
 const TIER_SOFT=.75,MULTI_F=.5;
 const tierLockAt=(path,tier)=>tier>=5?30:tier===4?20:path===0?1:10;
@@ -1935,8 +2005,8 @@ function tStats(t){
   if(t.type==='mint')return{income:Math.round(8*f.income*m.income*(A?2:1)*(1+mb.dmg)*ab.dmg*(1+.08*ml('lo_mint'))),interest:f.interest||0,interestCap:f.interestCap||0,bounty:f.bounty||0,goldAura:f.goldAura||0,goldAuraR:f.goldAuraR||1,jackpot:f.jackpot||0};
   const a=auraAt(t);
   const perm=(1+.05*ml('lo_'+t.type))*(G.lives<=5?1+.08*ml('lastlight'):1)*(t.p&&(t.p[0]>=5||t.p[1]>=5)?1+.05*ml('tempered'):1);
-  let dmg=d.dmg*f.dmg*core*(1+.06*ml('whet'))*m.dmg*a.dmg*(1+mb.dmg)*ab.dmg*perm;
-  let rate=d.rate*f.rate*(1+.05*ml('bellows'))*m.rate*a.rate*(1+mb.rate)*ab.rate;
+  let dmg=d.dmg*f.dmg*core*(1+.04*ml('whet'))*m.dmg*a.dmg*(1+mb.dmg)*ab.dmg*perm;
+  let rate=d.rate*f.rate*(1+.03*ml('bellows'))*m.rate*a.rate*(1+mb.rate)*ab.rate;
   if(t.type==='bolt')dmg*=TM.bolt||1;
   if(t.type==='lance')dmg*=m.lance;
   if(t.type==='comet')rate*=m.comet;
@@ -1947,7 +2017,7 @@ function tStats(t){
     chain:(d.chain||0)+(f.chain||0)+m.chain+(A&&t.type==='bolt'?3:0),chainKeep:f.chainKeep,
     pierce:A&&t.type==='lance'?999:(d.pierce||0)+(f.pierce||0)+m.pierce,
     stun:(d.stun||0)*f.stun*(A&&t.type==='bell'?2:1),pct:((d.pct||0)+(f.pct||0))*(A&&t.type==='eclipse'?2:1),
-    poison:(d.poison||0)*f.poison*core*m.poison*a.dmg*(1+.06*ml('whet'))*(1+mb.dmg)*ab.dmg*perm,poisT:3*f.poisT,
+    poison:(d.poison||0)*f.poison*core*m.poison*a.dmg*(1+.04*ml('whet'))*(1+mb.dmg)*ab.dmg*perm,poisT:3*f.poisT,
     crit:(f.crit||0)+a.crit+(t.type==='spark'?m.crit:0),critX:f.critX,ap:(f.ap||0)+2*ml('piercer'),multi:f.multi||0,
     burn:f.burn||0,chill:f.chill||0,chillT:f.chillT||1,mark:(f.mark||0)+a.mark,markT:f.markT||2,stunHit:f.stunHit||0,
     splashR:f.splashR||0,splashF:f.splashF||0,zoneR:f.zoneR||0,zoneDps:f.zoneDps||0,zoneSlow:f.zoneSlow||0,zoneT:f.zoneT||2,
@@ -1960,7 +2030,7 @@ const ascCost=type=>Math.round(TOWERS[type].cost*ASC_K*G.m.cost*(1-.06*ml('forge
 /* WAVE_LEN: how many times more foes a wave sends than the original design. Each regular foe gets 1/WAVE_LEN of the
    health and gold, so a wave's total health and total gold stay the same while the wave lasts about WAVE_LEN times longer. */
 const WAVE_LEN=2,PULSE=8,PULSE_GAP=1.3;
-const clearBonus=()=>8+G.wave+3*ml('tithe');
+const clearBonus=()=>6+Math.round(G.wave*.7)+2*ml('tithe');
 function pickNew(w){   /* a foe from the ones this depth has introduced; the newest one shows up most */
   const av=NEWFOES.filter(k=>FOES[k].intro<=G.depth&&w>=(FOES[k].minW||2)),wt=k=>(FOES[k].wt||1)*(FOES[k].intro===G.depth?4:1);
   if(!av.length)return null;let r=Math.random()*av.reduce((a,k)=>a+wt(k),0);for(const k of av){r-=wt(k);if(r<=0)return k}return av[0];
@@ -1987,7 +2057,7 @@ function makeWave(w){
   return q;
 }
 function spawn(type,at,mini){
-  const f=FOES[type],w=G.wave,sc=Math.pow(1.22,w-1)*(1+.3*G.depth)*(mini?.45:1)*dOf(G.diff).hp*(type==='boss'?1-.04*ml('bane'):1-.02*ml('smallfry'))*(TM.hp||1);
+  const f=FOES[type],w=G.wave,sc=Math.pow(1.22,Math.min(w,5)-1)*Math.pow(1.245,Math.max(0,w-5))*(1+.35*G.depth)*(mini?.45:1)*dOf(G.diff).hp*(type==='boss'?1-.04*ml('bane'):1-.02*ml('smallfry'))*(TM.hp||1);
   const hp=f.hp*sc/(type==='boss'?1:WAVE_LEN);
   const e={t:type,hp,max:hp,d:0,seg:0,x:G.path.pts[0][0],y:G.path.pts[0][1],ang:0,mini:!!mini,
     speed:f.speed*(1+.012*w)*(1+.04*G.depth)*(TM.speed||1)*dOf(G.diff).spd*(1-.02*ml('fog')),
@@ -2026,7 +2096,7 @@ function hurt(e,dmg,raw,src,st){
     let gm=G.m.goldMul*(st?st.goldX:1);for(const a of G.gAura||[])if(Math.abs(e.x-a.x)<=a.R+.5&&Math.abs(e.y-a.y)<=a.R+.5)gm*=1+a.X;
     G.gf=(G.gf||0)+e.gold*gm;{const g=Math.floor(G.gf);G.gold+=g;G.gf-=g}   /* fractions of gold carry over */
     if(e.t==='boss'){G.bossKills++;if(G.bounty)G.gold+=G.bounty;G.gold+=15*ml('bountyb');G.lives+=ml('rally')}
-    G.kills=(G.kills||0)+1;
+    G.kills=(G.kills||0)+1;gainBXP(e.t==='boss'?(e.mini?6:15):e.child||e.gold===0?.3:1);
     if(src)G.mk[src]=(G.mk[src]||0)+1;
     if(e.poisAsc&&e.poisT>0)for(const o of G.foes)if(!o.dead&&o!==e&&Math.hypot(o.x-e.x,o.y-e.y)<1.3){o.pois=Math.max(o.poisT>0?o.pois:0,e.pois);o.poisT=3;o.poisSrc='venom';o.poisAsc=true}
     if(e.t==='brood'){const n=TM.brood||3;for(let i=0;i<n;i++){const m=spawn('moth',e);m.hp=m.max=m.max*.45;m.gold=GOLD_K/WAVE_LEN;m.d=Math.max(0,e.d-.2*i)}}
@@ -2163,8 +2233,10 @@ function step(dt){
     if(e.stunT>0){e.stunT-=dt;e.flash=Math.max(0,e.flash-dt);continue}
     e.flash=Math.max(0,e.flash-dt);
     const dash=F.dash&&(e.tm%F.dash[0])>F.dash[0]-F.dash[1]?F.dash[2]:1,rage=F.enrage?2-e.hp/e.max:1;
-    e.d+=e.speed*(e.slowT>0?1-e.slowF:1)*e.hx*dash*rage*dt;
+    e.d+=e.speed*(e.slowT>0?1-e.slowF:1)*(e.hx||1)*dash*rage*dt;
+    if(!(e.d>=0))e.d=0;   /* never let a bad number strand a foe off the trail */
     if(e.d>=P.total){e.dead=true;if(G.ward>0){G.ward--;G.fx.push({k:'r',x:e.x,y:Math.min(e.y,H-.5),r:1,life:.6,max:.6,col:'#9be3a9'});toast('Warding stone','A foe slipped through but cost no lives.')}else G.lives-=e.t==='boss'?Math.max(1,e.lives-ml('stout')):e.lives;continue}
+    while(e.seg>0&&e.d<P.cum[e.seg])e.seg--;
     while(e.seg<P.pts.length-2&&e.d>P.cum[e.seg+1])e.seg++;
     const a=P.pts[e.seg],b=P.pts[e.seg+1],L=P.cum[e.seg+1]-P.cum[e.seg],k=(e.d-P.cum[e.seg])/L;
     e.x=a[0]+(b[0]-a[0])*k;e.y=a[1]+(b[1]-a[1])*k;e.ang=Math.atan2(b[1]-a[1],b[0]-a[0]);
@@ -2207,7 +2279,7 @@ function step(dt){
     const dx=sh.tx-sh.x,dy=sh.ty-sh.y,dd=Math.hypot(dx,dy),mv=sh.spd*dt;
     if(dd>0){sh.vx=dx/dd;sh.vy=dy/dd}
     if(sh.sk===undefined)sh.sk=curSkin(sh.type);
-    if(rlv(sh.sk)>=4&&!RM&&Math.random()<dt*22)G.fx.push({k:'m',m:MOTIF[sh.type],x:sh.x,y:sh.y,vx:(Math.random()-.5)*.8,vy:(Math.random()-.5)*.8,life:.35,max:.35,col:fxCol(sh.sk,G.time,Math.floor(Math.random()*3))});
+    if(rlv(sh.sk)>=4&&!RM&&Math.random()<dt*22)G.fx.push({k:'m',m:(sh.sk&&sh.sk.mo)||MOTIF[sh.type],x:sh.x,y:sh.y,vx:(Math.random()-.5)*.8,vy:(Math.random()-.5)*.8,life:.35,max:.35,col:fxCol(sh.sk,G.time,Math.floor(Math.random()*3))});
     if(dd<=mv){sh.done=true;land(sh)}else{sh.x+=dx/dd*mv;sh.y+=dy/dd*mv}
   }
   G.shots=G.shots.filter(s=>!s.done);
@@ -2231,7 +2303,11 @@ function endWave(){
   else if(G.wave>meta.best){meta.best=G.wave;save()}
   if(!G.endless&&G.wave>=MAXW){endRun(true);return}
   if(G.endless&&!G.event&&G.wave%5===0)G.shiftNext=true;
-  G.state='cards';G.rerolls=ml('reroll');offerCards();
+  if(nextBoon())return;
+  G.state='build';
+  if(G.shiftNext){G.shiftNext=false;shiftWorld()}
+  snapRun();renderTray();hud(true);bxHud();
+  if(auto)setTimeout(()=>{if(G.state==='build'&&!paused)sendWave()},700);
 }
 /* endless: every 5 waves the world (and its twist) changes and a new trail is carved */
 function shiftWorld(){
@@ -2246,7 +2322,7 @@ function pathFrom(cells,pts){const cum=[0];for(let i=1;i<pts.length;i++)cum.push
   return{cells,pts,cum,total:cum[cum.length-1],set:new Set(cells.map(([a,b])=>a+','+b))}}
 function snapRun(){
   if(!G||G.state!=='build')return;
-  meta[saveKey(runMode())]={v:2,ev:G.event?EVENT.id:undefined,depth:G.depth,world:G.world,diff:G.diff,wave:G.wave,lives:G.lives,gold:G.gold,bossKills:G.bossKills,kills:G.kills||0,ward:G.ward||0,patron:G.patron||0,sw:G.sw||0,
+  meta[saveKey(runMode())]={v:2,ev:G.event?EVENT.id:undefined,depth:G.depth,world:G.world,diff:G.diff,wave:G.wave,lives:G.lives,gold:G.gold,bossKills:G.bossKills,kills:G.kills||0,ward:G.ward||0,patron:G.patron||0,sw:G.sw||0,bxp:G.bxp||0,blv:G.blv||0,bpend:G.bpend||0,
     gf:G.gf||0,towers:G.towers.map(t=>({type:t.type,x:t.x,y:t.y,p:(t.p||[0,0]).slice(),ak:t.ak==null?null:t.ak,at:t.at||0,spent:t.spent})),path:{cells:G.path.cells,pts:G.path.pts},
     m:G.m,taken:G.taken,mk:G.mk,used:[...G.used],at:Date.now()};
   save();
@@ -2255,7 +2331,7 @@ function resumeRun(mode){
   const k=saveKey(mode),r=meta[k];if(!r)return false;
   if(r.v!==2||(mode==='event'&&(r.ev!==EVENT.id||!evLive()))){delete meta[k];save();return false}
   newRun(r.depth,mode!=='campaign');if(mode==='event'){G.event=true}applyTheme(r.world);
-  Object.assign(G,{gf:r.gf||0,world:r.world,diff:r.diff,wave:r.wave,lives:r.lives,gold:r.gold,bossKills:r.bossKills,kills:r.kills,ward:r.ward,patron:r.patron||0,sw:r.sw||0,
+  Object.assign(G,{gf:r.gf||0,world:r.world,diff:r.diff,wave:r.wave,lives:r.lives,gold:r.gold,bossKills:r.bossKills,kills:r.kills,ward:r.ward,patron:r.patron||0,sw:r.sw||0,bxp:r.bxp||0,blv:r.blv||0,bpend:r.bpend||0,
     m:Object.assign(G.m,r.m),taken:r.taken||{},mk:r.mk||{},used:new Set(r.used||[])});
   G.towers=(r.towers||[]).filter(t=>TOWERS[t.type]).map(t=>({type:t.type,x:t.x,y:t.y,p:(t.p||[0,0]).slice(),ak:t.ak==null?undefined:t.ak,at:t.at||undefined,spent:t.spent,cd:0}));
   G.path=pathFrom(r.path.cells,r.path.pts);G.amb=makeAmb();drawBG();
@@ -2273,7 +2349,7 @@ function offerCards(){
     let tot=avail.reduce((a,c)=>a+wt(c),0),r=Math.random()*tot;
     for(const c of avail){r-=wt(c);if(r<=0){pick.push(c);break}}
   }
-  $('#pickSub').textContent=G.wave===0?`${TH.name} · head start · pick a boon before the first wave`:G.event?`${TH.name} · wave ${G.wave} cleared · best ${Math.max(meta.bestEvent||0,G.wave)}`:G.endless?`${TH.name} · wave ${G.wave} cleared · ${G.shiftNext?'the world shifts after this pick':`world shifts in ${5-G.wave%5} wave${5-G.wave%5>1?'s':''}`}`:`${TH.name} · wave ${G.wave} cleared · ${MAXW-G.wave} to go`;
+  $('#pickSub').textContent=G.wave===0&&!G.blv?`${TH.name} · head start · pick a boon before the first wave`:G.state==='cards'&&G.blv?`${TH.name} · boon level ${G.blv}${G.bpend?` · ${G.bpend} more waiting`:''}`:G.event?`${TH.name} · wave ${G.wave} cleared · best ${Math.max(meta.bestEvent||0,G.wave)}`:G.endless?`${TH.name} · wave ${G.wave} cleared · ${G.shiftNext?'the world shifts after this pick':`world shifts in ${5-G.wave%5} wave${5-G.wave%5>1?'s':''}`}`:`${TH.name} · wave ${G.wave} cleared · ${MAXW-G.wave} to go`;
   const top=Math.max(0,...pick.map(c=>c.rar));$('#pick').style.setProperty('--hc',RC[top]);
   const fx=c=>c.rar<3?'':`<span class="bfx" aria-hidden="true">${Array.from({length:c.rar===4?14:8},()=>`<i style="left:${(Math.random()*100).toFixed(1)}%;--t:${(2.2+Math.random()*2.4).toFixed(2)}s;--dl:${(-Math.random()*4).toFixed(2)}s;--x:${(Math.random()*30-15).toFixed(0)}px"></i>`).join('')}</span>`;
   const cs=$('#cards');cs.classList.remove('chosen');cs.classList.toggle('many',pick.length>3);cs.classList.toggle('lots',pick.length>5);
@@ -2287,9 +2363,34 @@ function offerCards(){
   const rb=$('#reroll');rb.hidden=!ml('reroll');rb.disabled=G.rerolls<=0;rb.textContent=`Reroll (${G.rerolls})`;
   show('pick');
 }
+/* boon XP: every kill and every lantern upgrade fills it; each level grants a boon pick and costs more than the last */
+const bNeed=L=>Math.round(45*Math.pow(1.3,L));
+function gainBXP(n){
+  if(!G||G.state==='camp'||G.state==='over')return;
+  G.bxp=(G.bxp||0)+n*(1+.08*ml('scholar'));let up=0;
+  while(G.bxp>=bNeed(G.blv||0)){G.bxp-=bNeed(G.blv||0);G.blv=(G.blv||0)+1;G.bpend=(G.bpend||0)+1;up++}
+  if(up){toast(up>1?`${up} boons ready`:'Boon ready',G.state==='wave'?'Pick it when the wave ends.':'Choose your boon.');$('#boonBtn').classList.add('rdy');
+    if(G.state==='build'&&$('#pick').hidden)setTimeout(()=>{if(G.state==='build'&&G.bpend>0)nextBoon()},250)}
+  bxHud();
+}
+function nextBoon(){if(G.bpend>0){G.bpend--;G.state='cards';G.rerolls=ml('reroll');offerCards();return true}return false}
+function bxHud(){if(!G)return;const L=G.blv||0,need=bNeed(L);$('#bxLv').textContent=L;$('#bxFill').style.width=Math.min(100,(G.bxp||0)/need*100)+'%';
+  $('#boonBtn').classList.toggle('rdy',(G.bpend||0)>0)}
+function showBoons(){
+  const L=G.blv||0,need=bNeed(L),tk=Object.entries(G.taken||{}).map(([id,n])=>[CARDS.find(c=>c.id===id),n]).filter(x=>x[0]).sort((a,b)=>b[0].rar-a[0].rar);
+  $('#bxSub').textContent=`Boon level ${L}${G.bpend?` · ${G.bpend} ready`:''}`;$('#bxBar').style.width=Math.min(100,(G.bxp||0)/need*100)+'%';
+  $('#bxText').textContent=`${Math.floor(G.bxp||0)} / ${need} boon XP to the next boon. Kills and lantern upgrades fill it.${G.bpend?' Your next pick opens between waves.':''}`;
+  $('#bxList').innerHTML=tk.length?tk.map(([c,n])=>`<div class="bn bx rk${c.rar}"><span class="bsig">${bIcon(c)}</span><span class="btx"><span class="btop"><span class="rt r-${RK[c.rar]}">${RN[c.rar]}</span>${n>1?`<span class="bfor">×${n}</span>`:''}</span><b class="nm">${c.name}</b><p>${c.dex||(typeof c.text==='function'?'':c.text)}</p></span></div>`).join(''):
+    '<p class="hint" style="margin:0;text-align:center">No boons yet. Snuff foes and upgrade lanterns to earn your first one.</p>';
+  if(G.state==='wave')paused=true;show('boonsOv');
+}
+$('#boonBtn').onclick=()=>{if(!G||G.state==='camp'||G.state==='over')return;if(G.state==='build'&&G.bpend>0){nextBoon();return}showBoons()};
+$('#bxClose').onclick=()=>{hide('boonsOv');if(G.state==='wave'&&$('#menu').hidden)paused=false};
 function takeCard(c){
   if(c){c.ap(G.m,G);G.taken[c.id]=(G.taken[c.id]||0)+1;const bt=meta.boonsTaken||(meta.boonsTaken={});bt[c.id]=(bt[c.id]||0)+1;G.gold+=5*ml('boongold')}else G.gold+=25+25*ml('patient');
   hide('pick');G.state='build';
+  if(nextBoon()){bxHud();return}   /* more picks waiting */
+  bxHud();
   if(G.shiftNext){G.shiftNext=false;shiftWorld()}
   snapRun();
   renderTray();hud(true);
@@ -2384,6 +2485,12 @@ function renderProfile(){
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'0.18.1',d:'Oct 14, 2026',major:1,title:'The Witching Hour',theme:'halloween',
+   hl:[['Boon XP','No more boon every wave. Snuff foes and upgrade lanterns to fill boon XP, and pick a boon each time it levels up.'],
+       ['A real challenge','Much less gold, tougher foes and pricier upgrades. Normal is no longer a stroll.'],
+       ['Hallow’s Eve shop','An Event skin for every lantern plus a menu theme, one by one or as a bundle.'],
+       ['Hourly shop','Six featured skins that change every hour, including 36 new shop-only skins.']],
+   notes:['Boons now come from boon XP instead of after every wave. Every foe you snuff and every lantern upgrade you buy adds a little, and each level takes more XP than the last. A pick opens between waves, and the new Boons button in a run shows your progress and every boon you have.','Balance: foes drop about 15% less gold than 0.18.0 and wave-clear gold is lower. Foes get tougher faster after wave 5 and in deeper worlds (+35% health per depth instead of +30%). Path upgrades and ascensions cost about 20% more.','Camp upgrades cost more, especially at high levels, and the strongest ones are toned down: Whetstone +4% damage per level, Bellows +3% fire rate, Deep purse +3% gold, Thrift −1.5%, Armor breaker −4%, Wave tithe +2 gold, Kindling +20 gold. Runs now start with 100 gold.','New camp upgrade: Boon scholar, +8% boon XP per level.','The shop now shows six featured skins that change every hour, and 36 new shop-only skins (a Legendary, Mythic and Celestial for every lantern) join the rotation.','Hallow’s Eve event shop: 12 new Event skins, one for every lantern, plus the Hallow’s Eve menu theme. Buy them one by one or get the whole set for 450 moonstones.','Event skins now have full Exotic-level effects plus their own: circling bats, drifting ghosts, a blood-moon halo and a flickering jack-o’-lantern glow.','Animated rarity borders now loop smoothly instead of jumping.','Fixed foes getting stuck at the top-left corner of the board, which could stop a wave from ever ending.']},
   {v:'0.18.0',d:'Oct 14, 2026',major:1,title:'Hollow Harvest',theme:'halloween',
    hl:[['Halloween event','The Hollow Harvest: an endless, harder event world with bats, jacks, ghosts, skeletons and the Pumpkin King.'],
        ['Event pass','25 free tiers bought with candy from the event world. Most hold brand-new Event skins.'],
@@ -2504,7 +2611,7 @@ function renderHow(){
     <li>Foes come in <b>clumps</b> with short pauses between them. Halfway through each wave you get half of the wave's gold bonus, and the rest when it's cleared.</li>
     <li><b>1×/2×/3×</b> changes game speed. <b>Auto</b> sends the next wave for you.</li>
     <li>On a computer: <b>Space</b> sends the next wave, <b>1–9</b> pick a lantern to place, <b>U</b> and <b>I</b> upgrade the selected lantern's two paths, <b>M</b> merges, <b>F</b> changes speed, <b>P</b> pauses and <b>Esc</b> or right-click cancels.</li></ul></div>
-  <div class="hc"><h3>Boons</h3><p>After each wave, <b>pick one boon</b> from a hand of cards. They last for the rest of the run. Boons come in five rarities: Common, Rare, Legendary, Mythic and Exotic. Rarer ones are stronger but show up less often.</p></div>
+  <div class="hc"><h3>Boons</h3><p>Every foe you snuff and every lantern upgrade you buy earns <b>boon XP</b>. Each time it levels up, <b>pick one boon</b> from a hand of cards (between waves if a wave is running). Each level needs a little more XP than the last. Tap <b>Boons</b> during a run to see the ones you have. Boons come in five rarities: Common, Rare, Legendary, Mythic and Exotic. Rarer ones are stronger but show up less often.</p></div>
   <div class="hc full"><h3>Foes</h3><div class="foes">${FOEINFO.map(([k,n,d])=>`<div class="foe"><canvas data-foe="${k}" width="88" height="88" aria-hidden="true"></canvas><b>${n}</b><span>${d}</span></div>`).join('')}</div></div>
   <div class="hc"><h3>Embers &amp; camp</h3><p>Every run pays out <b>embers</b>, win or lose. Spend them on new lanterns, skins and camp upgrades that make every future run stronger.</p></div>
   <div class="hc"><h3>Levels &amp; moonstones</h3><p>Every run earns <b>XP</b> for waves cleared, bosses beaten and wins, with a bonus in deeper worlds. The same XP raises your <b>player level</b> and your <b>Pass tier</b>. Level ups and first-time world clears give <b>moonstones</b>, which you spend in the Shop.</p></div>
@@ -2564,7 +2671,7 @@ function renderWorlds(){
       <span class="d">Depth ${d}${lock?' · locked':beat?' · beaten':''}</span><span class="n">${lock?'???':T.name}</span>
       <p>${lock?`Clear all 20 waves at depth ${d-1} to reveal this world.`:T.twist}</p>
       ${lock?'':nf?`<span class="nf"><i style="background:${FOES[nf].col}"></i>New foe: <b>${FOES[nf].name}</b>. ${FOES[nf].tip}</span>`:'<span class="nf"><i style="background:#e9e2cf"></i>Meet the moths, wisps, beetles and broods.</span>'}
-      ${!lock&&d?`<span class="sc">Foes +${d*30}% health · embers +${d*25}%</span>`:''}</button>`};
+      ${!lock&&d?`<span class="sc">Foes +${d*35}% health · embers +${d*25}%</span>`:''}</button>`};
   const open=collOpen();
   $('#worlds').innerHTML=wcard(0)+COLLS.map((C,ci)=>{const ds=[];for(let d=C.from;d<=C.to&&d<=MAXD;d++)ds.push(d);if(!ds.length)return'';
     const beat=ds.filter(d=>(meta.cleared||[]).includes(d)).length,seen=ds.filter(d=>d<=meta.maxDepth).length,on=open.includes(ci);
@@ -2745,10 +2852,10 @@ function slideHTML(t){
   let panel,bar;
   if(lanTab==='skins'){
     const tiles=shown.map(s=>{const own=ownsSkin(t,s.id),eq=eqSkin(t)===s.id;
-      const lab=eq?'Equipped':own?'Owned':s.ev?'Event':s.pass?(seasonOver()?'Shop':'Pass'):s.code?'Code':priceHTML(s),alab=eq?'Equipped':own?'Owned':s.ev?'Halloween event pass':s.pass?'Season 1 exclusive':s.code?'Code only':`${priceOf(s)} ${s.moon?'moonstones':'embers'}`;
+      const lab=eq?'Equipped':own?'Owned':s.ev?'Event':s.evShop?'Event shop':s.shopOnly?'Shop':s.pass?(seasonOver()?'Shop':'Pass'):s.code?'Code':priceHTML(s),alab=eq?'Equipped':own?'Owned':s.ev?'Halloween event pass':s.evShop?'Halloween event shop':s.shopOnly?'Shop rotation only':s.pass?'Season 1 exclusive':s.code?'Code only':`${priceOf(s)} ${s.moon?'moonstones':'embers'}`;
       return `<button class="skt r-${s.rar}${s.id===pid?' sel':''}${eq?' eq':''}${!own&&!canBuy(s)?' nope':''}" data-skin="${t}:${s.id}" aria-pressed="${s.id===pid}" aria-label="${s.name}, ${RAR[s.rar]}, ${alab}">
         <span class="sw${s.cycle?' spin':''}" style="${swStyle(s)}"></span><span class="sn">${s.name}</span><span class="sp">${lab}</span></button>`}).join('');
-    panel=`<div class="skhead"><span>${shown.length} of ${SKINS[t].length} skins${nHid?' · unowned hidden':''}</span><button class="btn tog" data-hideun aria-pressed="${hideUn}"><span class="sw2"></span>Hide unowned</button></div><div class="skins">${tiles}</div>`;
+    panel=`<div class="skhead"><span>${shown.length} of ${SKINS[t].length} skins${nHid?' · unowned hidden':''}</span><button class="btn tog" data-hideun aria-pressed="${hideUn}"><span class="sw2"></span>Hide unowned</button></div><div class="skins${shown.length>10?' many':''}">${tiles}</div>`;
     const own=ownsSkin(t,pid),eq=eqSkin(t)===pid;
     const act=!un?(T.pass?`<span class="hint" style="margin:0">${seasonOver()?'Season 1 is over. Look for this lantern in the Shop rotation.':`Season 1 Pass exclusive · premium tier ${passTierOf('tower',t)}`}</span>`:
         `<button class="btn primary" data-unlock="${t}" ${meta.embers<u.base?'disabled':''}>Unlock lantern · ${EM} ${u.base}</button>`):
@@ -2847,7 +2954,8 @@ const MENU_THEMES={
   snow:{name:'First Snow',desc:'Quiet snowfall under a pale moon.',bg:'#0a1424',acc:'#cfe8ff',ac:'#ffffff',fall:'snow'},
   starfall:{name:'Starfall',desc:'Shooting stars streak across the sky.',bg:'#05060f',acc:'#ffe9a8',ac:'#ffffff',shoot:1},
   aurora:{name:'Aurora',desc:'Ribbons of green and violet light.',bg:'#03100d',acc:'#7dffb0',ac:'#c6a8ff',aurora:1},
-  eclipse:{name:'Hollow Eclipse',desc:'The hollow moon, burning at its edges.',bg:'#0b0405',acc:'#ff5a3d',ac:'#ffb36b',moon:'eclipse'}
+  eclipse:{name:'Hollow Eclipse',desc:'The hollow moon, burning at its edges.',bg:'#0b0405',acc:'#ff5a3d',ac:'#ffb36b',moon:'eclipse'},
+  hallow:{name:'Hallow’s Eve',desc:'A pumpkin moon, falling leaves and bats on the wind.',bg:'#140814',acc:'#ff7a1a',ac:'#b48cff',moon:'full',fall:'leaf',bats:1}
 };
 /* reward table: f = free lane, p = premium lane. Milestones (every 10th tier) hold Mythic/Exotic skins or a pass lantern. */
 const PASSR=(()=>{
@@ -2996,7 +3104,7 @@ function buyPass(){if(!meta.passPremium&&!seasonOver()&&meta.moon>=PASS_COST){me
 $('#psBuy').onclick=buyPass;
 
 /* shop */
-const PREM=[];ORDER.forEach(t=>SKINS[t].forEach(s=>{if(s.moon&&!s.pass)PREM.push([t,s])}));
+const PREM=[];ORDER.forEach(t=>SKINS[t].forEach(s=>{if(s.moon&&!s.pass&&!s.evShop)PREM.push([t,s])}));
 const TOWER_PRICE={moonwell:200,bell:300,eclipse:450};
 /* after Season 1 ends, pass skins and pass lanterns join the featured rotation */
 function shopPool(){
@@ -3006,14 +3114,31 @@ function shopPool(){
 }
 const FEAT_OFF=.75,PACKS=[{m:10,e:80},{m:25,e:220},{m:60,e:600}];
 function dayIdx(){const d=new Date();return Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/86400000)}
+const hourIdx=()=>Math.floor(Date.now()/3600000);
 function featured(){
-  let seed=(dayIdx()*7919)%233280;const rnd=()=>(seed=(seed*9301+49297)%233280)/233280;
+  let seed=(hourIdx()*7919)%233280;const rnd=()=>(seed=(seed*9301+49297)%233280)/233280;
   const pool=[...shopPool()],out=[];
-  while(out.length<3&&pool.length){const it=pool.splice(Math.floor(rnd()*pool.length),1)[0];if(!out.some(o=>o[0]===it[0]&&o[1].id===it[1].id))out.push(it)}
+  while(out.length<6&&pool.length){const it=pool.splice(Math.floor(rnd()*pool.length),1)[0];if(!out.some(o=>o[0]===it[0]&&o[1].id===it[1].id))out.push(it)}
   return out;
 }
-function untilMidnight(){const n=new Date(),m=new Date(n);m.setHours(24,0,0,0);const s=Math.max(0,Math.floor((m-n)/1000));return `new skins in ${Math.floor(s/3600)}h ${String(Math.floor(s%3600/60)).padStart(2,'0')}m`}
+function untilMidnight(){const s=Math.max(0,Math.floor(((hourIdx()+1)*3600000-Date.now())/1000));return `new skins in ${Math.floor(s/60)}m ${String(s%60).padStart(2,'0')}s`}
+let featKey=0;
+const hwOwned=()=>HWSK.filter(([t,id])=>ownsSkin(t,id)).length+(meta.themes&&meta.themes.hallow?1:0);
+function hwBundlePrice(){const left=HWSK.filter(([t,id])=>!ownsSkin(t,id)).length*HW_PRICE+(meta.themes&&meta.themes.hallow?0:HW_THEME);return Math.round(HW_BUNDLE*left/(HWSK.length*HW_PRICE+HW_THEME))}
+function renderEvShop(){
+  const el=$('#evShop');if(!evLive()){el.innerHTML='';return}
+  const full=HWSK.length*HW_PRICE+HW_THEME,bp=hwBundlePrice(),done=hwOwned()===HWSK.length+1,left=HWSK.filter(([t,id])=>!ownsSkin(t,id)).length*HW_PRICE+(meta.themes.hallow?0:HW_THEME);
+  el.innerHTML=`<div class="evshop"><div class="esh"><div><span class="sec" style="margin:0;color:#ffb070">Halloween event shop · ${timeLeftTo(EVENT.end)} left</span><b>Hallow’s Eve</b>
+    <p>An Event skin for every lantern and a matching menu theme. Gone when the event ends.</p></div>
+    <div class="ebun">${done?'<span class="hint" style="margin:0;color:var(--good)">You own the whole set</span>':`<span class="eold">${MS} ${left}</span><button class="btn primary" data-hwall ${meta.moon<bp?'disabled':''}>Get the whole set · ${MS} ${bp}</button><small>Save ${Math.round((1-bp/Math.max(1,left))*100)}% with the bundle</small>`}</div></div>
+    <div class="feat evfeat">${HWSK.map(([t,id])=>{const s=SKINS[t].find(x=>x.id===id),own=ownsSkin(t,id);
+      return `<div class="fc r-event"><canvas data-t="${t}" data-s="${id}" width="240" height="240" aria-hidden="true"></canvas><span class="rt r-event">Event</span><b class="fn">${s.name}</b><span class="ft">${TOWERS[t].name} skin${unlocked(t)?'':' · lantern not unlocked yet'}</span>
+        <div class="fp"><span>${MS} ${HW_PRICE}</span></div><button class="btn primary" data-hwbuy="${t}:${id}" ${own||meta.moon<HW_PRICE?'disabled':''}>${own?'Owned':'Buy'}</button></div>`}).join('')}
+      <div class="fc r-event"><span class="thm hwthm" aria-hidden="true"></span><span class="rt r-event">Menu theme</span><b class="fn">${MENU_THEMES.hallow.name}</b><span class="ft">${MENU_THEMES.hallow.desc}</span>
+        <div class="fp"><span>${MS} ${HW_THEME}</span></div><button class="btn primary" data-hwtheme ${meta.themes.hallow||meta.moon<HW_THEME?'disabled':''}>${meta.themes.hallow?'Owned':'Buy'}</button></div></div></div>`;
+}
 function renderShop(){
+  featKey=hourIdx();renderEvShop();
   const P=meta.passPremium;
   const over=seasonOver();
   $('#shopPass').innerHTML=over?`<div class="passcard"><div><span class="sec" style="margin:0">Season 1 · ended</span><b>The Hollow Moon</b><p>The season is over. Its exclusive skins and lanterns now appear in the featured rotation below.</p></div></div>`:
@@ -3034,6 +3159,9 @@ document.querySelector('[data-view=shop]').addEventListener('click',e=>{
   if((b=e.target.closest('[data-fbuy]'))&&!b.disabled){const [t,id]=b.dataset.fbuy.split(':');
     if(id==='tower'){const p=Math.round(TOWER_PRICE[t]*FEAT_OFF);if(!unlocked(t)&&meta.moon>=p){meta.moon-=p;meta.ptow[t]=1}}
     else{const s=SKINS[t].find(x=>x.id===id);if(!ownsSkin(t,id)&&canBuy(s,FEAT_OFF,true)){pay(s,FEAT_OFF);meta.owned[t+':'+id]=1;meta.eq[t]=id;applySkins()}}}
+  else if((b=e.target.closest('[data-hwbuy]'))&&!b.disabled){const [t,id]=b.dataset.hwbuy.split(':');if(evLive()&&!ownsSkin(t,id)&&meta.moon>=HW_PRICE){meta.moon-=HW_PRICE;meta.owned[t+':'+id]=1;if(unlocked(t)){meta.eq[t]=id;applySkins()}}}
+  else if((b=e.target.closest('[data-hwtheme]'))&&!b.disabled){if(evLive()&&!meta.themes.hallow&&meta.moon>=HW_THEME){meta.moon-=HW_THEME;meta.themes.hallow=1}}
+  else if((b=e.target.closest('[data-hwall]'))&&!b.disabled){const bp=hwBundlePrice();if(evLive()&&meta.moon>=bp){meta.moon-=bp;HWSK.forEach(([t,id])=>{meta.owned[t+':'+id]=1});meta.themes.hallow=1;applySkins();toast('Hallow’s Eve unlocked','12 Event skins and the Hallow’s Eve menu theme are yours.')}}
   else if((b=e.target.closest('[data-pack]'))&&!b.disabled){const p=PACKS[+b.dataset.pack];if(meta.moon>=p.m){meta.moon-=p.m;meta.embers+=p.e}}
   else return;
   save();renderView();
@@ -3042,7 +3170,8 @@ let shopTick=0;
 function drawShop(){
   const T=performance.now()/1000;
   document.querySelectorAll('#feat canvas').forEach((cv,i)=>drawPrev(cv,cv.dataset.t,SKINS[cv.dataset.t].find(x=>x.id===cv.dataset.s)||SKINS[cv.dataset.t][0],T,i));
-  if(T-shopTick>20){shopTick=T;$('#shopTimer').textContent=untilMidnight()}
+  document.querySelectorAll('#evShop canvas').forEach((cv,i)=>drawPrev(cv,cv.dataset.t,SKINS[cv.dataset.t].find(x=>x.id===cv.dataset.s),T,i));
+  if(T-shopTick>1){shopTick=T;$('#shopTimer').textContent=untilMidnight();if(featKey!==hourIdx())renderShop()}
 }
 
 /* animated title sky */
@@ -3097,6 +3226,8 @@ function drawSky(dt){
     c.fillStyle=cg;c.beginPath();c.arc(mx,my,mr*1.9*p,0,7);c.fill();c.fillStyle='#030102';c.beginPath();c.arc(mx,my,mr,0,7);c.fill()}
   else{c.fillStyle=mix(th.acc,'#ffffff',.75);c.beginPath();c.arc(mx,my,mr,0,7);c.fill();
     c.fillStyle=mix(th.bg,'#000000',.2);c.beginPath();c.arc(mx+mr*.38,my-mr*.2,mr*.92,0,7);c.fill()}
+  if(th.bats){c.fillStyle='#0a040a';for(let i=0;i<7;i++){const sp=.035+.02*(i%3),x=((T*sp+i*.17)%1.2-.1)*skyW,y=skyH*(.1+.07*i%.4)+Math.sin(T*1.3+i)*14,r=4+(i%3)*2;
+    c.beginPath();motif(c,'bat',x,y,r,'#0a040a')}}
   for(const s of stars){c.globalAlpha=.25+.6*Math.abs(Math.sin(T*.8+s.ph));c.fillStyle='#ffffff';c.fillRect(s.x*skyW,s.y*skyH,s.r,s.r)}
   c.globalAlpha=1;
   if(th.shoot){
@@ -3141,7 +3272,7 @@ function renderSettings(){
   $('#themes').innerHTML=Object.entries(MENU_THEMES).map(([id,m])=>{const own=id==='default'||meta.themes[id],bg=m.bg||THEMES[meta.depth].bg,acc=m.acc||THEMES[meta.depth].acc;
     return `<button class="thc${cur===id?' on':''}${own?'':' lock'}" data-theme="${id}" ${own?'':'disabled'} aria-pressed="${cur===id}">
       <span class="tp" style="background:linear-gradient(${bg},${mix(bg,acc,.4)})"><i style="background:${m.moon==='eclipse'?'#000':acc};box-shadow:0 0 12px ${acc}"></i></span>
-      <span>${m.name}</span><small>${own?(cur===id?'Equipped':'Tap to equip'):`Season 1 Pass · tier ${passTierOf('theme',undefined,id)}`}</small></button>`}).join('');
+      <span>${m.name}</span><small>${own?(cur===id?'Equipped':'Tap to equip'):id==='hallow'?'Halloween event shop':`Season 1 Pass · tier ${passTierOf('theme',undefined,id)}`}</small></button>`}).join('');
 }
 $('#themes').onclick=e=>{const b=e.target.closest('[data-theme]');if(!b||b.disabled)return;meta.menuTheme=b.dataset.theme;save();renderSettings()};
 $('#updChk').onclick=()=>{if(upd.state==='outdated')showUpdate();else checkVersion(true)};
@@ -3219,6 +3350,7 @@ addEventListener('keydown',e=>{
 const last={};
 function hud(force){
   const w=G.endless?`${G.wave}/∞`:`${G.wave}/${MAXW}`,l=G.lives,g=G.gold;
+  if(force){bxHud()}
   if(force||last.w!==w){$('#wave').textContent=w;last.w=w}
   if(force||last.l!==l){$('#lives').textContent=l;$('#lives').classList.toggle('low',l<=5);last.l=l}
   if(force||last.g!==g){$('#gold').textContent=g;last.g=g;afford()}
@@ -3291,7 +3423,7 @@ function renderSheet(){
 }
 function buildAt(type,x,y){
   const c=buildCost(type);if(G.gold<c||!canPlace(x,y))return false;G.gold-=c;if(G.patron>0)G.patron--;
-  G.towers.push({type,x,y,p:[ml('veteran')?1:0,0],cd:0,spent:c});G.used.add(type);
+  G.towers.push({type,x,y,p:[ml('veteran')?1:0,0],cd:0,spent:c});G.used.add(type);gainBXP(2);
   puff(x+.5,y+.5,TOWERS[type].color,10);G.fx.push({k:'r',x:x+.5,y:y+.5,r:.6,life:.3,max:.3,col:TOWERS[type].color});
   hud();return true;
 }
@@ -3304,13 +3436,13 @@ $('#sheet').onclick=e=>{
   else if(a==='sell'){G.gold+=Math.round(t.spent*sellRate());G.towers=G.towers.filter(x=>x!==t);G.sel=null}
   else if(a==='p0'||a==='p1'){
     const i=+a[1],ps=pathState(t,i);if(ps.max||ps.lock||G.gold<ps.cost)return;
-    G.gold-=ps.cost;t.spent+=ps.cost;(t.p||(t.p=[0,0]))[i]++;t._fk=null;
+    G.gold-=ps.cost;t.spent+=ps.cost;(t.p||(t.p=[0,0]))[i]++;t._fk=null;gainBXP(3+t.p[i]);
     G.fx.push({k:'r',x:t.x+.5,y:t.y+.5,r:t.p[i]>=5?1.1:.7,life:.35,max:.35,col:i?'#bfe3ff':TOWERS[t.type].color});
     if(t.p[0]>=5&&t.p[1]>=5)toast(`${TOWERS[t.type].name} is ready to ascend`,G.mast[t.type]>=ASC_MAST[0]?'Choose an ascension type in its panel.':`Ascension unlocks at Mastery ${ASC_MAST[0]}.`);
   }else if(a.startsWith('asc')){
     const k=+a.slice(3),c=ascCost(t.type);
     if(isAsc(t)||!(t.p&&t.p[0]>=5&&t.p[1]>=5)||G.mast[t.type]<ASC_MAST[k]||G.gold<c)return;
-    G.gold-=c;t.spent+=c;t.ak=k;t.at=1;t._fk=null;
+    G.gold-=c;t.spent+=c;t.ak=k;t.at=1;t._fk=null;gainBXP(15);
     const [nm,ds]=ascInfo(t.type,k);
     G.fx.push({k:'r',x:t.x+.5,y:t.y+.5,r:1.4,life:.6,max:.6,col:'#ffd75e'});puff(t.x+.5,t.y+.5,'#ffd75e',20);
     toast(`${TOWERS[t.type].name} ascended: ${nm}`,ds);
