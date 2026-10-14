@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0b1012">
 <meta name="description" content="Lanternfall: a tower defense roguelike with incremental progression. Hold the forest trail through the night.">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -30,7 +30,16 @@
   color-scheme:dark;
 }
 [hidden]{display:none!important}
-html,body{height:100%}
+html,body{height:100%;overscroll-behavior:none;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{touch-action:manipulation;-webkit-touch-callout:none}
+button,a,.pc,.skt,.wc,.card,.dif,.mode,.uct,.thc,.ps,.player{touch-action:manipulation}
+img,canvas{-webkit-touch-callout:none;-webkit-user-drag:none}
+@media (hover:none){
+  .btn:hover:not(:disabled){border-color:var(--line)}
+  .btn.primary:hover:not(:disabled){border-color:var(--flame)}
+  .card:hover{transform:none;border-color:var(--line)}
+  button.player:hover{border-color:var(--line)}
+}
 body{margin:0}
 body{background:var(--night);color:var(--ink);font-family:var(--body);overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;transition:background .6s}
 #app{height:100%;box-sizing:border-box;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:8px;max-width:760px;margin:0 auto;
@@ -306,7 +315,7 @@ body.dragging{cursor:grabbing}
 .pill b.mb,.mb{color:#a8d8ff}
 .player{display:flex;align-items:center;gap:14px;background:color-mix(in srgb,var(--moss) 80%,transparent);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);border:1px solid var(--line);border-radius:12px;padding:12px 14px;max-width:380px;box-sizing:border-box}
 .lvl{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;align-content:center;flex:none;border:2px solid var(--flame);box-shadow:0 0 16px -4px var(--flame);background:radial-gradient(circle,color-mix(in srgb,var(--flame) 28%,transparent),transparent 72%)}
-.lvl small{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);line-height:1}
+.lvl small{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);line-height:1}
 .lvl b{font:400 30px/1 var(--display);color:var(--flame)}
 .pxp{flex:1;min-width:0;display:flex;flex-direction:column;gap:7px}
 .pxp .r2{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
@@ -495,7 +504,10 @@ button.ps{font:inherit;color:inherit;cursor:pointer;padding:0;box-sizing:border-
 .wc.on{border-color:var(--acc);box-shadow:0 0 18px -6px var(--acc)}
 .wc.locked{cursor:default;opacity:.5}
 .startbar{position:sticky;bottom:-16px;padding-block:12px 16px;background:linear-gradient(transparent,var(--night) 35%)}
+.startbar{display:flex;flex-direction:column;gap:8px}
 .startbar .btn{width:100%}
+.btn.resume{display:flex;flex-direction:column;align-items:center;gap:3px;border-color:var(--flame);color:var(--flame)}
+.btn.resume span{font:400 12px/1.2 var(--mono);color:var(--dim)}
 .lan{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
 .lc{background:var(--moss);border:1px solid var(--line);border-radius:8px;padding:12px;display:grid;grid-template-columns:64px minmax(0,1fr);gap:2px 12px;align-content:start}
 .lc canvas{grid-row:1/4;width:64px;height:64px}
@@ -578,8 +590,8 @@ hr.sep{border:0;border-top:1px solid var(--line);margin:4px 0;width:100%}
 #cloudChip{display:inline-flex;align-items:center;gap:6px}
 #cloudChip::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--dim)}
 .cloud-on #cloudChip::before{background:var(--good);box-shadow:0 0 6px var(--good)}
-textarea,input[type=text]{font:500 13px/1.4 var(--mono);color:var(--ink);background:var(--moss);border:1px solid var(--line);border-radius:6px;padding:10px;box-sizing:border-box;width:100%;-webkit-user-select:text;user-select:text;resize:vertical}
-input[type=text]{flex:1;min-width:0;width:auto;font-size:15px;text-transform:uppercase}
+textarea,input[type=text]{font:500 16px/1.4 var(--mono);color:var(--ink);background:var(--moss);border:1px solid var(--line);border-radius:6px;padding:10px;box-sizing:border-box;width:100%;-webkit-user-select:text;user-select:text;resize:vertical}
+input[type=text]{flex:1;min-width:0;width:auto;font-size:16px;text-transform:uppercase}
 textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 @media (max-width:420px){.stat b{font-size:15px}.btn{padding:8px 10px}}
 @media (prefers-reduced-motion:reduce){#send.ready{animation:none}.card{transition:none}body{transition:none}}
@@ -587,7 +599,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 
 
 <script>
-/* PWA: offline support and updates (Lanternfall v0.12.1) */
+/* PWA: offline support and updates (Lanternfall v0.13.0) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -666,13 +678,13 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
     <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">Choose a world</h2></header>
     <div class="modes" id="modes" role="radiogroup" aria-label="Game mode">
       <button class="mode" data-mode="campaign" role="radio"><b>Campaign</b><small>Survive 20 waves to beat the world and unlock the next one.</small></button>
-      <button class="mode" data-mode="endless" role="radio"><b>Endless</b><small>No final wave. Every 5 waves the world, its twist and the trail change.</small><span class="best" id="bestEnd"></span></button>
+      <button class="mode" data-mode="endless" role="radio"><b>Endless</b><small>No final wave. Every 5 waves the world and its twist change. Your run saves between waves.</small><span class="best" id="bestEnd"></span></button>
     </div>
     <div class="sec">Difficulty</div>
     <div class="diffs" id="diffs" role="radiogroup" aria-label="Difficulty"></div>
     <div class="sec">World</div>
     <div class="worlds" id="worlds"></div>
-    <div class="startbar"><button class="btn primary big" id="start">Light the lanterns</button></div>
+    <div class="startbar"><button class="btn big resume" id="resumeEnd" hidden></button><button class="btn primary big" id="start">Light the lanterns</button></div>
   </section>
 
   <section class="panel view wide" data-view="lanterns" hidden>
@@ -956,7 +968,7 @@ const CARDS=[
 const RW=[10,4.5,1.6],RN=['Common','Rare','Mythic'];
 
 /* ---------- save ---------- */
-const VERSION='0.12.1';
+const VERSION='0.13.0';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -1568,10 +1580,27 @@ function endWave(){
 /* endless: every 5 waves the world (and its twist) changes and a new trail is carved */
 function shiftWorld(){
   const pool=THEMES.map((_,i)=>i).filter(i=>i!==G.world);G.world=pool[Math.floor(Math.random()*pool.length)];
-  applyTheme(G.world);G.amb=makeAmb();G.path=genPath();
-  let refund=0;G.towers=G.towers.filter(t=>{if(G.path.set.has(t.x+','+t.y)){refund+=t.spent;return false}return true});
-  G.gold+=refund;G.sel=null;drawBG();
-  toast(`World shift: ${TH.name}`,TH.twist+(refund?` Lanterns on the new trail were refunded (+${refund} gold).`:''));
+  applyTheme(G.world);G.amb=makeAmb();drawBG();   /* same trail, new world and conditions */
+  toast(`World shift: ${TH.name}`,TH.twist);
+}
+/* endless runs checkpoint between waves (after the boon pick) and can be continued from the Play page */
+function pathFrom(cells,pts){const cum=[0];for(let i=1;i<pts.length;i++)cum.push(cum[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));
+  return{cells,pts,cum,total:cum[cum.length-1],set:new Set(cells.map(([a,b])=>a+','+b))}}
+function snapRun(){
+  if(!G||!G.endless||G.state!=='build')return;
+  meta.endlessSave={v:1,depth:G.depth,world:G.world,diff:G.diff,wave:G.wave,lives:G.lives,gold:G.gold,bossKills:G.bossKills,kills:G.kills||0,ward:G.ward||0,
+    towers:G.towers.map(t=>({type:t.type,x:t.x,y:t.y,lvl:t.lvl,at:t.at||0,spent:t.spent})),path:{cells:G.path.cells,pts:G.path.pts},
+    m:G.m,taken:G.taken,mk:G.mk,used:[...G.used],at:Date.now()};
+  save();
+}
+function resumeRun(){
+  const r=meta.endlessSave;if(!r)return false;
+  newRun(r.depth,true);applyTheme(r.world);
+  Object.assign(G,{world:r.world,diff:r.diff,wave:r.wave,lives:r.lives,gold:r.gold,bossKills:r.bossKills,kills:r.kills,ward:r.ward,
+    m:Object.assign(G.m,r.m),taken:r.taken||{},mk:r.mk||{},used:new Set(r.used||[])});
+  G.towers=(r.towers||[]).filter(t=>TOWERS[t.type]).map(t=>({type:t.type,x:t.x,y:t.y,lvl:t.lvl,at:t.at||undefined,spent:t.spent,cd:0}));
+  G.path=pathFrom(r.path.cells,r.path.pts);G.amb=makeAmb();drawBG();
+  return true;
 }
 let toastT=0;
 function toast(title,body){const el=$('#toast');el.innerHTML=`<b>${title}</b><span>${body}</span>`;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>{el.hidden=true},4500)}
@@ -1596,6 +1625,7 @@ function takeCard(c){
   if(c){c.ap(G.m,G);G.taken[c.id]=(G.taken[c.id]||0)+1}else G.gold+=25+25*ml('patient');
   hide('pick');G.state='build';
   if(G.shiftNext){G.shiftNext=false;shiftWorld()}
+  snapRun();
   renderTray();hud(true);
   if(auto)setTimeout(()=>{if(G.state==='build'&&!paused)sendWave()},700);
 }
@@ -1624,6 +1654,7 @@ function endRun(win){
   const st=meta.stats||(meta.stats={}),add=(k,v)=>{st[k]=(st[k]||0)+v};
   add('wins',win?1:0);add('bosses',G.bossKills);add('kills',G.kills||0);add('moon',moon);add('embers',total);add('waves',cleared);
   meta.history=(meta.history||[]).concat({xp,w:cleared,d:G.depth,win,e:G.endless?1:0,df:G.diff}).slice(-20);
+  if(G.endless)delete meta.endlessSave;
   /* mastery: 1 point per kill, plus 3 per wave cleared for every lantern type you built */
   meta.mastery=meta.mastery||{};const mUp=[];
   for(const t of G.used){const before=mastInfo(t).L;meta.mastery[t]=(meta.mastery[t]||0)+Math.round(((G.mk[t]||0)+3*cleared)*(1+.1*ml('studious')));const after=mastInfo(t).L;if(after>before)mUp.push(`${TOWERS[t].name} ${before}→${after}`)}
@@ -1686,6 +1717,7 @@ function renderProfile(){
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'0.13.0',d:'Oct 14, 2026',notes:['Endless runs now save after every wave. Continue them any time from the Play page.','In Endless, the trail now stays the same all run. Only the world and its conditions change every 5 waves.','Mobile polish: no more accidental zooming (pinch, double-tap or tapping a text box), no stuck highlights after tapping, no pull-to-refresh or long-press menus, and the game pauses itself if you leave mid-wave.','PC controls: Space, 1–9 to pick lanterns, U to upgrade, M to merge, F for speed, P to pause, Esc or right-click to cancel.']},
   {v:'0.12.1',d:'Oct 14, 2026',notes:['The Lanterns page now fits on one screen with no up-and-down scrolling. Swipe sideways to move between lanterns, which snap into place while the ones beside them fade back.']},
   {v:'0.12.0',d:'Oct 14, 2026',major:1,title:'The Deep Nights',
    hl:[['10 new worlds','Depths 11–20, from Crimson Bog to The Hollow Moon, with new twists like healing foes and bigger swarms.'],
@@ -1758,13 +1790,13 @@ function renderHow(){
   <div class="hc"><h3>Waves</h3><ul>
     <li>Press <b>Send wave</b> when you're ready. You can keep building during a wave.</li>
     <li><b>1×/2×/3×</b> changes game speed. <b>Auto</b> sends the next wave for you.</li>
-    <li>On a keyboard, <b>Space</b> sends the next wave.</li></ul></div>
+    <li>On a computer: <b>Space</b> sends the next wave, <b>1–9</b> pick a lantern to place, <b>U</b> upgrades and <b>M</b> merges the selected lantern, <b>F</b> changes speed, <b>P</b> pauses and <b>Esc</b> or right-click cancels.</li></ul></div>
   <div class="hc"><h3>Boons</h3><p>After each wave, <b>pick one boon</b> from a hand of cards. They last for the rest of the run. Rare and Mythic boons are stronger but show up less often.</p></div>
   <div class="hc full"><h3>Foes</h3><div class="foes">${FOEINFO.map(([k,n,d])=>`<div class="foe"><canvas data-foe="${k}" width="88" height="88" aria-hidden="true"></canvas><b>${n}</b><span>${d}</span></div>`).join('')}</div></div>
   <div class="hc"><h3>Embers &amp; camp</h3><p>Every run pays out <b>embers</b>, win or lose. Spend them on new lanterns, skins and camp upgrades that make every future run stronger.</p></div>
   <div class="hc"><h3>Levels &amp; moonstones</h3><p>Every run earns <b>XP</b> for waves cleared, bosses beaten and wins, with a bonus in deeper worlds. The same XP raises your <b>player level</b> and your <b>Pass tier</b>. Level ups and first-time world clears give <b>moonstones</b>, which you spend in the Shop.</p></div>
   <div class="hc"><h3>Mastery</h3><p>Every lantern has a permanent <b>mastery level</b> from 1 to 100. Kills and waves cleared with it raise it. Each level adds a little damage, every 10th adds fire rate, and levels 25, 50, 75 and 100 earn Bronze, Silver, Gold and Radiant badges.</p></div>
-  <div class="hc"><h3>Endless</h3><p>Pick <b>Endless</b> on the Play page for a run with no last wave. Every 5 waves the world shifts to a new one with its own twist and a new trail. Lanterns caught on the new trail are refunded in full.</p></div>
+  <div class="hc"><h3>Endless</h3><p>Pick <b>Endless</b> on the Play page for a run with no last wave. Every 5 waves the world shifts to a new one with its own look and twist, while your trail and lanterns stay put. Endless runs save after every wave, so you can close the game and continue later from the Play page.</p></div>
   <div class="hc"><h3>Difficulty</h3><p>Pick <b>Easy, Normal, Hard or Nightmare</b> on the Play page. Harder nights mean tougher, faster foes and fewer lives, but pay more embers and XP: ×0.6, ×1, ×1.5 and ×2.25.</p></div>
   <div class="hc"><h3>Worlds</h3><p>Clear all 20 waves to unlock the <b>next depth</b>. Each one is a new world with its own twist, tougher foes and bigger ember rewards.</p></div>
   <div class="hc full"><h3>Tips</h3><ul>
@@ -1806,15 +1838,22 @@ function renderWorlds(){
   const cd=DIFF[meta.diff]?meta.diff:'normal';
   $('#diffs').innerHTML=DORDER.map(k=>{const D=DIFF[k];return `<button class="dif${k===cd?' on':''}" data-diff="${k}" role="radio" aria-checked="${k===cd}" style="--dc:${D.col}">
     <b>${D.name}</b><span class="rw">Rewards ×${D.rew}</span><small>${D.desc}</small></button>`}).join('');
-  const dn=dOf(meta.diff).name;
+  const dn=dOf(meta.diff).name,sv=meta.endlessSave,rb=$('#resumeEnd');newArmed=false;
+  rb.hidden=!(en&&sv);
+  if(en&&sv)rb.innerHTML=`<b>Continue endless</b><span>Wave ${sv.wave} · ${THEMES[sv.world]?THEMES[sv.world].name:''} · ${dOf(sv.diff).name} · ${sv.lives} lives</span>`;
   $('#start').textContent=en?`Start endless · ${THEMES[meta.depth].name} · ${dn}`:`Light the lanterns · ${THEMES[meta.depth].name} · ${dn}`;
 }
 $('#diffs').onclick=e=>{const b=e.target.closest('[data-diff]');if(!b)return;meta.diff=b.dataset.diff;save();renderWorlds()};
 $('#modes').onclick=e=>{const b=e.target.closest('[data-mode]');if(!b)return;meta.mode=b.dataset.mode;save();renderWorlds()};
 $('#worlds').onclick=e=>{const b=e.target.closest('.wc');if(!b||b.disabled)return;meta.depth=+b.dataset.d;save();campPreview();renderWorlds()};
-$('#start').onclick=()=>{newRun(meta.depth,meta.mode==='endless');armT=null;hide('camp');paused=false;renderTray();hud(true);
+let newArmed=false;
+$('#resumeEnd').onclick=()=>{if(!resumeRun())return;armT=null;hide('camp');paused=false;renderTray();hud(true);toast(`Welcome back · wave ${G.wave}`,`${TH.name}. ${TH.twist}`)};
+$('#start').onclick=()=>{
+  if(meta.mode==='endless'&&meta.endlessSave&&!newArmed){newArmed=true;$('#start').textContent='Tap again to start over (your saved endless run will be lost)';return}
+  if(meta.mode==='endless')delete meta.endlessSave;
+  newRun(meta.depth,meta.mode==='endless');armT=null;hide('camp');paused=false;renderTray();hud(true);
   if(G.endless)toast(`Endless · ${TH.name}`,'The world shifts every 5 waves. How long can you hold?');
-  if(ml('headstart')){G.state='cards';G.rerolls=ml('reroll');offerCards()}};
+  if(ml('headstart')){G.state='cards';G.rerolls=ml('reroll');offerCards()}else snapRun()};
 $('#toCamp').onclick=()=>{hide('end');campPreview();show('camp');go('home')};
 
 const UG={
@@ -2276,7 +2315,30 @@ $('#send').onclick=sendWave;
 $('#menuBtn').onclick=()=>{if(G.state==='camp'||G.state==='over')return;paused=true;$('#abandon').textContent='Abandon run';armed=false;show('menu')};
 $('#resume').onclick=()=>{paused=false;hide('menu')};
 $('#abandon').onclick=()=>{if(!armed){armed=true;$('#abandon').textContent='Tap again to abandon';return}paused=false;hide('menu');endRun(false)};
-addEventListener('keydown',e=>{if(e.code==='Space'&&G.state==='build'&&!paused){e.preventDefault();sendWave()}});
+/* block pinch and double-tap zoom on phones (iOS ignores the viewport flag for pinch, so stop the gesture itself) */
+['gesturestart','gesturechange','gestureend'].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
+document.addEventListener('touchmove',e=>{if(e.touches&&e.touches.length>1)e.preventDefault()},{passive:false});
+let lastTouchEnd=0;document.addEventListener('touchend',e=>{const n=Date.now();if(n-lastTouchEnd<300&&!e.target.closest('input,textarea'))e.preventDefault();lastTouchEnd=n},{passive:false});
+/* leaving the app mid-wave pauses it; endless runs save between waves */
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState!=='hidden'||!G)return;
+  if(G.state==='wave'&&!paused&&$('#camp').hidden){paused=true;$('#abandon').textContent='Abandon run';armed=false;show('menu')}
+  if(G.endless&&G.state==='build')snapRun();
+});
+/* PC controls: Space send wave · 1-9/0 pick a lantern · U upgrade · M merge · Esc cancel · F speed · P pause */
+addEventListener('keydown',e=>{
+  if(e.target.closest&&e.target.closest('input,textarea'))return;
+  if(!G||G.state==='camp'||G.state==='over'||!$('#major').hidden)return;
+  if(e.code==='Space'&&G.state==='build'&&!paused){e.preventDefault();sendWave();return}
+  if(e.key==='Escape'){if(!$('#menu').hidden){paused=false;hide('menu')}else if(armT||G.sel){armT=null;G.sel=null;renderTray()}else if(G.state==='wave'||G.state==='build')$('#menuBtn').click();return}
+  if(paused||G.state==='cards')return;
+  const k=e.key.toLowerCase(),own=ORDER.filter(unlocked),i='1234567890-='.indexOf(k);
+  if(i>=0&&own[i]){armT=armT===own[i]?null:own[i];G.sel=null;renderTray();return}
+  if(k==='u'&&G.sel){const b=document.querySelector('#tray [data-act=up]');if(b&&!b.disabled)b.click();return}
+  if(k==='m'&&G.sel){const b=document.querySelector('#tray [data-act=asc]');if(b&&!b.disabled)b.click();return}
+  if(k==='f'){$('#spd').click();return}
+  if(k==='p'){$('#menuBtn').click();return}
+});
 
 const last={};
 function hud(force){
@@ -2550,7 +2612,8 @@ function draw(){
       for(let i=1;i<f.pts.length;i++){const [ax,ay]=f.pts[i-1],[bx,by]=f.pts[i];for(let k=1;k<=4;k++){const q=k/4,j=k<4?(Math.random()-.5)*.25:0;ctx.lineTo((ax+(bx-ax)*q+j)*S,(ay+(by-ay)*q+j)*S)}}ctx.stroke()}}
   ctx.globalAlpha=1;
 }
-cv.addEventListener('pointerdown',e=>{
+cv.addEventListener('contextmenu',e=>{e.preventDefault();armT=null;if(G)G.sel=null;renderTray()});
+cv.addEventListener('pointerdown',e=>{if(e.button===2)return;
   if(!G||G.state==='camp'||G.state==='over'||paused||drag)return;
   const c=cellAt(e.clientX,e.clientY);if(!c)return;
   const t=G.towers.find(t=>t.x===c.x&&t.y===c.y);

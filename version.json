@@ -1,8 +1,11 @@
 {
-  "version": "0.12.1",
+  "version": "0.13.0",
   "date": "Oct 14, 2026",
   "major": false,
   "notes": [
-    "The Lanterns page now fits on one screen with no up-and-down scrolling. Swipe sideways to move between lanterns, which snap into place while the ones beside them fade back."
+    "Endless runs now save after every wave. Continue them any time from the Play page.",
+    "In Endless, the trail now stays the same all run. Only the world and its conditions change every 5 waves.",
+    "Mobile polish: no more accidental zooming (pinch, double-tap or tapping a text box), no stuck highlights after tapping, no pull-to-refresh or long-press menus, and the game pauses itself if you leave mid-wave.",
+    "PC controls: Space, 1–9 to pick lanterns, U to upgrade, M to merge, F for speed, P to pause, Esc or right-click to cancel."
   ]
 }
