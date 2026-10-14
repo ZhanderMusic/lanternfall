@@ -198,7 +198,12 @@ dl.stats dd{margin:0;font-family:var(--mono);text-align:right;font-variant-numer
 .season .srow{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .season .srow b{display:block}
 /* build tray (drag & drop) */
-#tray{padding:8px 10px}
+/* the tray keeps one fixed height in every state (build tray or lantern info) so the board never resizes or shifts */
+#tray{padding:8px 10px;height:156px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+#tray::-webkit-scrollbar{display:none}
+@media (min-width:561px){#tray{height:132px}}
+#tray .tinfo h3{font-size:24px}
+#tray .nums{font-size:12px}
 .trh{margin:0 0 6px;font-size:12.5px;line-height:1.35}
 .trh .how{color:var(--ink)}
 .pal{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 2px 4px;margin:0 -2px}
@@ -493,7 +498,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 
 
 <script>
-/* PWA: offline support and updates (Lanternfall v0.8.2) */
+/* PWA: offline support and updates (Lanternfall v0.8.3) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -786,7 +791,7 @@ const CARDS=[
 const RW=[10,4.5,1.6],RN=['Common','Rare','Mythic'];
 
 /* ---------- save ---------- */
-const VERSION='0.8.2';
+const VERSION='0.8.3';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0});
@@ -1503,6 +1508,7 @@ function renderProfile(){
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'0.8.3',d:'Oct 14, 2026',notes:['Fixed the board jumping when you tap a lantern. The bottom panel now keeps one fixed height, so the board never moves.']},
   {v:'0.8.2',d:'Oct 14, 2026',notes:['The title screen is now centered on every screen size.']},
   {v:'0.8.1',d:'Oct 14, 2026',notes:['The app checks for a new version every time it opens, and Settings has a Check for updates button.','When a new version is out, a popup lets you reload straight into it.','Permanent storage: the game asks your device to never clear its data, and keeps a second backup copy of your save that restores itself if the first is lost.']},
   {v:'0.8.0',d:'Oct 14, 2026',notes:['Drag and drop: drag lanterns from the tray onto the board. Tiles light green or red, and you see the range before you drop. Tap a lantern then tap tiles also works.','Ascension: max-level lanterns gain a special perk, a gold crown and a turning ring.','Lantern Mastery: every lantern levels from 1 to 100 forever, gaining a little damage each level, fire rate every 10, and badges at 25/50/75/100.','Endless mode: no last wave, and every 5 waves the world, its twist and the trail all change.','Trails are now much more varied. They can enter from the sides and double back.']},

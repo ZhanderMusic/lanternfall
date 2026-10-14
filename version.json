@@ -1,7 +1,7 @@
 {
-  "version": "0.8.2",
+  "version": "0.8.3",
   "date": "Oct 14, 2026",
   "notes": [
-    "The title screen is now centered on every screen size."
+    "Fixed the board jumping when you tap a lantern. The bottom panel now keeps one fixed height, so the board never moves."
   ]
 }
