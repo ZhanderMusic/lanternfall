@@ -109,6 +109,8 @@ h2.big{font:400 52px/.9 var(--display);margin:0}
 #camp{background:var(--night)}
 #sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 #camp .view{position:relative;z-index:1}
+/* inner pages stay pinned to the top so short lists never make the page jump; only the title screen centers vertically */
+#camp .view:not([data-view=home]){margin:0 auto}
 [data-view=home] .logo{font-size:clamp(68px,20vw,120px)}
 /* title screen: one centered column */
 #camp .view[data-view=home]{max-width:440px;align-items:center;text-align:center}
@@ -180,6 +182,16 @@ dl.stats dd{margin:0;font-family:var(--mono);text-align:right;font-variant-numer
 @media (max-width:440px){.slide{padding:12px;gap:10px 12px}.info p{font-size:13px}}
 /* camp upgrades */
 #ups{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.uprog,.ucs{grid-column:1/-1}
+.ucats{display:flex;flex-wrap:wrap;gap:6px}
+.ucats::-webkit-scrollbar{display:none}
+.uct{all:unset;cursor:pointer;flex:none;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--moss);font-size:13px;font-weight:700;color:var(--dim)}
+.uct.on{background:var(--flame);border-color:var(--flame);color:#140e06}
+.uct:focus-visible{outline:2px solid var(--flame);outline-offset:2px}
+.uprog{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;color:var(--dim)}
+.uprog .xpbar{flex:1;display:block}
+.ucs{margin:8px 0 0}
+.ug.lockd{opacity:.55}
 .ug{display:grid;grid-template-columns:60px minmax(0,1fr) auto;gap:12px;align-items:center;background:color-mix(in srgb,var(--moss) 92%,transparent);border:1px solid var(--line);border-radius:10px;padding:12px}
 .ico{width:60px;height:60px;border-radius:12px;display:grid;place-items:center;
   background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--ic) 34%,transparent),color-mix(in srgb,var(--ic) 6%,var(--moss2)) 72%);
@@ -253,6 +265,15 @@ body.dragging{cursor:grabbing}
 .mast .mr span:last-child{font-family:var(--mono);font-size:11px;color:var(--dim)}
 .mast small{font-size:11.5px;color:var(--dim)}
 .info .perk{font-size:12px;color:#ffd75e;margin:8px 0 0}
+/* difficulty picker */
+.diffs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:560px){.diffs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.dif{all:unset;box-sizing:border-box;cursor:pointer;border-radius:10px;border:2px solid var(--line);background:color-mix(in srgb,var(--moss) 92%,transparent);padding:10px 12px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.dif b{font:400 24px/1 var(--display);color:var(--dc)}
+.dif .rw{font-family:var(--mono);font-size:11px;color:var(--ink)}
+.dif small{font-size:11.5px;color:var(--dim);line-height:1.3}
+.dif.on{border-color:var(--dc);box-shadow:0 0 16px -6px var(--dc)}
+.dif:focus-visible{outline:2px solid var(--flame);outline-offset:2px}
 .menu2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .menu2 .btn.mi{flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;padding:12px 14px}
 .em,.msi{display:inline-block;vertical-align:middle;flex:none}
@@ -445,7 +466,7 @@ button.ps{font:inherit;color:inherit;cursor:pointer;padding:0;box-sizing:border-
 .wc{all:unset;box-sizing:border-box;cursor:pointer;border-radius:8px;padding:12px;border:2px solid rgba(255,255,255,.06);display:flex;flex-direction:column;gap:4px;min-height:118px;color:var(--ink)}
 .wc:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 .wc .d{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
-.wc .n{font:400 26px/1 var(--display);color:var(--acc);overflow-wrap:anywhere}
+.wc .n{font:400 clamp(20px,6.2vw,26px)/1 var(--display);color:var(--acc);overflow-wrap:break-word}
 .wc p{margin:0;font-size:12px;color:#cfc6b4;line-height:1.35}
 .wc .sc{color:var(--dim);font-family:var(--mono);font-size:11px;margin-top:auto}
 .wc.on{border-color:var(--acc);box-shadow:0 0 18px -6px var(--acc)}
@@ -484,6 +505,49 @@ button.ps{font:inherit;color:inherit;cursor:pointer;padding:0;box-sizing:border-
 hr.sep{border:0;border-top:1px solid var(--line);margin:4px 0;width:100%}
 .updn{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;color:var(--dim);font-size:14px;line-height:1.4}
 .updn:empty{display:none}
+/* major update cinematic */
+.major{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;overflow:auto;box-sizing:border-box;
+  padding:calc(env(safe-area-inset-top,0px) + 20px) max(20px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 20px) max(20px,env(safe-area-inset-left,0px));
+  background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--flame) 22%,#05070a),#05070a 62%)}
+.mj-bg{position:fixed;inset:0;overflow:hidden;pointer-events:none}
+.mj-ring{position:absolute;left:50%;top:38%;width:240px;height:240px;margin:-120px 0 0 -120px;border-radius:50%;border:2px solid var(--flame);opacity:0}
+.major.play .mj-ring{animation:mjring 3.6s ease-out infinite}
+.major.play .mj-ring.r2{animation-delay:1.2s}.major.play .mj-ring.r3{animation-delay:2.4s}
+@keyframes mjring{0%{transform:scale(.2);opacity:.9}100%{transform:scale(3.4);opacity:0}}
+.mj-lan i{position:absolute;bottom:-60px;width:calc(16px*var(--s));height:calc(22px*var(--s));border-radius:40% 40% 30% 30%;
+  background:linear-gradient(#fff3c8,var(--flame));box-shadow:0 0 calc(26px*var(--s)) var(--flame);opacity:.85;animation:mjrise linear infinite}
+@keyframes mjrise{0%{transform:translate(0,0) rotate(-6deg)}50%{transform:translate(18px,-60vh) rotate(6deg)}100%{transform:translate(-10px,-125vh) rotate(-4deg)}}
+.mj-panel{position:relative;width:100%;max-width:440px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+.mj-kick{font:700 12px/1 var(--body);letter-spacing:.5em;text-transform:uppercase;color:var(--flame);padding-left:.5em}
+.mj-title{margin:0;font:400 clamp(54px,17vw,92px)/.9 var(--display);text-wrap:balance;
+  background:linear-gradient(100deg,var(--flame) 0%,#fff6dc 25%,var(--flame) 50%,#fff6dc 75%,var(--flame) 100%);background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 24px color-mix(in srgb,var(--flame) 60%,transparent))}
+.mj-ver{font-family:var(--mono);font-size:12px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:5px 12px;background:rgba(0,0,0,.35)}
+.mj-list{list-style:none;margin:8px 0 4px;padding:0;display:flex;flex-direction:column;gap:8px;width:100%;text-align:left}
+.mj-list li{display:flex;gap:12px;align-items:flex-start;background:color-mix(in srgb,var(--moss) 88%,transparent);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.mj-list b{display:block;font:400 24px/1 var(--display);color:var(--ink);margin-bottom:3px}
+.mj-list span{font-size:13px;color:var(--dim);line-height:1.4}
+.mjd{flex:none;width:10px;height:10px;margin-top:6px;border-radius:50%;background:var(--flame);box-shadow:0 0 10px var(--flame)}
+.mj-go{width:100%}
+.major.play .mj-kick{animation:mjkick 1s cubic-bezier(.2,.8,.2,1) both}
+.major.play .mj-title{animation:mjtitle 1.1s .25s cubic-bezier(.2,.8,.2,1) both,mjshine 3s 1.4s linear infinite}
+.major.play .mj-ver{animation:mjup .6s .8s both}
+.major.play .mj-list li{animation:mjup .55s both;animation-delay:calc(1.1s + var(--i)*.22s)}
+.major.play .mj-go{animation:mjup .6s both;animation-delay:calc(1.3s + var(--n)*.22s)}
+@keyframes mjkick{from{letter-spacing:1.6em;opacity:0}to{letter-spacing:.5em;opacity:1}}
+@keyframes mjtitle{from{transform:scale(.55);opacity:0;filter:blur(12px)}to{transform:none;opacity:1}}
+@keyframes mjshine{to{background-position:-200% 0}}
+@keyframes mjup{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.major.play *{animation:none!important}.mj-lan{display:none}}
+/* major entries on the Updates page */
+.log li.maj{border-color:var(--flame);background:linear-gradient(160deg,color-mix(in srgb,var(--flame) 14%,var(--moss)),var(--moss) 60%)}
+.majb{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.majb span{font:700 10px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;color:#140e06;padding:5px 9px;border-radius:999px;
+  background:linear-gradient(100deg,var(--flame),#fff1c4,var(--flame));background-size:200% 100%;animation:shine 2.4s linear infinite}
+.majb b{font:400 26px/1 var(--display);color:var(--flame);flex:1}
+.majb .btn{padding:6px 12px;font-size:12px}
+#upd.isMajor .panel{border:1px solid var(--flame);border-radius:14px;padding:18px;background:linear-gradient(160deg,color-mix(in srgb,var(--flame) 14%,var(--moss)),var(--moss) 70%)}
+#upd.isMajor #updKick{color:var(--flame);letter-spacing:.3em}
 #upd{background:color-mix(in srgb,var(--night) 97%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 #cloud.cs-error{color:var(--danger)}
 .homefoot{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -500,7 +564,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 
 
 <script>
-/* PWA: offline support and updates (Lanternfall v0.9.0) */
+/* PWA: offline support and updates (Lanternfall v0.12.0) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -521,9 +585,19 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
 </div>
 
 <div id="ghost" hidden></div>
+<div id="major" class="major" hidden role="dialog" aria-modal="true" aria-labelledby="mjTitle">
+  <div class="mj-bg" aria-hidden="true"><span class="mj-ring"></span><span class="mj-ring r2"></span><span class="mj-ring r3"></span><div class="mj-lan" id="mjLan"></div></div>
+  <div class="mj-panel">
+    <span class="mj-kick">Major update</span>
+    <h2 class="mj-title" id="mjTitle">The Deep Nights</h2>
+    <span class="mj-ver" id="mjVer"></span>
+    <ul class="mj-list" id="mjList"></ul>
+    <button class="btn primary big mj-go" id="mjGo">Into the night</button>
+  </div>
+</div>
 <div class="ov" id="upd" hidden role="dialog" aria-modal="true" aria-labelledby="updTitle" style="z-index:40">
   <div class="panel" style="max-width:400px">
-    <div><span class="sec">Update available</span><h2 class="big" id="updTitle">New version</h2></div>
+    <div><span class="sec" id="updKick">Update available</span><h2 class="big" id="updTitle">New version</h2></div>
     <p class="tag" id="updText"></p>
     <ul class="updn" id="updNotes"></ul>
     <button class="btn primary big" id="updNow">Reload to update</button>
@@ -571,6 +645,9 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
       <button class="mode" data-mode="campaign" role="radio"><b>Campaign</b><small>Survive 20 waves to beat the world and unlock the next one.</small></button>
       <button class="mode" data-mode="endless" role="radio"><b>Endless</b><small>No final wave. Every 5 waves the world, its twist and the trail change.</small><span class="best" id="bestEnd"></span></button>
     </div>
+    <div class="sec">Difficulty</div>
+    <div class="diffs" id="diffs" role="radiogroup" aria-label="Difficulty"></div>
+    <div class="sec">World</div>
     <div class="worlds" id="worlds"></div>
     <div class="startbar"><button class="btn primary big" id="start">Light the lanterns</button></div>
   </section>
@@ -585,6 +662,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
   <section class="panel view wide" data-view="upgrades" hidden>
     <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">Camp upgrades</h2><span class="pills"><span class="pill">Embers <b class="embersN">0</b></span><span class="pill">Moonstones <b class="moonN mb">0</b></span></span></header>
     <p class="tag">Permanent upgrades that apply to every run.</p>
+    <div class="ucats" id="ucats" role="tablist" aria-label="Upgrade categories"></div>
     <div class="ups" id="ups"></div>
   </section>
 
@@ -748,21 +826,83 @@ const THEMES=[
   {name:'Starfall Void',twist:'Rifts. A lesser boss joins every 3rd wave.',bg:'#05060c',acc:'#ffe9a8',tiles:['#0b0d18','#0e1020'],path:['#161a2e','#20253f'],decor:'crystal',dc:'#5d6bd6',amb:'star',ac:'#ffffff',
    foes:{moth:'#e8ecff',wisp:'#ffe9a8',beetle:'#3a3f7a',brood:'#a08aff',boss:'#ff5a7a'},mods:{rift:1}},
   {name:'The Last Ember',twist:'Everything at once: fog, ice and plating.',bg:'#080404',acc:'#ff5a3d',tiles:['#140a09','#180c0a'],path:['#221010','#2e1614'],decor:'bone',dc:'#4a1e1a',amb:'ash',ac:'#ff5a3d',
-   foes:{moth:'#f0d0c8',wisp:'#ff8a5a',beetle:'#5a2420',brood:'#b04a4a',boss:'#ffe14a'},mods:{range:.92,speed:1.1,armor:2}}
+   foes:{moth:'#f0d0c8',wisp:'#ff8a5a',beetle:'#5a2420',brood:'#b04a4a',boss:'#ffe14a'},mods:{range:.92,speed:1.1,armor:2}},
+  /* The Deep Nights: depths 11-20 */
+  {name:'Crimson Bog',twist:'Leeches. Foes heal 1% of their health every second.',bg:'#120708',acc:'#ff4d6b',tiles:['#1c0c0e','#220f12'],path:['#2a1214','#3a191c'],decor:'reed',dc:'#5a1e28',amb:'mist',ac:'#ff8a9a',
+   foes:{moth:'#f2c8cf',wisp:'#ff7a9a',beetle:'#6a1e2a',brood:'#c94d6b',boss:'#ffd24a'},mods:{regen:.01}},
+  {name:'Glass Desert',twist:'Mirage. Towers reach 10% farther, but foes run 15% faster.',bg:'#12100a',acc:'#ffe6a8',tiles:['#2a2614','#302a17'],path:['#3d351c','#4d4326'],decor:'crystal',dc:'#e8dca0',amb:'dust',ac:'#fff1c4',
+   foes:{moth:'#fff4dc',wisp:'#ffe08a',beetle:'#9a7a3a',brood:'#d6b06b',boss:'#ff6b4a'},mods:{range:1.1,speed:1.15}},
+  {name:'Sunken Belfry',twist:'Tolling. 30% more foes in every wave.',bg:'#071012',acc:'#8fd8ff',tiles:['#0e1c20','#112226'],path:['#182b30','#223a40'],decor:'pillar',dc:'#3a5a66',amb:'bubble',ac:'#b8ecff',
+   foes:{moth:'#d8f2ff',wisp:'#8fd8ff',beetle:'#2f5a6a',brood:'#7ab8d6',boss:'#ffb36b'},mods:{swarm:1.3}},
+  {name:'Ironroot Thicket',twist:'Barkskin. Armored foes gain +5 armor.',bg:'#0b0f08',acc:'#b8d46b',tiles:['#141c10','#182213'],path:['#232b17','#2f3a1f'],decor:'reed',dc:'#4a5a2a',amb:'spore',ac:'#d6f08a',
+   foes:{moth:'#e6f0c8',wisp:'#d6f08a',beetle:'#3a4a1e',brood:'#9ab84a',boss:'#ff7a4d'},mods:{armor:5}},
+  {name:'Aurora Fields',twist:'Shimmer. Wisps come in pairs and every foe is 8% faster.',bg:'#04100e',acc:'#7dffd0',tiles:['#0a1c18','#0d221d'],path:['#122a24','#1a3a32'],decor:'tuft',dc:'#2a6a5a',amb:'star',ac:'#c6a8ff',
+   foes:{moth:'#d8fff0',wisp:'#c6a8ff',beetle:'#1e5a4a',brood:'#7dffd0',boss:'#ff6bd6'},mods:{wisp2:1,speed:1.08}},
+  {name:'Cinder Cathedral',twist:'Kiln. Frost slows half as well and foes are 20% tougher.',bg:'#140805',acc:'#ff7a3d',tiles:['#22100a','#28130c'],path:['#341a10','#462316'],decor:'pillar',dc:'#6a2a14',amb:'ash',ac:'#ffb06b',
+   foes:{moth:'#ffd8c0',wisp:'#ffb06b',beetle:'#7a2a12',brood:'#e06a3d',boss:'#fff06b'},mods:{slow:.5,hp:1.2}},
+  {name:'The Hive',twist:'The Moth Queen’s nest. Broods burst into 6 moths and swarms are 20% larger.',bg:'#0e0a12',acc:'#e3c2ff',tiles:['#1a1222','#1e1528'],path:['#281c34','#352645'],decor:'shroom',dc:'#9a6ad6',amb:'spore',ac:'#e3c2ff',
+   foes:{moth:'#f0e0ff',wisp:'#e3c2ff',beetle:'#4a2a6a',brood:'#ff8ad6',boss:'#ffd24a'},mods:{brood:6,swarm:1.2}},
+  {name:'Frozen Abyss',twist:'Whiteout. Foes 18% faster, towers reach 10% less.',bg:'#050a14',acc:'#cfe8ff',tiles:['#0e1626','#111b2e'],path:['#1a2640','#243454'],decor:'crystal',dc:'#8fb8e6',amb:'snow',ac:'#ffffff',
+   foes:{moth:'#ffffff',wisp:'#cfe8ff',beetle:'#3a5a8a',brood:'#a8c8ff',boss:'#ff5a7a'},mods:{speed:1.18,range:.9}},
+  {name:'Eclipse Spire',twist:'Shadow tide. Rifts open, foes heal and wear +3 armor.',bg:'#080306',acc:'#ffb36b',tiles:['#140a0e','#180c11'],path:['#221218','#2e1820'],decor:'bone',dc:'#5a2a2a',amb:'star',ac:'#ffb36b',
+   foes:{moth:'#f2d8c8',wisp:'#ffb36b',beetle:'#4a1a22',brood:'#c9604a',boss:'#ffe96b'},mods:{rift:1,regen:.008,armor:3}},
+  {name:'The Hollow Moon',twist:'The last night. Fog, ice, plating, swarms, healing and tougher foes, all at once.',bg:'#06070d',acc:'#dfe7ff',tiles:['#0e1018','#11131d'],path:['#1a1d2a','#252a3a'],decor:'crystal',dc:'#7a86b8',amb:'star',ac:'#ffffff',
+   foes:{moth:'#ffffff',wisp:'#dfe7ff',beetle:'#2a3050',brood:'#a8b4ff',boss:'#ff4d6b'},mods:{range:.9,speed:1.12,armor:4,swarm:1.25,regen:.008,hp:1.15}}
 ];
 const MAXD=THEMES.length-1;
+/* difficulty: harder nights pay more embers and XP */
+const DIFF={
+  easy:{name:'Easy',hp:.7,spd:.92,lives:5,rew:.6,col:'#9be3a9',desc:'Weaker, slower foes and 5 extra lives.'},
+  normal:{name:'Normal',hp:1,spd:1,lives:0,rew:1,col:'#cfd8d2',desc:'The night as it was meant to be.'},
+  hard:{name:'Hard',hp:1.45,spd:1.08,lives:-3,rew:1.5,col:'#ffb547',desc:'Tougher, faster foes and 3 fewer lives.'},
+  nightmare:{name:'Nightmare',hp:2.1,spd:1.16,lives:-7,rew:2.25,col:'#ff6060',desc:'Brutal foes and only 8 lives to start.'}
+};
+const DORDER=['easy','normal','hard','nightmare'];
+const dOf=k=>DIFF[k]||DIFF.normal;
 
 /* ---------- camp upgrades ---------- */
 const META=[
-  {id:'kindling',name:'Kindling',max:8,base:4,g:1.55,text:l=>`Start runs with +25 gold. Now +${l*25}.`},
-  {id:'hearth',name:'Hearthstones',max:5,base:6,g:1.7,text:l=>`+2 starting lives. Now +${l*2}.`},
-  {id:'whet',name:'Whetstone',max:10,base:5,g:1.5,text:l=>`+6% tower damage. Now +${l*6}%.`},
-  {id:'bellows',name:'Bellows',max:8,base:6,g:1.55,text:l=>`+5% fire rate. Now +${l*5}%.`},
-  {id:'wick',name:'Long wicks',max:6,base:6,g:1.6,text:l=>`+4% tower range. Now +${l*4}%.`},
-  {id:'jar',name:'Ember jar',max:10,base:8,g:1.5,text:l=>`+10% embers per run. Now +${l*10}%.`},
-  {id:'reroll',name:'Second thoughts',max:3,base:12,g:2,text:l=>`One more reroll per boon pick. Now ${l}.`},
-  {id:'fourth',name:'Wider fan',max:1,base:40,g:1,text:()=>'See 4 boons after each wave instead of 3.'}
+  /* Economy */
+  {id:'kindling',cat:'eco',name:'Kindling',max:8,base:4,g:1.55,text:l=>`Start runs with +25 gold. Now +${l*25}.`},
+  {id:'purse',cat:'eco',name:'Deep purse',max:10,base:5,g:1.45,text:l=>`Kills give +5% gold. Now +${l*5}%.`},
+  {id:'tithe',cat:'eco',name:'Wave tithe',max:10,base:5,g:1.45,text:l=>`+3 gold for every wave you clear. Now +${l*3}.`},
+  {id:'thrift',cat:'eco',name:'Thrift',max:10,base:7,g:1.5,text:l=>`Lanterns and upgrades cost 2% less. Now −${l*2}%.`},
+  {id:'salvage',cat:'eco',name:'Salvage',max:5,base:6,g:1.6,text:l=>`Selling refunds 4% more. Now ${60+l*4}% back.`},
+  {id:'compound',cat:'eco',name:'Compound',max:5,base:10,g:1.7,text:l=>`After each wave, earn 1% interest on your gold (up to 20 per level). Now ${l}%.`},
+  /* Offense */
+  {id:'whet',cat:'off',name:'Whetstone',max:10,base:5,g:1.5,text:l=>`+6% tower damage. Now +${l*6}%.`},
+  {id:'bellows',cat:'off',name:'Bellows',max:8,base:6,g:1.55,text:l=>`+5% fire rate. Now +${l*5}%.`},
+  {id:'wick',cat:'off',name:'Long wicks',max:6,base:6,g:1.6,text:l=>`+4% tower range. Now +${l*4}%.`},
+  {id:'keen',cat:'off',name:'Keen eye',max:10,base:6,g:1.5,text:l=>`Shots get a 1.5% chance to hit for double damage. Now ${(l*1.5).toFixed(1)}%.`},
+  {id:'focus',cat:'off',name:'Boss hunter',max:10,base:6,g:1.5,text:l=>`+5% damage to bosses. Now +${l*5}%.`},
+  {id:'breaker',cat:'off',name:'Armor breaker',max:10,base:7,g:1.5,text:l=>`Enemy armor is 5% weaker. Now −${l*5}%.`},
+  {id:'reaper',cat:'off',name:'Reaper',max:3,base:15,g:2,text:l=>`Non-boss foes below 3% health are snuffed instantly. Now ${l*3}%.`},
+  /* Defense */
+  {id:'hearth',cat:'def',name:'Hearthstones',max:5,base:6,g:1.7,text:l=>`+2 starting lives. Now +${l*2}.`},
+  {id:'ward',cat:'def',name:'Warding stones',max:3,base:12,g:1.9,text:l=>`The first foe to slip through each run costs no lives. Now ${l} per run.`},
+  {id:'regen',cat:'def',name:'Healing hearth',max:3,base:10,g:1.9,text:l=>`Recover 1 life after every 5th wave. Now +${l}.`},
+  {id:'fog',cat:'def',name:'Fog lanterns',max:5,base:8,g:1.6,text:l=>`Foes move 2% slower. Now −${l*2}%.`},
+  {id:'bane',cat:'def',name:'Giant’s bane',max:5,base:9,g:1.6,text:l=>`Bosses have 4% less health. Now −${l*4}%.`},
+  /* Run & boons */
+  {id:'reroll',cat:'run',name:'Second thoughts',max:3,base:12,g:2,text:l=>`One more reroll per boon pick. Now ${l}.`},
+  {id:'fourth',cat:'run',name:'Wider fan',max:1,base:40,g:1,text:()=>'See 4 boons after each wave instead of 3.'},
+  {id:'fifth',cat:'run',name:'Widest fan',max:1,base:90,g:1,need:'fourth',text:()=>'See 5 boons after each wave. Needs Wider fan.'},
+  {id:'luck',cat:'run',name:'Lucky draw',max:5,base:8,g:1.6,text:l=>`Rare and Mythic boons show up 15% more often. Now +${l*15}%.`},
+  {id:'patient',cat:'run',name:'Patience',max:4,base:6,g:1.6,text:l=>`Skipping a boon pays 25 more gold. Now ${25+l*25} gold.`},
+  {id:'headstart',cat:'run',name:'Head start',max:1,base:35,g:1,text:()=>'Pick a free boon before the first wave of every run.'},
+  /* Lanterns */
+  {id:'blast',cat:'lan',name:'Wide burst',max:6,base:6,g:1.55,text:l=>`Cinder and Comet bursts are 5% wider. Now +${l*5}%.`},
+  {id:'frostbite',cat:'lan',name:'Frostbite',max:5,base:6,g:1.55,text:l=>`Frost slows 3% more. Now +${l*3}%.`},
+  {id:'toxin',cat:'lan',name:'Toxicology',max:8,base:6,g:1.5,text:l=>`Venom and burn damage +8%. Now +${l*8}%.`},
+  {id:'conductor',cat:'lan',name:'Conductor',max:3,base:12,g:1.9,text:l=>`Bolt chains to 1 more foe. Now +${l}.`},
+  {id:'veteran',cat:'lan',name:'Veteran lanterns',max:1,base:80,g:1,text:()=>'New lanterns are built at level 2 for the price of level 1.'},
+  /* Progress */
+  {id:'jar',cat:'pro',name:'Ember jar',max:10,base:8,g:1.5,text:l=>`+10% embers per run. Now +${l*10}%.`},
+  {id:'school',cat:'pro',name:'Night school',max:10,base:8,g:1.5,text:l=>`+5% XP per run. Now +${l*5}%.`},
+  {id:'studious',cat:'pro',name:'Studious',max:10,base:7,g:1.5,text:l=>`+10% lantern mastery points. Now +${l*10}%.`}
 ];
+const UCATS=[['all','All'],['eco','Economy'],['off','Offense'],['def','Defense'],['run','Run & boons'],['lan','Lanterns'],['pro','Progress']];
+const sellRate=()=>.6+.04*ml('salvage');
 const UNLOCKS=ORDER.filter(t=>TOWERS[t].unlock).map(t=>({id:'u_'+t,t,name:TOWERS[t].name,max:1,base:TOWERS[t].unlock,g:1,text:()=>TOWERS[t].desc}));
 
 /* ---------- boons ---------- */
@@ -786,17 +926,17 @@ const CARDS=[
   {id:'beam',name:'Bright beacons',rar:1,need:'beacon',text:'Beacon boosts are 10 points stronger.',ap:m=>m.aura+=.1},
   {id:'shower',name:'Meteor shower',rar:1,need:'comet',text:'Comets fire 30% faster.',ap:m=>m.comet*=1.3},
   {id:'giant',name:'Giant slayer',rar:1,text:'Towers deal 40% more damage to bosses.',ap:m=>m.boss*=1.4},
-  {id:'exec',name:'Snuff out',rar:2,once:1,text:'Non-boss foes below 12% health are snuffed instantly.',ap:m=>m.exec=.12},
+  {id:'exec',name:'Snuff out',rar:2,once:1,text:'Non-boss foes below 12% health are snuffed instantly.',ap:m=>{m.exec=Math.max(m.exec,.12)}},
   {id:'surge',name:'Surge',rar:2,text:'Every tower you own gains a level.',ap:(m,g)=>g.towers.forEach(t=>t.lvl=Math.min(MAXL,t.lvl+1))},
   {id:'rot',name:'Armor rot',rar:2,once:1,text:'All enemy armor is halved.',ap:m=>m.armor*=.5}
 ];
 const RW=[10,4.5,1.6],RN=['Common','Rare','Mythic'];
 
 /* ---------- save ---------- */
-const VERSION='0.9.0';
+const VERSION='0.12.0';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
-  claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0});
+  claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
 /* progression: one XP stream feeds player level and the pass */
 const lvNeed=L=>100+20*(L-1);
 function levelInfo(xp){let L=1,x=xp;while(x>=lvNeed(L)){x-=lvNeed(L);L++}return{L,into:x,need:lvNeed(L)}}
@@ -861,7 +1001,7 @@ async function checkVersion(manual){
   try{
     const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('http');
     const j=await r.json();if(!j||!j.version)throw new Error('bad');
-    upd.latest=j.version;upd.notes=Array.isArray(j.notes)?j.notes:[];upd.at=Date.now();
+    upd.latest=j.version;upd.notes=Array.isArray(j.notes)?j.notes:[];upd.at=Date.now();upd.major=!!j.major;upd.title=j.title||'';
     if(cmpVer(j.version,VERSION)>0){upd.state='outdated';if(manual||upd.dismissed!==j.version)showUpdate()}
     else upd.state='latest';
   }catch(e){upd.state='unavailable'}
@@ -880,7 +1020,8 @@ function updUI(){
 }
 function showUpdate(){
   const inRun=G&&(G.state==='build'||G.state==='wave'||G.state==='cards');
-  $('#updTitle').textContent=`Version ${upd.latest}`;
+  $('#updTitle').textContent=upd.major&&upd.title?upd.title:`Version ${upd.latest}`;
+  $('#updKick').textContent=upd.major?`Major update · v${upd.latest}`:'Update available';$('#upd').classList.toggle('isMajor',upd.major);
   $('#updText').textContent=`You’re playing v${VERSION}. Reload to get the latest version. Your progress is saved and comes with you.${inRun?' The run you’re in right now will end.':''}`;
   $('#updNotes').innerHTML=upd.notes.slice(0,6).map(n=>`<li>${String(n).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'})[c])}</li>`).join('');
   $('#updNow').disabled=false;$('#updNow').textContent='Reload to update';
@@ -1161,10 +1302,11 @@ function genPathSnake(){
 }
 function newRun(depth,endless){
   applyTheme(depth);
-  G={depth,world:depth,endless:!!endless,wave:0,state:'build',lives:15+2*ml('hearth'),gold:80+25*ml('kindling'),
+  G={depth,world:depth,endless:!!endless,diff:DIFF[meta.diff]?meta.diff:'normal',wave:0,state:'build',lives:Math.max(5,15+2*ml('hearth')+dOf(meta.diff).lives),gold:80+25*ml('kindling'),
     towers:[],foes:[],shots:[],fx:[],q:[],qt:0,path:genPath(),sel:null,bossKills:0,time:0,amb:makeAmb(),
-    m:{dmg:1,rate:1,range:1,goldMul:1,interest:0,crit:0,splash:1,chill:0,chain:0,cost:1,boss:1,exec:0,armor:1,
-       pierce:0,lance:1,poison:1,income:1,aura:0,comet:1},taken:{},
+    m:{dmg:1,rate:1,range:1,goldMul:1+.05*ml('purse'),interest:0,crit:0,splash:1+.05*ml('blast'),chill:0,chain:ml('conductor'),cost:1-.02*ml('thrift'),
+       boss:1+.05*ml('focus'),exec:.03*ml('reaper'),armor:1-.05*ml('breaker'),
+       pierce:0,lance:1,poison:1+.08*ml('toxin'),income:1,aura:0,comet:1},taken:{},ward:ml('ward'),
     mast:Object.fromEntries(ORDER.map(t=>[t,mastInfo(t).L])),mk:{},used:new Set()};
   drawBG();
 }
@@ -1189,7 +1331,8 @@ const isAsc=t=>t.lvl>=MAXL;
 const ASC_MAX=3,ASC_NAME=['','Ascended','Ascended II','Ascended III'],ASC_COL=['','#ffd75e','#dff1ff','#ff9af0'];
 const ascTier=t=>isAsc(t)?(t.at||1):0;
 const ascBoost=t=>{const b=Math.max(0,ascTier(t)-1);return{dmg:Math.pow(1.75,b),rate:Math.pow(1.2,b),range:Math.pow(1.12,b),aura:.15*b}};
-function ascPartner(t){let best=null;for(const o of G.towers)if(o!==t&&o.type===t.type&&isAsc(o)&&(!best||ascTier(o)<ascTier(best)))best=o;return best}
+/* to go from tier T to T+1 you need another lantern of the same type at tier T or higher (the lowest such one is used) */
+function ascPartner(t){const T=ascTier(t);let best=null;for(const o of G.towers)if(o!==t&&o.type===t.type&&ascTier(o)>=T&&(!best||ascTier(o)<ascTier(best)))best=o;return best}
 
 /* ---------- lantern mastery (permanent, levels 1-100 per lantern) ---------- */
 const MAST_MAX=100,mNeed=L=>10+2*L;
@@ -1219,7 +1362,7 @@ function tStats(t){
   return{dmg,rate,
     range:(d.range+.15*L)*(1+.04*ml('wick'))*m.range*(TM.range||1)*(A&&t.type==='bell'?1.3:1)*ab.range,
     splash:(d.splash||0)*m.splash*(A&&t.type==='comet'?1.6:1),
-    slow:Math.min(.8,((d.slow||0)+.15*m.chill)*(TM.slow||1)),slowT:(d.slowT||0)*(1+.3*m.chill),
+    slow:Math.min(.8,((d.slow||0)+.15*m.chill+(d.slow?.03*ml('frostbite'):0))*(TM.slow||1)),slowT:(d.slowT||0)*(1+.3*m.chill),
     chain:(d.chain||0)+m.chain+(A&&t.type==='bolt'?3:0),pierce:A&&t.type==='lance'?999:(d.pierce||0)+m.pierce,
     stun:(d.stun||0)*(1+.08*L)*(A&&t.type==='bell'?2:1),pct:(d.pct||0)*(A&&t.type==='eclipse'?2:1),
     poison:(d.poison||0)*Math.pow(1.42,L)*m.poison*a.dmg*(1+.06*ml('whet'))*(1+mb.dmg)*ab.dmg
@@ -1228,7 +1371,7 @@ function tStats(t){
 const buildCost=t=>Math.round(TOWERS[t].cost*G.m.cost);
 const upCost=t=>Math.round(TOWERS[t.type].cost*(.7+.55*t.lvl)*G.m.cost);
 function makeWave(w){
-  const q=[],n=7+Math.floor(w*2.4);
+  const q=[],n=Math.floor((7+Math.floor(w*2.4))*(TM.swarm||1));
   for(let i=0;i<n;i++){
     const r=Math.random();let t='moth';
     if(w>=2&&r<.24)t='wisp';
@@ -1242,10 +1385,10 @@ function makeWave(w){
   return q;
 }
 function spawn(type,at,mini){
-  const f=FOES[type],w=G.wave,sc=Math.pow(1.22,w-1)*(1+.3*G.depth)*(mini?.45:1);
+  const f=FOES[type],w=G.wave,sc=Math.pow(1.22,w-1)*(1+.3*G.depth)*(mini?.45:1)*dOf(G.diff).hp*(type==='boss'?1-.04*ml('bane'):1)*(TM.hp||1);
   const hp=f.hp*sc;
   const e={t:type,hp,max:hp,d:0,seg:0,x:G.path.pts[0][0],y:G.path.pts[0][1],ang:0,mini:!!mini,
-    speed:f.speed*(1+.012*w)*(1+.04*G.depth)*(TM.speed||1),
+    speed:f.speed*(1+.012*w)*(1+.04*G.depth)*(TM.speed||1)*dOf(G.diff).spd*(1-.02*ml('fog')),
     armor:f.armor?f.armor+Math.floor(w/2)+(TM.armor||0):0,
     lives:mini?4:(f.lives||1),
     gold:Math.round(f.gold*(1+.05*(w-1))*(TM.gold||1)*(mini?.5:1)),
@@ -1307,6 +1450,7 @@ function fire(t,s,tg){
     G.shots.push({type:'lance',x:cx,y:cy,vx:dx/dd,vy:dy/dd,spd:12,dist:0,max:s.range+1.2,hit:new Set(),left:s.pierce,dmg:s.dmg,col:d.color,asc:A});return;
   }
   let dmg=s.dmg,crit=false;
+  if(ml('keen')&&Math.random()<.015*ml('keen')){dmg*=2;crit=true}
   if(t.type==='spark'){t.n=(t.n||0)+1;if(Math.random()<G.m.crit){dmg*=3;crit=true}if(A&&t.n%5===0){dmg*=4;crit=true}}
   const spd={cinder:6,frost:8,venom:8,comet:4.5}[t.type]||11;
   G.shots.push({type:t.type,x:cx,y:cy,tg,tx:tg.x,ty:tg.y,spd,dmg,crit,s,col:d.color,asc:A});
@@ -1338,11 +1482,12 @@ function step(dt){
   for(const e of G.foes){
     if(e.dead)continue;
     if(e.slowT>0)e.slowT-=dt;
+    if(TM.regen&&e.hp<e.max)e.hp=Math.min(e.max,e.hp+e.max*TM.regen*dt);
     if(e.poisT>0){e.poisT-=dt;hurt(e,e.pois*dt,true,e.poisSrc);if(e.dead)continue}
     if(e.stunT>0){e.stunT-=dt;e.flash=Math.max(0,e.flash-dt);continue}
     e.flash=Math.max(0,e.flash-dt);
     e.d+=e.speed*(e.slowT>0?1-e.slowF:1)*dt;
-    if(e.d>=P.total){e.dead=true;G.lives-=e.lives;continue}
+    if(e.d>=P.total){e.dead=true;if(G.ward>0){G.ward--;G.fx.push({k:'r',x:e.x,y:Math.min(e.y,H-.5),r:1,life:.6,max:.6,col:'#9be3a9'});toast('Warding stone','A foe slipped through but cost no lives.')}else G.lives-=e.lives;continue}
     while(e.seg<P.pts.length-2&&e.d>P.cum[e.seg+1])e.seg++;
     const a=P.pts[e.seg],b=P.pts[e.seg+1],L=P.cum[e.seg+1]-P.cum[e.seg],k=(e.d-P.cum[e.seg])/L;
     e.x=a[0]+(b[0]-a[0])*k;e.y=a[1]+(b[1]-a[1])*k;e.ang=Math.atan2(b[1]-a[1],b[0]-a[0]);
@@ -1386,7 +1531,9 @@ function step(dt){
   if(G.state==='wave'&&!G.q.length&&!G.foes.length)endWave();
 }
 function endWave(){
-  G.gold+=8+G.wave;
+  G.gold+=8+G.wave+3*ml('tithe');
+  if(ml('compound'))G.gold+=Math.min(20*ml('compound'),Math.floor(G.gold*.01*ml('compound')));
+  if(ml('regen')&&G.wave%5===0)G.lives+=ml('regen');
   for(const t of G.towers)if(t.type==='mint'){const g=tStats(t).income;G.gold+=g;G.fx.push({k:'t',x:t.x+.5,y:t.y+.2,txt:'+'+g,life:1.2,max:1.2,col:TOWERS.mint.color})}
   if(G.m.interest)G.gold+=Math.min(30*G.m.interest,Math.floor(G.gold*.08*G.m.interest));
   if(G.endless){if(G.wave>(meta.bestEndless||0)){meta.bestEndless=G.wave;save()}}
@@ -1409,20 +1556,21 @@ function toast(title,body){const el=$('#toast');el.innerHTML=`<b>${title}</b><sp
 /* ---------- boons ---------- */
 function offerCards(){
   const pool=CARDS.filter(c=>(!c.need||unlocked(c.need))&&!(c.once&&G.taken[c.id]));
-  const n=ml('fourth')?4:3,pick=[];
+  const n=3+ml('fourth')+ml('fifth'),pick=[],lk=1+.15*ml('luck'),wt=c=>RW[c.rar]*(c.rar?lk:1);
   while(pick.length<n&&pick.length<pool.length){
     const avail=pool.filter(c=>!pick.includes(c));
-    let tot=avail.reduce((a,c)=>a+RW[c.rar],0),r=Math.random()*tot;
-    for(const c of avail){r-=RW[c.rar];if(r<=0){pick.push(c);break}}
+    let tot=avail.reduce((a,c)=>a+wt(c),0),r=Math.random()*tot;
+    for(const c of avail){r-=wt(c);if(r<=0){pick.push(c);break}}
   }
-  $('#pickSub').textContent=G.endless?`${TH.name} · wave ${G.wave} cleared · ${G.shiftNext?'the world shifts after this pick':`world shifts in ${5-G.wave%5} wave${5-G.wave%5>1?'s':''}`}`:`${TH.name} · wave ${G.wave} cleared · ${MAXW-G.wave} to go`;
+  $('#pickSub').textContent=G.wave===0?`${TH.name} · head start · pick a boon before the first wave`:G.endless?`${TH.name} · wave ${G.wave} cleared · ${G.shiftNext?'the world shifts after this pick':`world shifts in ${5-G.wave%5} wave${5-G.wave%5>1?'s':''}`}`:`${TH.name} · wave ${G.wave} cleared · ${MAXW-G.wave} to go`;
   $('#cards').innerHTML=pick.map((c,i)=>`<button class="card r${c.rar}" data-i="${i}"><span class="rr">${RN[c.rar]}</span><span class="nm">${c.name}</span><p>${typeof c.text==='function'?c.text(G):c.text}</p></button>`).join('');
   $('#cards').onclick=e=>{const b=e.target.closest('.card');if(!b)return;takeCard(pick[+b.dataset.i])};
+  $('#skip').textContent=`Skip (+${25+25*ml('patient')} gold)`;
   const rb=$('#reroll');rb.hidden=!ml('reroll');rb.disabled=G.rerolls<=0;rb.textContent=`Reroll (${G.rerolls})`;
   show('pick');
 }
 function takeCard(c){
-  if(c){c.ap(G.m,G);G.taken[c.id]=(G.taken[c.id]||0)+1}else G.gold+=25;
+  if(c){c.ap(G.m,G);G.taken[c.id]=(G.taken[c.id]||0)+1}else G.gold+=25+25*ml('patient');
   hide('pick');G.state='build';
   if(G.shiftNext){G.shiftNext=false;shiftWorld()}
   renderTray();hud(true);
@@ -1437,13 +1585,13 @@ function endRun(win){
   const cleared=win?MAXW:Math.max(0,G.wave-(G.state==='wave'?1:0));
   G.state='over';
   let base=0;for(let i=1;i<=cleared;i++)base+=1+Math.floor(i/5);
-  const boss=G.bossKills*3,vic=win?15:0,mult=(1+.1*ml('jar'))*(1+.25*G.depth);
+  const DF=dOf(G.diff),boss=G.bossKills*3,vic=win?15:0,mult=(1+.1*ml('jar'))*(1+.25*G.depth)*DF.rew;
   const total=Math.round((base+boss+vic)*mult);
   meta.embers+=total;meta.runs++;
   const newD=win&&G.depth>=meta.maxDepth&&meta.maxDepth<MAXD;
   if(newD)meta.maxDepth=G.depth+1;
   let xp=0;for(let i=1;i<=cleared;i++)xp+=5+i;
-  xp=Math.round((xp+G.bossKills*25+(win?100:0))*(1+.2*G.depth));
+  xp=Math.round((xp+G.bossKills*25+(win?100:0))*(1+.2*G.depth)*DF.rew*(1+.05*ml('school')));
   const lvBefore=levelInfo(meta.xp).L,tierBefore=passTier();
   meta.xp+=xp;if(!seasonOver())meta.passXp=Math.min(meta.passXp+xp,PASS_TIER*100);
   const lvAfter=levelInfo(meta.xp).L,tierAfter=passTier();
@@ -1452,16 +1600,16 @@ function endRun(win){
   meta.moon+=moon;
   const st=meta.stats||(meta.stats={}),add=(k,v)=>{st[k]=(st[k]||0)+v};
   add('wins',win?1:0);add('bosses',G.bossKills);add('kills',G.kills||0);add('moon',moon);add('embers',total);add('waves',cleared);
-  meta.history=(meta.history||[]).concat({xp,w:cleared,d:G.depth,win,e:G.endless?1:0}).slice(-20);
+  meta.history=(meta.history||[]).concat({xp,w:cleared,d:G.depth,win,e:G.endless?1:0,df:G.diff}).slice(-20);
   /* mastery: 1 point per kill, plus 3 per wave cleared for every lantern type you built */
   meta.mastery=meta.mastery||{};const mUp=[];
-  for(const t of G.used){const before=mastInfo(t).L;meta.mastery[t]=(meta.mastery[t]||0)+(G.mk[t]||0)+3*cleared;const after=mastInfo(t).L;if(after>before)mUp.push(`${TOWERS[t].name} ${before}→${after}`)}
+  for(const t of G.used){const before=mastInfo(t).L;meta.mastery[t]=(meta.mastery[t]||0)+Math.round(((G.mk[t]||0)+3*cleared)*(1+.1*ml('studious')));const after=mastInfo(t).L;if(after>before)mUp.push(`${TOWERS[t].name} ${before}→${after}`)}
   save();
   $('#endTitle').textContent=win?'Dawn breaks':G.endless?`Endless: wave ${cleared}`:'The lanterns went dark';
   $('#ledger').innerHTML=(G.endless?`<span style="grid-column:1/3;color:var(--dim)">Best endless run: wave ${meta.bestEndless||0}</span>`:'')+
     `<span>Waves cleared (${cleared})</span><span>${base}</span><span>Bosses snuffed (${G.bossKills})</span><span>${boss}</span>`+
     (win?`<span>Survived the night</span><span>${vic}</span>`:'')+
-    `<span>Multiplier</span><span>×${mult.toFixed(2)}</span><span class="tot">Embers earned</span><span class="tot">${total}</span>`+
+    `<span>Difficulty: ${DF.name}</span><span style="color:${DF.col}">×${DF.rew}</span><span>Total multiplier</span><span>×${mult.toFixed(2)}</span><span class="tot">Embers earned</span><span class="tot">${total}</span>`+
     (newD?`<span style="grid-column:1/3;color:var(--good)">New world unlocked: ${THEMES[G.depth+1].name}.</span>`:'')+
     `<span class="xp" style="border-top:1px solid var(--line);padding-top:6px">XP earned</span><span class="xp" style="border-top:1px solid var(--line);padding-top:6px">+${xp}</span>`+
     (lvAfter>lvBefore?`<span style="color:var(--good)">Level up! Now level ${lvAfter}</span><span style="color:var(--good)">${rankOf(lvAfter)}</span>`:'')+
@@ -1515,6 +1663,12 @@ function renderProfile(){
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'0.12.0',d:'Oct 14, 2026',major:1,title:'The Deep Nights',
+   hl:[['10 new worlds','Depths 11–20, from Crimson Bog to The Hollow Moon, with new twists like healing foes and bigger swarms.'],
+       ['Difficulty','Easy, Normal, Hard and Nightmare. Harder nights pay up to ×2.25 embers and XP.'],
+       ['24 new camp upgrades','32 in all, sorted into six categories with tabs.'],
+       ['Ascended III','Now forged by merging two Ascended II lanterns of the same type.']],
+   notes:['10 new worlds: depths 11 to 20 (Crimson Bog, Glass Desert, Sunken Belfry, Ironroot Thicket, Aurora Fields, Cinder Cathedral, The Hive, Frozen Abyss, Eclipse Spire and The Hollow Moon).','New world twists: foes that heal over time, bigger swarms, and tougher foes.','Difficulty: Easy, Normal, Hard or Nightmare on the Play page. Harder nights pay more embers and XP (×0.6 up to ×2.25).','24 new camp upgrades, 32 in all, sorted into Economy, Offense, Defense, Run & boons, Lanterns and Progress.','Ascended III now takes two Ascended II lanterns of the same type merged together.','Fixed the camp upgrade tabs and inner pages shifting when you pick a category.','Major updates now play a short animation the first time you open the game after they arrive.']},
   {v:'0.9.0',d:'Oct 14, 2026',notes:['Re-ascension: when two lanterns of the same type are both ascended, merge one into the other to reach Ascended II, then Ascended III.','Each merge stacks ×1.75 damage, ×1.2 fire rate and ×1.12 range (Beacons get a stronger boost, Mints more gold).','Ascended II lanterns get a silver crown and a second ring. Ascended III lanterns glow in shifting colors.']},
   {v:'0.8.3',d:'Oct 14, 2026',notes:['Fixed the board jumping when you tap a lantern. The bottom panel now keeps one fixed height, so the board never moves.']},
   {v:'0.8.2',d:'Oct 14, 2026',notes:['The title screen is now centered on every screen size.']},
@@ -1535,9 +1689,30 @@ const CHANGELOG=[
   {v:'0.1.0',d:'Oct 14, 2026',notes:['First playable version.']}
 ];
 function renderLog(){
-  $('#log').innerHTML=CHANGELOG.map((e,i)=>`<li class="${i?'':'cur'}"><div class="vh"><b>v${e.v}</b><span>${e.d}</span>${i?'':'<i>Latest</i>'}</div><ul>${e.notes.map(n=>`<li style="all:unset;display:list-item">${n}</li>`).join('')}</ul></li>`).join('');
+  $('#log').innerHTML=CHANGELOG.map((e,i)=>`<li class="${i?'':'cur'}${e.major?' maj':''}">${e.major?`<div class="majb"><span>Major update</span><b>${e.title}</b><button class="btn" data-replay="${e.v}">Replay</button></div>`:''}<div class="vh"><b>v${e.v}</b><span>${e.d}</span>${i?'':'<i>Latest</i>'}</div><ul>${e.notes.map(n=>`<li style="all:unset;display:list-item">${n}</li>`).join('')}</ul></li>`).join('');
   if(meta.seenVer!==VERSION){meta.seenVer=VERSION;save()}
 }
+$('#log').addEventListener('click',e=>{const b=e.target.closest('[data-replay]');if(b)showMajor(CHANGELOG.find(x=>x.v===b.dataset.replay))});
+
+/* ---------- major update cinematic: plays once, the first time a player opens a version that contains a major update ---------- */
+function majorSince(from){return CHANGELOG.find(e=>e.major&&cmpVer(e.v,from||'0.0.0')>0&&cmpVer(e.v,VERSION)<=0)}
+function maybeMajor(){
+  if(!meta.savedAt){meta.majorSeen=VERSION;return}   /* brand-new players skip straight to the game */
+  const e=majorSince(meta.majorSeen);if(e)showMajor(e);
+}
+function showMajor(e){
+  if(!e)return;
+  $('#mjTitle').textContent=e.title||'Major update';$('#mjVer').textContent=`Version ${e.v} · ${e.d}`;
+  const items=e.hl||e.notes.map(n=>[n,'']);
+  $('#mjList').innerHTML=items.map(([h,d],i)=>`<li style="--i:${i}"><span class="mjd"></span><div><b>${h}</b>${d?`<span>${d}</span>`:''}</div></li>`).join('');
+  $('#mjGo').style.setProperty('--n',items.length);
+  const L=$('#mjLan');L.innerHTML='';
+  for(let i=0;i<16;i++){const d=document.createElement('i');d.style.left=(4+Math.random()*92)+'%';d.style.animationDelay=(-Math.random()*9).toFixed(2)+'s';
+    d.style.animationDuration=(7+Math.random()*6).toFixed(2)+'s';d.style.setProperty('--s',(.55+Math.random()*.8).toFixed(2));L.appendChild(d)}
+  const el=$('#major');el.hidden=false;el.classList.remove('play');void el.offsetWidth;el.classList.add('play');
+  if(G&&G.state==='wave')paused=true;
+}
+$('#mjGo').onclick=()=>{meta.majorSeen=VERSION;save();$('#major').hidden=true;if(G&&G.state==='wave'&&$('#menu').hidden)paused=false};
 
 /* how to play */
 const FOEINFO=[
@@ -1553,7 +1728,7 @@ function renderHow(){
   <div class="hc"><h3>Building</h3><ol>
     <li><b>Drag a lantern</b> from the tray onto a grassy tile. Green means it fits, red means it doesn't. You can also tap a lantern, then tap tiles to place it.</li>
     <li>At <b>max level</b> a lantern ascends and gains a special perk.</li>
-    <li>Ascend a <b>second copy</b> of the same lantern, then tap the first and <b>Merge</b> to absorb it: Ascended II, then Ascended III. Each merge gives ×1.75 damage, ×1.2 fire rate and ×1.12 range.</li>
+    <li>Ascend a <b>second copy</b> of the same lantern, then tap the first and <b>Merge</b> to make an <b>Ascended II</b>. Two Ascended II lanterns of the same type merge into an <b>Ascended III</b>. Each merge gives ×1.75 damage, ×1.2 fire rate and ×1.12 range.</li>
     <li><b>Tap a lantern</b> to upgrade it (up to level 6) or sell it for 60% back.</li>
     <li>Kills and cleared waves give you gold to spend.</li></ol></div>
   <div class="hc"><h3>Waves</h3><ul>
@@ -1566,6 +1741,7 @@ function renderHow(){
   <div class="hc"><h3>Levels &amp; moonstones</h3><p>Every run earns <b>XP</b> for waves cleared, bosses beaten and wins, with a bonus in deeper worlds. The same XP raises your <b>player level</b> and your <b>Pass tier</b>. Level ups and first-time world clears give <b>moonstones</b>, which you spend in the Shop.</p></div>
   <div class="hc"><h3>Mastery</h3><p>Every lantern has a permanent <b>mastery level</b> from 1 to 100. Kills and waves cleared with it raise it. Each level adds a little damage, every 10th adds fire rate, and levels 25, 50, 75 and 100 earn Bronze, Silver, Gold and Radiant badges.</p></div>
   <div class="hc"><h3>Endless</h3><p>Pick <b>Endless</b> on the Play page for a run with no last wave. Every 5 waves the world shifts to a new one with its own twist and a new trail. Lanterns caught on the new trail are refunded in full.</p></div>
+  <div class="hc"><h3>Difficulty</h3><p>Pick <b>Easy, Normal, Hard or Nightmare</b> on the Play page. Harder nights mean tougher, faster foes and fewer lives, but pay more embers and XP: ×0.6, ×1, ×1.5 and ×2.25.</p></div>
   <div class="hc"><h3>Worlds</h3><p>Clear all 20 waves to unlock the <b>next depth</b>. Each one is a new world with its own twist, tougher foes and bigger ember rewards.</p></div>
   <div class="hc full"><h3>Tips</h3><ul>
     <li>Armor cuts flat damage from every hit. Use <b>Cinder, Bolt, Comet</b> or <b>Venom</b> against beetles.</li>
@@ -1603,32 +1779,81 @@ function renderWorlds(){
   const en=meta.mode==='endless';
   document.querySelectorAll('#modes .mode').forEach(b=>{const on=b.dataset.mode===meta.mode;b.classList.toggle('on',on);b.setAttribute('aria-checked',on)});
   $('#bestEnd').textContent=meta.bestEndless?`Best: wave ${meta.bestEndless}`:'';
-  $('#start').textContent=en?`Start endless · ${THEMES[meta.depth].name}`:`Light the lanterns · ${THEMES[meta.depth].name}`;
+  const cd=DIFF[meta.diff]?meta.diff:'normal';
+  $('#diffs').innerHTML=DORDER.map(k=>{const D=DIFF[k];return `<button class="dif${k===cd?' on':''}" data-diff="${k}" role="radio" aria-checked="${k===cd}" style="--dc:${D.col}">
+    <b>${D.name}</b><span class="rw">Rewards ×${D.rew}</span><small>${D.desc}</small></button>`}).join('');
+  const dn=dOf(meta.diff).name;
+  $('#start').textContent=en?`Start endless · ${THEMES[meta.depth].name} · ${dn}`:`Light the lanterns · ${THEMES[meta.depth].name} · ${dn}`;
 }
+$('#diffs').onclick=e=>{const b=e.target.closest('[data-diff]');if(!b)return;meta.diff=b.dataset.diff;save();renderWorlds()};
 $('#modes').onclick=e=>{const b=e.target.closest('[data-mode]');if(!b)return;meta.mode=b.dataset.mode;save();renderWorlds()};
 $('#worlds').onclick=e=>{const b=e.target.closest('.wc');if(!b||b.disabled)return;meta.depth=+b.dataset.d;save();campPreview();renderWorlds()};
 $('#start').onclick=()=>{newRun(meta.depth,meta.mode==='endless');armT=null;hide('camp');paused=false;renderTray();hud(true);
-  if(G.endless)toast(`Endless · ${TH.name}`,'The world shifts every 5 waves. How long can you hold?')};
+  if(G.endless)toast(`Endless · ${TH.name}`,'The world shifts every 5 waves. How long can you hold?');
+  if(ml('headstart')){G.state='cards';G.rerolls=ml('reroll');offerCards()}};
 $('#toCamp').onclick=()=>{hide('end');campPreview();show('camp');go('home')};
 
+const UG={
+  coin:'<circle cx="12" cy="12" r="8"/><path d="M14.5 9.2c-.6-.8-1.5-1.2-2.5-1.2-1.4 0-2.5.8-2.5 2s1.1 1.6 2.5 2 2.5.8 2.5 2-1.1 2-2.5 2c-1 0-1.9-.4-2.5-1.2M12 6.5v11"/>',
+  stack:'<ellipse cx="12" cy="7" rx="7" ry="2.5"/><path d="M5 7v4c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V7M5 11v4c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-4"/>',
+  tag:'<path d="M3 12l9-9h8v8l-9 9z"/><circle cx="15.5" cy="8.5" r="1.6"/>',
+  cycle:'<path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 12a8 8 0 0 1-14 5.3L4 15"/><path d="M20 4v5h-5M4 20v-5h5"/>',
+  chart:'<path d="M4 20h16"/><path d="M5 16l5-5 3 3 6-7"/><path d="M15 7h4v4"/>',
+  eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  cross:'<circle cx="12" cy="12" r="7"/><path d="M12 2v5M12 17v5M2 12h5M17 12h5"/><circle cx="12" cy="12" r="1.2"/>',
+  crack:'<path d="M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z"/><path d="M12.5 6l-2.5 5 4 2-2 5"/>',
+  scythe:'<path d="M6 21L15.5 5"/><path d="M15.5 5c3 0 6 2 6 5.5-3-2.2-6.5-2.2-9.4-1"/>',
+  shield:'<path d="M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z"/><path d="M8.8 12.2l2.2 2.2 4.2-4.4"/>',
+  heal:'<path d="M12 20s-7.5-4.6-7.5-10.2A4.1 4.1 0 0 1 12 7.4a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20z"/><path d="M12 3v2.5M5 4.5l1.5 1.5M19 4.5L17.5 6"/>',
+  cloud:'<path d="M7 16.5h10a3.8 3.8 0 0 0 0-7.6 5 5 0 0 0-9.6-1.4A3.5 3.5 0 0 0 7 16.5z"/><path d="M4 20.5h16"/>',
+  skull:'<path d="M5 11a7 7 0 0 1 14 0c0 2.4-1.2 3.6-2.5 4.4V19h-9v-3.6C6.2 14.6 5 13.4 5 11z"/><circle cx="9.5" cy="11" r="1.6"/><circle cx="14.5" cy="11" r="1.6"/><path d="M11 19v-2M13 19v-2"/>',
+  clover:'<circle cx="9" cy="9" r="3.2"/><circle cx="15" cy="9" r="3.2"/><circle cx="9" cy="15" r="3.2"/><circle cx="15" cy="15" r="3.2"/><path d="M13 13l5 8"/>',
+  glass:'<path d="M6 3h12M6 21h12"/><path d="M7.5 3c0 5.5 9 5.5 9 9s-9 3.5-9 9M16.5 3c0 5.5-9 5.5-9 9s9 3.5 9 9"/>',
+  flag:'<path d="M5 21V4"/><path d="M5 4.5h11l-2.2 4 2.2 4H5"/>',
+  burst:'<path d="M12 2.5l2 5.6 5.6-2.8-2.8 5.6 5.6 2-5.6 2 2.8 5.6-5.6-2.8-2 5.6-2-5.6-5.6 2.8 2.8-5.6-5.6-2 5.6-2-2.8-5.6 5.6 2.8z"/>',
+  flake:'<path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7"/><path d="M9.2 4l2.8 2 2.8-2M9.2 20l2.8-2 2.8 2"/>',
+  drop:'<path d="M12 3c4 5 6 8 6 11a6 6 0 0 1-12 0c0-3 2-6 6-11z"/><path d="M9.3 14.2a2.7 2.7 0 0 0 2.7 2.6"/>',
+  bolt:'<path d="M13 2L5 13.5h6l-1 8.5 8-11.5h-6z"/>',
+  rank:'<path d="M6 9l6-4 6 4M6 14l6-4 6 4M6 19l6-4 6 4"/>',
+  book:'<path d="M4 5c3-1 6-1 8 1 2-2 5-2 8-1v14c-3-1-6-1-8 1-2-2-5-2-8-1z"/><path d="M12 6v14"/>',
+  medal:'<circle cx="12" cy="9" r="6"/><path d="M12 5.8l1.1 2.2 2.4.3-1.8 1.6.5 2.4-2.2-1.2-2.2 1.2.5-2.4-1.8-1.6 2.4-.3z"/><path d="M9 14l-2 7 5-2 5 2-2-7"/>',
+  fan5:'<rect x="2.5" y="5" width="7" height="11" rx="1.2" style="fill:var(--moss2)"/><rect x="6.5" y="6.2" width="7" height="11" rx="1.2" style="fill:var(--moss2)"/><rect x="10.5" y="7.4" width="7" height="11" rx="1.2" style="fill:var(--moss2)"/><rect x="14.5" y="8.6" width="7" height="11" rx="1.2" style="fill:var(--moss2)"/>'
+};
 const UPIC={
   kindling:['#ff9a4a','<path d="M4 20l16-5M4 15l16 5"/><path d="M12 12.5c-3-2-2.2-5.5 0-8.5 1 2 3.2 3.2 3.2 5.5a3.2 3.2 0 0 1-3.2 3z"/>'],
-  hearth:['#ff6b7a','<path d="M12 20s-7.5-4.6-7.5-10.2A4.1 4.1 0 0 1 12 7.4a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20z"/><path d="M9 11.5h6M12 8.8v5.4"/>'],
+  purse:['#ffcf4a',UG.coin],tithe:['#ffd98a',UG.stack],thrift:['#f2b45a',UG.tag],salvage:['#c9e07a',UG.cycle],compound:['#8fe3a2',UG.chart],
   whet:['#d6e1ee','<path d="M14.5 3.5h6v6L10 20l-6-6z"/><path d="M4 20l2.5-2.5M11 8l5 5"/>'],
   bellows:['#8fd8ff','<path d="M3 9h11.5a3 3 0 1 0-3-3"/><path d="M3 15h15a3 3 0 1 1-3 3"/><path d="M3 12h7"/>'],
   wick:['#ffd36b','<rect x="8" y="11" width="8" height="10" rx="1.2"/><path d="M12 11V8"/><path d="M12 7.6c-1.6-1.3-1.6-3.2 0-4.8 1.6 1.6 1.6 3.5 0 4.8z"/>'],
-  jar:['#ffb547','<path d="M8 3h8M9.2 3v3L6 9.2V19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9.2L14.8 6V3"/><path d="M12 12.2c-1.6 1.2-1.6 3.2 0 4.3 1.6-1.1 1.6-3.1 0-4.3z"/>'],
+  keen:['#bfe3ff',UG.eye],focus:['#ff7a6b',UG.cross],breaker:['#c9b8ff',UG.crack],reaper:['#b0b8c8',UG.scythe],
+  hearth:['#ff6b7a','<path d="M12 20s-7.5-4.6-7.5-10.2A4.1 4.1 0 0 1 12 7.4a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20z"/><path d="M9 11.5h6M12 8.8v5.4"/>'],
+  ward:['#9be3a9',UG.shield],regen:['#ff9ab0',UG.heal],fog:['#a9c4cf',UG.cloud],bane:['#e0a07a',UG.skull],
   reroll:['#b79cff','<path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/>'],
-  fourth:['#9be3a9','<rect x="3.5" y="5" width="8" height="12" rx="1.2" style="fill:var(--moss2)"/><rect x="8" y="6.5" width="8" height="12" rx="1.2" style="fill:var(--moss2)"/><rect x="12.5" y="8" width="8" height="12" rx="1.2" style="fill:var(--moss2)"/>']
+  fourth:['#9be3a9','<rect x="3.5" y="5" width="8" height="12" rx="1.2" style="fill:var(--moss2)"/><rect x="8" y="6.5" width="8" height="12" rx="1.2" style="fill:var(--moss2)"/><rect x="12.5" y="8" width="8" height="12" rx="1.2" style="fill:var(--moss2)"/>'],
+  fifth:['#7dffb0',UG.fan5],luck:['#7dff9a',UG.clover],patient:['#e8d7a8',UG.glass],headstart:['#ff8fd0',UG.flag],
+  blast:['#ff7a3d',UG.burst],frostbite:['#7fe3ff',UG.flake],toxin:['#a6ff5c',UG.drop],conductor:['#c3a6ff',UG.bolt],veteran:['#ffd75e',UG.rank],
+  jar:['#ffb547','<path d="M8 3h8M9.2 3v3L6 9.2V19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9.2L14.8 6V3"/><path d="M12 12.2c-1.6 1.2-1.6 3.2 0 4.3 1.6-1.1 1.6-3.1 0-4.3z"/>'],
+  school:['#9fd0ff',UG.book],studious:['#ffd36b',UG.medal]
 };
-function renderUps(){
-  $('#ups').innerHTML=META.map(m=>{const l=ml(m.id),mx=l>=m.max,c=mcost(m,l),[col,ic]=UPIC[m.id];
-    return `<div class="ug${mx?' maxed':''}" style="--ic:${col}"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">${ic}</svg></div>
-      <div><div class="un">${m.name}<span class="lv">${l}/${m.max}</span></div>
-      <div class="lvbar">${Array.from({length:m.max},(_,i)=>`<i class="${i<l?'on':''}"></i>`).join('')}</div><p>${m.text(l)}</p></div>
-      <button class="btn ubuy" data-id="${m.id}" ${mx||meta.embers<c?'disabled':''} aria-label="${mx?'Maxed':`Buy ${m.name} for ${c} embers`}">${mx?'Max':`<span class="em"></span>${c}`}</button></div>`}).join('');
+let upCat='all';
+function upCard(m){
+  const l=ml(m.id),mx=l>=m.max,c=mcost(m,l),[col,ic]=UPIC[m.id]||['#ffb547',UG.coin],lock=m.need&&!ml(m.need);
+  return `<div class="ug${mx?' maxed':''}${lock?' lockd':''}" style="--ic:${col}"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">${ic}</svg></div>
+    <div><div class="un">${m.name}<span class="lv">${l}/${m.max}</span></div>
+    <div class="lvbar">${Array.from({length:m.max},(_,i)=>`<i class="${i<l?'on':''}"></i>`).join('')}</div><p>${m.text(l)}</p></div>
+    <button class="btn ubuy" data-id="${m.id}" ${mx||lock||meta.embers<c?'disabled':''} aria-label="${mx?'Maxed':lock?'Locked':`Buy ${m.name} for ${c} embers`}">${mx?'Max':lock?'Locked':`<span class="em"></span>${c}`}</button></div>`;
 }
-$('#ups').onclick=e=>{const b=e.target.closest('button[data-id]');if(!b)return;const m=META.find(x=>x.id===b.dataset.id),l=ml(m.id),c=mcost(m,l);
+function renderUps(){
+  const tot=META.reduce((a,m)=>a+m.max,0),have=META.reduce((a,m)=>a+ml(m.id),0);
+  const cats=upCat==='all'?UCATS.slice(1):UCATS.filter(c=>c[0]===upCat);
+  const tabs=$('#ucats');
+  if(!tabs.childElementCount)tabs.innerHTML=UCATS.map(([k,n])=>`<button class="uct" data-cat="${k}" role="tab">${n}</button>`).join('');
+  tabs.querySelectorAll('.uct').forEach(b=>{const on=b.dataset.cat===upCat;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});
+  $('#ups').innerHTML=`<div class="uprog"><span>${have} / ${tot} levels bought</span><span class="xpbar"><i style="width:${have/tot*100}%"></i></span></div>`+
+    cats.map(([k,n])=>`<div class="sec ucs">${n}</div>`+META.filter(m=>m.cat===k).map(upCard).join('')).join('');
+}
+$('#ucats').onclick=e=>{const tb=e.target.closest('[data-cat]');if(!tb)return;upCat=tb.dataset.cat;renderUps()};
+$('#ups').onclick=e=>{const b=e.target.closest('button[data-id]');if(!b||b.disabled)return;const m=META.find(x=>x.id===b.dataset.id),l=ml(m.id),c=mcost(m,l);
   if(l<m.max&&meta.embers>=c){meta.embers-=c;meta.up[m.id]=l+1;save();renderView()}};
 
 /* lanterns carousel */
@@ -2047,13 +2272,13 @@ const dotHtml=c=>`<span class="dot" style="background:${c};box-shadow:0 0 10px $
 function renderTray(){
   const tr=$('#tray'),s=G.sel,own=ORDER.filter(unlocked);
   if(!s){
-    tr.innerHTML=`<p class="hint trh"><b>${TH.name}${G.endless?' · Endless':''}.</b> ${TH.twist} <span class="how">${armT?`Tap a grassy tile to place ${TOWERS[armT].name}.`:'Drag a lantern onto the grass.'}</span></p>
+    tr.innerHTML=`<p class="hint trh"><b>${TH.name}${G.endless?' · Endless':''} · <span style="color:${dOf(G.diff).col}">${dOf(G.diff).name}</span>.</b> ${TH.twist} <span class="how">${armT?`Tap a grassy tile to place ${TOWERS[armT].name}.`:'Drag a lantern onto the grass.'}</span></p>
     <div class="pal" id="pal">${own.map(t=>`<button class="pc${armT===t?' arm':''}" data-drag="${t}" data-cost="${buildCost(t)}" aria-label="${TOWERS[t].name}, ${buildCost(t)} gold. Drag onto a tile, or tap then tap a tile.">
       <canvas class="pci" data-pci="${t}" width="64" height="64" aria-hidden="true"></canvas><span class="pn">${TOWERS[t].name}</span><span class="pcost">${buildCost(t)}</span></button>`).join('')}</div>`;
     tr.querySelectorAll('canvas[data-pci]').forEach(c=>{const t=c.dataset.pci,x=c.getContext('2d'),col=TOWERS[t].color;
       x.fillStyle='#090d0e';x.beginPath();x.arc(32,32,21,0,7);x.fill();x.strokeStyle=col;x.lineWidth=3;x.stroke();lantern(t,32,32,col,x,62)});
   }else{
-    const t=s.t,st=tStats(t),mx=t.lvl>=MAXL,uc=upCost(t),refund=Math.round(t.spent*.6),ty=t.type,mL=G.mast[ty],mb=mastBadge(mL);
+    const t=s.t,st=tStats(t),mx=t.lvl>=MAXL,uc=upCost(t),refund=Math.round(t.spent*sellRate()),ty=t.type,mL=G.mast[ty],mb=mastBadge(mL);
     let nums;
     if(ty==='beacon')nums=`boosts lanterns within ${st.radius} tile${st.radius>1?'s':''}: +${st.aura}% damage, +8% fire rate`;
     else if(ty==='mint')nums=`+${st.income} gold after each wave`;
@@ -2069,7 +2294,7 @@ function renderTray(){
       <div class="nums">${nums}</div>
       <div class="perk${mx?' on':''}">${mx?'':'At max level · '}${ASC[ty]}</div>
       ${mx?(()=>{const T=ascTier(t),pt=ascPartner(t);if(T>=ASC_MAX)return `<div class="perk on">Fully ascended: ×${ascBoost(t).dmg.toFixed(2)} damage, ×${ascBoost(t).rate.toFixed(2)} fire rate, ×${ascBoost(t).range.toFixed(2)} range.</div>`;
-        return `<div class="perk">${pt?`Ready: merge another ascended ${TOWERS[ty].name} into this one to reach ${ASC_NAME[T+1]} (×1.75 damage, ×1.2 fire rate, ×1.12 range).`:`To reach ${ASC_NAME[T+1]}, ascend a second ${TOWERS[ty].name} on the board, then merge it into this one.`}</div>`})():''}
+        return `<div class="perk">${pt?`Ready: merge another ${ASC_NAME[T]} ${TOWERS[ty].name} into this one to reach ${ASC_NAME[T+1]} (×1.75 damage, ×1.2 fire rate, ×1.12 range).`:`To reach ${ASC_NAME[T+1]}, you need a second ${ASC_NAME[T]} ${TOWERS[ty].name} on the board${T>=2?' (merge two more ascended copies into it first)':''}. Then merge it into this one.`}</div>`})():''}
       <div class="mst">Mastery ${mL}${mb?` · ${mb}`:''} · +${(mastBonus(mL).dmg*100).toFixed(1)}% damage${mastBonus(mL).rate?`, +${Math.round(mastBonus(mL).rate*100)}% fire rate`:''}</div></div>
       <div class="acts">${mx?(ascTier(t)>=ASC_MAX?`<button class="btn primary" disabled>${ASC_NAME[ASC_MAX]}</button>`:`<button class="btn primary ascgo" data-act="asc" ${ascPartner(t)?'':'disabled'}>Merge → ${ASC_NAME[ascTier(t)+1]}</button>`):`<button class="btn primary" data-act="up" data-cost="${uc}" data-max="0">Upgrade ${uc}</button>`}<button class="btn" data-act="sell">Sell +${refund}</button><button class="btn" data-act="close" aria-label="Close">✕</button></div></div>`;
   }
@@ -2077,7 +2302,7 @@ function renderTray(){
 }
 function buildAt(type,x,y){
   const c=buildCost(type);if(G.gold<c||!canPlace(x,y))return false;G.gold-=c;
-  G.towers.push({type,x,y,lvl:1,cd:0,spent:c});G.used.add(type);
+  G.towers.push({type,x,y,lvl:1+ml('veteran'),cd:0,spent:c});G.used.add(type);
   puff(x+.5,y+.5,TOWERS[type].color,10);G.fx.push({k:'r',x:x+.5,y:y+.5,r:.6,life:.3,max:.3,col:TOWERS[type].color});
   hud();return true;
 }
@@ -2096,9 +2321,9 @@ $('#tray').onclick=e=>{
     const col=ASC_COL[t.at];
     G.fx.push({k:'z',pts:[[pt.x+.5,pt.y+.5],[t.x+.5,t.y+.5]],life:.5,max:.5,col});
     G.fx.push({k:'r',x:t.x+.5,y:t.y+.5,r:1.8,life:.8,max:.8,col});puff(t.x+.5,t.y+.5,col,30);puff(pt.x+.5,pt.y+.5,col,14);
-    toast(`${TOWERS[t.type].name}: ${ASC_NAME[t.at]}`,`Merged two ascended lanterns. ×${ascBoost(t).dmg.toFixed(2)} damage, ×${ascBoost(t).rate.toFixed(2)} fire rate, ×${ascBoost(t).range.toFixed(2)} range.`);
+    toast(`${TOWERS[t.type].name}: ${ASC_NAME[t.at]}`,`Merged two ${ASC_NAME[t.at-1]} lanterns. ×${ascBoost(t).dmg.toFixed(2)} damage, ×${ascBoost(t).rate.toFixed(2)} fire rate, ×${ascBoost(t).range.toFixed(2)} range.`);
   }else if(b.dataset.act==='sell'&&s&&s.kind==='tower'){
-    G.gold+=Math.round(s.t.spent*.6);G.towers=G.towers.filter(x=>x!==s.t);G.sel=null;
+    G.gold+=Math.round(s.t.spent*sellRate());G.towers=G.towers.filter(x=>x!==s.t);G.sel=null;
   }
   renderTray();hud();
 };
@@ -2328,7 +2553,7 @@ meta.depth=Math.min(meta.depth,meta.maxDepth);
 applySkins();campPreview();
 new ResizeObserver(resize).observe($('#board'));resize();
 go('home');renderTray();hud(true);
-storageInit().then(()=>cloudInit());
+storageInit().then(()=>{maybeMajor();cloudInit()});
 checkVersion(false);
 requestAnimationFrame(loop);
 })();
