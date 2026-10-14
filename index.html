@@ -110,6 +110,14 @@ h2.big{font:400 52px/.9 var(--display);margin:0}
 #sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 #camp .view{position:relative;z-index:1}
 [data-view=home] .logo{font-size:clamp(68px,20vw,120px)}
+/* title screen: one centered column */
+#camp .view[data-view=home]{max-width:440px;align-items:center;text-align:center}
+[data-view=home] .tag{margin-inline:auto}
+[data-view=home] .player,[data-view=home] .menu,[data-view=home] .campstats{width:100%;max-width:none;box-sizing:border-box}
+[data-view=home] .player{text-align:left}
+[data-view=home] .campstats{justify-content:space-around}
+[data-view=home] .campstats .stat{align-items:center}
+[data-view=home] .homefoot{justify-content:center}
 [data-view=home] .menu .btn.mi{background:color-mix(in srgb,var(--moss2) 82%,transparent);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 /* lantern carousel */
 .car{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
@@ -485,7 +493,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 
 
 <script>
-/* PWA: offline support and updates (Lanternfall v0.8.1) */
+/* PWA: offline support and updates (Lanternfall v0.8.2) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -778,7 +786,7 @@ const CARDS=[
 const RW=[10,4.5,1.6],RN=['Common','Rare','Mythic'];
 
 /* ---------- save ---------- */
-const VERSION='0.8.1';
+const VERSION='0.8.2';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0});
@@ -1495,6 +1503,7 @@ function renderProfile(){
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'0.8.2',d:'Oct 14, 2026',notes:['The title screen is now centered on every screen size.']},
   {v:'0.8.1',d:'Oct 14, 2026',notes:['The app checks for a new version every time it opens, and Settings has a Check for updates button.','When a new version is out, a popup lets you reload straight into it.','Permanent storage: the game asks your device to never clear its data, and keeps a second backup copy of your save that restores itself if the first is lost.']},
   {v:'0.8.0',d:'Oct 14, 2026',notes:['Drag and drop: drag lanterns from the tray onto the board. Tiles light green or red, and you see the range before you drop. Tap a lantern then tap tiles also works.','Ascension: max-level lanterns gain a special perk, a gold crown and a turning ring.','Lantern Mastery: every lantern levels from 1 to 100 forever, gaining a little damage each level, fire rate every 10, and badges at 25/50/75/100.','Endless mode: no last wave, and every 5 waves the world, its twist and the trail all change.','Trails are now much more varied. They can enter from the sides and double back.']},
   {v:'0.7.2',d:'Oct 14, 2026',notes:['Every lantern now has its own Legendary, Mythic, Celestial and Exotic skins with unique names and colors, like Phoenix for Cinder, Aurora Veil for Frost and Jackpot for Mint.','Each lantern’s skins shed their own particle shape: Spark diamonds, Cinder flames, Frost snowflakes, Lance shards, Venom bubbles, Mint coins, Bolt zaps, Beacon rings, Comet tails, Moonwell crescents, Bell notes and Eclipse suns.','Skins you already own carry over.']},
