@@ -122,9 +122,28 @@ h2.big{font:400 52px/.9 var(--display);margin:0}
 [data-view=home] .homefoot{justify-content:center}
 [data-view=home] .menu .btn.mi{background:color-mix(in srgb,var(--moss2) 82%,transparent);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 /* lantern carousel */
-.car{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.car{display:flex;gap:16px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior:contain;touch-action:pan-x;-webkit-overflow-scrolling:touch}
+#camp .view[data-view=lanterns]{height:calc(100vh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 32px);height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 32px);min-height:520px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
+#camp .view[data-view=lanterns] .ph{flex:none}
+#camp .view[data-view=lanterns] .ph h2{font-size:clamp(36px,11vw,52px)}
+.lanbar,.carnav{flex:none}
+#camp .view[data-view=lanterns] .car{flex:1;min-height:0}
 .car::-webkit-scrollbar{display:none}
-.slide{flex:0 0 100%;scroll-snap-align:center;box-sizing:border-box;background:color-mix(in srgb,var(--moss) 92%,transparent);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:12px 16px;align-items:center}
+.slide{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always;box-sizing:border-box;height:100%;overflow:hidden;background:color-mix(in srgb,var(--moss) 92%,transparent);border:1px solid var(--line);border-radius:12px;padding:12px;
+  display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:auto auto 1fr auto;gap:8px 14px;align-content:start;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .35s}
+.slide:not(.act){transform:scale(.94);opacity:.55}
+.slide .sx{grid-column:1/3;display:flex;flex-direction:column;gap:4px;min-width:0}
+.slide .sx .mast{margin-top:0}
+.slide .sx .perk{margin:0;font-size:11.5px;line-height:1.35}
+.slide .info p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;margin-bottom:6px;font-size:12.5px}
+.slide .info p.lore{-webkit-line-clamp:2;font-size:11.5px}
+.slide dl.stats{font-size:12px;gap:1px 10px}
+.slide .stage{align-self:start;max-height:min(46vw,30vh);aspect-ratio:1/1;margin-inline:auto;width:100%}
+.slide .skins{align-content:start;overflow:hidden;min-height:0}
+.slide .bb{padding-top:8px}
+.slide .bb .btn{padding:8px 12px}
+@media (prefers-reduced-motion:reduce){.slide{transition:none}.slide:not(.act){transform:none}}
 .stage{position:relative;aspect-ratio:1/1;border-radius:10px;background:radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--tc) 16%,transparent),transparent 70%)}
 .stage canvas{display:block;width:100%;height:100%}
 .slide.locked .stage canvas{opacity:.35;filter:grayscale(.6)}
@@ -137,8 +156,12 @@ dl.stats dt{color:var(--dim)}
 dl.stats dd{margin:0;font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
 .skins{grid-column:1/3;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0}
 @media (min-width:640px){.skins{grid-template-columns:repeat(8,minmax(0,1fr))}}
-.slide .skins{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0}
-@media (min-width:640px){.slide .skins{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.slide .skins{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:0}
+.slide .skt{padding:6px 2px 5px;gap:3px;border-radius:9px}
+.slide .skt .sw{width:22px;height:22px}
+.slide .skt .sn{font-size:10px;line-height:1.15;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 3px;box-sizing:border-box}
+.slide .skt .sp{font-size:9.5px}
+@media (min-width:640px){.slide .skins{grid-template-columns:repeat(9,minmax(0,1fr))}}
 .skt{min-width:0}
 .skt .sn{overflow-wrap:break-word;font-size:11.5px;letter-spacing:-.01em}
 [data-view=home] .tag,[data-view=home] .campstats,.ph h2{text-shadow:0 1px 10px rgba(0,0,0,.85),0 0 2px rgba(0,0,0,.6)}
@@ -564,7 +587,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 
 
 <script>
-/* PWA: offline support and updates (Lanternfall v0.12.0) */
+/* PWA: offline support and updates (Lanternfall v0.12.1) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -933,7 +956,7 @@ const CARDS=[
 const RW=[10,4.5,1.6],RN=['Common','Rare','Mythic'];
 
 /* ---------- save ---------- */
-const VERSION='0.12.0';
+const VERSION='0.12.1';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -1663,6 +1686,7 @@ function renderProfile(){
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'0.12.1',d:'Oct 14, 2026',notes:['The Lanterns page now fits on one screen with no up-and-down scrolling. Swipe sideways to move between lanterns, which snap into place while the ones beside them fade back.']},
   {v:'0.12.0',d:'Oct 14, 2026',major:1,title:'The Deep Nights',
    hl:[['10 new worlds','Depths 11–20, from Crimson Bog to The Hollow Moon, with new twists like healing foes and bigger swarms.'],
        ['Difficulty','Easy, Normal, Hard and Nightmare. Harder nights pay up to ×2.25 embers and XP.'],
@@ -1884,8 +1908,8 @@ function slideHTML(t){
   return `<article class="slide${un?'':' locked'}" data-t="${t}" style="--tc:${base}" aria-label="${T.name}">
     <div class="stage"><canvas data-prev="${t}" width="360" height="360" aria-hidden="true"></canvas>${un?'':'<span class="lockt">Locked</span>'}</div>
     <div class="info"><span class="sec" style="margin:0">${T.pass?'Season 1 lantern':`Lantern ${i+1} of ${ORDER.length}`}</span><h3 style="color:${base}">${T.name}</h3><p>${T.desc}</p>${T.lore?`<p class="lore">${T.lore}</p>`:''}
-      <dl class="stats">${rows.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl>
-      ${(()=>{const mi=mastInfo(t),mb=mastBonus(mi.L),bd=mastBadge(mi.L),nm=[25,50,75,100].find(x=>x>mi.L);
+      <dl class="stats">${rows.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl></div>
+    <div class="sx">      ${(()=>{const mi=mastInfo(t),mb=mastBonus(mi.L),bd=mastBadge(mi.L),nm=[25,50,75,100].find(x=>x>mi.L);
         return `<div class="mast"><div class="mr"><span>Mastery <b>${mi.L}</b> / ${MAST_MAX}${bd?` · ${bd}`:''}</span><span>${mi.L>=MAST_MAX?'Maxed':`${mi.into} / ${mi.need}`}</span></div>
         <div class="xpbar"><i style="width:${mi.L>=MAST_MAX?100:mi.into/mi.need*100}%"></i></div>
         <small>+${(mb.dmg*100).toFixed(1)}% damage${mb.rate?`, +${Math.round(mb.rate*100)}% fire rate`:''}${nm?` · ${mastBadge(nm)} at ${nm}`:''}</small></div>`})()}
@@ -1901,10 +1925,10 @@ function renderLanterns(){
   requestAnimationFrame(()=>{$('#lan').scrollLeft=lanIdx*$('#lan').clientWidth;markDot()});
 }
 function refreshSlide(t){
-  const el=$(`#lan .slide[data-t="${t}"]`);if(el)el.outerHTML=slideHTML(t);
+  const el=$(`#lan .slide[data-t="${t}"]`);if(el)el.outerHTML=slideHTML(t);markDot();
   document.querySelectorAll('.embersN').forEach(n=>{n.textContent=meta.embers});
 }
-function markDot(){document.querySelectorAll('#lDots button').forEach((b,i)=>b.classList.toggle('on',i===lanIdx))}
+function markDot(){document.querySelectorAll('#lDots button').forEach((b,i)=>b.classList.toggle('on',i===lanIdx));document.querySelectorAll('#lan .slide').forEach((sl,i)=>sl.classList.toggle('act',i===lanIdx))}
 function toSlide(i){lanIdx=Math.max(0,Math.min(ORDER.length-1,i));$('#lan').scrollTo({left:lanIdx*$('#lan').clientWidth,behavior:RM?'auto':'smooth'});markDot()}
 $('#lan').addEventListener('scroll',()=>{const c=$('#lan'),i=Math.round(c.scrollLeft/Math.max(1,c.clientWidth));if(i!==lanIdx){lanIdx=i;markDot()}},{passive:true});
 $('#hideUn').onclick=()=>{hideUn=!hideUn;try{localStorage.setItem('lanternfall.hideUnowned',hideUn?'1':'0')}catch(e){}renderLanterns()};

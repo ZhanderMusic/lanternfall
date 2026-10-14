@@ -1,15 +1,8 @@
 {
-  "version": "0.12.0",
+  "version": "0.12.1",
   "date": "Oct 14, 2026",
-  "major": true,
+  "major": false,
   "notes": [
-    "10 new worlds: depths 11 to 20 (Crimson Bog, Glass Desert, Sunken Belfry, Ironroot Thicket, Aurora Fields, Cinder Cathedral, The Hive, Frozen Abyss, Eclipse Spire and The Hollow Moon).",
-    "New world twists: foes that heal over time, bigger swarms, and tougher foes.",
-    "Difficulty: Easy, Normal, Hard or Nightmare on the Play page. Harder nights pay more embers and XP (×0.6 up to ×2.25).",
-    "24 new camp upgrades, 32 in all, sorted into Economy, Offense, Defense, Run & boons, Lanterns and Progress.",
-    "Ascended III now takes two Ascended II lanterns of the same type merged together.",
-    "Fixed the camp upgrade tabs and inner pages shifting when you pick a category.",
-    "Major updates now play a short animation the first time you open the game after they arrive."
-  ],
-  "title": "The Deep Nights"
+    "The Lanterns page now fits on one screen with no up-and-down scrolling. Swipe sideways to move between lanterns, which snap into place while the ones beside them fade back."
+  ]
 }
