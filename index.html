@@ -889,7 +889,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
   <section class="panel view wide" data-view="play" hidden>
     <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">Choose a world</h2></header>
     <div class="modes" id="modes" role="radiogroup" aria-label="Game mode">
-      <button class="mode" data-mode="campaign" role="radio"><b>Campaign</b><small>Survive 20 waves to beat the world and unlock the next one.</small></button>
+      <button class="mode" data-mode="campaign" role="radio"><b>Campaign</b><small>Survive 20 waves to beat the world and unlock the next. Your run saves between waves.</small></button>
       <button class="mode" data-mode="endless" role="radio"><b>Endless</b><small>No final wave. Every 5 waves the world and its twist change. Your run saves between waves.</small><span class="best" id="bestEnd"></span></button>
     </div>
     <div class="sec">Difficulty</div>
@@ -1003,8 +1003,9 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
   <div class="panel" style="max-width:340px">
     <h2 class="big">Paused</h2>
     <button class="btn primary" id="resume">Resume</button>
+    <button class="btn" id="saveQuit">Save and quit</button>
     <button class="btn danger" id="abandon">Abandon run</button>
-    <p class="hint">Abandoning still pays embers for the waves you cleared.</p>
+    <p class="hint" id="menuHint">Abandoning still pays embers for the waves you cleared.</p>
   </div>
 </div>
 
@@ -1973,20 +1974,21 @@ function shiftWorld(){
   applyTheme(G.world);G.amb=makeAmb();drawBG();   /* same trail, new world and conditions */
   toast(`World shift: ${TH.name}`,TH.twist);
 }
-/* endless runs checkpoint between waves (after the boon pick) and can be continued from the Play page */
+/* runs checkpoint between waves (after the boon pick) and can be continued from the Play page: one campaign save and one endless save */
+const saveKey=e=>e?'endlessSave':'campSave';
 function pathFrom(cells,pts){const cum=[0];for(let i=1;i<pts.length;i++)cum.push(cum[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));
   return{cells,pts,cum,total:cum[cum.length-1],set:new Set(cells.map(([a,b])=>a+','+b))}}
 function snapRun(){
-  if(!G||!G.endless||G.state!=='build')return;
-  meta.endlessSave={v:2,depth:G.depth,world:G.world,diff:G.diff,wave:G.wave,lives:G.lives,gold:G.gold,bossKills:G.bossKills,kills:G.kills||0,ward:G.ward||0,
+  if(!G||G.state!=='build')return;
+  meta[saveKey(G.endless)]={v:2,depth:G.depth,world:G.world,diff:G.diff,wave:G.wave,lives:G.lives,gold:G.gold,bossKills:G.bossKills,kills:G.kills||0,ward:G.ward||0,
     gf:G.gf||0,towers:G.towers.map(t=>({type:t.type,x:t.x,y:t.y,p:(t.p||[0,0]).slice(),ak:t.ak==null?null:t.ak,at:t.at||0,spent:t.spent})),path:{cells:G.path.cells,pts:G.path.pts},
     m:G.m,taken:G.taken,mk:G.mk,used:[...G.used],at:Date.now()};
   save();
 }
-function resumeRun(){
-  const r=meta.endlessSave;if(!r)return false;
-  if(r.v!==2){delete meta.endlessSave;save();return false}
-  newRun(r.depth,true);applyTheme(r.world);
+function resumeRun(endless){
+  const k=saveKey(endless),r=meta[k];if(!r)return false;
+  if(r.v!==2){delete meta[k];save();return false}
+  newRun(r.depth,endless);applyTheme(r.world);
   Object.assign(G,{gf:r.gf||0,world:r.world,diff:r.diff,wave:r.wave,lives:r.lives,gold:r.gold,bossKills:r.bossKills,kills:r.kills,ward:r.ward,
     m:Object.assign(G.m,r.m),taken:r.taken||{},mk:r.mk||{},used:new Set(r.used||[])});
   G.towers=(r.towers||[]).filter(t=>TOWERS[t.type]).map(t=>({type:t.type,x:t.x,y:t.y,p:(t.p||[0,0]).slice(),ak:t.ak==null?undefined:t.ak,at:t.at||undefined,spent:t.spent,cd:0}));
@@ -2052,7 +2054,7 @@ function endRun(win){
   const st=meta.stats||(meta.stats={}),add=(k,v)=>{st[k]=(st[k]||0)+v};
   add('wins',win?1:0);add('bosses',G.bossKills);add('kills',G.kills||0);add('moon',moon);add('embers',total);add('waves',cleared);
   meta.history=(meta.history||[]).concat({xp,w:cleared,d:G.depth,win,e:G.endless?1:0,df:G.diff}).slice(-20);
-  if(G.endless)delete meta.endlessSave;
+  delete meta[saveKey(G.endless)];
   /* mastery: 1 point per kill, plus 3 per wave cleared for every lantern type you built */
   meta.mastery=meta.mastery||{};const mUp=[];
   for(const t of G.used){const before=mastInfo(t).L;meta.mastery[t]=(meta.mastery[t]||0)+Math.round(((G.mk[t]||0)/WAVE_LEN+3*cleared)*(1+.1*ml('studious')));const after=mastInfo(t).L;if(after>before)mUp.push(`${TOWERS[t].name} ${before}→${after}`)}
@@ -2120,7 +2122,7 @@ const CHANGELOG=[
        ['Ascension types','Each lantern has three ways to ascend. Pick one when you max both paths.'],
        ['Mastery unlocks','Mastery now unlocks path 2, tiers 4 and 5, and each ascension type as you play.'],
        ['New Lanterns page','Lanterns are grouped by role, and each one shows its mastery road and both upgrade paths.']],
-   notes:['Every lantern has two upgrade paths with 5 tiers each, replacing the old 6 levels. Tap a lantern to open its upgrade panel.','Max both paths to ascend. Each lantern has three ascension types: its original perk plus two new ones.','Mastery unlocks upgrades: path 2 at 10, tier 4 at 20, tier 5 and the first ascension at 30, the second and third ascension types at 50 and 70, and a Radiant look at 100.','New upgrade effects include multi-target shots, crits, armor piercing, burns, marks that make foes take more damage, splash, and lingering fire, acid and ice on the trail.','The Lanterns page is grouped by role with Damage, Area, Control and Support tabs. Each lantern has Skins, Mastery and Paths sections: see what every mastery level unlocks, and tap any tier or ascension for details.','Boons have a new look and five rarities like skins: Common, Rare, Legendary, Mythic and Exotic. Higher rarities glow, shimmer and sparkle, and the screen shows the boons you have taken this run.','New boons: Twin wicks (Legendary), plus First light and Moonfall, the first Exotic boons. Hoard and Giant slayer are now Legendary.','Endless runs saved before this update can’t be continued.']},
+   notes:['Every lantern has two upgrade paths with 5 tiers each, replacing the old 6 levels. Tap a lantern to open its upgrade panel.','Max both paths to ascend. Each lantern has three ascension types: its original perk plus two new ones.','Mastery unlocks upgrades: path 2 at 10, tier 4 at 20, tier 5 and the first ascension at 30, the second and third ascension types at 50 and 70, and a Radiant look at 100.','New upgrade effects include multi-target shots, crits, armor piercing, burns, marks that make foes take more damage, splash, and lingering fire, acid and ice on the trail.','The Lanterns page is grouped by role with Damage, Area, Control and Support tabs. Each lantern has Skins, Mastery and Paths sections: see what every mastery level unlocks, and tap any tier or ascension for details.','Boons have a new look and five rarities like skins: Common, Rare, Legendary, Mythic and Exotic. Higher rarities glow, shimmer and sparkle, and the screen shows the boons you have taken this run.','New boons: Twin wicks (Legendary), plus First light and Moonfall, the first Exotic boons. Hoard and Giant slayer are now Legendary.','Campaign runs now save after every wave too. Continue them from the Play page, and use Save and quit in the pause menu to step away. You can keep one campaign and one endless run saved at the same time.','Endless runs saved before this update can’t be continued.']},
   {v:'0.15.0',d:'Oct 14, 2026',notes:['Waves last twice as long: twice as many foes, each with half the health and worth half the gold, so a wave is just as hard and pays the same.','Foes arrive in clumps with short pauses in between. Halfway through each wave you get half of the wave-clear gold.','Lantern mastery earns half a point per kill, so the extra foes don’t speed it up.','Pass tiers now cost a little more as you climb: 100 XP for tier 1, then 1 more each tier, up to 199 for tier 100.']},
   {v:'0.14.0',d:'Oct 14, 2026',notes:['Fixed the Season 1 story card on the Pass page being squashed, which hid its title and the Read the story button. Other pages could be squashed the same way and are fixed too.','The lantern tray is now grouped by role: Damage, Area, Control and Support, each with its own color.','Each lantern shows its role on the Lanterns page and when you tap it in a run.','The 1–9 hotkeys follow the new tray order.']},
   {v:'0.13.0',d:'Oct 14, 2026',notes:['Endless runs now save after every wave. Continue them any time from the Play page.','In Endless, the trail now stays the same all run. Only the world and its conditions change every 5 waves.','Mobile polish: no more accidental zooming (pinch, double-tap or tapping a text box), no stuck highlights after tapping, no pull-to-refresh or long-press menus, and the game pauses itself if you leave mid-wave.','PC controls: Space, 1–9 to pick lanterns, U to upgrade, M to merge, F for speed, P to pause, Esc or right-click to cancel.']},
@@ -2209,6 +2211,7 @@ function renderHow(){
   <div class="hc"><h3>Levels &amp; moonstones</h3><p>Every run earns <b>XP</b> for waves cleared, bosses beaten and wins, with a bonus in deeper worlds. The same XP raises your <b>player level</b> and your <b>Pass tier</b>. Level ups and first-time world clears give <b>moonstones</b>, which you spend in the Shop.</p></div>
   <div class="hc"><h3>Mastery</h3><p>Every lantern has a permanent <b>mastery level</b> from 1 to 100, raised by kills and waves cleared with it. Mastery unlocks its upgrades: path 1 tiers 1–3 from the start, path 2 at <b>10</b>, tier 4 at <b>20</b>, tier 5 and the first ascension at <b>30</b>, more ascension types at <b>50</b> and <b>70</b>, and a Radiant look at <b>100</b>. Each level also adds a little damage.</p></div>
   <div class="hc"><h3>Endless</h3><p>Pick <b>Endless</b> on the Play page for a run with no last wave. Every 5 waves the world shifts to a new one with its own look and twist, while your trail and lanterns stay put. Endless runs save after every wave, so you can close the game and continue later from the Play page.</p></div>
+  <div class="hc"><h3>Saving runs</h3><p>Campaign and Endless runs both save after every wave. Close the game, or pick <b>Save and quit</b> from the pause menu, and continue later from the Play page. You can keep one campaign run and one endless run saved at a time. If you quit mid-wave, you replay that wave when you continue.</p></div>
   <div class="hc"><h3>Difficulty</h3><p>Pick <b>Easy, Normal, Hard or Nightmare</b> on the Play page. Harder nights mean tougher, faster foes and fewer lives, but pay more embers and XP: ×0.6, ×1, ×1.5 and ×2.25.</p></div>
   <div class="hc"><h3>Worlds</h3><p>Clear all 20 waves to unlock the <b>next depth</b>. Each one is a new world with its own twist, tougher foes and bigger ember rewards.</p></div>
   <div class="hc full"><h3>Tips</h3><ul>
@@ -2251,19 +2254,20 @@ function renderWorlds(){
   $('#diffs').innerHTML=DORDER.map(k=>{const D=DIFF[k];return `<button class="dif${k===cd?' on':''}" data-diff="${k}" role="radio" aria-checked="${k===cd}" style="--dc:${D.col}">
     <b>${D.name}</b><span class="rw">Rewards ×${D.rew}</span><small>${D.desc}</small></button>`}).join('');
   if(meta.endlessSave&&meta.endlessSave.v!==2){delete meta.endlessSave;save()}   /* runs saved before upgrade paths can't be continued */
-  const dn=dOf(meta.diff).name,sv=meta.endlessSave,rb=$('#resumeEnd');newArmed=false;
-  rb.hidden=!(en&&sv);
-  if(en&&sv)rb.innerHTML=`<b>Continue endless</b><span>Wave ${sv.wave} · ${THEMES[sv.world]?THEMES[sv.world].name:''} · ${dOf(sv.diff).name} · ${sv.lives} lives</span>`;
+  const dn=dOf(meta.diff).name,sv=meta[saveKey(en)],rb=$('#resumeEnd');newArmed=false;
+  rb.hidden=!sv;
+  if(sv)rb.innerHTML=`<b>Continue ${en?'endless':'campaign'}</b><span>${en?`Wave ${sv.wave}`:`Wave ${sv.wave}/${MAXW}`} · ${THEMES[sv.world]?THEMES[sv.world].name:''} · ${dOf(sv.diff).name} · ${sv.lives} lives</span>`;
   $('#start').textContent=en?`Start endless · ${THEMES[meta.depth].name} · ${dn}`:`Light the lanterns · ${THEMES[meta.depth].name} · ${dn}`;
 }
 $('#diffs').onclick=e=>{const b=e.target.closest('[data-diff]');if(!b)return;meta.diff=b.dataset.diff;save();renderWorlds()};
 $('#modes').onclick=e=>{const b=e.target.closest('[data-mode]');if(!b)return;meta.mode=b.dataset.mode;save();renderWorlds()};
 $('#worlds').onclick=e=>{const b=e.target.closest('.wc');if(!b||b.disabled)return;meta.depth=+b.dataset.d;save();campPreview();renderWorlds()};
 let newArmed=false;
-$('#resumeEnd').onclick=()=>{if(!resumeRun())return;armT=null;hide('camp');paused=false;renderTray();hud(true);toast(`Welcome back · wave ${G.wave}`,`${TH.name}. ${TH.twist}`)};
+$('#resumeEnd').onclick=()=>{if(!resumeRun(meta.mode==='endless'))return;armT=null;hide('camp');paused=false;renderTray();hud(true);toast(`Welcome back · wave ${G.wave}`,`${TH.name}. ${TH.twist}`)};
 $('#start').onclick=()=>{
-  if(meta.mode==='endless'&&meta.endlessSave&&!newArmed){newArmed=true;$('#start').textContent='Tap again to start over (your saved endless run will be lost)';return}
-  if(meta.mode==='endless')delete meta.endlessSave;
+  const en=meta.mode==='endless',k=saveKey(en);
+  if(meta[k]&&!newArmed){newArmed=true;$('#start').textContent=`Tap again to start over (your saved ${en?'endless':'campaign'} run will be lost)`;return}
+  delete meta[k];
   newRun(meta.depth,meta.mode==='endless');armT=null;hide('camp');paused=false;renderTray();hud(true);
   if(G.endless)toast(`Endless · ${TH.name}`,'The world shifts every 5 waves. How long can you hold?');
   if(ml('headstart')){G.state='cards';G.rerolls=ml('reroll');offerCards()}else snapRun()};
@@ -2773,18 +2777,22 @@ function hide(id){$('#'+id).hidden=true}
 $('#spd').onclick=()=>{speed=speed%3+1;$('#spd').textContent=speed+'×'};
 $('#auto').onclick=()=>{auto=!auto;$('#auto').textContent='Auto: '+(auto?'on':'off');if(auto&&G.state==='build')sendWave()};
 $('#send').onclick=sendWave;
-$('#menuBtn').onclick=()=>{if(G.state==='camp'||G.state==='over')return;paused=true;$('#abandon').textContent='Abandon run';armed=false;show('menu')};
+function openMenu(){paused=true;$('#abandon').textContent='Abandon run';armed=false;
+  $('#menuHint').textContent=G.state==='wave'?`Save and quit keeps your run from before wave ${G.wave}, so you'll replay this wave when you continue. Abandoning ends the run and pays embers for the waves you cleared.`:'Save and quit keeps your run so you can continue it from the Play page. Abandoning ends the run and pays embers for the waves you cleared.';show('menu')}
+$('#menuBtn').onclick=()=>{if(G.state==='camp'||G.state==='over')return;openMenu()};
+$('#saveQuit').onclick=()=>{const en=G.endless;if(G.state==='build')snapRun();paused=false;hide('menu');
+  campPreview();show('camp');go('home');toast('Run saved',`Continue it from Play${en?' in Endless':''}.`)};
 $('#resume').onclick=()=>{paused=false;hide('menu')};
 $('#abandon').onclick=()=>{if(!armed){armed=true;$('#abandon').textContent='Tap again to abandon';return}paused=false;hide('menu');endRun(false)};
 /* block pinch and double-tap zoom on phones (iOS ignores the viewport flag for pinch, so stop the gesture itself) */
 ['gesturestart','gesturechange','gestureend'].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
 document.addEventListener('touchmove',e=>{if(e.touches&&e.touches.length>1)e.preventDefault()},{passive:false});
 /* double-tap zoom is blocked by touch-action:manipulation on the page, so rapid taps on buttons always register */
-/* leaving the app mid-wave pauses it; endless runs save between waves */
+/* leaving the app mid-wave pauses it; runs save between waves */
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState!=='hidden'||!G)return;
-  if(G.state==='wave'&&!paused&&$('#camp').hidden){paused=true;$('#abandon').textContent='Abandon run';armed=false;show('menu')}
-  if(G.endless&&G.state==='build')snapRun();
+  if(G.state==='wave'&&!paused&&$('#camp').hidden)openMenu();
+  if(G.state==='build')snapRun();
 });
 /* PC controls: Space send wave · 1-9/0 pick a lantern · U upgrade · M merge · Esc cancel · F speed · P pause */
 addEventListener('keydown',e=>{
