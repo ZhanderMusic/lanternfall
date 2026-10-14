@@ -137,11 +137,101 @@ h2.big{font:400 52px/.9 var(--display);margin:0}
 #camp .view[data-view=lanterns]{height:calc(100vh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 32px);height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 32px);min-height:520px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
 #camp .view[data-view=lanterns] .ph{flex:none}
 #camp .view[data-view=lanterns] .ph h2{font-size:clamp(36px,11vw,52px)}
-.lanbar,.carnav{flex:none}
+.lanbar,.carnav,.lcats{flex:none}
+/* lanterns page: role tabs, mastery strip, section tabs */
+.lcats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.lcat{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;padding:7px 4px;border-radius:9px;border:1px solid var(--line);background:color-mix(in srgb,var(--moss) 92%,transparent);display:flex;flex-direction:column;gap:2px;min-width:0}
+.lcat span{font-weight:700;font-size:13px;color:var(--rc)}
+.lcat small{font-family:var(--mono);font-size:10px;color:var(--dim)}
+.lcat.on{border-color:var(--rc);box-shadow:0 0 14px -6px var(--rc);background:color-mix(in srgb,var(--rc) 12%,var(--moss))}
+.lcat:focus-visible{outline:2px solid var(--flame);outline-offset:2px}
+.lrole{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--rc)}
+.lmast{grid-column:1/3;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center;background:var(--moss2);border:1px solid var(--line);border-radius:10px;padding:7px 10px}
+.mlvl{width:42px;height:42px;border-radius:50%;border:2px solid var(--flame);display:grid;place-content:center;text-align:center;box-shadow:0 0 12px -5px var(--flame)}
+.mlvl small{font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);line-height:1}
+.mlvl b{font:400 22px/1 var(--display);color:var(--flame)}
+.mbody{min-width:0;display:flex;flex-direction:column;gap:4px}
+.mbody .mr{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.mbody .bdg{font-family:var(--body);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#ffd75e}
+.mbody small{font-size:11.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mbody small b{color:var(--ink)}
+.stabs{grid-column:1/3;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--moss2);border-radius:9px;padding:3px}
+.stab{all:unset;cursor:pointer;text-align:center;padding:6px 0;border-radius:7px;font-size:13px;font-weight:700;color:var(--dim)}
+.stab.on{background:var(--tc);color:#140e06}
+.stab:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.slide .lp{grid-column:1/3;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;display:flex;flex-direction:column;gap:6px}
+.slide .lp::-webkit-scrollbar{display:none}
+.skhead{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11.5px;color:var(--dim)}
+.skhead .tog{padding:4px 8px;font-size:11.5px}
+.skhead .tog .sw2{width:24px;height:14px}
+.skhead .tog .sw2::after{width:10px;height:10px}
+.skhead .tog[aria-pressed=true] .sw2::after{transform:translateX(10px)}
+.mroad{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:2px}
+.mroad li{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:6px;align-items:center;padding:3px 6px;border-radius:8px;background:var(--moss2);border:1px solid transparent}
+.mroad .mlv{width:26px;height:22px;border-radius:6px;display:grid;place-items:center;font:500 11px/1 var(--mono);background:var(--line);color:var(--dim)}
+.mroad li div{min-width:0;display:flex;align-items:baseline;gap:8px}
+.mroad b{flex:none;max-width:62%;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mroad div span{flex:1;min-width:0;font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mroad i{font-style:normal;font-size:11px;font-family:var(--mono);color:var(--dim)}
+.mroad li.ok .mlv{background:var(--flame);color:#140e06}
+.mroad li.ok i{color:var(--good);font-size:14px}
+.mroad li:not(.ok){opacity:.62}
+.mroad li.nx{opacity:1;border-color:var(--flame)}
+.mroad li.nx i{color:var(--flame)}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pcol{display:flex;flex-direction:column;gap:3px;min-width:0}
+.pch{font-size:12px;color:var(--pc,var(--ink));letter-spacing:.04em}
+.ptier{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:6px;align-items:center;padding:4px 6px;border-radius:7px;background:var(--moss2);border:1px solid transparent;font-size:12px}
+.ptier .tn{font-family:var(--mono);font-size:11px;color:var(--pc)}
+.ptier .tnm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ptier .tl{font-family:var(--mono);font-size:10px;color:var(--flame)}
+.ptier:not(.ok){opacity:.6}
+.ptier.sel{border-color:var(--pc);opacity:1}
+.ascs{display:flex;flex-direction:column;gap:4px}
+.ascs>div{display:flex;flex-wrap:wrap;gap:5px}
+.atag{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:700;background:var(--moss2);border:1px solid var(--line);color:#ffd75e}
+.atag span{font:500 10px/1 var(--mono);color:var(--dim)}
+.atag.ok span{color:var(--good)}
+.atag:not(.ok){color:var(--dim)}
+.atag.sel{border-color:#ffd75e}
+.ptier:focus-visible,.atag:focus-visible{outline:2px solid var(--flame);outline-offset:1px}
+.bbt{margin:0;font-size:12px;color:var(--dim);line-height:1.35;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+.bbt b{color:var(--ink)}
+.bbt .okt{color:var(--good)}.bbt .lkt{color:var(--flame)}
+.cdots{gap:12px}
+.dg{display:flex;gap:6px}
+.ipill{display:inline-flex;align-items:center;gap:6px}
+.ipill b{margin-left:0!important}
+/* compact Lanterns page for shorter phones */
+@media (max-height:780px){
+  #camp .view[data-view=lanterns]{gap:6px}
+  #camp .view[data-view=lanterns] .ph{flex-wrap:nowrap}
+  #camp .view[data-view=lanterns] .ph h2{font-size:30px}
+  #camp .view[data-view=lanterns] .ph .btn{padding:6px 10px}
+  #camp .lcat{padding:5px 4px}
+  #camp .slide{padding:10px;gap:6px 12px}
+  #camp .slide .stage{max-height:96px}
+  #camp .slide .info h3{font-size:28px;margin:0 0 2px}
+  #camp .slide .info p{-webkit-line-clamp:1;margin-bottom:4px}
+  #camp .slide dl.stats{font-size:11px;grid-template-columns:auto 1fr auto 1fr;column-gap:8px}
+  #camp .lmast{padding:5px 8px;gap:8px}
+  #camp .mlvl{width:34px;height:34px}#camp .mlvl b{font-size:18px}#camp .mlvl small{font-size:6.5px}
+  #camp .mbody .mr{display:none}
+  #camp .stab{padding:5px 0;font-size:12px}
+  #camp .mroad li{padding:2px 6px}#camp .mroad .mlv{height:18px}
+  #camp .ptier{padding:3px 6px}
+  #camp .slide .skt{padding:4px 2px 4px}#camp .slide .skt .sw{width:18px;height:18px}
+  #camp .slide .bb{padding-top:5px;min-height:32px}
+  #camp .bbt{-webkit-line-clamp:2}
+  #camp .carnav .btn{padding:4px 12px;font-size:18px}
+  #camp .slide .info dl.stats>dt:nth-of-type(n+5),#camp .slide .info dl.stats>dd:nth-of-type(n+5){display:none}
+  #camp .slide .lrole{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #camp .atag{padding:3px 8px;font-size:11px}
+}
 #camp .view[data-view=lanterns] .car{flex:1;min-height:0}
 .car::-webkit-scrollbar{display:none}
 .slide{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always;box-sizing:border-box;height:100%;overflow:hidden;background:color-mix(in srgb,var(--moss) 92%,transparent);border:1px solid var(--line);border-radius:12px;padding:12px;
-  display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:auto auto 1fr auto;gap:8px 14px;align-content:start;
+  display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:auto auto auto minmax(0,1fr) auto;gap:7px 14px;align-content:stretch;
   transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .35s}
 .slide:not(.act){transform:scale(.94);opacity:.55}
 .slide .sx{grid-column:1/3;display:flex;flex-direction:column;gap:4px;min-width:0}
@@ -151,9 +241,11 @@ h2.big{font:400 52px/.9 var(--display);margin:0}
 .slide .info p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;margin-bottom:6px;font-size:12.5px}
 .slide .info p.lore{-webkit-line-clamp:2;font-size:11.5px}
 .slide dl.stats{font-size:12px;gap:1px 10px}
-.slide .stage{align-self:start;max-height:min(46vw,30vh);aspect-ratio:1/1;margin-inline:auto;width:100%}
-.slide .skins{align-content:start;overflow:hidden;min-height:0}
-.slide .bb{padding-top:8px}
+.slide .stage{align-self:start;max-height:min(40vw,24vh);aspect-ratio:1/1;margin-inline:auto;width:100%}
+.slide .info h3{font-size:clamp(30px,9vw,46px);margin:2px 0 4px}
+.slide .info p{-webkit-line-clamp:2}
+.slide .skins{align-content:start;min-height:0}
+.slide .bb{padding-top:7px;min-height:38px;box-sizing:border-box}
 .slide .bb .btn{padding:8px 12px}
 @media (prefers-reduced-motion:reduce){.slide{transition:none}.slide:not(.act){transform:none}}
 .stage{position:relative;aspect-ratio:1/1;border-radius:10px;background:radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--tc) 16%,transparent),transparent 70%)}
@@ -736,8 +828,8 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
   </section>
 
   <section class="panel view wide" data-view="lanterns" hidden>
-    <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">Lanterns</h2><span class="pills"><span class="pill">Embers <b class="embersN">0</b></span><span class="pill">Moonstones <b class="moonN mb">0</b></span></span></header>
-    <div class="lanbar"><button class="btn tog" id="hideUn" aria-pressed="false"><span class="sw2"></span><span id="hideUnT">Hide unowned skins</span></button></div>
+    <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">Lanterns</h2><span class="pills"><span class="pill ipill" title="Embers"><span class="em"></span><b class="embersN">0</b></span><span class="pill ipill" title="Moonstones"><span class="msi"></span><b class="moonN mb">0</b></span></span></header>
+    <div class="lcats" id="lcats" role="tablist" aria-label="Lantern roles"></div>
     <div class="car" id="lan"></div>
     <div class="carnav"><button class="btn" id="lPrev" aria-label="Previous lantern">‹</button><div class="cdots" id="lDots"></div><button class="btn" id="lNext" aria-label="Next lantern">›</button></div>
   </section>
@@ -1928,8 +2020,8 @@ const CHANGELOG=[
    hl:[['Upgrade paths','Every lantern now has two upgrade paths with 5 tiers each, 120 upgrades in all. Max both to ascend.'],
        ['Ascension types','Each lantern has three ways to ascend. Pick one when you max both paths.'],
        ['Mastery unlocks','Mastery now unlocks path 2, tiers 4 and 5, and each ascension type as you play.'],
-       ['Longer waves','Waves last twice as long with the same total challenge and gold, and the lantern tray is grouped by role.']],
-   notes:['Every lantern has two upgrade paths with 5 tiers each, replacing the old 6 levels. Tap a lantern to open its upgrade panel.','Max both paths to ascend. Each lantern has three ascension types: its original perk plus two new ones.','Mastery unlocks upgrades: path 2 at 10, tier 4 at 20, tier 5 and the first ascension at 30, the second and third ascension types at 50 and 70, and a Radiant look at 100.','New upgrade effects include multi-target shots, crits, armor piercing, burns, marks that make foes take more damage, splash, and lingering fire, acid and ice on the trail.','Endless runs saved before this update can’t be continued.']},
+       ['New Lanterns page','Lanterns are grouped by role, and each one shows its mastery road and both upgrade paths.']],
+   notes:['Every lantern has two upgrade paths with 5 tiers each, replacing the old 6 levels. Tap a lantern to open its upgrade panel.','Max both paths to ascend. Each lantern has three ascension types: its original perk plus two new ones.','Mastery unlocks upgrades: path 2 at 10, tier 4 at 20, tier 5 and the first ascension at 30, the second and third ascension types at 50 and 70, and a Radiant look at 100.','New upgrade effects include multi-target shots, crits, armor piercing, burns, marks that make foes take more damage, splash, and lingering fire, acid and ice on the trail.','The Lanterns page is grouped by role with Damage, Area, Control and Support tabs. Each lantern has Skins, Mastery and Paths sections: see what every mastery level unlocks, and tap any tier or ascension for details.','Endless runs saved before this update can’t be continued.']},
   {v:'0.15.0',d:'Oct 14, 2026',notes:['Waves last twice as long: twice as many foes, each with half the health and worth half the gold, so a wave is just as hard and pays the same.','Foes arrive in clumps with short pauses in between. Halfway through each wave you get half of the wave-clear gold.','Lantern mastery earns half a point per kill, so the extra foes don’t speed it up.','Pass tiers now cost a little more as you climb: 100 XP for tier 1, then 1 more each tier, up to 199 for tier 100.']},
   {v:'0.14.0',d:'Oct 14, 2026',notes:['Fixed the Season 1 story card on the Pass page being squashed, which hid its title and the Read the story button. Other pages could be squashed the same way and are fixed too.','The lantern tray is now grouped by role: Damage, Area, Control and Support, each with its own color.','Each lantern shows its role on the Lanterns page and when you tap it in a run.','The 1–9 hotkeys follow the new tray order.']},
   {v:'0.13.0',d:'Oct 14, 2026',notes:['Endless runs now save after every wave. Continue them any time from the Play page.','In Endless, the trail now stays the same all run. Only the world and its conditions change every 5 waves.','Mobile polish: no more accidental zooming (pinch, double-tap or tapping a text box), no stuck highlights after tapping, no pull-to-refresh or long-press menus, and the game pauses itself if you leave mid-wave.','PC controls: Space, 1–9 to pick lanterns, U to upgrade, M to merge, F for speed, P to pause, Esc or right-click to cancel.']},
@@ -2144,60 +2236,107 @@ $('#ups').onclick=e=>{const b=e.target.closest('button[data-id]');if(!b||b.disab
 /* lanterns carousel */
 const lanPrev={};let lanIdx=0;
 let hideUn=false;try{hideUn=localStorage.getItem('lanternfall.hideUnowned')==='1'}catch(e){}
+/* lanterns are shown grouped by role; each lantern has Skins / Mastery / Paths sections */
+const LORDER=ROLES.flatMap(r=>r.t);
+let lanTab='skins';try{lanTab=localStorage.getItem('lanternfall.lanTab')||'skins'}catch(e){}
+const lanDet={};
+function mastRoad(t){
+  const u=UPG[t],a=k=>ascInfo(t,k)[0],tn=(i,j)=>u.p[i].tiers[j][0];
+  return [[1,`${u.p[0].name} 1–3`,`${tn(0,0)}, ${tn(0,1)}, ${tn(0,2)}`],
+    [10,`${u.p[1].name} 1–3`,`${tn(1,0)}, ${tn(1,1)}, ${tn(1,2)}`],
+    [20,'Tier 4, both paths',`${tn(0,3)}, ${tn(1,3)}`],
+    [30,`Tier 5 + ${a(0)}`,`${tn(0,4)}, ${tn(1,4)} · bronze badge at 25`],
+    [50,a(1),'Second ascension · silver badge'],
+    [70,a(2),'Third ascension · gold badge at 75'],
+    [100,'Radiant look','Radiant badge, color-shifting crown']];
+}
+function lanPanel(t,mi){
+  if(lanTab==='mastery'){
+    return `<ol class="mroad">${mastRoad(t).map(([lv,ti,sub])=>{const ok=mi.L>=lv,nx=!ok&&mastRoad(t).find(r=>r[0]>mi.L)[0]===lv;
+      return `<li class="${ok?'ok':''}${nx?' nx':''}"><span class="mlv">${lv}</span><div><b>${ti}</b><span>${sub}</span></div><i>${ok?'✓':nx?`in ${lv-mi.L}`:''}</i></li>`}).join('')}</ol>`;
+  }
+  if(lanTab==='paths'){
+    const u=UPG[t],d=lanDet[t]||{k:'p',i:0,j:0};
+    const col=i=>`<div class="pcol" style="--pc:${PCOL[i]}"><b class="pch">${u.p[i].name}</b>${u.p[i].tiers.map((x,j)=>{const need=tierLockAt(i,j+1),ok=mi.L>=need,sel=d.k==='p'&&d.i===i&&d.j===j;
+      return `<button class="ptier${ok?' ok':''}${sel?' sel':''}" data-pdet="p:${i}:${j}" aria-pressed="${sel}"><span class="tn">${j+1}</span><span class="tnm">${x[0]}</span><span class="tl">${ok?'':'M'+need}</span></button>`}).join('')}</div>`;
+    return `<div class="pgrid">${col(0)}${col(1)}</div><div class="ascs"><b class="pch">Ascensions</b><div>${[0,1,2].map(k=>{const ok=mi.L>=ASC_MAST[k],sel=d.k==='a'&&d.i===k;
+      return `<button class="atag${ok?' ok':''}${sel?' sel':''}" data-pdet="a:${k}" aria-pressed="${sel}">${ascInfo(t,k)[0]}<span>${ok?'✓':'M'+ASC_MAST[k]}</span></button>`}).join('')}</div></div>`;
+  }
+  return '';
+}
 function slideHTML(t){
-  const T=TOWERS[t],un=unlocked(t),u=UNLOCKS.find(x=>x.t===t),i=ORDER.indexOf(t),base=SKINS[t][0].color;
+  const T=TOWERS[t],un=unlocked(t),u=UNLOCKS.find(x=>x.t===t),base=SKINS[t][0].color,role=roleOf(t),ri=role.t.indexOf(t),mi=mastInfo(t),mb=mastBonus(mi.L),bd=mastBadge(mi.L),nu=MAST_UNLOCKS.find(x=>x[0]>mi.L);
   let pid=lanPrev[t]||eqSkin(t);if(hideUn&&!ownsSkin(t,pid))pid=eqSkin(t);
   const sk=SKINS[t].find(s=>s.id===pid),shown=hideUn?SKINS[t].filter(s=>ownsSkin(t,s.id)):SKINS[t],nHid=SKINS[t].length-shown.length;
-  const rows=T.passive?(t==='mint'?[['Income','8 gold / wave'],['Per level','+6 gold']]:[['Boost','+15% damage'],['Fire rate','+8%'],['Area','8 tiles']]):
+  const rows=T.passive?(t==='mint'?[['Income','8 gold / wave']]:[['Boost','+15% damage'],['Fire rate','+8%'],['Area','8 tiles']]):
     T.beam?[['Damage','10 → 40 /s'],['Range',T.range]]:[['Damage',T.dmg],['Fire rate',T.rate+'/s'],['Range',T.range]];
   if(T.stun)rows.push(['Freeze',T.stun+'s']);if(T.pct)rows.push(['Bonus','6% max health']);
   if(T.splash)rows.push(['Burst',T.splash]);if(T.slow)rows.push(['Slow',Math.round(T.slow*100)+'%']);if(T.chain)rows.push(['Chains',T.chain]);
   if(T.pierce)rows.push(['Pierces',T.pierce]);if(T.poison)rows.push(['Poison',T.poison+'/s']);
   rows.push(['Build cost',T.cost]);
-  const tiles=shown.map(s=>{const own=ownsSkin(t,s.id),eq=eqSkin(t)===s.id;
-    const lab=eq?'Equipped':own?'Owned':s.pass?(seasonOver()?'Shop':'Pass'):s.code?'Code':priceHTML(s),alab=eq?'Equipped':own?'Owned':s.pass?'Season 1 exclusive':s.code?'Code only':`${priceOf(s)} ${s.moon?'moonstones':'embers'}`;
-    return `<button class="skt r-${s.rar}${s.id===pid?' sel':''}${eq?' eq':''}${!own&&!canBuy(s)?' nope':''}" data-skin="${t}:${s.id}" aria-pressed="${s.id===pid}" aria-label="${s.name}, ${RAR[s.rar]}, ${alab}">
-      <span class="sw${s.cycle?' spin':''}" style="${swStyle(s)}"></span><span class="sn">${s.name}</span><span class="sp">${lab}</span></button>`}).join('');
-  const own=ownsSkin(t,pid),eq=eqSkin(t)===pid;
-  const act=!un?(T.pass?`<span class="hint" style="margin:0">${seasonOver()?'Season 1 is over. Look for this lantern in the Shop rotation.':`Season 1 Pass exclusive · premium tier ${passTierOf('tower',t)}`}</span>`:
-      `<button class="btn primary" data-unlock="${t}" ${meta.embers<u.base?'disabled':''}>Unlock lantern · ${EM} ${u.base}</button>`):
-    eq?`<span class="hint" style="margin:0;color:var(--good)">Equipped</span>`:
-    own?`<button class="btn primary" data-equip="${t}:${pid}">Equip</button>`:
-    sk.pass?`<span class="hint" style="margin:0">${seasonOver()?'Season 1 exclusive. Look for it in the Shop rotation.':`Season 1 Pass reward · tier ${passTierOf('skin',t,pid)}`}</span>`:
-    sk.code?`<span class="hint" style="margin:0">Unlocked by redeeming a code in Settings</span>`:
-    `<button class="btn primary" data-buy="${t}:${pid}" ${!canBuy(sk)?'disabled':''}>Buy · ${priceHTML(sk)}</button>`;
-  return `<article class="slide${un?'':' locked'}" data-t="${t}" style="--tc:${base}" aria-label="${T.name}">
+  let panel,bar;
+  if(lanTab==='skins'){
+    const tiles=shown.map(s=>{const own=ownsSkin(t,s.id),eq=eqSkin(t)===s.id;
+      const lab=eq?'Equipped':own?'Owned':s.pass?(seasonOver()?'Shop':'Pass'):s.code?'Code':priceHTML(s),alab=eq?'Equipped':own?'Owned':s.pass?'Season 1 exclusive':s.code?'Code only':`${priceOf(s)} ${s.moon?'moonstones':'embers'}`;
+      return `<button class="skt r-${s.rar}${s.id===pid?' sel':''}${eq?' eq':''}${!own&&!canBuy(s)?' nope':''}" data-skin="${t}:${s.id}" aria-pressed="${s.id===pid}" aria-label="${s.name}, ${RAR[s.rar]}, ${alab}">
+        <span class="sw${s.cycle?' spin':''}" style="${swStyle(s)}"></span><span class="sn">${s.name}</span><span class="sp">${lab}</span></button>`}).join('');
+    panel=`<div class="skhead"><span>${shown.length} of ${SKINS[t].length} skins${nHid?' · unowned hidden':''}</span><button class="btn tog" data-hideun aria-pressed="${hideUn}"><span class="sw2"></span>Hide unowned</button></div><div class="skins">${tiles}</div>`;
+    const own=ownsSkin(t,pid),eq=eqSkin(t)===pid;
+    const act=!un?(T.pass?`<span class="hint" style="margin:0">${seasonOver()?'Season 1 is over. Look for this lantern in the Shop rotation.':`Season 1 Pass exclusive · premium tier ${passTierOf('tower',t)}`}</span>`:
+        `<button class="btn primary" data-unlock="${t}" ${meta.embers<u.base?'disabled':''}>Unlock lantern · ${EM} ${u.base}</button>`):
+      eq?`<span class="hint" style="margin:0;color:var(--good)">Equipped</span>`:
+      own?`<button class="btn primary" data-equip="${t}:${pid}">Equip</button>`:
+      sk.pass?`<span class="hint" style="margin:0">${seasonOver()?'Season 1 exclusive. Look for it in the Shop rotation.':`Season 1 Pass reward · tier ${passTierOf('skin',t,pid)}`}</span>`:
+      sk.code?`<span class="hint" style="margin:0">Unlocked by redeeming a code in Settings</span>`:
+      `<button class="btn primary" data-buy="${t}:${pid}" ${!canBuy(sk)?'disabled':''}>Buy · ${priceHTML(sk)}</button>`;
+    bar=`<div class="who"><span class="rt r-${sk.rar}">${RAR[sk.rar]}</span><b>${sk.name}</b></div>${act}`;
+  }else if(lanTab==='mastery'){
+    panel=lanPanel(t,mi);
+    bar=`<p class="bbt">Mastery bonus: <b>+${(mb.dmg*100).toFixed(1)}% damage${mb.rate?`, +${Math.round(mb.rate*100)}% fire rate`:''}</b>. Earn mastery by using this lantern: half a point per kill and 3 per wave cleared.</p>`;
+  }else{
+    panel=lanPanel(t,mi);
+    const d=lanDet[t]||{k:'p',i:0,j:0};
+    if(d.k==='p'){const x=UPG[t].p[d.i].tiers[d.j],need=tierLockAt(d.i,d.j+1);
+      bar=`<p class="bbt"><b>${x[0]}</b> · ${UPG[t].p[d.i].name} tier ${d.j+1}. ${x[1]} <span class="${mi.L>=need?'okt':'lkt'}">${mi.L>=need?'Unlocked.':`Unlocks at Mastery ${need}.`}</span></p>`}
+    else{const [nm,ds]=ascInfo(t,d.i),need=ASC_MAST[d.i];
+      bar=`<p class="bbt"><b>${nm}</b> · ascension. ${ds} <span class="${mi.L>=need?'okt':'lkt'}">${mi.L>=need?'Unlocked.':`Unlocks at Mastery ${need}.`}</span> Needs both paths at tier 5.</p>`}
+  }
+  return `<article class="slide${un?'':' locked'}" data-t="${t}" style="--tc:${base};--rc:${role.col}" aria-label="${T.name}">
     <div class="stage"><canvas data-prev="${t}" width="360" height="360" aria-hidden="true"></canvas>${un?'':'<span class="lockt">Locked</span>'}</div>
-    <div class="info"><span class="sec" style="margin:0">${T.pass?'Season 1 lantern':`Lantern ${i+1} of ${ORDER.length}`}</span> <span class="rolec" style="--rc:${roleOf(t).col}">${roleOf(t).name}</span><h3 style="color:${base}">${T.name}</h3><p>${T.desc}</p>${T.lore?`<p class="lore">${T.lore}</p>`:''}
+    <div class="info"><span class="lrole">${role.name} · ${ri+1} of ${role.t.length}${T.pass?' · Season 1':''}</span><h3 style="color:${base}">${T.name}</h3><p>${T.desc}</p>
       <dl class="stats">${rows.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl></div>
-    <div class="sx">      ${(()=>{const mi=mastInfo(t),mb=mastBonus(mi.L),bd=mastBadge(mi.L),nm=[25,50,75,100].find(x=>x>mi.L);
-        return `<div class="mast"><div class="mr"><span>Mastery <b>${mi.L}</b> / ${MAST_MAX}${bd?` · ${bd}`:''}</span><span>${mi.L>=MAST_MAX?'Maxed':`${mi.into} / ${mi.need}`}</span></div>
-        <div class="xpbar"><i style="width:${mi.L>=MAST_MAX?100:mi.into/mi.need*100}%"></i></div>
-        <small>+${(mb.dmg*100).toFixed(1)}% damage${mb.rate?`, +${Math.round(mb.rate*100)}% fire rate`:''}${(()=>{const n=MAST_UNLOCKS.find(x=>x[0]>mi.L);return n?` · next: ${n[1]} at ${n[0]}`:''})()}</small></div>`})()}
-      <p class="perk ppath">Paths · ${UPG[t].p[0].name} · ${UPG[t].p[1].name}</p>
-      <p class="perk ppath">Ascensions · ${[0,1,2].map(k=>`${ascInfo(t,k)[0]} (M${ASC_MAST[k]})`).join(' · ')}</p></div>
-    <div class="skins">${tiles}</div>${nHid?`<p class="hid">${nHid} unowned skin${nHid>1?'s':''} hidden</p>`:''}
-    <div class="bb"><div class="who"><span class="rt r-${sk.rar}">${RAR[sk.rar]}</span><b>${sk.name}</b></div>${act}</div>
+    <div class="lmast"><span class="mlvl" title="Mastery level" aria-label="Mastery level ${mi.L}"><b>${mi.L}</b></span><div class="mbody"><div class="mr"><span>${bd?`<b class="bdg">${bd}</b> `:''}${mi.L>=MAST_MAX?'Max mastery':`${mi.into} / ${mi.need} to level ${mi.L+1}`}</span></div>
+      <div class="xpbar"><i style="width:${mi.L>=MAST_MAX?100:mi.into/mi.need*100}%"></i></div><small>${nu?`Mastery ${mi.L} · next: <b>${nu[1]}</b> at ${nu[0]}`:`Mastery ${mi.L} · everything unlocked`}</small></div></div>
+    <div class="stabs" role="tablist">${[['skins','Skins'],['mastery','Mastery'],['paths','Paths']].map(([k,n])=>`<button class="stab${lanTab===k?' on':''}" data-ltab="${k}" role="tab" aria-selected="${lanTab===k}">${n}</button>`).join('')}</div>
+    <div class="lp">${panel}</div>
+    <div class="bb">${bar}</div>
   </article>`;
 }
 function renderLanterns(){
-  $('#hideUn').setAttribute('aria-pressed',hideUn);
-  $('#lan').innerHTML=ORDER.map(slideHTML).join('');
-  $('#lDots').innerHTML=ORDER.map((t,i)=>`<button style="--c:${SKINS[t][0].color}" data-i="${i}" aria-label="${TOWERS[t].name}"></button>`).join('');
+  $('#lcats').innerHTML=ROLES.map(r=>`<button class="lcat" data-role="${r.id}" style="--rc:${r.col}" role="tab"><span>${r.name}</span><small>${r.t.filter(unlocked).length}/${r.t.length}</small></button>`).join('');
+  $('#lan').innerHTML=LORDER.map(slideHTML).join('');
+  $('#lDots').innerHTML=ROLES.map(r=>`<span class="dg">${r.t.map(t=>`<button style="--c:${r.col}" data-i="${LORDER.indexOf(t)}" aria-label="${TOWERS[t].name}"></button>`).join('')}</span>`).join('');
   requestAnimationFrame(()=>{$('#lan').scrollLeft=lanIdx*$('#lan').clientWidth;markDot()});
 }
 function refreshSlide(t){
   const el=$(`#lan .slide[data-t="${t}"]`);if(el)el.outerHTML=slideHTML(t);markDot();
   document.querySelectorAll('.embersN').forEach(n=>{n.textContent=meta.embers});
 }
-function markDot(){document.querySelectorAll('#lDots button').forEach((b,i)=>b.classList.toggle('on',i===lanIdx));document.querySelectorAll('#lan .slide').forEach((sl,i)=>sl.classList.toggle('act',i===lanIdx))}
-function toSlide(i){lanIdx=Math.max(0,Math.min(ORDER.length-1,i));$('#lan').scrollTo({left:lanIdx*$('#lan').clientWidth,behavior:RM?'auto':'smooth'});markDot()}
+function markDot(){
+  document.querySelectorAll('#lDots button').forEach(b=>b.classList.toggle('on',+b.dataset.i===lanIdx));
+  document.querySelectorAll('#lan .slide').forEach((sl,i)=>sl.classList.toggle('act',i===lanIdx));
+  const r=roleOf(LORDER[lanIdx]);document.querySelectorAll('#lcats .lcat').forEach(b=>{const on=b.dataset.role===r.id;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});
+}
+function toSlide(i){lanIdx=Math.max(0,Math.min(LORDER.length-1,i));$('#lan').scrollTo({left:lanIdx*$('#lan').clientWidth,behavior:RM?'auto':'smooth'});markDot()}
 $('#lan').addEventListener('scroll',()=>{const c=$('#lan'),i=Math.round(c.scrollLeft/Math.max(1,c.clientWidth));if(i!==lanIdx){lanIdx=i;markDot()}},{passive:true});
-$('#hideUn').onclick=()=>{hideUn=!hideUn;try{localStorage.setItem('lanternfall.hideUnowned',hideUn?'1':'0')}catch(e){}renderLanterns()};
+$('#lcats').onclick=e=>{const b=e.target.closest('[data-role]');if(!b)return;const r=ROLES.find(x=>x.id===b.dataset.role);toSlide(LORDER.indexOf(r.t[0]))};
 $('#lPrev').onclick=()=>toSlide(lanIdx-1);$('#lNext').onclick=()=>toSlide(lanIdx+1);
 $('#lDots').onclick=e=>{const b=e.target.closest('button');if(b)toSlide(+b.dataset.i)};
 $('#lan').onclick=e=>{
   const g=k=>e.target.closest(`[data-${k}]`);let b,t;
+  if(b=g('ltab')){lanTab=b.dataset.ltab;try{localStorage.setItem('lanternfall.lanTab',lanTab)}catch(_){}renderLanterns();return}
+  if(g('hideun')){hideUn=!hideUn;try{localStorage.setItem('lanternfall.hideUnowned',hideUn?'1':'0')}catch(_){}renderLanterns();return}
+  if(b=g('pdet')){const sl=b.closest('.slide'),q=b.dataset.pdet.split(':');t=sl.dataset.t;lanDet[t]=q[0]==='p'?{k:'p',i:+q[1],j:+q[2]}:{k:'a',i:+q[1]};refreshSlide(t);return}
   if((b=g('unlock'))&&!b.disabled){t=b.dataset.unlock;const m=UNLOCKS.find(x=>x.t===t);if(meta.embers>=m.base&&!ml(m.id)){meta.embers-=m.base;meta.up[m.id]=1}}
   else if((b=g('buy'))&&!b.disabled){const [tt,id]=b.dataset.buy.split(':'),sk=SKINS[tt].find(x=>x.id===id);t=tt;
     if(!ownsSkin(t,id)&&canBuy(sk)&&unlocked(t)){pay(sk);meta.owned[t+':'+id]=1;meta.eq[t]=id}}
