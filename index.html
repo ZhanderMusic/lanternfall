@@ -464,6 +464,12 @@ button.ps{font:inherit;color:inherit;cursor:pointer;padding:0;box-sizing:border-
 .sr b{font-family:var(--mono);font-weight:500}
 #cloud{color:var(--dim)}
 #cloud.cs-on{color:var(--good)}
+.cs-on{color:var(--good)!important}
+.cs-warn{color:var(--flame)!important}
+hr.sep{border:0;border-top:1px solid var(--line);margin:4px 0;width:100%}
+.updn{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;color:var(--dim);font-size:14px;line-height:1.4}
+.updn:empty{display:none}
+#upd{background:color-mix(in srgb,var(--night) 97%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 #cloud.cs-error{color:var(--danger)}
 .homefoot{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 #cloudChip:empty{display:none}
@@ -479,7 +485,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 
 
 <script>
-/* PWA: offline support and updates (Lanternfall v0.8.0) */
+/* PWA: offline support and updates (Lanternfall v0.8.1) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -500,6 +506,15 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
 </div>
 
 <div id="ghost" hidden></div>
+<div class="ov" id="upd" hidden role="dialog" aria-modal="true" aria-labelledby="updTitle" style="z-index:40">
+  <div class="panel" style="max-width:400px">
+    <div><span class="sec">Update available</span><h2 class="big" id="updTitle">New version</h2></div>
+    <p class="tag" id="updText"></p>
+    <ul class="updn" id="updNotes"></ul>
+    <button class="btn primary big" id="updNow">Reload to update</button>
+    <button class="btn" id="updLater">Later</button>
+  </div>
+</div>
 <div class="ov" id="camp">
   <canvas id="sky" aria-hidden="true"></canvas>
   <section class="panel view" data-view="home">
@@ -606,6 +621,14 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
     <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">Settings</h2></header>
     <div class="set">
       <div class="sr"><span>Version</span><b data-ver></b></div>
+      <div class="sr"><span>Updates</span><b id="updSt">Not checked yet</b></div>
+      <p class="hint" style="margin:0" id="updNote"></p>
+      <div class="row"><button class="btn" id="updChk">Check for updates</button></div>
+      <hr class="sep">
+      <div class="sr"><span>Permanent storage</span><b id="permSt">Checking…</b></div>
+      <p class="hint" style="margin:0" id="permNote"></p>
+      <div class="row"><button class="btn" id="permBtn" hidden>Make storage permanent</button></div>
+      <hr class="sep">
       <div class="sr"><span>Claude cloud save</span><b id="cloud">Connecting…</b></div>
       <div class="sr"><span>Last saved</span><b id="savedAt">Never</b></div>
       <p class="hint" style="margin:0" id="cloudNote"></p>
@@ -755,7 +778,7 @@ const CARDS=[
 const RW=[10,4.5,1.6],RN=['Common','Rare','Mythic'];
 
 /* ---------- save ---------- */
-const VERSION='0.8.0';
+const VERSION='0.8.1';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0});
@@ -769,11 +792,94 @@ const RANKS=[[1,'Wanderer'],[5,'Lamplighter'],[10,'Wickwarden'],[20,'Keeper of F
 const rankOf=L=>RANKS.filter(r=>L>=r[0]).pop()[1];
 const EM='<span class="em"></span>',MS='<span class="msi"></span>';
 function load(){const d=fresh();try{const s=JSON.parse(localStorage.getItem(KEY));if(s)return Object.assign(d,s)}catch(e){}return d}
-function save(){meta.savedAt=Date.now();try{localStorage.setItem(KEY,JSON.stringify(meta))}catch(e){}cloudQueue()}
+function save(){meta.savedAt=Date.now();const j=JSON.stringify(meta);try{localStorage.setItem(KEY,j)}catch(e){}idbSet('save',j);cloudQueue()}
+
+/* ---------- durable storage: an IndexedDB mirror of the save, plus a request for persistent storage ----------
+   localStorage and IndexedDB both hold the save; on open, whichever is newer wins, so if one is wiped the other restores it.
+   navigator.storage.persist() asks the browser (including iOS for home-screen apps) not to evict the game's data. */
+let idbP=null;
+function idb(){
+  if(!idbP)idbP=new Promise((res,rej)=>{try{const r=indexedDB.open('lanternfall',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}});
+  return idbP;
+}
+function idbSet(k,v){idb().then(db=>{try{db.transaction('kv','readwrite').objectStore('kv').put(v,k)}catch(e){}}).catch(()=>{})}
+function idbGet(k){return idb().then(db=>new Promise(res=>{try{const q=db.transaction('kv').objectStore('kv').get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>res(null)}catch(e){res(null)}})).catch(()=>null)}
+var storeInfo={persisted:null,idb:false};
+async function storageInit(){
+  try{const raw=await idbGet('save');storeInfo.idb=raw!=null||!!window.indexedDB;
+    if(raw){const d=JSON.parse(raw);
+      if(d&&typeof d.embers==='number'&&(d.savedAt||0)>(meta.savedAt||0)){
+        meta=Object.assign(fresh(),d);try{localStorage.setItem(KEY,raw)}catch(e){}
+        applySkins();if(G&&G.state==='camp'){campPreview();renderView()}
+      }else if((meta.savedAt||0)>(d&&d.savedAt||0))idbSet('save',JSON.stringify(meta))}
+    else if(meta.savedAt)idbSet('save',JSON.stringify(meta));
+  }catch(e){}
+  try{if(navigator.storage&&navigator.storage.persisted){storeInfo.persisted=await navigator.storage.persisted();if(!storeInfo.persisted&&navigator.storage.persist)storeInfo.persisted=await navigator.storage.persist()}}catch(e){}
+  storageUI();
+}
+async function requestPersist(){
+  try{if(navigator.storage&&navigator.storage.persist)storeInfo.persisted=await navigator.storage.persist()}catch(e){}
+  storageUI();
+}
+const isStandalone=()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}};
+function storageUI(){
+  const el=document.getElementById('permSt');if(!el)return;const p=storeInfo.persisted;
+  el.textContent=p?'Permanent':p===false?'Not permanent yet':'Not supported here';el.className=p?'cs-on':'';
+  const b=document.getElementById('permBtn');if(b)b.hidden=p!==false;
+  const n=document.getElementById('permNote');
+  if(n)n.textContent=p?'Your browser has promised not to clear the game’s save. A backup copy is also kept in a second storage area.':
+    p===false?(isStandalone()?'The browser hasn’t granted permanent storage yet. Tap the button to ask again, and keep an export code as a backup.':'For the strongest protection on iPhone, add the game to your Home Screen (Share → Add to Home Screen), then open it from there.'):
+    'This browser doesn’t offer permanent storage. Your save is still kept in two places on this device; keep an export code as a backup.';
+}
+let persistAsked=false;
+addEventListener('pointerdown',()=>{if(!persistAsked&&storeInfo.persisted===false){persistAsked=true;requestPersist()}},{capture:true});
 let meta=load();
 const ml=id=>meta.up[id]||0;
 const unlocked=t=>TOWERS[t].pass?!!(meta.ptow&&meta.ptow[t]):(!TOWERS[t].unlock||ml('u_'+t)>0);
 const mcost=(m,l)=>Math.round(m.base*Math.pow(m.g,l));
+
+/* ---------- version checking: the installed app compares itself with version.json published next to it on GitHub ---------- */
+function cmpVer(a,b){const x=String(a).split('.').map(Number),y=String(b).split('.').map(Number);for(let i=0;i<3;i++){const d=(x[i]||0)-(y[i]||0);if(d)return d}return 0}
+var upd={state:'idle',latest:null,notes:[],at:0,dismissed:null},lastChk=0;
+async function checkVersion(manual){
+  lastChk=Date.now();upd.state='checking';updUI();
+  try{
+    const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('http');
+    const j=await r.json();if(!j||!j.version)throw new Error('bad');
+    upd.latest=j.version;upd.notes=Array.isArray(j.notes)?j.notes:[];upd.at=Date.now();
+    if(cmpVer(j.version,VERSION)>0){upd.state='outdated';if(manual||upd.dismissed!==j.version)showUpdate()}
+    else upd.state='latest';
+  }catch(e){upd.state='unavailable'}
+  updUI();
+}
+function updUI(){
+  const s=document.getElementById('updSt');if(!s)return;
+  s.textContent={idle:'Not checked yet',checking:'Checking…',latest:'Up to date',outdated:`v${upd.latest} available`,unavailable:'Can’t check right now'}[upd.state];
+  s.className=upd.state==='latest'?'cs-on':upd.state==='outdated'?'cs-warn':'';
+  const n=document.getElementById('updNote');
+  if(n)n.textContent=upd.state==='latest'?`You have the newest version (v${VERSION}). Checked ${new Date(upd.at).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}.`:
+    upd.state==='outdated'?`You have v${VERSION}. Tap Check for updates to reload into v${upd.latest}.`:
+    upd.state==='unavailable'?'Couldn’t reach the update server. You might be offline, or playing a copy that isn’t the installed app. The game keeps working either way.':
+    'The installed app checks for a new version every time it opens.';
+  const b=document.getElementById('updChk');if(b){b.disabled=upd.state==='checking';b.textContent=upd.state==='outdated'?'Update now':'Check for updates'}
+}
+function showUpdate(){
+  const inRun=G&&(G.state==='build'||G.state==='wave'||G.state==='cards');
+  $('#updTitle').textContent=`Version ${upd.latest}`;
+  $('#updText').textContent=`You’re playing v${VERSION}. Reload to get the latest version. Your progress is saved and comes with you.${inRun?' The run you’re in right now will end.':''}`;
+  $('#updNotes').innerHTML=upd.notes.slice(0,6).map(n=>`<li>${String(n).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'})[c])}</li>`).join('');
+  $('#updNow').disabled=false;$('#updNow').textContent='Reload to update';
+  if(typeof paused!=='undefined'&&G&&G.state==='wave')paused=true;
+  show('upd');
+}
+async function applyUpdate(){
+  const b=$('#updNow');b.disabled=true;b.textContent='Updating…';
+  try{save()}catch(e){}
+  try{const r=navigator.serviceWorker&&await navigator.serviceWorker.getRegistration();if(r)await r.update()}catch(e){}
+  try{const ks=await caches.keys();await Promise.all(ks.filter(k=>k.startsWith('lanternfall-')).map(k=>caches.delete(k)))}catch(e){}
+  location.reload();
+}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&Date.now()-lastChk>20*60000)checkVersion(false)});
 
 /* ---------- Claude cloud save: one private doc per signed-in player, newest save wins ---------- */
 var cloud={state:'checking',at:0,ref:null,busy:false,pending:false,timer:0,msg:''};
@@ -1389,6 +1495,7 @@ function renderProfile(){
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'0.8.1',d:'Oct 14, 2026',notes:['The app checks for a new version every time it opens, and Settings has a Check for updates button.','When a new version is out, a popup lets you reload straight into it.','Permanent storage: the game asks your device to never clear its data, and keeps a second backup copy of your save that restores itself if the first is lost.']},
   {v:'0.8.0',d:'Oct 14, 2026',notes:['Drag and drop: drag lanterns from the tray onto the board. Tiles light green or red, and you see the range before you drop. Tap a lantern then tap tiles also works.','Ascension: max-level lanterns gain a special perk, a gold crown and a turning ring.','Lantern Mastery: every lantern levels from 1 to 100 forever, gaining a little damage each level, fire rate every 10, and badges at 25/50/75/100.','Endless mode: no last wave, and every 5 waves the world, its twist and the trail all change.','Trails are now much more varied. They can enter from the sides and double back.']},
   {v:'0.7.2',d:'Oct 14, 2026',notes:['Every lantern now has its own Legendary, Mythic, Celestial and Exotic skins with unique names and colors, like Phoenix for Cinder, Aurora Veil for Frost and Jackpot for Mint.','Each lantern’s skins shed their own particle shape: Spark diamonds, Cinder flames, Frost snowflakes, Lance shards, Venom bubbles, Mint coins, Bolt zaps, Beacon rings, Comet tails, Moonwell crescents, Bell notes and Eclipse suns.','Skins you already own carry over.']},
   {v:'0.7.1',d:'Oct 14, 2026',notes:['Legendary, Mythic, Celestial and Exotic skins now have effects that grow with rarity.','Legendary: a golden halo and a glint that sweeps the rim.','Mythic: adds a color pulse, a turning rune ring, rising motes and glowing shot trails.','Celestial: adds light rays, orbiting stars, twinkles and sparkling shots.','Exotic: adds rainbow rays, shockwave ripples, a comet ribbon, a floating crown and shots that shed prism sparks.']},
@@ -1846,7 +1953,7 @@ function renderSettings(){
   $('#savedAt').textContent=meta.savedAt?new Date(meta.savedAt).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Never';
   $('#expTxt').value=exportCode();$('#expMsg').textContent='';
   impArmed=false;resetArmed=false;$('#impBtn').textContent='Import';$('#reset').textContent='Reset all progress';
-  cloudUI();
+  cloudUI();updUI();storageUI();
   const cur=meta.menuTheme||'default';
   $('#themes').innerHTML=Object.entries(MENU_THEMES).map(([id,m])=>{const own=id==='default'||meta.themes[id],bg=m.bg||THEMES[meta.depth].bg,acc=m.acc||THEMES[meta.depth].acc;
     return `<button class="thc${cur===id?' on':''}${own?'':' lock'}" data-theme="${id}" ${own?'':'disabled'} aria-pressed="${cur===id}">
@@ -1854,6 +1961,10 @@ function renderSettings(){
       <span>${m.name}</span><small>${own?(cur===id?'Equipped':'Tap to equip'):`Season 1 Pass · tier ${passTierOf('theme',undefined,id)}`}</small></button>`}).join('');
 }
 $('#themes').onclick=e=>{const b=e.target.closest('[data-theme]');if(!b||b.disabled)return;meta.menuTheme=b.dataset.theme;save();renderSettings()};
+$('#updChk').onclick=()=>{if(upd.state==='outdated')showUpdate();else checkVersion(true)};
+$('#updNow').onclick=applyUpdate;
+$('#updLater').onclick=()=>{upd.dismissed=upd.latest;hide('upd');if(G&&G.state==='wave'&&$('#menu').hidden)paused=false};
+$('#permBtn').onclick=requestPersist;
 $('#cloudSync').onclick=()=>{if(cloud.state==='error')cloudInit();else{cloud.at=-1;cloudPush()}};
 $('#expBtn').onclick=()=>{
   const t=$('#expTxt');t.value=exportCode();
@@ -2178,7 +2289,8 @@ meta.depth=Math.min(meta.depth,meta.maxDepth);
 applySkins();campPreview();
 new ResizeObserver(resize).observe($('#board'));resize();
 go('home');renderTray();hud(true);
-cloudInit();
+storageInit().then(()=>cloudInit());
+checkVersion(false);
 requestAnimationFrame(loop);
 })();
 </script>

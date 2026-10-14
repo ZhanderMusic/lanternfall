@@ -1,0 +1,9 @@
+{
+  "version": "0.8.1",
+  "date": "Oct 14, 2026",
+  "notes": [
+    "The app checks for a new version every time it opens, and Settings has a Check for updates button.",
+    "When a new version is out, a popup lets you reload straight into it.",
+    "Permanent storage: the game asks your device to never clear its data, and keeps a second backup copy of your save that restores itself if the first is lost."
+  ]
+}
