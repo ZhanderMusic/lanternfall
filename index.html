@@ -231,6 +231,8 @@ body.dragging{cursor:grabbing}
 .perk.on{color:#ffd75e}
 .mst{font-size:11px;color:var(--dim);font-family:var(--mono);margin-top:3px}
 .pips.asc i.on{background:#ffd75e;box-shadow:0 0 6px #ffd75e}
+.ascb.at2{background:#dff1ff}.ascb.at3{background:linear-gradient(90deg,#ff9af0,#9fd8ff,#fff1a8)}
+.ascgo:not(:disabled){box-shadow:0 0 14px -2px #ffd75e}
 .ascb{font:700 10px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:#140e06;background:#ffd75e;border-radius:999px;padding:3px 7px;margin-left:8px;vertical-align:middle}
 .tinfo .acts{flex-wrap:wrap}
 @media (max-width:560px){.tinfo{flex-direction:column;align-items:stretch;gap:8px}.tinfo .acts{margin-left:0}.tinfo .acts .btn.primary{flex:1}}
@@ -498,7 +500,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 
 
 <script>
-/* PWA: offline support and updates (Lanternfall v0.8.3) */
+/* PWA: offline support and updates (Lanternfall v0.9.0) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -791,7 +793,7 @@ const CARDS=[
 const RW=[10,4.5,1.6],RN=['Common','Rare','Mythic'];
 
 /* ---------- save ---------- */
-const VERSION='0.8.3';
+const VERSION='0.9.0';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0});
@@ -1183,6 +1185,11 @@ const ASC={
   eclipse:'Totality: max-health damage doubles to 12%.'
 };
 const isAsc=t=>t.lvl>=MAXL;
+/* re-ascension: merge another ascended lantern of the same type into this one. Tiers 1 (Ascended) to 3 (Ascended III). */
+const ASC_MAX=3,ASC_NAME=['','Ascended','Ascended II','Ascended III'],ASC_COL=['','#ffd75e','#dff1ff','#ff9af0'];
+const ascTier=t=>isAsc(t)?(t.at||1):0;
+const ascBoost=t=>{const b=Math.max(0,ascTier(t)-1);return{dmg:Math.pow(1.75,b),rate:Math.pow(1.2,b),range:Math.pow(1.12,b),aura:.15*b}};
+function ascPartner(t){let best=null;for(const o of G.towers)if(o!==t&&o.type===t.type&&isAsc(o)&&(!best||ascTier(o)<ascTier(best)))best=o;return best}
 
 /* ---------- lantern mastery (permanent, levels 1-100 per lantern) ---------- */
 const MAST_MAX=100,mNeed=L=>10+2*L;
@@ -1200,22 +1207,22 @@ function auraAt(t){
   return{dmg,rate};
 }
 function tStats(t){
-  const d=TOWERS[t.type],L=t.lvl-1,m=G.m,A=isAsc(t),mb=mastBonus((G.mast&&G.mast[t.type])||1);
-  if(t.type==='beacon')return{aura:Math.round((.15+.05*L+m.aura)*100),radius:A?2:1};
-  if(t.type==='mint')return{income:Math.round((8+6*L)*m.income*(A?2:1)*(1+mb.dmg))};
+  const d=TOWERS[t.type],L=t.lvl-1,m=G.m,A=isAsc(t),mb=mastBonus((G.mast&&G.mast[t.type])||1),ab=ascBoost(t);
+  if(t.type==='beacon')return{aura:Math.round((.15+.05*L+m.aura+ab.aura)*100),radius:A?2:1};
+  if(t.type==='mint')return{income:Math.round((8+6*L)*m.income*(A?2:1)*(1+mb.dmg)*ab.dmg)};
   const a=auraAt(t);
-  let dmg=d.dmg*Math.pow(1.42,L)*(1+.06*ml('whet'))*m.dmg*a.dmg*(1+mb.dmg);
-  let rate=d.rate*Math.pow(1.08,L)*(1+.05*ml('bellows'))*m.rate*a.rate*(1+mb.rate);
+  let dmg=d.dmg*Math.pow(1.42,L)*(1+.06*ml('whet'))*m.dmg*a.dmg*(1+mb.dmg)*ab.dmg;
+  let rate=d.rate*Math.pow(1.08,L)*(1+.05*ml('bellows'))*m.rate*a.rate*(1+mb.rate)*ab.rate;
   if(t.type==='bolt')dmg*=TM.bolt||1;
   if(t.type==='lance')dmg*=m.lance;
   if(t.type==='comet')rate*=m.comet;
   return{dmg,rate,
-    range:(d.range+.15*L)*(1+.04*ml('wick'))*m.range*(TM.range||1)*(A&&t.type==='bell'?1.3:1),
+    range:(d.range+.15*L)*(1+.04*ml('wick'))*m.range*(TM.range||1)*(A&&t.type==='bell'?1.3:1)*ab.range,
     splash:(d.splash||0)*m.splash*(A&&t.type==='comet'?1.6:1),
     slow:Math.min(.8,((d.slow||0)+.15*m.chill)*(TM.slow||1)),slowT:(d.slowT||0)*(1+.3*m.chill),
     chain:(d.chain||0)+m.chain+(A&&t.type==='bolt'?3:0),pierce:A&&t.type==='lance'?999:(d.pierce||0)+m.pierce,
     stun:(d.stun||0)*(1+.08*L)*(A&&t.type==='bell'?2:1),pct:(d.pct||0)*(A&&t.type==='eclipse'?2:1),
-    poison:(d.poison||0)*Math.pow(1.42,L)*m.poison*a.dmg*(1+.06*ml('whet'))*(1+mb.dmg)
+    poison:(d.poison||0)*Math.pow(1.42,L)*m.poison*a.dmg*(1+.06*ml('whet'))*(1+mb.dmg)*ab.dmg
   };
 }
 const buildCost=t=>Math.round(TOWERS[t].cost*G.m.cost);
@@ -1508,6 +1515,7 @@ function renderProfile(){
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'0.9.0',d:'Oct 14, 2026',notes:['Re-ascension: when two lanterns of the same type are both ascended, merge one into the other to reach Ascended II, then Ascended III.','Each merge stacks ×1.75 damage, ×1.2 fire rate and ×1.12 range (Beacons get a stronger boost, Mints more gold).','Ascended II lanterns get a silver crown and a second ring. Ascended III lanterns glow in shifting colors.']},
   {v:'0.8.3',d:'Oct 14, 2026',notes:['Fixed the board jumping when you tap a lantern. The bottom panel now keeps one fixed height, so the board never moves.']},
   {v:'0.8.2',d:'Oct 14, 2026',notes:['The title screen is now centered on every screen size.']},
   {v:'0.8.1',d:'Oct 14, 2026',notes:['The app checks for a new version every time it opens, and Settings has a Check for updates button.','When a new version is out, a popup lets you reload straight into it.','Permanent storage: the game asks your device to never clear its data, and keeps a second backup copy of your save that restores itself if the first is lost.']},
@@ -1545,6 +1553,7 @@ function renderHow(){
   <div class="hc"><h3>Building</h3><ol>
     <li><b>Drag a lantern</b> from the tray onto a grassy tile. Green means it fits, red means it doesn't. You can also tap a lantern, then tap tiles to place it.</li>
     <li>At <b>max level</b> a lantern ascends and gains a special perk.</li>
+    <li>Ascend a <b>second copy</b> of the same lantern, then tap the first and <b>Merge</b> to absorb it: Ascended II, then Ascended III. Each merge gives ×1.75 damage, ×1.2 fire rate and ×1.12 range.</li>
     <li><b>Tap a lantern</b> to upgrade it (up to level 6) or sell it for 60% back.</li>
     <li>Kills and cleared waves give you gold to spend.</li></ol></div>
   <div class="hc"><h3>Waves</h3><ul>
@@ -2056,11 +2065,13 @@ function renderTray(){
         ty==='lance'?` · pierce ${st.pierce}`:ty==='venom'?` · poison ${st.poison.toFixed(1)}/s`:ty==='spark'&&G.m.crit?` · crit ${Math.round(G.m.crit*100)}%`:'';
       nums=`dmg ${st.dmg.toFixed(1)} · ${st.rate.toFixed(2)}/s · range ${st.range.toFixed(1)}${extra}`;
     }
-    tr.innerHTML=`<div class="tinfo"><div class="tmain"><h3 style="color:${TOWERS[ty].color}">${TOWERS[ty].name}<span class="pips${mx?' asc':''}">${Array.from({length:MAXL},(_,i)=>`<i class="${i<t.lvl?'on':''}"></i>`).join('')}</span>${mx?'<span class="ascb">Ascended</span>':''}</h3>
+    tr.innerHTML=`<div class="tinfo"><div class="tmain"><h3 style="color:${TOWERS[ty].color}">${TOWERS[ty].name}<span class="pips${mx?' asc':''}">${Array.from({length:MAXL},(_,i)=>`<i class="${i<t.lvl?'on':''}"></i>`).join('')}</span>${mx?`<span class="ascb at${ascTier(t)}">${ASC_NAME[ascTier(t)]}</span>`:''}</h3>
       <div class="nums">${nums}</div>
       <div class="perk${mx?' on':''}">${mx?'':'At max level · '}${ASC[ty]}</div>
+      ${mx?(()=>{const T=ascTier(t),pt=ascPartner(t);if(T>=ASC_MAX)return `<div class="perk on">Fully ascended: ×${ascBoost(t).dmg.toFixed(2)} damage, ×${ascBoost(t).rate.toFixed(2)} fire rate, ×${ascBoost(t).range.toFixed(2)} range.</div>`;
+        return `<div class="perk">${pt?`Ready: merge another ascended ${TOWERS[ty].name} into this one to reach ${ASC_NAME[T+1]} (×1.75 damage, ×1.2 fire rate, ×1.12 range).`:`To reach ${ASC_NAME[T+1]}, ascend a second ${TOWERS[ty].name} on the board, then merge it into this one.`}</div>`})():''}
       <div class="mst">Mastery ${mL}${mb?` · ${mb}`:''} · +${(mastBonus(mL).dmg*100).toFixed(1)}% damage${mastBonus(mL).rate?`, +${Math.round(mastBonus(mL).rate*100)}% fire rate`:''}</div></div>
-      <div class="acts"><button class="btn primary" data-act="up" data-cost="${uc}" data-max="${mx?1:0}">${mx?'Ascended':'Upgrade '+uc}</button><button class="btn" data-act="sell">Sell +${refund}</button><button class="btn" data-act="close" aria-label="Close">✕</button></div></div>`;
+      <div class="acts">${mx?(ascTier(t)>=ASC_MAX?`<button class="btn primary" disabled>${ASC_NAME[ASC_MAX]}</button>`:`<button class="btn primary ascgo" data-act="asc" ${ascPartner(t)?'':'disabled'}>Merge → ${ASC_NAME[ascTier(t)+1]}</button>`):`<button class="btn primary" data-act="up" data-cost="${uc}" data-max="0">Upgrade ${uc}</button>`}<button class="btn" data-act="sell">Sell +${refund}</button><button class="btn" data-act="close" aria-label="Close">✕</button></div></div>`;
   }
   afford();
 }
@@ -2079,6 +2090,13 @@ $('#tray').onclick=e=>{
     const c=upCost(s.t);if(G.gold<c||s.t.lvl>=MAXL)return;G.gold-=c;s.t.lvl++;s.t.spent+=c;
     G.fx.push({k:'r',x:s.t.x+.5,y:s.t.y+.5,r:s.t.lvl>=MAXL?1.4:.7,life:s.t.lvl>=MAXL?.6:.3,max:s.t.lvl>=MAXL?.6:.3,col:s.t.lvl>=MAXL?'#ffd75e':TOWERS[s.t.type].color});
     if(s.t.lvl>=MAXL){puff(s.t.x+.5,s.t.y+.5,'#ffd75e',20);toast(`${TOWERS[s.t.type].name} ascended`,ASC[s.t.type])}
+  }else if(b.dataset.act==='asc'&&s&&s.kind==='tower'){
+    const t=s.t,pt=ascPartner(t);if(!pt||ascTier(t)>=ASC_MAX)return;
+    G.towers=G.towers.filter(x=>x!==pt);t.at=ascTier(t)+1;t.spent+=pt.spent;
+    const col=ASC_COL[t.at];
+    G.fx.push({k:'z',pts:[[pt.x+.5,pt.y+.5],[t.x+.5,t.y+.5]],life:.5,max:.5,col});
+    G.fx.push({k:'r',x:t.x+.5,y:t.y+.5,r:1.8,life:.8,max:.8,col});puff(t.x+.5,t.y+.5,col,30);puff(pt.x+.5,pt.y+.5,col,14);
+    toast(`${TOWERS[t.type].name}: ${ASC_NAME[t.at]}`,`Merged two ascended lanterns. ×${ascBoost(t).dmg.toFixed(2)} damage, ×${ascBoost(t).rate.toFixed(2)} fire rate, ×${ascBoost(t).range.toFixed(2)} range.`);
   }else if(b.dataset.act==='sell'&&s&&s.kind==='tower'){
     G.gold+=Math.round(s.t.spent*.6);G.towers=G.towers.filter(x=>x!==s.t);G.sel=null;
   }
@@ -2222,9 +2240,15 @@ function draw(){
     ctx.strokeStyle=col;ctx.lineWidth=Math.max(1.5,S*.05);ctx.stroke();
     lantern(t.type,cx,cy,t.flash?'#fff':col,ctx,S);skinFx(ctx,sk,cx,cy,S,T);
     const asc=isAsc(t);
-    if(asc){ctx.save();ctx.setLineDash([S*.08,S*.06]);ctx.lineDashOffset=-T*S*.4;ctx.strokeStyle='rgba(255,215,94,.9)';ctx.lineWidth=Math.max(1.5,S*.04);
-      ctx.beginPath();ctx.arc(cx,cy,S*.46,0,7);ctx.stroke();ctx.restore();
-      ctx.fillStyle='#ffd75e';ctx.beginPath();const kx=cx,ky=cy-S*.5,k=S*.09;ctx.moveTo(kx-k*1.4,ky+k*.6);ctx.lineTo(kx-k*1.4,ky-k*.4);ctx.lineTo(kx-k*.6,ky+k*.1);ctx.lineTo(kx,ky-k*.8);ctx.lineTo(kx+k*.6,ky+k*.1);ctx.lineTo(kx+k*1.4,ky-k*.4);ctx.lineTo(kx+k*1.4,ky+k*.6);ctx.closePath();ctx.fill()}
+    if(asc){const AT=ascTier(t),ac=AT>=3?['#ff9af0','#9fd8ff','#fff1a8'][Math.floor(T*2)%3]:ASC_COL[AT];
+      ctx.save();ctx.setLineDash([S*.08,S*.06]);ctx.lineDashOffset=-T*S*.4;ctx.strokeStyle=hexA(ac,.9);ctx.lineWidth=Math.max(1.5,S*.04);
+      ctx.beginPath();ctx.arc(cx,cy,S*.46,0,7);ctx.stroke();
+      if(AT>=2){ctx.setLineDash([S*.04,S*.1]);ctx.lineDashOffset=T*S*.6;ctx.strokeStyle=hexA(ac,.7);ctx.beginPath();ctx.arc(cx,cy,S*.53,0,7);ctx.stroke()}
+      if(AT>=3){ctx.setLineDash([]);ctx.globalCompositeOperation='lighter';const R=S*(.7+.06*Math.sin(T*4)),gr=ctx.createRadialGradient(cx,cy,S*.3,cx,cy,R);
+        gr.addColorStop(0,hexA(ac,.35));gr.addColorStop(1,hexA(ac,0));ctx.fillStyle=gr;ctx.fillRect(cx-R,cy-R,R*2,R*2)}
+      ctx.restore();
+      if(AT>=2){ctx.fillStyle=ac;for(let i=0;i<AT;i++){const px=cx+(i-(AT-1)/2)*S*.12;ctx.beginPath();ctx.arc(px,cy+S*.52,S*.035,0,7);ctx.fill()}}
+      ctx.fillStyle=ac;ctx.beginPath();const kx=cx,ky=cy-S*.5,k=S*.09;ctx.moveTo(kx-k*1.4,ky+k*.6);ctx.lineTo(kx-k*1.4,ky-k*.4);ctx.lineTo(kx-k*.6,ky+k*.1);ctx.lineTo(kx,ky-k*.8);ctx.lineTo(kx+k*.6,ky+k*.1);ctx.lineTo(kx+k*1.4,ky-k*.4);ctx.lineTo(kx+k*1.4,ky+k*.6);ctx.closePath();ctx.fill()}
     else for(let i=0;i<t.lvl;i++){const a=-Math.PI/2+(i-(t.lvl-1)/2)*.42;ctx.fillStyle=col;ctx.beginPath();ctx.arc(cx+Math.cos(a)*S*.42,cy+Math.sin(a)*S*.42,S*.04,0,7);ctx.fill()}}
   /* drag ghost: green tile = valid, red = blocked, dashed circle = range */
   if(drag&&drag.on){const p=dragPos(),c=cellAt(p.x,p.y);
