@@ -236,7 +236,8 @@ h2.big{font:400 52px/.9 var(--display);margin:0}
 .bxb.rdy{border-color:#c08bff;color:#e6d4ff;box-shadow:0 0 14px -2px #b48cff;animation:bxpulse 1.4s ease-in-out infinite}
 @keyframes bxpulse{50%{box-shadow:0 0 22px 2px #b48cff}}
 .bxp{display:flex;flex-direction:column;gap:6px}#bxBar{background:linear-gradient(90deg,#8a3dff,#c08bff)}
-.bxlist{display:flex;flex-direction:column;gap:8px;max-height:52vh;overflow:auto}
+.bxlist{display:flex;flex-direction:column;gap:8px;max-height:52vh;overflow:auto;overscroll-behavior:contain;padding:2px}
+.bxlist>*{flex-shrink:0}
 @media (prefers-reduced-motion:reduce){.bxb.rdy{animation:none}}
 #bcats .uct{display:inline-flex;align-items:center;gap:6px}
 #bcats .uct .bn2{font:500 11px/1 var(--mono);opacity:.7}
@@ -1020,7 +1021,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 
 
 <script>
-/* PWA: offline support and updates (Lanternfall v0.19.1) */
+/* PWA: offline support and updates (Lanternfall v0.19.2) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -1215,6 +1216,10 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
         <button data-lay="auto" role="radio">Auto</button><button data-lay="portrait" role="radio">Portrait</button><button data-lay="landscape" role="radio">Landscape</button></div>
       <p class="hint" style="margin:0">Auto uses landscape when your screen is wider than it is tall, like a computer, a tablet or a phone turned sideways. In landscape the trail runs left to right.</p>
       <hr class="sep">
+      <div class="sr"><span>Docs</span><b>Full player guide</b></div>
+      <p class="hint" style="margin:0">How to play, strategy, and every lantern, foe, world, boon and camp upgrade with their numbers. Opens in your browser.</p>
+      <div class="row"><a class="btn" id="docsBtn" href="https://github.com/ZhanderMusic/lanternfall/wiki" target="_blank" rel="noopener" style="text-decoration:none;text-align:center">Open the docs</a></div>
+      <hr class="sep">
       <div class="sr"><span>Version</span><b data-ver></b></div>
       <div class="sr"><span>Updates</span><b id="updSt">Not checked yet</b></div>
       <p class="hint" style="margin:0" id="updNote"></p>
@@ -1356,7 +1361,7 @@ const FOES={
   ghost:{ev:1,name:'Ghost',hp:30,speed:1.2,gold:4,r:.25,armor:0,col:'#eef0ff',sh:'ghost',phase:[3,.9],noSlow:1,tip:'Fades out now and then, and slows pass right through it.'},
   skeleton:{ev:1,name:'Skeleton',hp:50,speed:.9,gold:5,r:.27,armor:3,col:'#e8e2d0',sh:'skull',revive:.4,tip:'Pulls itself back together once after being snuffed.'}
 };
-const GOLD_K=.5;   /* gold per kill, trimmed in 0.18.0 */
+const GOLD_K=.42;   /* gold per kill, trimmed in 0.18.0 and 0.19.2 */
 const NEWFOES=Object.keys(FOES).filter(k=>FOES[k].intro);
 const introAt=d=>NEWFOES.find(k=>FOES[k].intro===d);
 
@@ -1580,7 +1585,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='0.19.1';
+const VERSION='0.19.2';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -2360,7 +2365,7 @@ function makeWave(w){
   return q;
 }
 function spawn(type,at,mini){
-  const f=FOES[type],w=G.wave,sc=Math.pow(1.22,Math.min(w,5)-1)*Math.pow(1.17,Math.min(25,Math.max(0,w-5)))*Math.pow(1.07,Math.max(0,w-30))*(1+.35*G.depth)*(mini?.45:1)*dOf(G.diff).hp*(type==='boss'?1-.04*ml('bane'):1-.02*ml('smallfry'))*(TM.hp||1);
+  const f=FOES[type],w=G.wave,sc=Math.pow(1.22,Math.min(w,5)-1)*Math.pow(type==='boss'?1.17:1.2,Math.min(25,Math.max(0,w-5)))*Math.pow(1.07,Math.max(0,w-30))*(1+.35*G.depth)*(mini?.45:1)*dOf(G.diff).hp*(type==='boss'?1-.04*ml('bane'):1-.02*ml('smallfry'))*(TM.hp||1);
   const hp=f.hp*sc/(type==='boss'?1:WAVE_LEN);
   const e={t:type,hp,max:hp,d:0,seg:0,x:G.path.pts[0][0],y:G.path.pts[0][1],ang:0,mini:!!mini,
     speed:f.speed*(1+.012*w)*(1+.04*G.depth)*(TM.speed||1)*dOf(G.diff).spd*(1-.02*ml('fog')),
@@ -2836,6 +2841,7 @@ function renderProfile(){
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'0.19.2',d:'Oct 15, 2026',notes:['Tougher waves: regular foes now gain health faster from wave 6 to wave 30 (bosses are unchanged), so strong builds stop melting every wave before the boss.','Kills pay about 16% less gold.','New Docs button in Settings (and on How to play) that opens the full player guide: every lantern, foe, world, boon and camp upgrade.','Fixed the Your boons list squashing cards together when you have a lot of boons. It now scrolls.']},
   {v:'0.19.1',d:'Oct 15, 2026',notes:['Fixed drag and drop on phones in landscape: drag a lantern sideways from the tray onto the board. The lantern column can also scroll up and down now.']},
   {v:'0.19.0',d:'Oct 15, 2026',major:1,title:'The Wide Night',
    hl:[['Landscape mode','On computers, tablets and sideways phones the trail runs left to right. Pick Auto, Portrait or Landscape in Settings.'],
@@ -2980,6 +2986,7 @@ function renderHow(){
   <div class="hc"><h3>Events</h3><p>Limited-time events open their own world on the Play page. Event worlds are endless and harder, and they pay <b>candy</b>, which you spend on the free event pass on the Pass page.</p></div>
   <div class="hc"><h3>Saving runs</h3><p>Campaign and Endless runs both save after every wave. Close the game, or pick <b>Save and quit</b> from the pause menu, and continue later from the Play page. You can keep one campaign run and one endless run saved at a time. If you quit mid-wave, you replay that wave when you continue.</p></div>
   <div class="hc"><h3>Difficulty</h3><p>Pick <b>Easy, Normal, Hard or Nightmare</b> on the Play page. Harder nights mean tougher, faster foes and fewer lives, but pay more embers and XP: ×0.6, ×1, ×1.5 and ×2.25.</p></div>
+  <div class="hc"><h3>Full docs</h3><p>Want every number? The <a href="https://github.com/ZhanderMusic/lanternfall/wiki" target="_blank" rel="noopener" style="color:var(--acc)">Lanternfall docs</a> cover every lantern, foe, world, boon and camp upgrade. You can also open them from Settings.</p></div>
   <div class="hc"><h3>Worlds</h3><p>Clear all 50 waves to unlock the <b>next depth</b>. Each one is a new world with its own twist, tougher foes and bigger ember rewards.</p></div>
   <div class="hc full"><h3>Tips</h3><ul>
     <li>Armor cuts flat damage from every hit. Use <b>Cinder, Bolt, Comet</b> or <b>Venom</b> against beetles.</li>

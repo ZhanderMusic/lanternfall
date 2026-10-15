@@ -1,8 +1,11 @@
 {
-  "version": "0.19.1",
+  "version": "0.19.2",
   "date": "Oct 15, 2026",
   "major": false,
   "notes": [
-    "Fixed drag and drop on phones in landscape: drag a lantern sideways from the tray onto the board. The lantern column can also scroll up and down now."
+    "Tougher waves: regular foes now gain health faster from wave 6 to wave 30 (bosses are unchanged), so strong builds stop melting every wave before the boss.",
+    "Kills pay about 16% less gold.",
+    "New Docs button in Settings (and on How to play) that opens the full player guide: every lantern, foe, world, boon and camp upgrade.",
+    "Fixed the Your boons list squashing cards together when you have a lot of boons. It now scrolls."
   ]
 }

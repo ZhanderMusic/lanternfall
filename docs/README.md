@@ -2,7 +2,7 @@
 
 [Play Lanternfall](https://zhandermusic.github.io/lanternfall/) · [Back to the main page](../README.md)
 
-Everything about Lanternfall in one place: how to play, every lantern, foe, world, boon and camp upgrade, and how progression works. All numbers come straight from the game (version 0.19.1).
+Everything about Lanternfall in one place: how to play, every lantern, foe, world, boon and camp upgrade, and how progression works. All numbers come straight from the game (version 0.19.2).
 
 ## Start here
 
