@@ -61,11 +61,11 @@ body{background:var(--night);color:var(--ink);font-family:var(--body);overflow:h
 @keyframes pulse{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--flame) 22%,transparent)}}
 #board{position:relative;min-height:0;display:flex;align-items:center;justify-content:center}
 .sfxrow{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
-#sfxVol{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;cursor:pointer;touch-action:pan-y}
-#sfxVol::-webkit-slider-runnable-track{height:6px;border-radius:999px;background:linear-gradient(90deg,var(--flame) var(--p,60%),var(--line) var(--p,60%))}
-#sfxVol::-moz-range-track{height:6px;border-radius:999px;background:var(--line)}#sfxVol::-moz-range-progress{height:6px;border-radius:999px;background:var(--flame)}
-#sfxVol::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-8px;border-radius:50%;background:var(--flame);border:3px solid #0b0d10}
-#sfxVol::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--flame);border:3px solid #0b0d10}
+input.vol{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;cursor:pointer;touch-action:pan-y}
+input.vol::-webkit-slider-runnable-track{height:6px;border-radius:999px;background:linear-gradient(90deg,var(--flame) var(--p,60%),var(--line) var(--p,60%))}
+input.vol::-moz-range-track{height:6px;border-radius:999px;background:var(--line)}input.vol::-moz-range-progress{height:6px;border-radius:999px;background:var(--flame)}
+input.vol::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-8px;border-radius:50%;background:var(--flame);border:3px solid #0b0d10}
+input.vol::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--flame);border:3px solid #0b0d10}
 .seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--moss2);border:1px solid var(--line);border-radius:10px;padding:4px}
 .seg button{all:unset;cursor:pointer;text-align:center;padding:9px 6px;border-radius:7px;font:700 14px var(--body);color:var(--dim)}
 .seg button.on{background:var(--flame);color:#140e06}.seg button:focus-visible{outline:2px solid var(--flame)}
@@ -1203,8 +1203,11 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
   <section class="panel view" data-view="settings" hidden>
     <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">Settings</h2></header>
     <div class="set">
+      <div class="sr"><span>Music</span><b id="musNow"></b></div>
+      <div class="sfxrow"><button class="btn" id="musMute" aria-pressed="false">Mute</button><input type="range" id="musVol" class="vol" min="0" max="100" step="5" aria-label="Music volume"></div>
+      <p class="hint" style="margin:0">Every world and every menu theme has its own track.</p>
       <div class="sr"><span>Sound effects</span><b id="sfxNow"></b></div>
-      <div class="sfxrow"><button class="btn" id="sfxMute" aria-pressed="false">Mute</button><input type="range" id="sfxVol" min="0" max="100" step="5" aria-label="Sound effects volume"></div>
+      <div class="sfxrow"><button class="btn" id="sfxMute" aria-pressed="false">Mute</button><input type="range" id="sfxVol" class="vol" min="0" max="100" step="5" aria-label="Sound effects volume"></div>
       <hr class="sep">
       <div class="sr"><span>Screen layout</span><b id="layNow"></b></div>
       <div class="seg" id="laySeg" role="radiogroup" aria-label="Screen layout">
@@ -1267,7 +1270,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
   <div class="panel" style="max-width:340px">
     <h2 class="big">Paused</h2>
     <button class="btn primary" id="resume">Resume</button>
-    <button class="btn" id="pmSound">Sound: on</button>
+    <div class="row" style="gap:8px"><button class="btn" id="pmSound" style="flex:1">Sound: on</button><button class="btn" id="pmMusic" style="flex:1">Music: on</button></div>
     <button class="btn" id="saveQuit">Save and quit</button>
     <button class="btn danger" id="abandon">Abandon run</button>
     <p class="hint" id="menuHint">Abandoning still pays embers for the waves you cleared.</p>
@@ -1495,9 +1498,11 @@ const UPER={"kindling": "Start runs with +10 gold.", "purse": "Kills give +1.5% 
 const UPSC={};META.forEach(m=>{if(UPER[m.id]){UPSC[m.id]=2;m.max*=2;const t0=m.text;m.text=l=>UPER[m.id]+' Now '+t0(l/2).split(' Now ').slice(1).join(' Now ')}});
 const UCATS=[['all','All'],['eco','Economy'],['off','Offense'],['def','Defense'],['run','Run & boons'],['lan','Lanterns'],['lore','Lore'],['pro','Progress']];
 const sellRate=()=>.6+.04*ml('salvage');
+const runSell=()=>Math.min(1,sellRate()+((G&&G.m&&G.m.sell)||0));
 const UNLOCKS=ORDER.filter(t=>TOWERS[t].unlock).map(t=>({id:'u_'+t,t,name:TOWERS[t].name,max:1,base:TOWERS[t].unlock,g:1,text:()=>TOWERS[t].desc}));
 
 /* ---------- boons ---------- */
+const tmul=(m,k,t,v)=>{m[k]=m[k]||{};m[k][t]=(m[k][t]||1)*v};
 const windfall=g=>60+g.wave*10;
 const CARDS=[
   {id:'flame',ic:'flame',name:'Fiercer flame',rar:0,text:'All towers deal +15% damage.',ap:m=>m.dmg*=1.15},
@@ -1519,11 +1524,41 @@ const CARDS=[
   {id:'shower',ic:'comet',name:'Meteor shower',rar:1,need:'comet',text:'Comets fire 30% faster.',ap:m=>m.comet*=1.3},
   {id:'giant',name:'Giant slayer',rar:2,ic:'crown',text:'Towers deal 40% more damage to bosses.',ap:m=>m.boss*=1.4},
   {id:'exec',name:'Snuff out',rar:3,ic:'snuff',once:1,text:'Non-boss foes below 12% health are snuffed instantly.',ap:m=>{m.exec=Math.max(m.exec,.12)}},
-  {id:'surge',name:'Surge',rar:3,ic:'surge',text:'Every lantern you own gets a free upgrade on its lower path.',ap:(m,g)=>g.towers.forEach(t=>freeUpgrade(t))},
+  {id:'surge',name:'Surge',rar:3,needUp:1,ic:'surge',text:'Every lantern you own gets a free upgrade on its lower path.',ap:(m,g)=>g.towers.forEach(t=>freeUpgrade(t))},
   {id:'rot',name:'Armor rot',rar:3,ic:'rot',once:1,text:'All enemy armor is halved.',ap:m=>m.armor*=.5},
+  /* 0.20: more boons. Lantern-specific ones only show while that lantern is on the board */
+  {id:'steady',ic:'fast',name:'Steady hands',rar:0,text:'All towers fire 8% faster and reach 5% farther.',ap:m=>{m.rate*=1.08;m.range*=1.05}},
+  {id:'whetted',ic:'arrow',name:'Whetted edges',rar:0,text:'All shots ignore 2 points of armor.',ap:m=>{m.ap=(m.ap||0)+2}},
+  {id:'charm',ic:'star',name:'Lucky charm',rar:0,text:'All towers get a 4% chance to land a critical hit.',ap:m=>{m.gcrit=(m.gcrit||0)+.04}},
+  {id:'plate',ic:'stack',name:'Collection plate',rar:0,text:'Earn 15 more gold after every wave.',ap:m=>{m.clear=(m.clear||0)+15}},
+  {id:'patch',ic:'heart',name:'Patch the fence',rar:0,text:'Gain 2 lives and a warding stone.',ap:(m,g)=>{g.lives+=2;g.ward=(g.ward||0)+1}},
+  {id:'study',ic:'sun',name:'Quick study',rar:0,text:'Earn 20% more boon XP.',ap:m=>{m.bxp=(m.bxp||1)*1.2}},
+  {id:'salvage',ic:'tag',name:'Salvage rights',rar:0,text:'Selling a lantern refunds 15% more.',ap:m=>{m.sell=(m.sell||0)+.15}},
+  {id:'biggame',ic:'crown',name:'Big game',rar:0,text:'Towers deal 15% more damage to bosses.',ap:m=>m.boss*=1.15},
+  {id:'purse',ic:'bag',name:'Coin purse',rar:0,dex:'Gain 40 gold now, plus 5 for every lantern on the board.',text:g=>`Gain ${40+5*g.towers.length} gold now (40, plus 5 for each lantern on the board).`,ap:(m,g)=>{g.gold+=40+5*g.towers.length}},
+  {id:'brace',ic:'rot',name:'Brace the gate',rar:0,text:'Bosses that slip through cost 2 fewer lives.',ap:m=>{m.stout=(m.stout||0)+2}},
+  {id:'bulk',ic:'tag',name:'Bulk order',rar:0,text:'New lanterns cost 15% less to build.',ap:m=>{m.build=(m.build||1)*.85}},
+  {id:'sharpen',ic:'flame',name:'Sharpened light',rar:1,text:'All towers deal 12% more damage and ignore 1 armor.',ap:m=>{m.dmg*=1.12;m.ap=(m.ap||0)+1}},
+  {id:'sparkstorm',ic:'fast',name:'Spark storm',rar:1,need:'spark',text:'Sparks fire 20% faster.',ap:m=>tmul(m,'trate','spark',1.2)},
+  {id:'longbow',ic:'arrow',name:'Long throw',rar:1,need:'lance',text:'Lances reach 25% farther.',ap:m=>tmul(m,'trange','lance',1.25)},
+  {id:'stoke',ic:'flame',name:'Stoked coals',rar:1,need:'cinder',text:'Cinders deal 30% more damage.',ap:m=>tmul(m,'tdmg','cinder',1.3)},
+  {id:'glacial',ic:'snow',name:'Glacial reach',rar:1,need:'frost',text:'Frost reaches 20% farther and fires 15% faster.',ap:m=>{tmul(m,'trange','frost',1.2);tmul(m,'trate','frost',1.15)}},
+  {id:'neuro',ic:'drop',name:'Neurotoxin',rar:1,need:'venom',text:'Venom fires 30% faster.',ap:m=>tmul(m,'trate','venom',1.3)},
+  {id:'overvolt',ic:'bolt',name:'Overvolt',rar:1,need:'bolt',text:'Bolts deal 30% more damage.',ap:m=>tmul(m,'tdmg','bolt',1.3)},
+  {id:'heavyrock',ic:'comet',name:'Heavier rocks',rar:1,need:'comet',text:'Comets deal 30% more damage.',ap:m=>tmul(m,'tdmg','comet',1.3)},
+  {id:'moonbright',ic:'moon',name:'Brighter moon',rar:1,need:'moonwell',text:'Moonwell beams burn 25% hotter.',ap:m=>tmul(m,'tdmg','moonwell',1.25)},
+  {id:'loudbell',ic:'sun',name:'Louder toll',rar:1,need:'bell',text:'The Hollow Bell reaches 20% farther.',ap:m=>tmul(m,'trange','bell',1.2)},
+  {id:'umbra',ic:'dawn',name:'Deep umbra',rar:1,need:'eclipse',text:'Eclipse fires 25% faster.',ap:m=>tmul(m,'trate','eclipse',1.25)},
+  {id:'widebeam',ic:'range',name:'Wide beam',rar:1,need:'beacon',once:1,text:'Beacons boost lanterns one tile farther away.',ap:m=>{m.auraR=(m.auraR||0)+1}},
+  {id:'crowned',ic:'crown',name:'Crowned',rar:2,text:'Ascended lanterns deal 30% more damage.',ap:m=>{m.ascd=(m.ascd||1)*1.3}},
+  {id:'goldrush',ic:'coin',name:'Gold rush',rar:2,text:'Kills give 40% more gold.',ap:m=>m.goldMul*=1.4},
+  {id:'phalanx',ic:'twin',name:'Phalanx',rar:2,once:1,text:'Each lantern deals 4% more damage for every other lantern of its type on the board, up to 20%.',ap:m=>{m.phal=1}},
+  {id:'timewarp',ic:'moon',name:'Time warp',rar:3,once:1,text:'All foes move 10% slower.',ap:m=>{m.fslow=(m.fslow||1)*.9}},
+  {id:'doubletap',ic:'twin',name:'Double tap',rar:3,once:1,text:'Every shot has a 12% chance to reload instantly.',ap:m=>{m.dt=(m.dt||0)+.12}},
+  {id:'eternal',ic:'dawn',name:'Eternal night',rar:4,once:1,text:'All towers deal 25% more damage, fire 10% faster and reach 10% farther.',ap:m=>{m.dmg*=1.25;m.rate*=1.1;m.range*=1.1}},
   {id:'twin',name:'Twin wicks',rar:2,ic:'twin',text:'All towers fire 22% faster.',ap:m=>m.rate*=1.22},
   {id:'dawn',name:'First light',rar:4,ic:'dawn',once:1,text:'All towers deal 40% more damage and fire 15% faster.',ap:m=>{m.dmg*=1.4;m.rate*=1.15}},
-  {id:'moonfall',name:'Moonfall',rar:4,ic:'moon',once:1,text:'Every lantern you own gets a free upgrade on both paths, and you gain 8 lives.',ap:(m,g)=>{g.towers.forEach(t=>{freeUpgrade(t);freeUpgrade(t)});g.lives+=8}}
+  {id:'moonfall',name:'Moonfall',rar:4,needUp:1,ic:'moon',once:1,text:'Every lantern you own gets a free upgrade on both paths, and you gain 8 lives.',ap:(m,g)=>{g.towers.forEach(t=>{freeUpgrade(t);freeUpgrade(t)});g.lives+=8}}
 ];
 const RW=[10,4.5,2,.9,.28],RN=['Common','Rare','Legendary','Mythic','Exotic'],RK=['common','rare','legendary','mythic','exotic'],RC=['#9aa3a9','#4f9bff','#f5c542','#4fb4ff','#c08bff'];
 const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6 1 2.6 2 3 0-3-.5-5.5.5-8z',
@@ -1619,9 +1654,111 @@ const SFX=(()=>{
   function play(k,arg){if(!vol())return;if(!init())return;if(ac.state==='suspended')ac.resume();
     const now=ac.currentTime,g=(GAP[k]||0)*(typeof speed!=='undefined'&&speed>1?1.6:1);if(last[k]&&now-last[k]<g)return;last[k]=now;try{S[k]&&S[k](arg)}catch(e){}}
   document.addEventListener('visibilitychange',()=>{if(!ac)return;document.hidden?ac.suspend():ac.resume()});
-  return{play,unlock:()=>{if(init()&&ac.state==='suspended')ac.resume()}};
+  return{play,ctx:()=>init(),unlock:()=>{if(init()&&ac.state==='suspended')ac.resume()}};
 })();
 const sfx=(k,a)=>SFX.play(k,a);
+/* ---------- music: slow, generative ambient tracks. Every menu theme and every world has its own,
+   built from a key, a mode, a tempo, a few instruments and a bed of ambience (wind, rain, embers, drips...). ---------- */
+const SC={aeo:[0,2,3,5,7,8,10],dor:[0,2,3,5,7,9,10],lyd:[0,2,4,6,7,9,11],phr:[0,1,3,5,7,8,10],mix:[0,2,4,5,7,9,10],ion:[0,2,4,5,7,9,11],hmi:[0,2,3,5,7,8,11],pma:[0,2,4,7,9],pmi:[0,3,5,7,10],who:[0,2,4,6,8,10]};
+/* r=root midi, s=scale, b=bpm, p=chord degrees, c=bars per chord, pad=[wave,cutoff,vol], arp=[wave,vol,octave,pattern,density], bass=vol, bell=[every bars,vol], amb=[[kind,vol]...] */
+const TRACKS={
+  'menu:default':{r:50,s:'dor',b:70,p:[0,3,4,0,5,3],c:2,pad:['triangle',900,.05],arp:['sine',.045,2,'up',.45],bass:.05,amb:[['wind',.025],['chime',.02]]},
+  'menu:harvest':{r:55,s:'pma',b:84,p:[0,3,4,0],c:1,pad:['triangle',1200,.04],arp:['triangle',.05,1,'updown',.6],bass:.06,amb:[['crackle',.04]]},
+  'menu:snow':{r:52,s:'lyd',b:58,p:[0,1,0,4],c:2,pad:['sine',1500,.06],arp:['sine',.04,3,'random',.3],bass:.03,amb:[['wind',.03]]},
+  'menu:starfall':{r:53,s:'lyd',b:64,p:[0,2,1,4],c:2,pad:['sine',1100,.05],arp:['sine',.035,3,'random',.55],bass:.03,amb:[['hum',.02],['chime',.03]]},
+  'menu:aurora':{r:59,s:'lyd',b:56,p:[0,1,5,4],c:2,pad:['sawtooth',700,.03,1],arp:['sine',.035,2,'random',.35],bass:.03,amb:[['wind',.025]]},
+  'menu:eclipse':{r:48,s:'phr',b:62,p:[0,1,0,6],c:2,pad:['sawtooth',520,.035],arp:['triangle',.04,1,'down',.25],bass:.06,amb:[['hum',.035]]},
+  'menu:hallow':{r:50,s:'hmi',b:78,p:[0,3,4,0,5,4],c:1,pad:['triangle',900,.035],arp:['triangle',.05,2,'waltz',.75],bass:.05,amb:[['wind',.025],['crackle',.025]]},
+  w0:{r:55,s:'pma',b:76,p:[0,3,4,3],c:2,pad:['triangle',1000,.045],arp:['sine',.045,2,'up',.4],bass:.04,amb:[['wind',.02],['chime',.02]]},
+  w1:{r:57,s:'aeo',b:64,p:[0,5,3,6],c:2,pad:['sawtooth',600,.03],arp:['sine',.04,1,'random',.25],bass:.05,amb:[['drip',.04],['wind',.02]]},
+  w2:{r:52,s:'lyd',b:60,p:[0,1,4,0],c:2,pad:['sine',1600,.055],arp:['sine',.04,3,'random',.3],bass:.03,amb:[['wind',.035]]},
+  w3:{r:50,s:'phr',b:80,p:[0,1,0,6],c:1,pad:['sawtooth',800,.03],arp:['triangle',.045,1,'down',.5],bass:.06,amb:[['crackle',.05]]},
+  w4:{r:53,s:'dor',b:66,p:[0,3,0,4],c:2,pad:['sine',900,.05],arp:['sine',.04,2,'random',.35],bass:.04,amb:[['bubble',.03]]},
+  w5:{r:59,s:'lyd',b:70,p:[0,1,3,4],c:2,pad:['triangle',1300,.04],arp:['sine',.04,3,'random',.6],bass:.03,amb:[['drip',.035],['chime',.02]]},
+  w6:{r:52,s:'hmi',b:74,p:[0,5,6,0],c:2,pad:['sawtooth',650,.03],arp:['triangle',.045,1,'updown',.4],bass:.05,amb:[['wind',.04]]},
+  w7:{r:49,s:'aeo',b:88,p:[0,6,5,6],c:1,pad:['sawtooth',900,.035],arp:['triangle',.04,2,'up',.6],bass:.06,amb:[['rain',.035]]},
+  w8:{r:54,s:'dor',b:62,p:[0,3,4,3],c:2,pad:['sine',800,.05],arp:['sine',.04,2,'random',.35],bass:.04,amb:[['bubble',.035],['drip',.025]]},
+  w9:{r:48,s:'who',b:56,p:[0,2,1,3],c:2,pad:['sine',900,.05],arp:['sine',.035,3,'random',.3],bass:.03,amb:[['hum',.035]]},
+  w10:{r:57,s:'hmi',b:84,p:[0,3,4,0],c:1,pad:['sawtooth',900,.035],arp:['triangle',.045,2,'updown',.6],bass:.06,amb:[['crackle',.04],['wind',.02]]},
+  w11:{r:50,s:'aeo',b:60,p:[0,5,6,4],c:2,pad:['sawtooth',500,.035],arp:['sine',.04,1,'random',.25],bass:.06,amb:[['drip',.045]]},
+  w12:{r:55,s:'mix',b:78,p:[0,6,3,0],c:2,pad:['triangle',1300,.04],arp:['triangle',.04,2,'random',.45],bass:.04,amb:[['wind',.045]]},
+  w13:{r:51,s:'dor',b:66,p:[0,3,0,4],c:2,pad:['sine',800,.045],arp:['sine',.035,2,'up',.3],bass:.04,bell:[2,.08],amb:[['drip',.03]]},
+  w14:{r:57,s:'dor',b:70,p:[0,6,3,4],c:2,pad:['triangle',800,.04],arp:['triangle',.045,1,'updown',.45],bass:.05,amb:[['wind',.03],['crackle',.02]]},
+  w15:{r:58,s:'lyd',b:58,p:[0,1,5,4],c:2,pad:['sawtooth',750,.03,1],arp:['sine',.04,3,'random',.4],bass:.03,amb:[['wind',.03],['chime',.02]]},
+  w16:{r:48,s:'hmi',b:72,p:[0,5,3,4],c:2,pad:['square',600,.02],arp:['triangle',.04,1,'down',.4],bass:.06,amb:[['crackle',.045]]},
+  w17:{r:52,s:'phr',b:96,p:[0,1,0,1],c:1,pad:['sawtooth',700,.025],arp:['square',.02,2,'random',.65],bass:.05,amb:[['hum',.04]]},
+  w18:{r:54,s:'aeo',b:54,p:[0,5,3,0],c:2,pad:['sine',1400,.05],arp:['sine',.035,3,'random',.25],bass:.03,amb:[['wind',.05]]},
+  w19:{r:48,s:'who',b:60,p:[0,1,0,2],c:2,pad:['sawtooth',500,.035],arp:['triangle',.035,1,'random',.3],bass:.06,amb:[['hum',.045]]},
+  w20:{r:50,s:'aeo',b:68,p:[0,5,6,4,0,3],c:2,pad:['sawtooth',800,.035,1],arp:['sine',.04,2,'updown',.5],bass:.05,bell:[4,.06],amb:[['wind',.035],['chime',.015]]},
+  ev:{r:50,s:'hmi',b:88,p:[0,5,3,4],c:1,pad:['triangle',900,.035],arp:['triangle',.05,2,'waltz',.8],bass:.06,amb:[['wind',.02],['crackle',.035]]}
+};
+const MUSIC=(()=>{
+  let ac=null,bus=null,rev=null,cur=null,curKey='',timer=null;
+  const mvol=()=>meta.musMute?0:(meta.mus==null?.5:meta.mus);
+  const mf=m=>440*Math.pow(2,(m-69)/12);
+  function setup(){if(bus)return true;ac=SFX.ctx();if(!ac)return false;bus=ac.createGain();bus.gain.value=mvol()*.8;bus.connect(ac.destination);
+    rev=ac.createConvolver();const len=ac.sampleRate*3,ir=ac.createBuffer(2,len,ac.sampleRate);for(let c=0;c<2;c++){const d=ir.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.6)}
+    rev.buffer=ir;const rg=ac.createGain();rg.gain.value=.55;rev.connect(rg);rg.connect(bus);return true}
+  function noiseSrc(){const b=ac.createBuffer(1,ac.sampleRate*2,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const n=ac.createBufferSource();n.buffer=b;n.loop=true;return n}
+  function makeTrack(key){
+    const T=TRACKS[key]||TRACKS['menu:default'],sc=SC[T.s],out=ac.createGain(),send=ac.createGain(),dl=ac.createDelay(2),fb=ac.createGain(),dlg=ac.createGain();
+    out.gain.value=0;out.connect(bus);send.gain.value=.5;out.connect(send);send.connect(rev);
+    const beat=60/T.b;dl.delayTime.value=beat*.75;fb.gain.value=.32;dlg.gain.value=.35;dl.connect(fb);fb.connect(dl);dl.connect(dlg);dlg.connect(out);
+    const nodes=[];const note=d=>T.r+sc[((d%sc.length)+sc.length)%sc.length]+12*Math.floor(d/sc.length);
+    /* ambience beds */
+    for(const [k,v] of T.amb||[]){
+      if(k==='wind'||k==='rain'){const n=noiseSrc(),f=ac.createBiquadFilter(),g=ac.createGain();f.type=k==='rain'?'highpass':'bandpass';f.frequency.value=k==='rain'?2500:500;f.Q.value=k==='rain'?.3:.8;g.gain.value=v;
+        if(k==='wind'){const l=ac.createOscillator(),lg=ac.createGain();l.frequency.value=.07;lg.gain.value=300;l.connect(lg);lg.connect(f.frequency);l.start();nodes.push(l);
+          const l2=ac.createOscillator(),l2g=ac.createGain();l2.frequency.value=.11;l2g.gain.value=v*.6;l2.connect(l2g);l2g.connect(g.gain);l2.start();nodes.push(l2)}
+        n.connect(f);f.connect(g);g.connect(out);n.start();nodes.push(n)}
+      if(k==='hum'){for(const m of [T.r-24,T.r-17]){const o=ac.createOscillator(),g=ac.createGain(),l=ac.createOscillator(),lg=ac.createGain();o.type='sine';o.frequency.value=mf(m);g.gain.value=v;l.frequency.value=.2;lg.gain.value=v*.5;l.connect(lg);lg.connect(g.gain);
+        o.connect(g);g.connect(out);o.start();l.start();nodes.push(o,l)}}
+    }
+    function pluck(t,f,w,v,dec,toDelay){const o=ac.createOscillator(),g=ac.createGain();o.type=w;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+dec);
+      o.connect(g);g.connect(out);if(toDelay)g.connect(dl);o.start(t);o.stop(t+dec+.05)}
+    function pad(t,ds,dur){const [w,cut,v,sw]=T.pad,f=ac.createBiquadFilter(),g=ac.createGain();f.type='lowpass';f.frequency.value=cut;f.Q.value=.5;
+      if(sw){f.frequency.setValueAtTime(cut*.6,t);f.frequency.linearRampToValueAtTime(cut*1.6,t+dur*.5);f.frequency.linearRampToValueAtTime(cut*.6,t+dur)}
+      g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+Math.min(2,dur*.35));g.gain.setValueAtTime(v,t+dur*.7);g.gain.linearRampToValueAtTime(0,t+dur+1.2);f.connect(g);g.connect(out);
+      for(const d of ds)for(const det of [-7,7]){const o=ac.createOscillator();o.type=w;o.frequency.value=mf(note(d));o.detune.value=det;o.connect(f);o.start(t);o.stop(t+dur+1.3)}}
+    let step=0,next=ac.currentTime+.1,arpI=0;const sd=beat/4;
+    function sched(){
+      while(next<ac.currentTime+.4){
+        const bar=Math.floor(step/16),inBar=step%16,ci=Math.floor(bar/T.c)%T.p.length,deg=T.p[ci],chord=[deg,deg+2,deg+4];
+        if(step%(16*T.c)===0)pad(next,chord,16*T.c*sd);
+        if(T.bass&&(inBar===0||(inBar===8&&Math.random()<.5)))pluck(next,mf(note(deg)-12),'sine',T.bass,sd*7,false);
+        if(T.bell&&inBar===0&&bar%T.bell[0]===0){pluck(next,mf(note(deg)-12),'sine',T.bell[1],4,true);pluck(next,mf(note(deg)+7-12),'sine',T.bell[1]*.4,3,false)}
+        const [aw,av,ao,pat,dens]=T.arp;
+        if(inBar%2===0&&Math.random()<dens){let d;
+          if(pat==='up')d=chord[arpI%3]+7*Math.floor((arpI%6)/3);else if(pat==='down')d=chord[2-arpI%3]+7;else if(pat==='updown'){const q=[0,1,2,1][arpI%4];d=chord[q]}
+          else if(pat==='waltz'){const q=[0,2,1,2,1,2][arpI%6];d=chord[q]+(q?7:0)}else d=chord[Math.floor(Math.random()*3)]+(Math.random()<.4?7:0);
+          arpI++;pluck(next,mf(note(d)+12*(ao-1)),aw,av,sd*6,true)}
+        for(const [k,v] of T.amb||[]){
+          if(k==='crackle'&&Math.random()<.35){const n=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();n.buffer=SFXNB();f.type='bandpass';f.frequency.value=2000+Math.random()*3000;f.Q.value=2;
+            const t=next+Math.random()*sd;g.gain.setValueAtTime(v*(.5+Math.random()),t);g.gain.exponentialRampToValueAtTime(.0001,t+.03);n.connect(f);f.connect(g);g.connect(out);n.start(t);n.stop(t+.05)}
+          if(k==='drip'&&Math.random()<.05){const t=next+Math.random()*sd,o=ac.createOscillator(),g=ac.createGain();o.type='sine';const f0=1200+Math.random()*1400;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f0*1.8,t+.08);
+            g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+.12);o.connect(g);g.connect(out);g.connect(dl);o.start(t);o.stop(t+.15)}
+          if(k==='bubble'&&Math.random()<.06){const t=next+Math.random()*sd,o=ac.createOscillator(),g=ac.createGain();o.type='sine';const f0=300+Math.random()*500;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f0*2.5,t+.1);
+            g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+.12);o.connect(g);g.connect(out);o.start(t);o.stop(t+.15)}
+          if(k==='chime'&&Math.random()<.04)pluck(next,mf(note(chord[Math.floor(Math.random()*3)])+36),'sine',v,2.2,true);
+        }
+        step++;next+=sd;
+      }}
+    return{out,nodes,sched,stop(){const t=ac.currentTime;out.gain.cancelScheduledValues(t);out.gain.setValueAtTime(out.gain.value,t);out.gain.linearRampToValueAtTime(0,t+2.5);
+      setTimeout(()=>{nodes.forEach(n=>{try{n.stop()}catch(e){}});try{out.disconnect()}catch(e){}},3000)},
+      start(){const t=ac.currentTime;out.gain.setValueAtTime(0,t);out.gain.linearRampToValueAtTime(1,t+3)}};
+  }
+  function want(){const camp=!$('#camp').hidden;if(camp||!G||G.state==='camp'){const mt=meta.menuTheme||'default';return 'menu:'+((mt==='default'||(meta.themes&&meta.themes[mt]))&&TRACKS['menu:'+mt]?mt:'default')}
+    return G.event?'ev':'w'+G.world}
+  function tick(){if(!ac||ac.state!=='running'){if(bus&&ac)bus.gain.value=mvol()*.8;return}
+    bus.gain.setTargetAtTime(mvol()*.8,ac.currentTime,.2);
+    const k=mvol()?want():'';
+    if(k!==curKey){if(cur)cur.stop();cur=null;curKey=k;if(k){cur=makeTrack(k);cur.start()}}
+    if(cur)cur.sched()}
+  return{start(){if(timer)return;if(!setup())return;timer=setInterval(tick,100);tick()},now:()=>curKey};
+})();
+let _nb=null;function SFXNB(){if(_nb)return _nb;const ac=SFX.ctx(),b=ac.createBuffer(1,ac.sampleRate*.1,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;return _nb=b}
+document.addEventListener('pointerdown',()=>{SFX.unlock();MUSIC.start()},{passive:true});
+
 /* every button gives a soft tap; purchases and rewards add their own sound */
 document.addEventListener('pointerdown',()=>SFX.unlock(),{once:false,passive:true});
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled||b.dataset.go||b.closest('#sheet [data-act^=p],#sheet [data-act^=asc],#cards'))return;sfx('tap')},true);
@@ -2153,7 +2290,7 @@ const mastBadge=L=>L>=100?'Radiant':L>=75?'Gold':L>=50?'Silver':L>=25?'Bronze':'
 /* auras: Beacons (and a few ascensions) boost lanterns around them */
 function auraOf(b){
   const f=tFx(b);
-  if(b.type==='beacon')return{R:1+(f.auraR||0)+(asc1(b)?1:0),dmg:.15+(f.aura||0)+G.m.aura+ascBoost(b).aura+.01*ml('lo_beacon'),rate:.08+(f.auraRate||0),range:f.auraRange||0,crit:f.auraCrit||0,mark:f.auraMark||0};
+  if(b.type==='beacon')return{R:1+(f.auraR||0)+(asc1(b)?1:0)+(G.m.auraR||0),dmg:.15+(f.aura||0)+G.m.aura+ascBoost(b).aura+.01*ml('lo_beacon'),rate:.08+(f.auraRate||0),range:f.auraRange||0,crit:f.auraCrit||0,mark:f.auraMark||0};
   if(f.auraRate)return{R:f.auraR||1,dmg:0,rate:f.auraRate,range:0,crit:0,mark:0};
   return null;
 }
@@ -2169,26 +2306,27 @@ function tStats(t){
   if(t.type==='mint')return{income:Math.round(8*f.income*m.income*(A?2:1)*(1+mb.dmg)*ab.dmg*(1+.08*ml('lo_mint'))),interest:f.interest||0,interestCap:f.interestCap||0,bounty:f.bounty||0,goldAura:f.goldAura||0,goldAuraR:f.goldAuraR||1,jackpot:f.jackpot||0};
   const a=auraAt(t);
   const perm=(1+.05*ml('lo_'+t.type))*(G.lives<=5?1+.08*ml('lastlight'):1)*(t.p&&(t.p[0]>=5||t.p[1]>=5)?1+.05*ml('tempered'):1);
-  let dmg=d.dmg*f.dmg*core*(1+.04*ml('whet'))*m.dmg*a.dmg*(1+mb.dmg)*ab.dmg*perm;
-  let rate=d.rate*f.rate*(1+.03*ml('bellows'))*m.rate*a.rate*(1+mb.rate)*ab.rate;
+  const td=(m.tdmg&&m.tdmg[t.type])||1,phal=m.phal?Math.min(.2,.04*(G.towers.filter(x=>x.type===t.type).length-1)):0;
+  let dmg=d.dmg*f.dmg*core*(1+.04*ml('whet'))*m.dmg*a.dmg*(1+mb.dmg)*ab.dmg*perm*td*(1+phal)*(isAsc(t)?(m.ascd||1):1);
+  let rate=d.rate*f.rate*(1+.03*ml('bellows'))*m.rate*a.rate*(1+mb.rate)*ab.rate*((m.trate&&m.trate[t.type])||1);
   if(t.type==='bolt')dmg*=TM.bolt||1;
   if(t.type==='lance')dmg*=m.lance;
   if(t.type==='comet')rate*=m.comet;
   return{dmg,rate,
-    range:(d.range+(f.range||0)+CORE_RANGE*f.n+a.range)*(1+.04*ml('wick'))*m.range*(TM.range||1)*(A&&t.type==='bell'?1.3:1)*ab.range,
+    range:(d.range+(f.range||0)+CORE_RANGE*f.n+a.range)*(1+.04*ml('wick'))*m.range*((m.trange&&m.trange[t.type])||1)*(TM.range||1)*(A&&t.type==='bell'?1.3:1)*ab.range,
     splash:(d.splash||0)*f.splash*m.splash*(A&&t.type==='comet'?1.6:1),
     slow:Math.min(.85,((d.slow||0)+(f.slow||0)+.15*m.chill+(d.slow?.03*ml('frostbite'):0))*(TM.slow||1)),slowT:(d.slowT||0)*f.slowT*(1+.3*m.chill),
     chain:(d.chain||0)+(f.chain||0)+m.chain+(A&&t.type==='bolt'?3:0),chainKeep:f.chainKeep,
     pierce:A&&t.type==='lance'?999:(d.pierce||0)+(f.pierce||0)+m.pierce,
     stun:(d.stun||0)*f.stun*(A&&t.type==='bell'?2:1),pct:((d.pct||0)+(f.pct||0))*(A&&t.type==='eclipse'?2:1),
     poison:(d.poison||0)*f.poison*core*m.poison*a.dmg*(1+.04*ml('whet'))*(1+mb.dmg)*ab.dmg*perm,poisT:3*f.poisT,
-    crit:(f.crit||0)+a.crit+(t.type==='spark'?m.crit:0),critX:f.critX,ap:(f.ap||0)+2*ml('piercer'),multi:f.multi||0,
+    crit:(f.crit||0)+a.crit+(t.type==='spark'?m.crit:0)+(m.gcrit||0),critX:f.critX,ap:(f.ap||0)+2*ml('piercer')+(m.ap||0),multi:f.multi||0,
     burn:f.burn||0,chill:f.chill||0,chillT:f.chillT||1,mark:(f.mark||0)+a.mark,markT:f.markT||2,stunHit:f.stunHit||0,
     splashR:f.splashR||0,splashF:f.splashF||0,zoneR:f.zoneR||0,zoneDps:f.zoneDps||0,zoneSlow:f.zoneSlow||0,zoneT:f.zoneT||2,
     exec:f.exec||0,bossX:f.bossX,goldX:f.goldX,frenzy:f.frenzy||0,heatX:f.heatX,heatMax:f.heatMax||0,keepHeat:f.keepHeat||0
   };
 }
-const buildCost=t=>G.patron>0?0:Math.round(TOWERS[t].cost*G.m.cost);
+const buildCost=t=>G.patron>0?0:Math.round(TOWERS[t].cost*G.m.cost*(G.m.build||1));
 const upTierCost=(type,tier)=>Math.round(TOWERS[type].cost*TIER_K[tier-1]*G.m.cost*(1-.02*ml('appraiser')));
 const ascCost=type=>Math.round(TOWERS[type].cost*ASC_K*G.m.cost*(1-.06*ml('forge')));
 /* WAVE_LEN: how many times more foes a wave sends than the original design. Each regular foe gets 1/WAVE_LEN of the
@@ -2398,9 +2536,9 @@ function step(dt){
     if(e.stunT>0){e.stunT-=dt;e.flash=Math.max(0,e.flash-dt);continue}
     e.flash=Math.max(0,e.flash-dt);
     const dash=F.dash&&(e.tm%F.dash[0])>F.dash[0]-F.dash[1]?F.dash[2]:1,rage=F.enrage?2-e.hp/e.max:1;
-    e.d+=e.speed*(e.slowT>0?1-e.slowF:1)*(e.hx||1)*dash*rage*dt;
+    e.d+=e.speed*(e.slowT>0?1-e.slowF:1)*(e.hx||1)*dash*rage*(G.m.fslow||1)*dt;
     if(!(e.d>=0))e.d=0;   /* never let a bad number strand a foe off the trail */
-    if(e.d>=P.total){e.dead=true;if(G.ward>0){G.ward--;G.fx.push({k:'r',x:e.x,y:Math.min(e.y,H-.5),r:1,life:.6,max:.6,col:'#9be3a9'});toast('Warding stone','A foe slipped through but cost no lives.')}else{G.lives-=e.t==='boss'?Math.max(1,e.lives-ml('stout')):e.lives;sfx('leak')}continue}
+    if(e.d>=P.total){e.dead=true;if(G.ward>0){G.ward--;G.fx.push({k:'r',x:e.x,y:Math.min(e.y,H-.5),r:1,life:.6,max:.6,col:'#9be3a9'});toast('Warding stone','A foe slipped through but cost no lives.')}else{G.lives-=e.t==='boss'?Math.max(1,e.lives-ml('stout')-(G.m.stout||0)):e.lives;sfx('leak')}continue}
     while(e.seg>0&&e.d<P.cum[e.seg])e.seg--;
     while(e.seg<P.pts.length-2&&e.d>P.cum[e.seg+1])e.seg++;
     const a=P.pts[e.seg],b=P.pts[e.seg+1],L=P.cum[e.seg+1]-P.cum[e.seg],k=(e.d-P.cum[e.seg])/L;
@@ -2423,7 +2561,7 @@ function step(dt){
     if(t.cd>0||!inR.length)continue;
     const ecl=t.type==='eclipse';inR.sort((a,b)=>ecl?b.hp-a.hp:b.d-a.d);
     if(t.type==='bell')fire(t,s,inR[0]);else inR.slice(0,1+s.multi).forEach((e,i)=>fire(t,i?{...s,dmg:s.dmg*MULTI_F,pct:s.pct*MULTI_F}:s,e));
-    t.cd=1/(s.rate*(1+s.frenzy*(t.fz||0)));
+    t.cd=1/(s.rate*(1+s.frenzy*(t.fz||0)));if(G.m.dt&&Math.random()<G.m.dt)t.cd*=.15;
   }
   /* lingering ground effects: fire, acid, ice, rifts */
   if(G.zones&&G.zones.length){
@@ -2457,7 +2595,7 @@ function step(dt){
 }
 function endWave(){
   sfx('clear');
-  G.gold+=clearBonus()-(G.midPaid?Math.floor(clearBonus()/2):0);
+  G.gold+=clearBonus()-(G.midPaid?Math.floor(clearBonus()/2):0)+(G.m.clear||0);
   if(ml('compound'))G.gold+=Math.min(20*ml('compound'),Math.floor(G.gold*.01*ml('compound')));
   if(ml('regen')&&G.wave%5===0)G.lives+=ml('regen');
   for(const t of G.towers)if(t.type==='mint'){const ms=tStats(t);let g=ms.income,jp=ms.jackpot&&Math.random()<ms.jackpot;if(jp)g*=3;
@@ -2508,7 +2646,8 @@ function toast(title,body){const el=$('#toast');el.innerHTML=`<b>${title}</b><sp
 
 /* ---------- boons ---------- */
 function offerCards(){
-  const pool=CARDS.filter(c=>(!c.need||unlocked(c.need))&&!(c.once&&G.taken[c.id]));
+  const onBoard=t=>G.towers.some(x=>x.type===t),canUp=()=>G.towers.some(t=>[0,1].some(i=>{const p=(t.p||[0,0])[i];return p<5&&G.mast[t.type]>=tierLockAt(i,p+1)}));
+  const pool=CARDS.filter(c=>(!c.need||onBoard(c.need))&&(!c.needUp||canUp())&&!(c.once&&G.taken[c.id]));
   const n=3+ml('fourth')+ml('fifth')+(G.wave&&G.wave%5===0?ml('trophyfan'):0),pick=[],lk=1+.15*ml('luck'),hr=1+.12*ml('highroll'),wt=c=>RW[c.rar]*(c.rar?lk:1)*(c.rar>=2?hr:1);
   while(pick.length<n&&pick.length<pool.length){
     const avail=pool.filter(c=>!pick.includes(c));
@@ -2533,7 +2672,7 @@ function offerCards(){
 const bNeed=L=>Math.round(45*Math.pow(1.3,L));
 function gainBXP(n){
   if(!G||G.state==='camp'||G.state==='over')return;
-  G.bxp=(G.bxp||0)+n*(1+.08*ml('scholar'));let up=0;
+  G.bxp=(G.bxp||0)+n*(1+.08*ml('scholar'))*(G.m.bxp||1);let up=0;
   while(G.bxp>=bNeed(G.blv||0)){G.bxp-=bNeed(G.blv||0);G.blv=(G.blv||0)+1;G.bpend=(G.bpend||0)+1;up++}
   if(up){sfx('ready');toast(up>1?`${up} boons ready`:'Boon ready',G.state==='wave'?'Pick it when the wave ends.':'Choose your boon.');$('#boonBtn').classList.add('rdy');
     if(G.state==='build'&&$('#pick').hidden)setTimeout(()=>{if(G.state==='build'&&G.bpend>0)nextBoon()},250)}
@@ -2697,11 +2836,11 @@ function renderProfile(){
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
   {v:'0.19.0',d:'Oct 15, 2026',major:1,title:'The Wide Night',
-   hl:[['Landscape mode','On computers, tablets and sideways phones the trail runs left to right, with your controls beside the board.'],
-       ['Your layout','Pick Auto, Portrait or Landscape in Settings, and switch any time, even mid-run.'],
+   hl:[['Landscape mode','On computers, tablets and sideways phones the trail runs left to right. Pick Auto, Portrait or Landscape in Settings.'],
+       ['Music','Quiet, atmospheric music. Every world and every menu theme has its own track.'],
        ['Sound effects','Soft menu sounds and a quiet voice for every lantern, from Spark ticks to the Hollow Bell’s toll.'],
-       ['Sound settings','A volume slider and mute in Settings, plus a quick sound toggle in the pause menu.']],
-   notes:['Sound effects: soft taps and chimes in the menus, purchases and rewards, and a quiet signature sound for every lantern, plus cues for waves, bosses, boon picks, leaks, wins and losses. Busy waves are kept calm on purpose: sounds are throttled and softly mixed.','Sound settings: a volume slider and mute button in Settings, and a quick Sound toggle in the pause menu. Sound pauses when you leave the app.','Landscape mode. On computers, tablets and phones turned sideways the board turns so the trail runs left to right, with your stats, buttons and lanterns in a column beside it. Phones held upright play exactly as before.','New Screen layout setting: Auto, Portrait or Landscape. Auto follows the shape of your screen, and you can switch at any time, even mid-run.','The home screen, Lanterns page and boon picks have side-by-side layouts for phones turned sideways, so they fit without scrolling.','The installed app now follows your device’s rotation instead of locking to portrait.']},
+       ['29 new boons','53 boons in all, mostly Common and Rare, with new Legendary, Mythic and Exotic picks.']],
+   notes:['Music: slow, atmospheric tracks that drift in and out. Each of the 21 worlds has its own, the Hollow Harvest has a spooky waltz, and every menu theme plays its own tune at camp. Tracks crossfade as you move between camp and a run, or when the world shifts in Endless.','Music settings: a volume slider and mute in Settings, separate from sound effects, and a Music toggle in the pause menu.','29 new boons, for 53 in all: 11 Common, 12 Rare, 3 Legendary, 2 Mythic and 1 Exotic. Look for armor piercing, crit and range picks, cheaper building, better selling, more boon XP, new Rares for 11 lanterns, Phalanx (bonus damage for groups of the same lantern), Double tap (a chance to reload instantly), Time warp (all foes move slower) and Eternal night.','Lantern boons are only offered while that lantern is on the board.','Surge and Moonfall are never your head start pick, and stop showing up once every lantern on the board is fully upgraded.','Sound effects: soft taps and chimes in the menus, purchases and rewards, and a quiet signature sound for every lantern, plus cues for waves, bosses, boon picks, leaks, wins and losses. Busy waves are kept calm on purpose: sounds are throttled and softly mixed.','Sound settings: a volume slider and mute button in Settings, and a quick Sound toggle in the pause menu. Sound and music pause when you leave the app.','Landscape mode. On computers, tablets and phones turned sideways the board turns so the trail runs left to right, with your stats, buttons and lanterns in a column beside it. Phones held upright play exactly as before.','New Screen layout setting: Auto, Portrait or Landscape. Auto follows the shape of your screen, and you can switch at any time, even mid-run.','The home screen, Lanterns page and boon picks have side-by-side layouts for phones turned sideways, so they fit without scrolling.','The installed app now follows your device’s rotation instead of locking to portrait.']},
   {v:'0.18.2',d:'Oct 15, 2026',notes:['Campaigns now last 50 waves. Foes toughen more gently so the whole run stays winnable, bosses come in pairs from wave 20 and threes from wave 35, and XP and embers per wave are rebalanced for the longer runs.','Camp upgrades go deeper and cost much more. Most now have twice as many levels, each worth half as much, so the caps are the same (Kindling is 16 levels of +10 gold, still 160 in all). Levels you already bought were doubled to match, so you keep every bonus.','Tap the i in a lantern’s upgrade panel during a run for a full guide: how it works, what it’s strong and weak against, a tip, its current numbers, every upgrade on both paths and its ascensions.','Difficulty is now a slider on the Play page.','Embers always show in ember orange, whatever world or theme you have on.','Depth 0 is now called the Surface level, and its card spans the full width of the world list.']},
   {v:'0.18.1',d:'Oct 14, 2026',major:1,title:'The Witching Hour',theme:'halloween',
    hl:[['Boon XP','No more boon every wave. Snuff foes and upgrade lanterns to fill boon XP, and pick a boon each time it levels up.'],
@@ -2807,7 +2946,7 @@ function renderBoons(){
   $('#bxgrid').innerHTML=list.map(c=>{const lock=c.need&&!unlocked(c.need),n=bt[c.id]||0,tx=c.dex||(typeof c.text==='function'?'':c.text);
     return `<div class="bn bx rk${c.rar}${lock?' lk':''}"><span class="bwm" aria-hidden="true">${bIcon(c)}</span><span class="bsig">${bIcon(c)}</span>
       <span class="btx"><span class="btop"><span class="rt r-${RK[c.rar]}">${RN[c.rar]}</span>${c.need?`<span class="bfor"><i style="background:${TOWERS[c.need].color};color:${TOWERS[c.need].color}"></i>${TOWERS[c.need].name}</span>`:''}${c.once?'<span class="bfor">Once per run</span>':''}</span>
-      <b class="nm">${c.name}</b><p>${tx}</p><span class="bst">${lock?`Shows up once you unlock ${TOWERS[c.need].name}`:n?`Picked ${n} time${n>1?'s':''}`:'Not picked yet'}</span></span></div>`}).join('');
+      <b class="nm">${c.name}</b><p>${tx}</p><span class="bst">${[c.need?`${lock?`Unlock ${TOWERS[c.need].name} first. `:''}Only offered while a ${TOWERS[c.need].name} is on the board`:'',n?`Picked ${n} time${n>1?'s':''}`:'Not picked yet'].filter(Boolean).join(' · ')}</span></span></div>`}).join('');
 }
 $('#bcats').onclick=e=>{const b=e.target.closest('[data-bx]');if(!b)return;bxCat=+b.dataset.bx;renderBoons()};
 function renderHow(){
@@ -3488,6 +3627,12 @@ function drawSky(dt){
 
 function exportCode(){return 'LF1:'+btoa(unescape(encodeURIComponent(JSON.stringify(meta))))}
 let impArmed=false,resetArmed=false;
+function renderMus(){const v=Math.round((meta.mus==null?.5:meta.mus)*100);$('#musVol').value=v;$('#musVol').style.setProperty('--p',v+'%');
+  $('#musNow').textContent=meta.musMute?'Muted':v+'%';$('#musMute').textContent=meta.musMute?'Unmute':'Mute';$('#musMute').setAttribute('aria-pressed',!!meta.musMute);
+  const pm=$('#pmMusic');if(pm)pm.textContent=meta.musMute?'Music: off':'Music: on'}
+$('#musVol').addEventListener('input',e=>{meta.mus=+e.target.value/100;meta.musMute=false;renderMus()});
+$('#musVol').addEventListener('change',()=>save());
+$('#musMute').onclick=()=>{meta.musMute=!meta.musMute;save();renderMus()};
 function renderSfx(){const v=Math.round((meta.sfx==null?.6:meta.sfx)*100);$('#sfxVol').value=v;$('#sfxVol').style.setProperty('--p',v+'%');
   $('#sfxNow').textContent=meta.mute?'Muted':v+'%';$('#sfxMute').textContent=meta.mute?'Unmute':'Mute';$('#sfxMute').setAttribute('aria-pressed',!!meta.mute);
   const pm=$('#pmSound');if(pm)pm.textContent=meta.mute?'Sound: off':'Sound: on'}
@@ -3498,7 +3643,7 @@ function renderLayout(){const p=layoutPref();document.querySelectorAll('#laySeg 
   $('#layNow').textContent=ROT?'Landscape':'Portrait'}
 $('#laySeg').onclick=e=>{const b=e.target.closest('[data-lay]');if(!b)return;meta.layout=b.dataset.lay;save();applyLayout();renderLayout()};
 function renderSettings(){
-  renderLayout();renderSfx();
+  renderLayout();renderSfx();renderMus();
   $('#savedAt').textContent=meta.savedAt?new Date(meta.savedAt).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Never';
   $('#expTxt').value=exportCode();$('#expMsg').textContent='';
   impArmed=false;resetArmed=false;$('#impBtn').textContent='Import';$('#reset').textContent='Reset all progress';
@@ -3549,11 +3694,12 @@ function hide(id){$('#'+id).hidden=true}
 $('#spd').onclick=()=>{speed=speed%3+1;$('#spd').textContent=speed+'×'};
 $('#auto').onclick=()=>{auto=!auto;$('#auto').textContent='Auto: '+(auto?'on':'off');if(auto&&G.state==='build')sendWave()};
 $('#send').onclick=sendWave;
-function openMenu(){renderSfx();paused=true;$('#abandon').textContent='Abandon run';armed=false;
+function openMenu(){renderSfx();renderMus();paused=true;$('#abandon').textContent='Abandon run';armed=false;
   $('#menuHint').textContent=G.state==='wave'?`Save and quit keeps your run from before wave ${G.wave}, so you'll replay this wave when you continue. Abandoning ends the run and pays embers for the waves you cleared.`:'Save and quit keeps your run so you can continue it from the Play page. Abandoning ends the run and pays embers for the waves you cleared.';show('menu')}
 $('#menuBtn').onclick=()=>{if(G.state==='camp'||G.state==='over')return;openMenu()};
 $('#saveQuit').onclick=()=>{const en=G.endless;if(G.state==='build')snapRun();paused=false;hide('menu');
   campPreview();show('camp');go('home');toast('Run saved',`Continue it from Play${en?' in Endless':''}.`)};
+$('#pmMusic').onclick=()=>{meta.musMute=!meta.musMute;save();renderMus()};
 $('#pmSound').onclick=()=>{meta.mute=!meta.mute;save();renderSfx()};
 $('#resume').onclick=()=>{paused=false;hide('menu')};
 $('#abandon').onclick=()=>{if(!armed){armed=true;$('#abandon').textContent='Tap again to abandon';return}paused=false;hide('menu');endRun(false)};
@@ -3628,7 +3774,7 @@ const tpips=(n,c)=>`<span class="tpips" style="--pc:${c}">${[1,2,3,4,5].map(i=>`
 function renderSheet(){
   const sh=$('#sheet'),s=G&&G.sel;
   if(!s||s.kind!=='tower'||!G.towers.includes(s.t)||G.state==='over'||G.state==='camp'){sh.hidden=true;return}
-  const t=s.t,ty=t.type,st=tStats(t),u=UPG[ty],mL=G.mast[ty],refund=Math.round(t.spent*sellRate()),AT=ascTier(t),p=t.p||[0,0],both5=p[0]>=5&&p[1]>=5;
+  const t=s.t,ty=t.type,st=tStats(t),u=UPG[ty],mL=G.mast[ty],refund=Math.round(t.spent*runSell()),AT=ascTier(t),p=t.p||[0,0],both5=p[0]>=5&&p[1]>=5;
   let body;
   if(!both5){
     body=[0,1].map(i=>{const ps=pathState(t,i),pn=u.p[i].name,c=PCOL[i];
@@ -3670,7 +3816,7 @@ $('#sheet').onclick=e=>{
   const t=s.t,a=b.dataset.act;
   if(a==='info'){openTInfo(t);return}
   if(a==='close'){G.sel=null}
-  else if(a==='sell'){sfx('sell');G.gold+=Math.round(t.spent*sellRate());G.towers=G.towers.filter(x=>x!==t);G.sel=null}
+  else if(a==='sell'){sfx('sell');G.gold+=Math.round(t.spent*runSell());G.towers=G.towers.filter(x=>x!==t);G.sel=null}
   else if(a==='p0'||a==='p1'){
     const i=+a[1],ps=pathState(t,i);if(ps.max||ps.lock||G.gold<ps.cost)return;
     G.gold-=ps.cost;t.spent+=ps.cost;(t.p||(t.p=[0,0]))[i]++;t._fk=null;gainBXP(3+t.p[i]);sfx('upgrade');
