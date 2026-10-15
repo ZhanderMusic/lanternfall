@@ -1,11 +1,14 @@
 {
   "version": "0.19.0",
   "date": "Oct 15, 2026",
-  "major": false,
+  "major": true,
   "notes": [
+    "Sound effects: soft taps and chimes in the menus, purchases and rewards, and a quiet signature sound for every lantern, plus cues for waves, bosses, boon picks, leaks, wins and losses. Busy waves are kept calm on purpose: sounds are throttled and softly mixed.",
+    "Sound settings: a volume slider and mute button in Settings, and a quick Sound toggle in the pause menu. Sound pauses when you leave the app.",
     "Landscape mode. On computers, tablets and phones turned sideways the board turns so the trail runs left to right, with your stats, buttons and lanterns in a column beside it. Phones held upright play exactly as before.",
     "New Screen layout setting: Auto, Portrait or Landscape. Auto follows the shape of your screen, and you can switch at any time, even mid-run.",
     "The home screen, Lanterns page and boon picks have side-by-side layouts for phones turned sideways, so they fit without scrolling.",
     "The installed app now follows your device’s rotation instead of locking to portrait."
-  ]
+  ],
+  "title": "The Wide Night"
 }

@@ -60,6 +60,12 @@ body{background:var(--night);color:var(--ink);font-family:var(--body);overflow:h
 #send.ready{animation:pulse 1.6s ease-in-out infinite}
 @keyframes pulse{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--flame) 22%,transparent)}}
 #board{position:relative;min-height:0;display:flex;align-items:center;justify-content:center}
+.sfxrow{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
+#sfxVol{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;cursor:pointer;touch-action:pan-y}
+#sfxVol::-webkit-slider-runnable-track{height:6px;border-radius:999px;background:linear-gradient(90deg,var(--flame) var(--p,60%),var(--line) var(--p,60%))}
+#sfxVol::-moz-range-track{height:6px;border-radius:999px;background:var(--line)}#sfxVol::-moz-range-progress{height:6px;border-radius:999px;background:var(--flame)}
+#sfxVol::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-8px;border-radius:50%;background:var(--flame);border:3px solid #0b0d10}
+#sfxVol::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--flame);border:3px solid #0b0d10}
 .seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--moss2);border:1px solid var(--line);border-radius:10px;padding:4px}
 .seg button{all:unset;cursor:pointer;text-align:center;padding:9px 6px;border-radius:7px;font:700 14px var(--body);color:var(--dim)}
 .seg button.on{background:var(--flame);color:#140e06}.seg button:focus-visible{outline:2px solid var(--flame)}
@@ -1197,6 +1203,9 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
   <section class="panel view" data-view="settings" hidden>
     <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">Settings</h2></header>
     <div class="set">
+      <div class="sr"><span>Sound effects</span><b id="sfxNow"></b></div>
+      <div class="sfxrow"><button class="btn" id="sfxMute" aria-pressed="false">Mute</button><input type="range" id="sfxVol" min="0" max="100" step="5" aria-label="Sound effects volume"></div>
+      <hr class="sep">
       <div class="sr"><span>Screen layout</span><b id="layNow"></b></div>
       <div class="seg" id="laySeg" role="radiogroup" aria-label="Screen layout">
         <button data-lay="auto" role="radio">Auto</button><button data-lay="portrait" role="radio">Portrait</button><button data-lay="landscape" role="radio">Landscape</button></div>
@@ -1258,6 +1267,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
   <div class="panel" style="max-width:340px">
     <h2 class="big">Paused</h2>
     <button class="btn primary" id="resume">Resume</button>
+    <button class="btn" id="pmSound">Sound: on</button>
     <button class="btn" id="saveQuit">Save and quit</button>
     <button class="btn danger" id="abandon">Abandon run</button>
     <p class="hint" id="menuHint">Abandoning still pays embers for the waves you cleared.</p>
@@ -1551,7 +1561,71 @@ const RANKS=[[1,'Wanderer'],[5,'Lamplighter'],[10,'Wickwarden'],[20,'Keeper of F
 const rankOf=L=>RANKS.filter(r=>L>=r[0]).pop()[1];
 const EM='<span class="em"></span>',MS='<span class="msi"></span>';
 function load(){const d=fresh();try{const s=JSON.parse(localStorage.getItem(KEY));if(s)return Object.assign(d,s)}catch(e){}return d}
-function save(){meta.savedAt=Date.now();const j=JSON.stringify(meta);try{localStorage.setItem(KEY,j)}catch(e){}idbSet('save',j);cloudQueue()}
+function save(){econSfx();meta.savedAt=Date.now();const j=JSON.stringify(meta);try{localStorage.setItem(KEY,j)}catch(e){}idbSet('save',j);cloudQueue()}
+
+
+/* ---------- sound: tiny synthesized effects (Web Audio, no files). Soft by design, and throttled so busy waves stay calm ---------- */
+const SFX=(()=>{
+  let ac=null,master=null,noiseBuf=null;const last={};let voices=0;
+  const vol=()=>meta.mute?0:(meta.sfx==null?.6:meta.sfx);
+  function init(){if(ac)return ac;const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;ac=new C();master=ac.createGain();master.gain.value=1.6;
+    const comp=ac.createDynamicsCompressor();comp.threshold.value=-12;comp.ratio.value=3;comp.attack.value=.003;comp.release.value=.15;master.connect(comp);comp.connect(ac.destination);
+    noiseBuf=ac.createBuffer(1,ac.sampleRate*.5,ac.sampleRate);const d=noiseBuf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;return ac}
+  function env(g,t,a,dur,peak){g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(peak,t+a);g.gain.setValueAtTime(peak,t+a+Math.min(.02,dur*.25));g.gain.exponentialRampToValueAtTime(.0001,t+dur)}
+  function tone(f,dur,{type='sine',v=.2,a=.005,slide=0,delay=0,det=0}={}){if(!ac||voices>14)return;const t=ac.currentTime+delay,o=ac.createOscillator(),g=ac.createGain();
+    o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f*slide),t+dur);if(det)o.detune.value=det;
+    env(g,t,a,dur,v*vol());o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+.02);voices++;o.onended=()=>voices--}
+  function noise(dur,{v=.15,f=1200,q=.8,type='bandpass',a=.003,delay=0,fslide=0}={}){if(!ac||voices>14)return;const t=ac.currentTime+delay,n=ac.createBufferSource(),fl=ac.createBiquadFilter(),g=ac.createGain();
+    n.buffer=noiseBuf;fl.type=type;fl.frequency.setValueAtTime(f,t);if(fslide)fl.frequency.exponentialRampToValueAtTime(f*fslide,t+dur);fl.Q.value=q;
+    env(g,t,a,dur,v*vol());n.connect(fl);fl.connect(g);g.connect(master);n.start(t);n.stop(t+dur+.02);voices++;n.onended=()=>voices--}
+  const r=(k=.06)=>1+(Math.random()*2-1)*k;   /* a little pitch wobble so repeats never sound robotic */
+  const S={
+    tap:()=>tone(660*r(.03),.06,{type:'triangle',v:.16}),
+    nav:()=>{tone(440,.07,{type:'triangle',v:.1});tone(660,.08,{type:'triangle',v:.08,delay:.04})},
+    buy:()=>{tone(880,.08,{type:'triangle',v:.13});tone(1320,.12,{type:'triangle',v:.11,delay:.06})},
+    coin:()=>{tone(1568*r(.02),.09,{type:'square',v:.05});tone(2093*r(.02),.14,{type:'square',v:.045,delay:.05})},
+    deny:()=>tone(180,.12,{type:'triangle',v:.12,slide:.8}),
+    claim:()=>[784,988,1175,1568].forEach((f,i)=>tone(f,.16,{type:'triangle',v:.1,delay:i*.06})),
+    open:()=>noise(.18,{v:.06,f:900,fslide:2.5,q:.6}),
+    place:()=>{tone(220*r(),.12,{type:'sine',v:.22,slide:.6});noise(.06,{v:.08,f:500})},
+    upgrade:()=>{tone(523*r(.02),.09,{type:'triangle',v:.12});tone(784*r(.02),.14,{type:'triangle',v:.1,delay:.06})},
+    ascend:()=>[523,659,784,1047,1319].forEach((f,i)=>tone(f,.3,{type:'triangle',v:.09,delay:i*.07})),
+    sell:()=>{tone(784,.07,{type:'square',v:.06});tone(523,.12,{type:'square',v:.06,delay:.05})},
+    wave:()=>{tone(147,.5,{type:'sawtooth',v:.05,a:.08});tone(220,.5,{type:'triangle',v:.06,a:.08,delay:.05})},
+    clear:()=>[523,659,784].forEach((f,i)=>tone(f,.25,{type:'triangle',v:.09,delay:i*.08})),
+    ready:()=>[880,1175,1568].forEach((f,i)=>tone(f,.18,{type:'sine',v:.09,delay:i*.07})),
+    pick:k=>[523,659,784,1047,1319].slice(0,2+(k||0)).forEach((f,i)=>tone(f,.22,{type:'triangle',v:.09,delay:i*.06})),
+    leak:()=>{tone(110,.25,{type:'sine',v:.25,slide:.5});noise(.12,{v:.06,f:300})},
+    boss:()=>{tone(73,.8,{type:'sawtooth',v:.05,a:.1});tone(110,.8,{type:'sine',v:.12,a:.1})},
+    pop:()=>noise(.06,{v:.07,f:1800*r(.2),q:1.5}),
+    win:()=>[523,659,784,1047,784,1047].forEach((f,i)=>tone(f,.3,{type:'triangle',v:.1,delay:i*.11})),
+    lose:()=>[392,330,262,196].forEach((f,i)=>tone(f,.35,{type:'triangle',v:.09,delay:i*.14})),
+    major:()=>[262,330,392,523].forEach((f,i)=>tone(f,1.4,{type:'sine',v:.07,a:.3,delay:i*.12})),
+    /* lanterns: one quiet signature each */
+    spark:()=>tone(1400*r(),.05,{type:'square',v:.05,slide:.7}),
+    cinder:()=>tone(330*r(),.08,{type:'triangle',v:.06,slide:.7}),
+    frost:()=>{tone(1760*r(.03),.12,{type:'sine',v:.035});tone(2637*r(.03),.1,{type:'sine',v:.02,delay:.02})},
+    lance:()=>noise(.13,{v:.14,f:2500,fslide:.4,q:1.2}),
+    venom:()=>tone(240*r(.1),.09,{type:'sine',v:.07,slide:1.8}),
+    bolt:()=>{noise(.09,{v:.07,f:3500,q:.5,type:'highpass'});tone(880*r(),.06,{type:'sawtooth',v:.025,slide:.5})},
+    comet:()=>tone(520*r(),.25,{type:'sine',v:.07,slide:.5}),
+    moonwell:()=>tone(440*r(.02),.3,{type:'sine',v:.03,a:.08}),
+    bell:()=>{tone(392*r(.01),.9,{type:'sine',v:.07});tone(784*r(.01),.6,{type:'sine',v:.03});tone(1176,.4,{type:'sine',v:.015})},
+    eclipse:()=>{tone(98,.4,{type:'sine',v:.12,slide:.7});noise(.2,{v:.05,f:400,fslide:.5})},
+    boom:()=>{tone(90*r(),.3,{type:'sine',v:.14,slide:.5});noise(.18,{v:.05,f:600,fslide:.4})},
+    burst:()=>noise(.14,{v:.13,f:900*r(.2),fslide:.5})
+  };
+  const GAP={spark:.07,cinder:.09,frost:.12,lance:.1,venom:.12,bolt:.1,comet:.15,moonwell:.6,bell:.2,eclipse:.2,boom:.12,burst:.08,pop:.05,tap:.03,leak:.15,coin:.06};
+  function play(k,arg){if(!vol())return;if(!init())return;if(ac.state==='suspended')ac.resume();
+    const now=ac.currentTime,g=(GAP[k]||0)*(typeof speed!=='undefined'&&speed>1?1.6:1);if(last[k]&&now-last[k]<g)return;last[k]=now;try{S[k]&&S[k](arg)}catch(e){}}
+  document.addEventListener('visibilitychange',()=>{if(!ac)return;document.hidden?ac.suspend():ac.resume()});
+  return{play,unlock:()=>{if(init()&&ac.state==='suspended')ac.resume()}};
+})();
+const sfx=(k,a)=>SFX.play(k,a);
+/* every button gives a soft tap; purchases and rewards add their own sound */
+document.addEventListener('pointerdown',()=>SFX.unlock(),{once:false,passive:true});
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled||b.dataset.go||b.closest('#sheet [data-act^=p],#sheet [data-act^=asc],#cards'))return;sfx('tap')},true);
+let econ=null;function econSfx(){const n=[meta.embers,meta.moon,meta.candy||0];if(econ&&(!G||G.state==='camp')){if(n.some((v,i)=>v<econ[i]))sfx('buy');else if(n.some((v,i)=>v>econ[i]))sfx('coin')}econ=n}
 
 /* ---------- durable storage: an IndexedDB mirror of the save, plus a request for persistent storage ----------
    localStorage and IndexedDB both hold the save; on open, whichever is newer wins, so if one is wiped the other restores it.
@@ -2155,13 +2229,14 @@ function spawn(type,at,mini){
     lives:mini?4:(f.lives||1),
     gold:f.gold*GOLD_K*(1+.03*(w-1))*(TM.gold||1)*(mini?.5:1)/(type==='boss'?1:WAVE_LEN),
     slowT:0,slowF:0,poisT:0,pois:0,flash:0,ph:Math.random()*6,tm:Math.random()*2};
+  if(type==='boss'&&!mini)sfx('boss');
   if(type==='boss'&&G.event){e.king=1;e.hp=e.max=e.max*1.3}
   const shd=e.king?.3:f.shield;if(shd)e.sh=e.shm=e.max*shd;
   if(at){e.d=at.d;e.seg=at.seg;e.x=at.x;e.y=at.y}
   G.foes.push(e);return e;
 }
 function sendWave(){
-  if(!G||G.state!=='build')return;
+  if(!G||G.state!=='build')return;sfx('wave');
   G.wave++;G.state='wave';G.q=makeWave(G.wave);G.qn=G.q.length;G.midPaid=false;G.qt=.2;hud(true);
 }
 
@@ -2186,7 +2261,7 @@ function hurt(e,dmg,raw,src,st){
     let gm=G.m.goldMul*(st?st.goldX:1);for(const a of G.gAura||[])if(Math.abs(e.x-a.x)<=a.R+.5&&Math.abs(e.y-a.y)<=a.R+.5)gm*=1+a.X;
     G.gf=(G.gf||0)+e.gold*gm;{const g=Math.floor(G.gf);G.gold+=g;G.gf-=g}   /* fractions of gold carry over */
     if(e.t==='boss'){G.bossKills++;if(G.bounty)G.gold+=G.bounty;G.gold+=15*ml('bountyb');G.lives+=ml('rally')}
-    G.kills=(G.kills||0)+1;gainBXP(e.t==='boss'?(e.mini?6:15):e.child||e.gold===0?.3:1);
+    G.kills=(G.kills||0)+1;sfx('pop');gainBXP(e.t==='boss'?(e.mini?6:15):e.child||e.gold===0?.3:1);
     if(src)G.mk[src]=(G.mk[src]||0)+1;
     if(e.poisAsc&&e.poisT>0)for(const o of G.foes)if(!o.dead&&o!==e&&Math.hypot(o.x-e.x,o.y-e.y)<1.3){o.pois=Math.max(o.poisT>0?o.pois:0,e.pois);o.poisT=3;o.poisSrc='venom';o.poisAsc=true}
     if(e.t==='brood'){const n=TM.brood||3;for(let i=0;i<n;i++){const m=spawn('moth',e);m.hp=m.max=m.max*.45;m.gold=GOLD_K/WAVE_LEN;m.d=Math.max(0,e.d-.2*i)}}
@@ -2220,7 +2295,7 @@ function puff(x,y,col,n){
   for(let i=0;i<n;i++){const a=Math.random()*6.28,s=.5+Math.random()*2;G.fx.push({k:'p',x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:.5,max:.5,col})}
 }
 function fire(t,s,tg){
-  const d=TOWERS[t.type],cx=t.x+.5,cy=t.y+.5;t.flash=.1;
+  const d=TOWERS[t.type],cx=t.x+.5,cy=t.y+.5;t.flash=.1;sfx(t.type);
   const A=asc1(t),src=t.type;
   if(t.type==='bell'){
     for(const e of [...G.foes])if(!e.dead&&Math.hypot(e.x-cx,e.y-cy)<=s.range){e.stunT=Math.max(e.stunT||0,e.t==='boss'?s.stun*.4:s.stun);strike(e,s,s.dmg,src)}
@@ -2254,7 +2329,7 @@ function fire(t,s,tg){
   G.shots.push({type:t.type,x:cx,y:cy,tg,tx:tg.x,ty:tg.y,spd,dmg,crit,s,col:d.color,asc:A});
 }
 function land(sh){
-  const s=sh.s;
+  const s=sh.s;if(sh.type==='comet')sfx('boom');else if(sh.type==='cinder')sfx('burst');
   if(sh.type==='cinder'||sh.type==='comet'){
     const R=s.splash;
     for(const e of [...G.foes])if(!e.dead&&Math.hypot(e.x-sh.tx,e.y-sh.ty)<=R){
@@ -2278,7 +2353,7 @@ function land(sh){
 function moonwellStep(t,dt,onBoard){
   const s=tStats(t),cx=t.x+.5,cy=t.y+.5,A=asc1(t),inR=e=>!e.dead&&onBoard(e)&&Math.hypot(e.x-cx,e.y-cy)<=s.range;
   const maxH=(A?5:3)+s.heatMax,hr=(A?2:1)*s.heatX,n=1+s.multi;
-  t.beams=(t.beams||[]).filter(b=>inR(b.e));
+  t.beams=(t.beams||[]).filter(b=>inR(b.e));if(t.beams.length)sfx('moonwell');
   if(t.beams.length<n){const have=new Set(t.beams.map(b=>b.e));
     for(const e of G.foes.filter(e=>inR(e)&&!have.has(e)).sort((a,b)=>b.d-a.d)){if(t.beams.length>=n)break;t.beams.push({e,heat:s.keepHeat?(t.lastHeat||0):0})}}
   for(const b of t.beams){
@@ -2325,7 +2400,7 @@ function step(dt){
     const dash=F.dash&&(e.tm%F.dash[0])>F.dash[0]-F.dash[1]?F.dash[2]:1,rage=F.enrage?2-e.hp/e.max:1;
     e.d+=e.speed*(e.slowT>0?1-e.slowF:1)*(e.hx||1)*dash*rage*dt;
     if(!(e.d>=0))e.d=0;   /* never let a bad number strand a foe off the trail */
-    if(e.d>=P.total){e.dead=true;if(G.ward>0){G.ward--;G.fx.push({k:'r',x:e.x,y:Math.min(e.y,H-.5),r:1,life:.6,max:.6,col:'#9be3a9'});toast('Warding stone','A foe slipped through but cost no lives.')}else G.lives-=e.t==='boss'?Math.max(1,e.lives-ml('stout')):e.lives;continue}
+    if(e.d>=P.total){e.dead=true;if(G.ward>0){G.ward--;G.fx.push({k:'r',x:e.x,y:Math.min(e.y,H-.5),r:1,life:.6,max:.6,col:'#9be3a9'});toast('Warding stone','A foe slipped through but cost no lives.')}else{G.lives-=e.t==='boss'?Math.max(1,e.lives-ml('stout')):e.lives;sfx('leak')}continue}
     while(e.seg>0&&e.d<P.cum[e.seg])e.seg--;
     while(e.seg<P.pts.length-2&&e.d>P.cum[e.seg+1])e.seg++;
     const a=P.pts[e.seg],b=P.pts[e.seg+1],L=P.cum[e.seg+1]-P.cum[e.seg],k=(e.d-P.cum[e.seg])/L;
@@ -2381,6 +2456,7 @@ function step(dt){
   if(G.state==='wave'&&!G.q.length&&!G.foes.length)endWave();
 }
 function endWave(){
+  sfx('clear');
   G.gold+=clearBonus()-(G.midPaid?Math.floor(clearBonus()/2):0);
   if(ml('compound'))G.gold+=Math.min(20*ml('compound'),Math.floor(G.gold*.01*ml('compound')));
   if(ml('regen')&&G.wave%5===0)G.lives+=ml('regen');
@@ -2459,7 +2535,7 @@ function gainBXP(n){
   if(!G||G.state==='camp'||G.state==='over')return;
   G.bxp=(G.bxp||0)+n*(1+.08*ml('scholar'));let up=0;
   while(G.bxp>=bNeed(G.blv||0)){G.bxp-=bNeed(G.blv||0);G.blv=(G.blv||0)+1;G.bpend=(G.bpend||0)+1;up++}
-  if(up){toast(up>1?`${up} boons ready`:'Boon ready',G.state==='wave'?'Pick it when the wave ends.':'Choose your boon.');$('#boonBtn').classList.add('rdy');
+  if(up){sfx('ready');toast(up>1?`${up} boons ready`:'Boon ready',G.state==='wave'?'Pick it when the wave ends.':'Choose your boon.');$('#boonBtn').classList.add('rdy');
     if(G.state==='build'&&$('#pick').hidden)setTimeout(()=>{if(G.state==='build'&&G.bpend>0)nextBoon()},250)}
   bxHud();
 }
@@ -2519,6 +2595,7 @@ function openTInfo(t){
 }
 $('#bxClose').onclick=()=>{hide('boonsOv');if(G.state==='wave'&&$('#menu').hidden)paused=false};
 function takeCard(c){
+  if(c)sfx('pick',c.rar);
   if(c){c.ap(G.m,G);G.taken[c.id]=(G.taken[c.id]||0)+1;const bt=meta.boonsTaken||(meta.boonsTaken={});bt[c.id]=(bt[c.id]||0)+1;G.gold+=5*ml('boongold')}else G.gold+=25+25*ml('patient');
   hide('pick');G.state='build';
   if(nextBoon()){bxHud();return}   /* more picks waiting */
@@ -2533,6 +2610,7 @@ $('#skip').onclick=()=>takeCard(null);
 
 /* ---------- run end ---------- */
 function endRun(win){
+  if(G.state!=='over')sfx(win?'win':'lose');
   if(G.state==='over')return;
   const cleared=win?MAXW:Math.max(0,G.wave-(G.state==='wave'?1:0));
   G.state='over';
@@ -2578,6 +2656,7 @@ function endRun(win){
 let view='home';
 function campPreview(){newRun(meta.depth);G.state='camp'}
 function go(v){
+  if(v!==view)sfx('nav');
   view=v;document.querySelectorAll('#camp .view').forEach(s=>{s.hidden=s.dataset.view!==v});
   $('#camp').scrollTop=0;renderView();
 }
@@ -2617,7 +2696,12 @@ function renderProfile(){
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
-  {v:'0.19.0',d:'Oct 15, 2026',notes:['Landscape mode. On computers, tablets and phones turned sideways the board turns so the trail runs left to right, with your stats, buttons and lanterns in a column beside it. Phones held upright play exactly as before.','New Screen layout setting: Auto, Portrait or Landscape. Auto follows the shape of your screen, and you can switch at any time, even mid-run.','The home screen, Lanterns page and boon picks have side-by-side layouts for phones turned sideways, so they fit without scrolling.','The installed app now follows your device’s rotation instead of locking to portrait.']},
+  {v:'0.19.0',d:'Oct 15, 2026',major:1,title:'The Wide Night',
+   hl:[['Landscape mode','On computers, tablets and sideways phones the trail runs left to right, with your controls beside the board.'],
+       ['Your layout','Pick Auto, Portrait or Landscape in Settings, and switch any time, even mid-run.'],
+       ['Sound effects','Soft menu sounds and a quiet voice for every lantern, from Spark ticks to the Hollow Bell’s toll.'],
+       ['Sound settings','A volume slider and mute in Settings, plus a quick sound toggle in the pause menu.']],
+   notes:['Sound effects: soft taps and chimes in the menus, purchases and rewards, and a quiet signature sound for every lantern, plus cues for waves, bosses, boon picks, leaks, wins and losses. Busy waves are kept calm on purpose: sounds are throttled and softly mixed.','Sound settings: a volume slider and mute button in Settings, and a quick Sound toggle in the pause menu. Sound pauses when you leave the app.','Landscape mode. On computers, tablets and phones turned sideways the board turns so the trail runs left to right, with your stats, buttons and lanterns in a column beside it. Phones held upright play exactly as before.','New Screen layout setting: Auto, Portrait or Landscape. Auto follows the shape of your screen, and you can switch at any time, even mid-run.','The home screen, Lanterns page and boon picks have side-by-side layouts for phones turned sideways, so they fit without scrolling.','The installed app now follows your device’s rotation instead of locking to portrait.']},
   {v:'0.18.2',d:'Oct 15, 2026',notes:['Campaigns now last 50 waves. Foes toughen more gently so the whole run stays winnable, bosses come in pairs from wave 20 and threes from wave 35, and XP and embers per wave are rebalanced for the longer runs.','Camp upgrades go deeper and cost much more. Most now have twice as many levels, each worth half as much, so the caps are the same (Kindling is 16 levels of +10 gold, still 160 in all). Levels you already bought were doubled to match, so you keep every bonus.','Tap the i in a lantern’s upgrade panel during a run for a full guide: how it works, what it’s strong and weak against, a tip, its current numbers, every upgrade on both paths and its ascensions.','Difficulty is now a slider on the Play page.','Embers always show in ember orange, whatever world or theme you have on.','Depth 0 is now called the Surface level, and its card spans the full width of the world list.']},
   {v:'0.18.1',d:'Oct 14, 2026',major:1,title:'The Witching Hour',theme:'halloween',
    hl:[['Boon XP','No more boon every wave. Snuff foes and upgrade lanterns to fill boon XP, and pick a boon each time it levels up.'],
@@ -2680,7 +2764,7 @@ function maybeMajor(){
   const e=majorSince(meta.majorSeen);if(e)showMajor(e);
 }
 function showMajor(e){
-  if(!e)return;
+  if(!e)return;sfx('major');
   const hw=e.theme==='halloween',el0=$('#major');el0.classList.toggle('hw',hw);$('#mjHw').hidden=!hw;
   $('#mjKick').textContent=hw?'Halloween update':'Major update';$('#mjGo').textContent=hw?'Enter the harvest':'Into the night';
   if(hw){{let k=0;$('#mjTitle').innerHTML=(e.title||'').split(' ').map(w=>`<em class="hww">${[...w].map(ch=>`<span style="--i:${k++}">${ch}</span>`).join('')}</em>`).join(' ')}$('#mjTitle').setAttribute('aria-label',e.title);
@@ -3140,7 +3224,7 @@ function grant(r){
 const isClaimed=(L,i)=>!!meta.claimed[L][i];
 const canClaim=(L,i)=>i<=passTier()&&!isClaimed(L,i)&&(L==='f'||meta.passPremium);
 function claimable(){const out=[];for(let i=1;i<=passTier();i++)for(const L of ['f','p'])if(canClaim(L,i))out.push([L,i]);return out}
-function claim(L,i){if(!canClaim(L,i))return;grant(PASSR[L][i]);meta.claimed[L][i]=1}
+function claim(L,i){if(!canClaim(L,i))return;sfx('claim');grant(PASSR[L][i]);meta.claimed[L][i]=1}
 function timeLeft(){const s=Math.max(0,(SEASON.end-Date.now())/1000),d=Math.floor(s/86400),h=Math.floor(s%86400/3600);return d?`${d}d ${h}h`:`${h}h ${Math.floor(s%3600/60)}m`}
 function slotHTML(r){
   if(r.k==='emb')return `<span class="rv">${EM}${r.n}</span>`;
@@ -3404,11 +3488,17 @@ function drawSky(dt){
 
 function exportCode(){return 'LF1:'+btoa(unescape(encodeURIComponent(JSON.stringify(meta))))}
 let impArmed=false,resetArmed=false;
+function renderSfx(){const v=Math.round((meta.sfx==null?.6:meta.sfx)*100);$('#sfxVol').value=v;$('#sfxVol').style.setProperty('--p',v+'%');
+  $('#sfxNow').textContent=meta.mute?'Muted':v+'%';$('#sfxMute').textContent=meta.mute?'Unmute':'Mute';$('#sfxMute').setAttribute('aria-pressed',!!meta.mute);
+  const pm=$('#pmSound');if(pm)pm.textContent=meta.mute?'Sound: off':'Sound: on'}
+$('#sfxVol').addEventListener('input',e=>{meta.sfx=+e.target.value/100;meta.mute=false;renderSfx()});
+$('#sfxVol').addEventListener('change',()=>{save();sfx('coin')});
+$('#sfxMute').onclick=()=>{meta.mute=!meta.mute;save();renderSfx()};
 function renderLayout(){const p=layoutPref();document.querySelectorAll('#laySeg [data-lay]').forEach(b=>{const on=b.dataset.lay===p;b.classList.toggle('on',on);b.setAttribute('aria-checked',on)});
   $('#layNow').textContent=ROT?'Landscape':'Portrait'}
 $('#laySeg').onclick=e=>{const b=e.target.closest('[data-lay]');if(!b)return;meta.layout=b.dataset.lay;save();applyLayout();renderLayout()};
 function renderSettings(){
-  renderLayout();
+  renderLayout();renderSfx();
   $('#savedAt').textContent=meta.savedAt?new Date(meta.savedAt).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Never';
   $('#expTxt').value=exportCode();$('#expMsg').textContent='';
   impArmed=false;resetArmed=false;$('#impBtn').textContent='Import';$('#reset').textContent='Reset all progress';
@@ -3459,11 +3549,12 @@ function hide(id){$('#'+id).hidden=true}
 $('#spd').onclick=()=>{speed=speed%3+1;$('#spd').textContent=speed+'×'};
 $('#auto').onclick=()=>{auto=!auto;$('#auto').textContent='Auto: '+(auto?'on':'off');if(auto&&G.state==='build')sendWave()};
 $('#send').onclick=sendWave;
-function openMenu(){paused=true;$('#abandon').textContent='Abandon run';armed=false;
+function openMenu(){renderSfx();paused=true;$('#abandon').textContent='Abandon run';armed=false;
   $('#menuHint').textContent=G.state==='wave'?`Save and quit keeps your run from before wave ${G.wave}, so you'll replay this wave when you continue. Abandoning ends the run and pays embers for the waves you cleared.`:'Save and quit keeps your run so you can continue it from the Play page. Abandoning ends the run and pays embers for the waves you cleared.';show('menu')}
 $('#menuBtn').onclick=()=>{if(G.state==='camp'||G.state==='over')return;openMenu()};
 $('#saveQuit').onclick=()=>{const en=G.endless;if(G.state==='build')snapRun();paused=false;hide('menu');
   campPreview();show('camp');go('home');toast('Run saved',`Continue it from Play${en?' in Endless':''}.`)};
+$('#pmSound').onclick=()=>{meta.mute=!meta.mute;save();renderSfx()};
 $('#resume').onclick=()=>{paused=false;hide('menu')};
 $('#abandon').onclick=()=>{if(!armed){armed=true;$('#abandon').textContent='Tap again to abandon';return}paused=false;hide('menu');endRun(false)};
 /* block pinch and double-tap zoom on phones (iOS ignores the viewport flag for pinch, so stop the gesture itself) */
@@ -3568,7 +3659,7 @@ function renderSheet(){
 }
 function buildAt(type,x,y){
   const c=buildCost(type);if(G.gold<c||!canPlace(x,y))return false;G.gold-=c;if(G.patron>0)G.patron--;
-  G.towers.push({type,x,y,p:[ml('veteran')?1:0,0],cd:0,spent:c});G.used.add(type);gainBXP(2);
+  G.towers.push({type,x,y,p:[ml('veteran')?1:0,0],cd:0,spent:c});G.used.add(type);gainBXP(2);sfx('place');
   puff(x+.5,y+.5,TOWERS[type].color,10);G.fx.push({k:'r',x:x+.5,y:y+.5,r:.6,life:.3,max:.3,col:TOWERS[type].color});
   hud();return true;
 }
@@ -3579,16 +3670,16 @@ $('#sheet').onclick=e=>{
   const t=s.t,a=b.dataset.act;
   if(a==='info'){openTInfo(t);return}
   if(a==='close'){G.sel=null}
-  else if(a==='sell'){G.gold+=Math.round(t.spent*sellRate());G.towers=G.towers.filter(x=>x!==t);G.sel=null}
+  else if(a==='sell'){sfx('sell');G.gold+=Math.round(t.spent*sellRate());G.towers=G.towers.filter(x=>x!==t);G.sel=null}
   else if(a==='p0'||a==='p1'){
     const i=+a[1],ps=pathState(t,i);if(ps.max||ps.lock||G.gold<ps.cost)return;
-    G.gold-=ps.cost;t.spent+=ps.cost;(t.p||(t.p=[0,0]))[i]++;t._fk=null;gainBXP(3+t.p[i]);
+    G.gold-=ps.cost;t.spent+=ps.cost;(t.p||(t.p=[0,0]))[i]++;t._fk=null;gainBXP(3+t.p[i]);sfx('upgrade');
     G.fx.push({k:'r',x:t.x+.5,y:t.y+.5,r:t.p[i]>=5?1.1:.7,life:.35,max:.35,col:i?'#bfe3ff':TOWERS[t.type].color});
     if(t.p[0]>=5&&t.p[1]>=5)toast(`${TOWERS[t.type].name} is ready to ascend`,G.mast[t.type]>=ASC_MAST[0]?'Choose an ascension type in its panel.':`Ascension unlocks at Mastery ${ASC_MAST[0]}.`);
   }else if(a.startsWith('asc')){
     const k=+a.slice(3),c=ascCost(t.type);
     if(isAsc(t)||!(t.p&&t.p[0]>=5&&t.p[1]>=5)||G.mast[t.type]<ASC_MAST[k]||G.gold<c)return;
-    G.gold-=c;t.spent+=c;t.ak=k;t.at=1;t._fk=null;gainBXP(15);
+    G.gold-=c;t.spent+=c;t.ak=k;t.at=1;t._fk=null;gainBXP(15);sfx('ascend');
     const [nm,ds]=ascInfo(t.type,k);
     G.fx.push({k:'r',x:t.x+.5,y:t.y+.5,r:1.4,life:.6,max:.6,col:'#ffd75e'});puff(t.x+.5,t.y+.5,'#ffd75e',20);
     toast(`${TOWERS[t.type].name} ascended: ${nm}`,ds);
