@@ -28,7 +28,7 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 
 ## How a run works
 
-1. **Pick a world and a difficulty.** Easy through Nightmare. Harder nights pay up to ×2.25 embers and XP.
+1. **Pick a world and slide the difficulty.** Easy through Nightmare, then survive 50 waves. Harder nights pay up to ×2.25 embers and XP.
 2. **Drag lanterns onto the grass.** Every run carves a brand-new random trail, so no two layouts play the same.
 3. **Upgrade as the waves build.** Each lantern has two upgrade paths of five tiers. Max both and it can ascend, then merge with another ascended lantern for even more power.
 4. **Earn boons.** Every foe you snuff and every upgrade you buy fills boon XP. Level it up to pick a boon from Common, Rare, Legendary, Mythic or Exotic cards.
@@ -65,7 +65,7 @@ Common, Rare, Legendary, Mythic, Celestial, Exotic, and limited **Event** skins.
 - **Season 1: The Hollow Moon.** A 100-tier pass with a story, three exclusive lanterns, Mythic and Exotic skins and menu themes.
 - **Event passes.** Free 25-tier passes paid for with event currency.
 - **Hourly shop.** Six featured skins rotate every hour, including 36 shop-only skins you can't get anywhere else.
-- **67 camp upgrades** across Economy, Offense, Defense, Run & boons, Lanterns, Lore and Progress.
+- **67 camp upgrades with nearly 700 levels** across Economy, Offense, Defense, Run & boons, Lanterns, Lore and Progress.
 - **Player levels, moonstones and redeem codes**, plus a stats page with your recent runs.
 
 ### Big updates arrive in style

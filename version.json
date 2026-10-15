@@ -1,17 +1,12 @@
 {
-  "version": "0.18.1",
-  "date": "Oct 14, 2026",
-  "major": true,
+  "version": "0.18.2",
+  "date": "Oct 15, 2026",
+  "major": false,
   "notes": [
-    "Boons now come from boon XP instead of after every wave. Every foe you snuff and every lantern upgrade you buy adds a little, and each level takes more XP than the last. A pick opens between waves, and the new Boons button in a run shows your progress and every boon you have.",
-    "Balance: foes drop about 15% less gold than 0.18.0 and wave-clear gold is lower. Foes get tougher faster after wave 5 and in deeper worlds (+35% health per depth instead of +30%). Path upgrades and ascensions cost about 20% more.",
-    "Camp upgrades cost more, especially at high levels, and the strongest ones are toned down: Whetstone +4% damage per level, Bellows +3% fire rate, Deep purse +3% gold, Thrift −1.5%, Armor breaker −4%, Wave tithe +2 gold, Kindling +20 gold. Runs now start with 100 gold.",
-    "New camp upgrade: Boon scholar, +8% boon XP per level.",
-    "The shop now shows six featured skins that change every hour, and 36 new shop-only skins (a Legendary, Mythic and Celestial for every lantern) join the rotation.",
-    "Hallow’s Eve event shop: 12 new Event skins, one for every lantern, plus the Hallow’s Eve menu theme. Buy them one by one or get the whole set for 450 moonstones.",
-    "Event skins now have full Exotic-level effects plus their own: circling bats, drifting ghosts, a blood-moon halo and a flickering jack-o’-lantern glow.",
-    "Animated rarity borders now loop smoothly instead of jumping.",
-    "Fixed foes getting stuck at the top-left corner of the board, which could stop a wave from ever ending."
-  ],
-  "title": "The Witching Hour"
+    "Campaigns now last 50 waves. Foes toughen more gently so the whole run stays winnable, bosses come in pairs from wave 20 and threes from wave 35, and XP and embers per wave are rebalanced for the longer runs.",
+    "Camp upgrades go deeper and cost much more. Most now have twice as many levels, each worth half as much, so the caps are the same (Kindling is 16 levels of +10 gold, still 160 in all). Levels you already bought were doubled to match, so you keep every bonus.",
+    "Tap the i in a lantern’s upgrade panel during a run for a full guide: how it works, what it’s strong and weak against, a tip, its current numbers, every upgrade on both paths and its ascensions.",
+    "Difficulty is now a slider on the Play page.",
+    "Embers always show in ember orange, whatever world or theme you have on."
+  ]
 }
