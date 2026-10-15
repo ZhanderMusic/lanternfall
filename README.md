@@ -26,6 +26,13 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 
 ---
 
+## 👑 New in 0.21: Lords of the Night
+
+- **21 world bosses.** Every world has its own boss with its own tricks, from the Elder Moth to the Moth Queen herself.
+- **Boss health bar.** See each boss's name, title, shield and health at the top of the board.
+- **Tutorial.** New players get a short guided first run.
+- **Balance pass.** Gentler early bosses, more embers per run, and +20% embers and XP for every prestige.
+
 ## 🌟 New in 0.20: Prestige
 
 - **Levels to 100.** Five new ranks, all the way to Eternal Flame.

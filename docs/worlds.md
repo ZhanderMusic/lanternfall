@@ -48,6 +48,8 @@ On the Play page, worlds are grouped into collections you can collapse:
 
 Every world also has its own look, ambience and music track.
 
+Every world also has its own **boss** on every 5th wave. See [World bosses](foes.md#world-bosses) for all 21.
+
 ## Modes
 
 ### Campaign

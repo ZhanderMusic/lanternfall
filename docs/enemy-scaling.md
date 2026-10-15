@@ -9,7 +9,7 @@ Every wave sends more foes, and each one is tougher, faster, better armored and 
 | Wave | Foe health | Boss health | Foes in the wave | Bosses | Speed | Bonus armor | Gold per kill |
 |---:|---:|---:|---:|---:|---:|---:|---:|
 | 1 | ×1 | ×1 | 18 | – | +1% | +0 | ×1.00 |
-| 5 | ×2.2 | ×2.2 | 38 | 1 | +6% | +2 | ×1.12 |
+| 5 | ×2.2 | ×1.2 | 38 | 1 | +6% | +2 | ×1.12 |
 | 10 | ×5.5 | ×4.9 | 62 | 1 | +12% | +5 | ×1.27 |
 | 15 | ×14 | ×10.6 | 86 | 1 | +18% | +7 | ×1.42 |
 | 20 | ×34 | ×23 | 110 | 2 | +24% | +10 | ×1.57 |
@@ -73,6 +73,10 @@ A boss comes every fifth wave:
 | Endless, after 50 | one more every 15 waves, up to 8 |
 
 A boss that gets through costs 8 lives.
+
+Early bosses are gentler. Before wave 10 a boss's health is cut (55% on wave 5, full by wave 10), and its armor ramps up until wave 15: a boss wears about 2 armor on wave 5 and 6 on wave 10 instead of the full 6 and 9.
+
+Every world has its own boss with its own tricks, and a few have more or less health or armor. See [World bosses](foes.md#world-bosses).
 
 ## Speed
 

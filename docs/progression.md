@@ -19,8 +19,8 @@
 
 Every run pays embers, **win or lose**:
 
-- **Waves:** each cleared wave pays 1 ember, plus 1 more for every 8 waves (wave 8 pays 2, wave 16 pays 3 and so on).
-- **Bosses:** 3 embers for every boss snuffed (Trophy hunter adds more).
+- **Waves:** each cleared wave pays 3 embers, plus 1 more for every 4 waves (wave 4 pays 4, wave 8 pays 5 and so on).
+- **Bosses:** 5 embers for every boss snuffed (Trophy hunter adds more).
 - **Victory:** 30 embers for winning a campaign.
 
 The total is multiplied by:
@@ -68,6 +68,7 @@ At **level 100**, open **Prestige** on the title screen to start the climb again
 | Codes, lifetime stats and settings | Saved runs |
 
 - **Prestige I** unlocks **Oblivion**, a difficulty above Nightmare: ×3.1 foe health, ×1.24 speed, 5 starting lives and ×3.5 embers and XP.
+- Every prestige level adds **+20% embers and XP** from runs, so each climb goes faster (up to +200% at Prestige X).
 - Every prestige opens **2 Prestige skins** in the **Prestige shop** (20 in all). See [Skins](#skins).
 - Level-up moonstones and first-clear moonstones are paid again on every climb.
 - Lanterns prestige separately: see [Mastery prestige](lanterns.md#mastery).
@@ -472,7 +473,7 @@ Menu themes change the look and music of your camp. Equip them in **Settings**.
 
 Enter codes in **Settings → Redeem a code**. Codes can give moonstones, embers or exclusive skins. Each code works once per player: your save remembers it, and so does your device, so resetting or prestiging can't redeem it again.
 
-**REDACTED** unlocks the **Founders Edition**: Founder's gold for every lantern, the Season 1 premium pass (while the season runs) and a **Founders Edition** title under the logo. Hide or show the title in Settings.
+A secret code unlocks the **Founders Edition**: Founder's gold for every lantern, the Season 1 premium pass (while the season runs) and a **Founders Edition** title under the logo. Hide or show the title in Settings.
 
 ---
 

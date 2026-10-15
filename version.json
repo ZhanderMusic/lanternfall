@@ -1,14 +1,12 @@
 {
-  "version": "0.20.0",
+  "version": "0.21.0",
   "date": "Oct 15, 2026",
   "major": true,
-  "title": "Prestige",
+  "title": "Lords of the Night",
   "notes": [
-    "Player levels now go up to 100, with five new ranks ending at Eternal Flame.",
-    "Prestige: at level 100, start the climb again for new rewards, up to Prestige X. You keep moonstones, passes, skins and lanterns with their mastery.",
-    "Prestige shop: 20 Prestige skins, the most detailed in the game. They react when you tap them and when they fire.",
-    "Oblivion: a new difficulty above Nightmare, unlocked by your first prestige.",
-    "Mastery prestige: reset a lantern from Mastery 100 to 1 for a permanent +2%, up to 10 times.",
-    "Lantern upgrades and ascensions cost about twice as much. Founder's gold has a double halo, and REDACTED is now the Founders Edition code."
+    "21 world bosses: every world now has its own boss with its own name, look and tricks, ending with the Moth Queen at the Hollow Moon.",
+    "A boss health bar at the top of the board shows each boss's name, title, shield and health.",
+    "Tutorial: new players get a short guided first run. Skip it any time, or replay it from How to play or Settings.",
+    "Balance: gentler early bosses, about 50% more embers per wave, 5 embers per boss, more gold in deeper worlds, and +20% embers and XP for every prestige."
   ]
 }

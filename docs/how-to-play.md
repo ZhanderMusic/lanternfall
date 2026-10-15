@@ -29,9 +29,11 @@ Foes walk the trail from one end of the board to the other. Every foe that gets 
 1. On the home screen, tap **Play**.
 2. Pick a world. You start with only the **Surface level** (Whisperwood). Win a run to unlock the next depth.
 3. Pick a difficulty with the slider. Normal is the intended challenge.
-4. Tap **Start**. You begin with **100 gold** and **15 lives** on Normal.
+4. Tap **Start**. You begin with **120 gold** (plus 10 for every depth) and **15 lives** on Normal.
 5. Drag a **Spark** next to the trail, near a bend if you can.
 6. Tap **Send wave**. Build more lanterns as gold comes in.
+
+On your very first run a short **tutorial** walks you through this: hanging two Sparks (a pulsing tile shows a good spot), sending a wave, opening a lantern, buying an upgrade, building a Cinder and picking a boon. You can skip it at any time, and replay it from **How to play** or **Settings**.
 
 ## The run screen
 
@@ -69,7 +71,7 @@ Some tiers are locked until that lantern reaches enough **mastery** (see [Lanter
 - Press **Send wave** when you're ready. Nothing moves until you do, so take your time between waves.
 - Foes come in **clumps** of eight with short pauses between clumps.
 - **Halfway** through each wave you get half of the wave's clear bonus, and the rest when the wave is cleared.
-- Every 5th wave brings a **boss**: 1 until wave 15, 2 from wave 20 and 3 from wave 35.
+- Every 5th wave brings the world's own **boss**: 1 until wave 15, 2 from wave 20 and 3 from wave 35. Each world's boss has its own tricks; see [World bosses](foes.md#world-bosses).
 - **Speed:** tap the speed button to switch between 1×, 2× and 3×.
 - **Auto** sends the next wave for you as soon as the last one is cleared.
 - Each world introduces its own **new foe**, and you meet it in the first wave.

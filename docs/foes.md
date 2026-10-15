@@ -34,7 +34,39 @@ These show up in every world.
 |---|---:|---|---:|---:|---:|
 | **Boss** | 650 | very slow | 4 | 8 | 45 |
 
+Early bosses are gentler: before wave 10 a boss has less health (55% on wave 5, rising to full by wave 10), and its armor builds up until wave 15.
+
 A boss arrives every 5th wave: 1 until wave 15, 2 from wave 20, 3 from wave 35, and in Endless one more every 15 waves after wave 50 (up to 8). Bosses don't split their health with the rest of the wave, so they're far tougher than anything else. Some worlds (Starfall Void and Eclipse Spire) also send a **mini-boss** with less health on every third wave.
+
+### World bosses
+
+Every world has its own boss with its own name, look and tricks. A health bar at the top of the board shows its name, title, shield and health. The first time you meet one, a card explains what it does. Unless noted, each uses the base boss numbers above.
+
+| Depth | World | Boss | What it does |
+|---|---|---|---|
+| Surface | Whisperwood | **Elder Moth**, Mother of the Swarm | Calls moths out of the dark, and a cloud of them at half health. Snuff it before the swarm grows. |
+| 1 | Ashen Marsh | **Bog King**, The Drowned Crown | Sinks into the mud now and then, and heals while it walks. Hit it hard while it’s up. |
+| 2 | Frostmere | **Glacier Wyrm**, The Frozen Coil | Slows slide right off it. It carries a shield and freezes a fresh one at half health. |
+| 3 | Emberwaste | **Magma Colossus**, Heart of the Waste | Speeds up as it cracks, then bursts into four magmites. |
+| 4 | Sunken Ruins | **Tideshell Warden**, Keeper of the Drowned Gate | A huge shield, and it plates every foe near it with +4 armor. |
+| 5 | Glimmer Caves | **Prism Wraith**, The Many-Faced | Blinks down the trail every few seconds and dodges one shot in five. |
+| 6 | Bone Dunes | **Sand Tyrant**, Lord of Bones | Raises wisps as it walks, and drops two bone carriers when it falls. |
+| 7 | Storm Peaks | **Thunderbird**, The Storm’s Eye | Dashes at triple speed and shakes off slows, poison and marks every few seconds. |
+| 8 | Fungal Deep | **Spore Queen**, Mother of Rot | Heals every foe around it and spawns broods. Focus it down first. |
+| 9 | Starfall Void | **Void Herald**, Voice of the Rift | Fades out of reality now and then, and calls voidlings through the rift. |
+| 10 | The Last Ember | **Ember Lord**, The Last Fire | Thick armor and it can’t be stunned. Speeds up as it burns down, and calls two ember knights at half health. |
+| 11 | Crimson Bog | **Leech Mother**, The Red Tide | Heals itself fast and spawns bog leeches. Burst it down. |
+| 12 | Glass Desert | **Mirage Sphinx**, Riddle of Glass | Dodges a third of all shots and flickers forward along the trail. |
+| 13 | Sunken Belfry | **The Great Bell**, Toll of the Deep | Its toll silences lanterns near it for a moment, and its ringing speeds up every foe around it. |
+| 14 | Ironroot Thicket | **Ironroot Ancient**, The Unbending | Slow and heavily armored, and it gives every foe near it +6 armor. Bring armor piercing. |
+| 15 | Aurora Fields | **Aurora Serpent**, The Shifting Light | Shrugs off poison and burns, dashes ahead and cleanses itself. |
+| 16 | Cinder Cathedral | **Kiln Archon**, Bishop of Ash | Speeds up as it cracks, shields itself at half health and drops a kiln golem. |
+| 17 | The Hive | **Hive Matriarch**, The Queen’s Hand | Releases drone swarms all the time, and a huge one at half health. Area lanterns are your friend. |
+| 18 | Frozen Abyss | **Rime Titan**, The Endless Winter | Can’t be slowed, carries a thick shield and cleanses itself every 2 seconds. |
+| 19 | Eclipse Spire | **Shade Sovereign**, Crown of Night | Fades in and out, calls eclipse shades and silences lanterns near it. |
+| 20 | The Hollow Moon | **The Moth Queen**, She Who Woke Hungry | The Queen herself. Shielded and always calling her swarm. At two thirds she summons a cloud of moths, and at one third she rages, silences lanterns around her and shields again. Costs 8 lives if she gets through. |
+
+Some bosses change the base numbers: the Elder Moth has 55% health, the Ironroot Ancient 120% (+5 armor, 20% slower), the Rime Titan 110%, the Tideshell Warden +2 armor and the Ember Lord +6 armor.
 
 In the Hollow Harvest event the boss is the **Pumpkin King**: 30% more health and a shield.
 
