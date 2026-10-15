@@ -87,7 +87,7 @@ It's a full Progressive Web App: install it once and it runs full screen, works 
 
 **Play:** https://zhandermusic.github.io/lanternfall/
 
-Built for phones first, and fully playable on PC with keyboard shortcuts: **Space** sends a wave, **1–9** pick lanterns, **U** upgrades, **M** merges, **F** changes speed, **P** pauses and **Esc** cancels.
+Plays upright on phones and in landscape on computers, tablets and phones turned sideways (switch any time in Settings). On PC there are keyboard shortcuts: **Space** sends a wave, **1–9** pick lanterns, **U** upgrades, **M** merges, **F** changes speed, **P** pauses and **Esc** cancels.
 
 ## Saves
 

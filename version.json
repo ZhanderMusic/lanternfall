@@ -1,13 +1,11 @@
 {
-  "version": "0.18.2",
+  "version": "0.19.0",
   "date": "Oct 15, 2026",
   "major": false,
   "notes": [
-    "Campaigns now last 50 waves. Foes toughen more gently so the whole run stays winnable, bosses come in pairs from wave 20 and threes from wave 35, and XP and embers per wave are rebalanced for the longer runs.",
-    "Camp upgrades go deeper and cost much more. Most now have twice as many levels, each worth half as much, so the caps are the same (Kindling is 16 levels of +10 gold, still 160 in all). Levels you already bought were doubled to match, so you keep every bonus.",
-    "Tap the i in a lantern’s upgrade panel during a run for a full guide: how it works, what it’s strong and weak against, a tip, its current numbers, every upgrade on both paths and its ascensions.",
-    "Difficulty is now a slider on the Play page.",
-    "Embers always show in ember orange, whatever world or theme you have on.",
-    "Depth 0 is now called the Surface level, and its card spans the full width of the world list."
+    "Landscape mode. On computers, tablets and phones turned sideways the board turns so the trail runs left to right, with your stats, buttons and lanterns in a column beside it. Phones held upright play exactly as before.",
+    "New Screen layout setting: Auto, Portrait or Landscape. Auto follows the shape of your screen, and you can switch at any time, even mid-run.",
+    "The home screen, Lanterns page and boon picks have side-by-side layouts for phones turned sideways, so they fit without scrolling.",
+    "The installed app now follows your device’s rotation instead of locking to portrait."
   ]
 }

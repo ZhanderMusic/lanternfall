@@ -60,6 +60,50 @@ body{background:var(--night);color:var(--ink);font-family:var(--body);overflow:h
 #send.ready{animation:pulse 1.6s ease-in-out infinite}
 @keyframes pulse{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--flame) 22%,transparent)}}
 #board{position:relative;min-height:0;display:flex;align-items:center;justify-content:center}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--moss2);border:1px solid var(--line);border-radius:10px;padding:4px}
+.seg button{all:unset;cursor:pointer;text-align:center;padding:9px 6px;border-radius:7px;font:700 14px var(--body);color:var(--dim)}
+.seg button.on{background:var(--flame);color:#140e06}.seg button:focus-visible{outline:2px solid var(--flame)}
+/* short landscape screens (phones turned sideways): camp pages switch to side-by-side layouts */
+@media (max-height:560px) and (min-width:600px){
+  html.land #camp .view[data-view=home]{max-width:920px;width:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"logo menu" "tag menu" "player menu" "stats menu" "foot menu";column-gap:28px;row-gap:8px;align-items:center;align-content:center}
+  html.land [data-view=home] .logo{grid-area:logo;font-size:clamp(54px,9vw,84px)}
+  html.land [data-view=home] .tag{grid-area:tag;font-size:13px;margin:0}
+  html.land [data-view=home] .player{grid-area:player}
+  html.land [data-view=home] .campstats{grid-area:stats}
+  html.land [data-view=home] .homefoot{grid-area:foot}
+  html.land [data-view=home] .menu{grid-area:menu;align-self:center;gap:6px}
+  html.land [data-view=home] .menu .btn.big{padding:12px}
+  html.land [data-view=home] .menu2 .btn.mi{padding:8px 12px;gap:1px}
+  html.land #camp .view[data-view=lanterns]{min-height:0}
+  html.land #camp .view[data-view=lanterns] .ph h2{font-size:30px}
+  html.land #camp .slide{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);grid-template-rows:auto minmax(0,1fr) auto auto;grid-template-areas:"stage tabs" "stage lp" "info lp" "mast bb";padding:8px 10px;gap:5px 14px}
+  html.land #camp .slide .stage{grid-area:stage;max-height:none;height:100%;min-height:0;width:auto;aspect-ratio:1/1;align-self:center;justify-self:center}
+  html.land #camp .slide .info{grid-area:info}html.land #camp .slide .lmast{grid-area:mast}html.land #camp .slide .stabs{grid-area:tabs}
+  html.land #camp .slide .lp{grid-area:lp}html.land #camp .slide .bb{grid-area:bb}
+  html.land #camp .slide .info h3{font-size:26px}
+  html.land #camp .slide .info dl.stats{display:none}
+  html.land #camp .slide .skins.many{grid-template-columns:repeat(8,minmax(0,1fr))}html.land #camp .slide .skins.many .skt .sp{display:none}
+  html.land #camp .mroad{grid-template-columns:1fr 1fr;gap:3px}html.land #camp .mroad div span{display:none}html.land #camp .mroad li{padding:2px 6px}html.land #camp .mroad .mlv{height:18px}
+  html.land #camp .slide .ptier{padding:1px 6px;min-height:0;font-size:11px}html.land #camp .slide .pgrid{gap:3px 8px}html.land #camp .slide .pcol{gap:1px}html.land #camp .slide .lp{gap:3px}
+  html.land #camp .slide .ascs{gap:3px 8px;flex-direction:row;flex-wrap:wrap;align-items:center}html.land #camp .slide .ascs>div{display:flex;gap:4px;flex-wrap:wrap}html.land #camp .slide .atag{padding:3px 8px;font-size:11px}html.land #camp .slide .pch{font-size:11px}
+  html.land #lcats .lcat,html.land .lcats>*{padding-block:4px}
+  html.land #pick .panel{gap:8px}html.land .phd h2.big{font-size:34px}html.land .phd .orn{display:none}
+  html.land .cards .bn{min-height:0;padding:10px 10px 12px;gap:6px}html.land .bsig{width:48px;height:48px}html.land .bsig svg{width:24px;height:24px}
+  html.land .bn .nm{font-size:20px}html.land .bn p{font-size:12px}html.land .bwm{display:none}
+  html.land .major .mj-list li{padding:8px 12px}
+}
+/* landscape run screen: stats, buttons and lanterns in a side column, the board fills the rest */
+html.lside #app{max-width:none;grid-template-columns:clamp(250px,26vw,330px) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);grid-template-areas:"bar board" "tray board";column-gap:14px}
+html.lside .bar{grid-area:bar;align-content:flex-start}
+html.lside #board{grid-area:board}
+html.lside #tray{grid-area:tray;height:auto;min-height:0}
+html.lside .bar .spacer{flex-basis:100%;height:0}
+html.lside .pal{flex-direction:column;overflow:visible;gap:8px}
+html.lside .pg+.pg{padding-left:0;padding-top:8px}
+html.lside .pg+.pg::before{display:none}
+html.lside .pgr{flex-wrap:wrap}
+html.lside .sheet{right:auto;width:calc(clamp(250px,26vw,330px) + 4px);top:8px;max-height:calc(100% - 16px);overflow-y:auto;overscroll-behavior:contain}
+@media (max-height:520px){html.lside .stat b{font-size:15px}html.lside .bar .btn{padding:7px 10px;font-size:13px}html.lside #app{padding-block:6px;row-gap:6px}html.lside .trh{display:none}}
 canvas#cv{display:block;border-radius:8px;touch-action:none;box-shadow:0 0 0 1px var(--line)}
 #tray{background:var(--moss);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-height:84px;box-sizing:border-box}
 .hint{color:var(--dim);font-size:14px;margin:2px 0 8px}
@@ -969,7 +1013,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 
 
 <script>
-/* PWA: offline support and updates (Lanternfall v0.18.2) */
+/* PWA: offline support and updates (Lanternfall v0.19.0) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -1153,6 +1197,11 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
   <section class="panel view" data-view="settings" hidden>
     <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">Settings</h2></header>
     <div class="set">
+      <div class="sr"><span>Screen layout</span><b id="layNow"></b></div>
+      <div class="seg" id="laySeg" role="radiogroup" aria-label="Screen layout">
+        <button data-lay="auto" role="radio">Auto</button><button data-lay="portrait" role="radio">Portrait</button><button data-lay="landscape" role="radio">Landscape</button></div>
+      <p class="hint" style="margin:0">Auto uses landscape when your screen is wider than it is tall, like a computer, a tablet or a phone turned sideways. In landscape the trail runs left to right.</p>
+      <hr class="sep">
       <div class="sr"><span>Version</span><b data-ver></b></div>
       <div class="sr"><span>Updates</span><b id="updSt">Not checked yet</b></div>
       <p class="hint" style="margin:0" id="updNote"></p>
@@ -1485,7 +1534,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='0.18.2';
+const VERSION='0.19.0';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -2568,6 +2617,7 @@ function renderProfile(){
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'0.19.0',d:'Oct 15, 2026',notes:['Landscape mode. On computers, tablets and phones turned sideways the board turns so the trail runs left to right, with your stats, buttons and lanterns in a column beside it. Phones held upright play exactly as before.','New Screen layout setting: Auto, Portrait or Landscape. Auto follows the shape of your screen, and you can switch at any time, even mid-run.','The home screen, Lanterns page and boon picks have side-by-side layouts for phones turned sideways, so they fit without scrolling.','The installed app now follows your device’s rotation instead of locking to portrait.']},
   {v:'0.18.2',d:'Oct 15, 2026',notes:['Campaigns now last 50 waves. Foes toughen more gently so the whole run stays winnable, bosses come in pairs from wave 20 and threes from wave 35, and XP and embers per wave are rebalanced for the longer runs.','Camp upgrades go deeper and cost much more. Most now have twice as many levels, each worth half as much, so the caps are the same (Kindling is 16 levels of +10 gold, still 160 in all). Levels you already bought were doubled to match, so you keep every bonus.','Tap the i in a lantern’s upgrade panel during a run for a full guide: how it works, what it’s strong and weak against, a tip, its current numbers, every upgrade on both paths and its ascensions.','Difficulty is now a slider on the Play page.','Embers always show in ember orange, whatever world or theme you have on.','Depth 0 is now called the Surface level, and its card spans the full width of the world list.']},
   {v:'0.18.1',d:'Oct 14, 2026',major:1,title:'The Witching Hour',theme:'halloween',
    hl:[['Boon XP','No more boon every wave. Snuff foes and upgrade lanterns to fill boon XP, and pick a boon each time it levels up.'],
@@ -3354,7 +3404,11 @@ function drawSky(dt){
 
 function exportCode(){return 'LF1:'+btoa(unescape(encodeURIComponent(JSON.stringify(meta))))}
 let impArmed=false,resetArmed=false;
+function renderLayout(){const p=layoutPref();document.querySelectorAll('#laySeg [data-lay]').forEach(b=>{const on=b.dataset.lay===p;b.classList.toggle('on',on);b.setAttribute('aria-checked',on)});
+  $('#layNow').textContent=ROT?'Landscape':'Portrait'}
+$('#laySeg').onclick=e=>{const b=e.target.closest('[data-lay]');if(!b)return;meta.layout=b.dataset.lay;save();applyLayout();renderLayout()};
 function renderSettings(){
+  renderLayout();
   $('#savedAt').textContent=meta.savedAt?new Date(meta.savedAt).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Never';
   $('#expTxt').value=exportCode();$('#expMsg').textContent='';
   impArmed=false;resetArmed=false;$('#impBtn').textContent='Import';$('#reset').textContent='Reset all progress';
@@ -3519,7 +3573,7 @@ function buildAt(type,x,y){
   hud();return true;
 }
 const canPlace=(x,y)=>x>=0&&y>=0&&x<W&&y<H&&!G.path.set.has(x+','+y)&&!G.towers.some(t=>t.x===x&&t.y===y);
-function cellAt(cx,cy){const r=cv.getBoundingClientRect(),x=Math.floor((cx-r.left)/S),y=Math.floor((cy-r.top)/S);return x>=0&&y>=0&&x<W&&y<H?{x,y}:null}
+function cellAt(cx,cy){const r=cv.getBoundingClientRect();let x=Math.floor((cx-r.left)/S),y=Math.floor((cy-r.top)/S);if(ROT){const sx=x;x=W-1-y;y=sx}return x>=0&&y>=0&&x<W&&y<H?{x,y}:null}
 $('#sheet').onclick=e=>{
   const b=e.target.closest('[data-act]');if(!b||b.disabled)return;const s=G.sel;if(!s||s.kind!=='tower')return;
   const t=s.t,a=b.dataset.act;
@@ -3593,9 +3647,9 @@ function stepAmb(dt){
   }
 }
 function drawAmb(){
-  const k=TH.amb,c=TH.ac;
+  const k=TH.amb,c=TH.ac,sx=ROT?H/W:1,sy=ROT?W/H:1;
   for(const p of G.amb){
-    const x=p.x*S,y=p.y*S;
+    const x=p.x*S*sx,y=p.y*S*sy;
     if(k==='fly'||k==='spore'){const a=.35+.35*Math.sin(p.ph*2.3);ctx.globalCompositeOperation='lighter';const r=S*.25*p.s;
       const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,hexA(c,a*.8));g.addColorStop(1,hexA(c,0));ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2);ctx.globalCompositeOperation='source-over'}
     else if(k==='mist'){const r=S*1.6*p.s,g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,hexA(c,.07));g.addColorStop(1,hexA(c,0));ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2)}
@@ -3608,6 +3662,16 @@ function drawAmb(){
   }
 }
 
+/* ---------- layout: portrait, landscape or auto (Settings) ----------
+   In landscape the board is drawn turned a quarter turn, so the trail runs left to right. The game itself is unchanged,
+   which keeps saved runs working even if you rotate your device mid-run. */
+let ROT=false;
+const layoutPref=()=>meta.layout||'auto';
+function wantLand(){const p=layoutPref();return p==='landscape'||(p==='auto'&&innerWidth>innerHeight*1.15&&innerWidth>=560)}
+function applyLayout(){const L=wantLand(),side=L&&innerWidth>=600;document.documentElement.classList.toggle('land',L);document.documentElement.classList.toggle('lside',side);
+  if(L!==ROT){ROT=L;if(typeof resize==='function'&&G)resize()}}
+function upright(c,cx,cy,fn){if(!ROT)return fn();c.save();c.translate(cx,cy);c.rotate(Math.PI/2);c.translate(-cx,-cy);fn();c.restore()}
+const DIRF=new Set(['beetle','diamond','bolt','tri','shell']);
 /* ---------- canvas ---------- */
 const cv=$('#cv'),ctx=cv.getContext('2d'),bg=document.createElement('canvas');
 let S=40,dpr=1;
@@ -3644,8 +3708,9 @@ function foeShape(k,e,r,col,base,T,c=ctx){
 function hexA(h,a){const n=parseInt(h.slice(1),16);return`rgba(${n>>16},${n>>8&255},${n&255},${a})`}
 function resize(){
   const b=$('#board'),w=b.clientWidth,h=b.clientHeight;
-  S=Math.max(16,Math.floor(Math.min(w/W,h/H)));dpr=Math.min(2,devicePixelRatio||1);
-  cv.style.width=W*S+'px';cv.style.height=H*S+'px';cv.width=W*S*dpr;cv.height=H*S*dpr;
+  const LW=ROT?H:W,LH=ROT?W:H;
+  S=Math.max(16,Math.floor(Math.min(w/LW,h/LH)));dpr=Math.min(2,devicePixelRatio||1);
+  cv.style.width=LW*S+'px';cv.style.height=LH*S+'px';cv.width=LW*S*dpr;cv.height=LH*S*dpr;
   drawBG();
 }
 function decor(c,x,y,h){
@@ -3669,7 +3734,7 @@ function drawBG(){
   for(let y=0;y<H;y++)for(let x=0;x<W;x++){
     const h=hash(x,y);c.fillStyle=TH.tiles[h<.5?0:1];c.fillRect(x*S,y*S,S,S);
     c.fillStyle='rgba(0,0,0,.22)';c.fillRect(x*S,y*S+S-1,S,1);c.fillRect(x*S+S-1,y*S,1,S);
-    if(h>.78&&!G.path.set.has(x+','+y))decor(c,x,y,h);
+    if(h>.78&&!G.path.set.has(x+','+y))upright(c,(x+.5)*S,(y+.5)*S,()=>decor(c,x,y,h));
   }
   const P=G.path.pts;c.lineCap='round';c.lineJoin='round';
   const trace=()=>{c.beginPath();c.moveTo(P[0][0]*S,P[0][1]*S);for(const p of P)c.lineTo(p[0]*S,p[1]*S)};
@@ -3698,8 +3763,11 @@ function lantern(t,cx,cy,col,c2,S2){
   ctx.closePath();ctx.fill();
 }
 function draw(){
-  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W*S,H*S);ctx.drawImage(bg,0,0,W*S,H*S);
-  drawAmb();
+  ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,cv.width,cv.height);
+  if(ROT)ctx.setTransform(0,-dpr,dpr,0,0,W*S*dpr);else ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.drawImage(bg,0,0,W*S,H*S);
+  ctx.setTransform(dpr,0,0,dpr,0,0);drawAmb();   /* ambient drift is drawn in screen space so snow still falls down */
+  if(ROT)ctx.setTransform(0,-dpr,dpr,0,0,W*S*dpr);
   const s=G.sel,T=G.time;
   if(s){const x=s.kind==='cell'?s.x:s.t.x,y=s.kind==='cell'?s.y:s.t.y;
     ctx.strokeStyle=hexA(TH.acc,.85);ctx.lineWidth=2;ctx.strokeRect(x*S+2,y*S+2,S-4,S-4);
@@ -3711,7 +3779,7 @@ function draw(){
   for(const t of G.towers){const cx=(t.x+.5)*S,cy=(t.y+.5)*S,col=skinColor(curSkin(t.type),T),R=S*(1+.04*((t.p?t.p[0]+t.p[1]:0)+(isAsc(t)?2:0)))*(1+(t.flash?.15:0)+.04*Math.sin(T*3+t.x));
     const g=ctx.createRadialGradient(cx,cy,0,cx,cy,R);g.addColorStop(0,hexA(col,.3));g.addColorStop(1,hexA(col,0));ctx.fillStyle=g;ctx.fillRect(cx-R,cy-R,R*2,R*2)}
   ctx.globalCompositeOperation='source-over';
-  for(const t of G.towers){const cx=(t.x+.5)*S,cy=(t.y+.5)*S,sk=curSkin(t.type),col=skinColor(sk,T);
+  for(const t of G.towers){const cx=(t.x+.5)*S,cy=(t.y+.5)*S,sk=curSkin(t.type),col=skinColor(sk,T);upright(ctx,cx,cy,()=>{
     skinFxBack(ctx,sk,cx,cy,S,T);
     ctx.fillStyle='#090d0e';ctx.beginPath();ctx.arc(cx,cy,S*.33,0,7);ctx.fill();
     ctx.strokeStyle=col;ctx.lineWidth=Math.max(1.5,S*.05);ctx.stroke();
@@ -3728,7 +3796,7 @@ function draw(){
       ctx.fillStyle=ac;ctx.beginPath();const kx=cx,ky=cy-S*.5,k=S*.09;ctx.moveTo(kx-k*1.4,ky+k*.6);ctx.lineTo(kx-k*1.4,ky-k*.4);ctx.lineTo(kx-k*.6,ky+k*.1);ctx.lineTo(kx,ky-k*.8);ctx.lineTo(kx+k*.6,ky+k*.1);ctx.lineTo(kx+k*1.4,ky-k*.4);ctx.lineTo(kx+k*1.4,ky+k*.6);ctx.closePath();ctx.fill()}
     else{const pp=t.p||[0,0];   /* path pips: path 1 fans out to the lower left, path 2 to the lower right */
       for(let i=0;i<pp[0];i++){const a=Math.PI*(.6+i*.085);ctx.fillStyle=col;ctx.beginPath();ctx.arc(cx+Math.cos(a)*S*.44,cy+Math.sin(a)*S*.44,S*.04,0,7);ctx.fill()}
-      for(let i=0;i<pp[1];i++){const a=Math.PI*(.4-i*.085);ctx.fillStyle='#bfe3ff';ctx.beginPath();ctx.arc(cx+Math.cos(a)*S*.44,cy+Math.sin(a)*S*.44,S*.04,0,7);ctx.fill()}}}
+      for(let i=0;i<pp[1];i++){const a=Math.PI*(.4-i*.085);ctx.fillStyle='#bfe3ff';ctx.beginPath();ctx.arc(cx+Math.cos(a)*S*.44,cy+Math.sin(a)*S*.44,S*.04,0,7);ctx.fill()}}})}
   /* drag ghost: green tile = valid, red = blocked, dashed circle = range */
   if(drag&&drag.on){const p=dragPos(),c=cellAt(p.x,p.y);
     if(c){const ok=canPlace(c.x,c.y),gx=(c.x+.5)*S,gy=(c.y+.5)*S,col=TOWERS[drag.t].color;
@@ -3738,12 +3806,12 @@ function draw(){
         if(drag.t==='beacon'){ctx.strokeStyle=hexA(col,.6);ctx.setLineDash([4,4]);ctx.strokeRect((c.x-1)*S,(c.y-1)*S,S*3,S*3);ctx.setLineDash([])}
         else if(st.range){ctx.strokeStyle=hexA(col,.7);ctx.setLineDash([5,5]);ctx.beginPath();ctx.arc(gx,gy,st.range*S,0,7);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=hexA(col,.06);ctx.fill()}}
       ctx.globalAlpha=ok?.95:.5;ctx.fillStyle='#090d0e';ctx.beginPath();ctx.arc(gx,gy,S*.33,0,7);ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=Math.max(1.5,S*.05);ctx.stroke();
-      lantern(drag.t,gx,gy,col,ctx,S);ctx.globalAlpha=1}}
+      upright(ctx,gx,gy,()=>lantern(drag.t,gx,gy,col,ctx,S));ctx.globalAlpha=1}}
   for(const z of G.zones||[]){const a=Math.min(1,z.life/z.max);ctx.fillStyle=hexA(z.col,.16*a+.04);ctx.beginPath();ctx.arc(z.x*S,z.y*S,z.r*S,0,7);ctx.fill();
     ctx.strokeStyle=hexA(z.col,.45*a);ctx.lineWidth=1.5;ctx.setLineDash([4,5]);ctx.lineDashOffset=-T*12;ctx.stroke();ctx.setLineDash([])}
   for(const e of G.foes){
     const x=e.x*S,y=e.y*S,f=FOES[e.t],r=f.r*S*(e.mini?.75:e.child?.65:1),base=e.king?'#ff7a1a':TH.foes[e.t]||f.col,col=e.flash?'#ffffff':base;
-    ctx.save();ctx.translate(x,y);if(e.inv)ctx.globalAlpha=.28;
+    ctx.save();ctx.translate(x,y);if(e.inv)ctx.globalAlpha=.28;if(ROT&&!DIRF.has(e.t==='beetle'?'beetle':f.sh))ctx.rotate(Math.PI/2);
     if(e.t==='moth'){const fl=.6+.4*Math.abs(Math.sin(T*18+e.ph));ctx.fillStyle=col;ctx.globalAlpha=.85;
       ctx.beginPath();ctx.ellipse(-r*.55,0,r*.7*fl,r*.9,-.4,0,7);ctx.ellipse(r*.55,0,r*.7*fl,r*.9,.4,0,7);ctx.fill();ctx.globalAlpha=1;ctx.fillStyle='#3b342a';ctx.fillRect(-r*.12,-r*.7,r*.24,r*1.4)}
     else if(e.t==='wisp'){ctx.globalCompositeOperation='lighter';const g=ctx.createRadialGradient(0,0,0,0,0,r*2.2);g.addColorStop(0,hexA(base,.7));g.addColorStop(1,hexA(base,0));ctx.fillStyle=g;ctx.fillRect(-r*2.2,-r*2.2,r*4.4,r*4.4);ctx.globalCompositeOperation='source-over';ctx.fillStyle=col;ctx.beginPath();ctx.arc(0,0,r*.6,0,7);ctx.fill()}
@@ -3758,7 +3826,7 @@ function draw(){
     if(e.stunT>0){ctx.strokeStyle='rgba(227,194,255,.85)';ctx.lineWidth=2;ctx.setLineDash([2,4]);ctx.beginPath();ctx.arc(x,y,r*1.5,T*4,T*4+6);ctx.stroke();ctx.setLineDash([])}
     if(e.slowT>0){ctx.strokeStyle='rgba(127,227,255,.7)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(x,y,r*1.25,0,7);ctx.stroke()}
     if(e.poisT>0){ctx.strokeStyle='rgba(166,255,92,.7)';ctx.lineWidth=1.5;ctx.setLineDash([3,3]);ctx.beginPath();ctx.arc(x,y,r*1.4,0,7);ctx.stroke();ctx.setLineDash([])}
-    if(e.hp<e.max){const bw=Math.max(S*.6,r*2),bx=x-bw/2,by=y-r-S*.16;ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(bx,by,bw,3);ctx.fillStyle=e.t==='boss'?'#ff6060':'#9be3a9';ctx.fillRect(bx,by,bw*Math.max(0,e.hp/e.max),3)}
+    if(e.hp<e.max)upright(ctx,x,y,()=>{{const bw=Math.max(S*.6,r*2),bx=x-bw/2,by=y-r-S*.16;ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(bx,by,bw,3);ctx.fillStyle=e.t==='boss'?'#ff6060':'#9be3a9';ctx.fillRect(bx,by,bw*Math.max(0,e.hp/e.max),3)}})
   }
   for(const t of G.towers)if(t.type==='moonwell')for(const bm of t.beams||[]){if(bm.e.dead)continue;
     const col=skinColor(curSkin('moonwell'),T),h=bm.heat||0,ax=(t.x+.5)*S,ay=(t.y+.5)*S,bx=bm.e.x*S,by=bm.e.y*S;
@@ -3781,7 +3849,7 @@ function draw(){
     if(f.k==='p'){ctx.globalAlpha=a;ctx.fillStyle=f.col;ctx.fillRect(f.x*S-1.5,f.y*S-1.5,3,3)}
     else if(f.k==='m'){ctx.globalAlpha=a;motif(ctx,f.m,f.x*S,f.y*S,Math.max(1.5,S*.05),f.col)}
     else if(f.k==='r'){ctx.globalAlpha=a;ctx.strokeStyle=f.col;ctx.lineWidth=2;ctx.beginPath();ctx.arc(f.x*S,f.y*S,f.r*S*(1.15-a*.4),0,7);ctx.stroke()}
-    else if(f.k==='t'){ctx.globalAlpha=Math.min(1,a*2);ctx.fillStyle=f.col;ctx.font=`500 ${Math.round(S*.32)}px "IBM Plex Mono",monospace`;ctx.textAlign='center';ctx.fillText(f.txt,f.x*S,f.y*S)}
+    else if(f.k==='t')upright(ctx,f.x*S,f.y*S,()=>{ctx.globalAlpha=Math.min(1,a*2);ctx.fillStyle=f.col;ctx.font=`500 ${Math.round(S*.32)}px "IBM Plex Mono",monospace`;ctx.textAlign='center';ctx.fillText(f.txt,f.x*S,f.y*S)})
     else if(f.k==='z'){ctx.globalAlpha=a;ctx.strokeStyle=f.col;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(f.pts[0][0]*S,f.pts[0][1]*S);
       for(let i=1;i<f.pts.length;i++){const [ax,ay]=f.pts[i-1],[bx,by]=f.pts[i];for(let k=1;k<=4;k++){const q=k/4,j=k<4?(Math.random()-.5)*.25:0;ctx.lineTo((ax+(bx-ax)*q+j)*S,(ay+(by-ay)*q+j)*S)}}ctx.stroke()}}
   ctx.globalAlpha=1;
@@ -3812,7 +3880,8 @@ function loop(now){
 }
 meta.depth=Math.min(meta.depth,meta.maxDepth);
 applySkins();campPreview();
-new ResizeObserver(resize).observe($('#board'));resize();
+new ResizeObserver(resize).observe($('#board'));applyLayout();resize();
+addEventListener('resize',applyLayout);
 go('home');renderTray();hud(true);
 storageInit().then(()=>{maybeMajor();cloudInit()});
 checkVersion(false);
