@@ -116,7 +116,7 @@ In the tables, **Per level** is what each level adds, **At max** is the total at
 | **Studious** | +5% lantern mastery points. | 20 | +100% | 17 | 9,685 |
 | **Trophy hunter** | +1 ember for every boss you snuff. | 5 | +5 | 29 | 534 |
 | **Long night** | +4% embers and XP from Endless runs. | 10 | +40% | 24 | 1,118 |
-| **Daring** | +3% embers and XP on Hard and Nightmare. | 10 | +30% | 24 | 1,118 |
+| **Daring** | +3% embers and XP on Hard, Nightmare and Oblivion. | 10 | +30% | 24 | 1,118 |
 | **Pathfinder** | Beating a world for the first time gives 5 more moonstones. | 4 | +20 | 48 | 608 |
 
 ## Lantern unlocks

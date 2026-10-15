@@ -74,6 +74,7 @@ Set it with the slider on the Play page.
 | **Normal** | ×1 | ×1 | 15 | ×1 |
 | **Hard** | ×1.45 | ×1.08 | 12 | ×1.5 |
 | **Nightmare** | ×2.1 | ×1.16 | 8 | ×2.25 |
+| **Oblivion** (after your first prestige) | ×3.1 | ×1.24 | 5 | ×3.5 |
 
 Starting lives assume no camp upgrades. Hearthstones and other upgrades add more.
 

@@ -1,11 +1,14 @@
 {
-  "version": "0.19.2",
+  "version": "0.20.0",
   "date": "Oct 15, 2026",
-  "major": false,
+  "major": true,
+  "title": "Prestige",
   "notes": [
-    "Tougher waves: regular foes now gain health faster from wave 6 to wave 30 (bosses are unchanged), so strong builds stop melting every wave before the boss.",
-    "Kills pay about 16% less gold.",
-    "New Docs button in Settings (and on How to play) that opens the full player guide: every lantern, foe, world, boon and camp upgrade.",
-    "Fixed the Your boons list squashing cards together when you have a lot of boons. It now scrolls."
+    "Player levels now go up to 100, with five new ranks ending at Eternal Flame.",
+    "Prestige: at level 100, start the climb again for new rewards, up to Prestige X. You keep moonstones, passes, skins and lanterns with their mastery.",
+    "Prestige shop: 20 Prestige skins, the most detailed in the game. They react when you tap them and when they fire.",
+    "Oblivion: a new difficulty above Nightmare, unlocked by your first prestige.",
+    "Mastery prestige: reset a lantern from Mastery 100 to 1 for a permanent +2%, up to 10 times.",
+    "Lantern upgrades and ascensions cost about twice as much. Founder's gold has a double halo, and REDACTED is now the Founders Edition code."
   ]
 }

@@ -26,6 +26,14 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 
 ---
 
+## 🌟 New in 0.20: Prestige
+
+- **Levels to 100.** Five new ranks, all the way to Eternal Flame.
+- **Prestige.** At level 100, start the climb again for new rewards, up to Prestige X. Keep your moonstones, passes, skins and lanterns.
+- **Prestige shop.** 20 Prestige skins, the most detailed in the game. They react when you tap them and when they fire.
+- **Oblivion.** A new difficulty above Nightmare, unlocked by your first prestige.
+- **Mastery prestige.** Reset a lantern from Mastery 100 to 1 for a permanent +2%, up to 10 times.
+
 ## 🌙 New in 0.19: The Wide Night
 
 - **Landscape mode.** On computers, tablets and sideways phones the trail runs left to right, with your controls beside the board. Choose Auto, Portrait or Landscape in Settings.

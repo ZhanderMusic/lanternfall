@@ -34,7 +34,7 @@ New to the game? Read **[How to play](how-to-play.md)** first, then the **[Strat
 | Foes | 25, plus 4 event foes |
 | Boons | 53 across 5 rarities |
 | Camp upgrades | 67 |
-| Difficulty | Easy, Normal, Hard, Nightmare |
+| Difficulty | Easy, Normal, Hard, Nightmare, and Oblivion after your first prestige |
 | Modes | Campaign, Endless, and limited-time events |
 
 ## Words you'll see

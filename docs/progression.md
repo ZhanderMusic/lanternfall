@@ -6,6 +6,7 @@
 
 - [Embers](#embers)
 - [XP and player level](#xp-and-player-level)
+- [Prestige](#prestige)
 - [Moonstones](#moonstones)
 - [Season Pass](#season-pass)
 - [Event pass](#event-pass)
@@ -27,10 +28,10 @@ The total is multiplied by:
 | Bonus | Multiplier |
 |---|---|
 | Depth | +25% per depth |
-| Difficulty | Easy ×0.6, Normal ×1, Hard ×1.5, Nightmare ×2.25 |
+| Difficulty | Easy ×0.6, Normal ×1, Hard ×1.5, Nightmare ×2.25, Oblivion ×3.5 |
 | Ember jar (camp upgrade) | +5% per level |
 | Long night (camp upgrade) | +4% per level in Endless |
-| Daring (camp upgrade) | +3% per level on Hard and Nightmare |
+| Daring (camp upgrade) | +3% per level on Hard, Nightmare and Oblivion |
 
 Spend embers on [camp upgrades](camp-upgrades.md), lantern unlocks and skins.
 
@@ -38,7 +39,7 @@ Spend embers on [camp upgrades](camp-upgrades.md), lantern unlocks and skins.
 
 Every run also earns **XP**: 4 per wave cleared (plus 1 more every 4 waves), 20 per boss and 150 for a win. XP gets **+20% per depth**, the same difficulty multiplier as embers, and the Night school, Long night and Daring camp upgrades.
 
-XP raises your **player level** (each level needs 20 more XP than the last, starting at 100) and your **Season Pass tier** at the same time.
+XP raises your **player level** (each level needs 20 more XP than the last, starting at 100) and your **Season Pass tier** at the same time. Levels go up to **100**.
 
 | Level | Rank |
 |---:|---|
@@ -48,6 +49,28 @@ XP raises your **player level** (each level needs 20 more XP than the last, star
 | 20 | Keeper of Flames |
 | 35 | Nightwatch |
 | 50 | Dawnbringer |
+| 60 | Starwarden |
+| 70 | Moonkeeper |
+| 80 | Lightbearer |
+| 90 | Ember Sovereign |
+| 100 | Eternal Flame |
+
+## Prestige
+
+At **level 100**, open **Prestige** on the title screen to start the climb again. You can prestige up to **10 times**.
+
+| You keep | Starts over |
+|---|---|
+| Moonstones | Level and XP (back to 1) |
+| Both passes and everything claimed from them | Embers |
+| Every skin and menu theme | Camp upgrades |
+| Lanterns you unlocked, their mastery and mastery prestige | Worlds unlocked and beaten, best waves |
+| Codes, lifetime stats and settings | Saved runs |
+
+- **Prestige I** unlocks **Oblivion**, a difficulty above Nightmare: ×3.1 foe health, ×1.24 speed, 5 starting lives and ×3.5 embers and XP.
+- Every prestige opens **2 Prestige skins** in the **Prestige shop** (20 in all). See [Skins](#skins).
+- Level-up moonstones and first-clear moonstones are paid again on every climb.
+- Lanterns prestige separately: see [Mastery prestige](lanterns.md#mastery).
 
 ## Moonstones
 
@@ -156,8 +179,24 @@ Every lantern has its own set of skins. Equip them on the **Lanterns** page. Ski
 | **Celestial** | 24 | Shop, Shop only |
 | **Exotic** | 14 | Season pass, Shop |
 | **Event** | 28 | Event pass, Event shop |
+| **Prestige** | 20 | Prestige shop (needs a prestige level) |
 
-Higher rarities look louder: Legendaries get a golden halo, then rune rings, light rays, orbiting sparkles and color-cycling shots as you go up. Event skins add their own touches, like circling bats and a blood-moon glow. A lantern at **mastery 100** also gets a **Radiant** look.
+Higher rarities look louder: Legendaries get a golden halo, then rune rings, light rays, orbiting sparkles and color-cycling shots as you go up. Event skins add their own touches, like circling bats and a blood-moon glow. A lantern at **mastery 100** also gets a **Radiant** look. **Founder's gold** has its own double golden halo.
+
+**Prestige skins** are the rarest: turning sigils, tilted orbits whose orbs pass in front of and behind the lantern, a floating crown, light rays and wings at the highest levels. They flare with a nova when you tap them or when they fire, and previews lean toward your pointer. Two open with each prestige level and cost **350 to 980 moonstones**.
+
+| Prestige | Skins |
+|---:|---|
+| I | Gilded Oath (Spark), Ember Throne (Cinder) |
+| II | Winter Crown (Frost), Sunlance Regalia (Lance) |
+| III | Verdant Sovereign (Venom), Storm Sovereign (Bolt) |
+| IV | Imperial Treasury (Mint), Seraph Light (Beacon) |
+| V | Celestial Herald (Comet), Lunar Throne (Moonwell) |
+| VI | Choir of Dawn (Hollow Bell), Sunless Crown (Eclipse) |
+| VII | Starforged (Spark), Frozen Eternity (Frost) |
+| VIII | Phoenix Ascendant (Cinder), Worldstorm (Bolt) |
+| IX | Godspear (Lance), Genesis (Comet) |
+| X | Eternal Eclipse (Eclipse), Heart of the Moon (Moonwell) |
 
 **Skins by lantern**
 
@@ -431,7 +470,9 @@ Menu themes change the look and music of your camp. Equip them in **Settings**.
 
 ## Redeem codes
 
-Enter codes in **Settings → Redeem a code**. Codes can give moonstones, embers or exclusive Legendary skins. Each code works once per save.
+Enter codes in **Settings → Redeem a code**. Codes can give moonstones, embers or exclusive skins. Each code works once per player: your save remembers it, and so does your device, so resetting or prestiging can't redeem it again.
+
+**REDACTED** unlocks the **Founders Edition**: Founder's gold for every lantern, the Season 1 premium pass (while the season runs) and a **Founders Edition** title under the logo. Hide or show the title in Settings.
 
 ---
 

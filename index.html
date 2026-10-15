@@ -1017,15 +1017,66 @@ input[type=text]{flex:1;min-width:0;width:auto;font-size:16px;text-transform:upp
 textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 @media (max-width:420px){.stat b{font-size:15px}.btn{padding:8px 10px}}
 @media (prefers-reduced-motion:reduce){#send.ready{animation:none}.bn{transition:none}body{transition:none}}
+/* Founders Edition title */
+.fed{display:block;margin:10px 0 0;font:700 12px/1 var(--body);letter-spacing:.42em;text-transform:uppercase;padding-left:.42em;text-shadow:none;
+  background:linear-gradient(90deg,#c8901c 0%,#ffe28a 25%,#fff7d6 50%,#ffe28a 75%,#c8901c 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:txtShine 4s linear infinite;filter:drop-shadow(0 0 6px rgba(255,215,94,.45))}
+/* Prestige rarity */
+.r-prestige{--rb:linear-gradient(90deg,#ffd75e 0%,#ff3d6b 16.6%,#ffffff 33.3%,#ffd75e 50%,#ff3d6b 66.6%,#ffffff 83.3%,#ffd75e 100%)}
+.skt.r-prestige,.fc.r-prestige{animation:shine 1.4s linear infinite;box-shadow:0 0 18px -3px rgba(255,90,120,.7),0 0 8px -2px rgba(255,215,94,.8)}
+.rt.r-prestige{animation:shine 1.8s linear infinite;color:#fff1c4}
+.fc.r-prestige.lk{opacity:.6;animation:none}
+.fc .prl{font:500 11px var(--mono);color:#ffd75e}
+/* home: prestige button */
+.btn.mi.prs,[data-view=home] .menu .btn.mi.prs{border:2px solid transparent;background:linear-gradient(color-mix(in srgb,var(--moss2) 88%,transparent),color-mix(in srgb,var(--moss2) 88%,transparent)) padding-box,linear-gradient(90deg,#ffd75e,#ff3d6b 50%,#ffd75e) border-box}
+.btn.mi.prs span{background:linear-gradient(90deg,#ffe28a,#ff8aa8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn.mi.prs.rdy{box-shadow:0 0 18px -4px #ff5a7a;animation:bxpulse2 1.6s ease-in-out infinite}
+@keyframes bxpulse2{50%{box-shadow:0 0 26px 0 #ff5a7a}}
+.prb{color:#ffd75e;font-weight:700}
+/* prestige page */
+.prhero{position:relative;overflow:hidden;border-radius:14px;padding:16px;border:2px solid transparent;display:flex;flex-direction:column;gap:12px;
+  background:radial-gradient(circle at 86% 18%,rgba(255,90,120,.22),transparent 45%),linear-gradient(160deg,#1c1018,#0b0a10 70%) padding-box,linear-gradient(110deg,#ffd75e,#ff3d6b 45%,#fff1c4 70%,#ffd75e) border-box}
+.prtop{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.prnum{width:84px;height:84px;flex:none;border-radius:50%;display:grid;place-content:center;text-align:center;border:2px solid #ffd75e;box-shadow:0 0 22px -4px #ff5a7a,inset 0 0 18px -6px #ffd75e;background:radial-gradient(circle,rgba(255,215,94,.18),transparent 70%)}
+.prnum small{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.prnum b{font:400 40px/.9 var(--display);background:linear-gradient(90deg,#ffe28a,#ff8aa8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.prinfo{flex:1;min-width:180px;display:flex;flex-direction:column;gap:4px}
+.prinfo b.t{font:400 34px/1 var(--display);color:#ffe7b0}
+.prinfo p{margin:0;font-size:13.5px;color:#d8c8c8;line-height:1.4}
+.prpips{display:flex;gap:5px}
+.prpips i{width:14px;height:14px;transform:rotate(45deg);border-radius:3px;background:var(--line)}
+.prpips i.on{background:linear-gradient(135deg,#fff1c4,#ffd75e 45%,#ff5a7a);box-shadow:0 0 8px #ff8a8a}
+.prhero .xpbar i{background:linear-gradient(90deg,#ffd75e,#ff5a7a)}
+.prcols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.prcols>div{background:rgba(0,0,0,.25);border-radius:10px;padding:10px 12px}
+.prcols b{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.prcols ul{margin:0;padding-left:18px;font-size:12.5px;color:#d8d0c0;line-height:1.45}
+.prcols .k b{color:var(--good)}.prcols .r b{color:#ff8a7a}
+@media (max-width:460px){.prcols{grid-template-columns:1fr}}
+.prgo{align-self:flex-start}
+.prgo.armed{background:#ff5a7a;border-color:#ff5a7a;color:#140e06}
+.prgrp{display:flex;flex-direction:column;gap:8px}
+.prgh{display:flex;align-items:center;gap:10px;margin-top:6px}
+.prgh b{font:400 26px/1 var(--display);color:#ffe7b0}
+.prgh span{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
+.prgh span.ok{color:var(--good)}
+.prgrp .feat{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+.mpb{display:inline-flex;align-items:center;gap:3px;font:500 10px/1 var(--mono);color:#ffd75e;margin-left:6px}
+.mpb i{width:7px;height:7px;transform:rotate(45deg);border-radius:1.5px;background:linear-gradient(135deg,#fff1c4,#ffd75e 50%,#ff5a7a)}
+.mprow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:space-between;width:100%}
+.mprow .btn.armed{background:#ff5a7a;border-color:#ff5a7a;color:#140e06}
+#dRange.five::-webkit-slider-runnable-track{background:linear-gradient(90deg,#9be3a9,#cfd8d2 25%,#ffb547 50%,#ff6060 75%,#c08bff)}
+#dRange.five::-moz-range-track{background:linear-gradient(90deg,#9be3a9,#cfd8d2 25%,#ffb547 50%,#ff6060 75%,#c08bff)}
+@media (prefers-reduced-motion:reduce){.fed,.skt.r-prestige,.fc.r-prestige,.rt.r-prestige,.btn.mi.prs.rdy{animation:none}}
 </style>
 
-
 <script>
-/* PWA: offline support and updates (Lanternfall v0.19.2) */
+/* PWA: offline support and updates (Lanternfall v0.20.0) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
 <body>
+
 <div id="app">
   <div class="bar">
     <div class="stat"><small>Wave</small><b id="wave">0/20</b></div>
@@ -1081,7 +1132,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
 <div class="ov" id="camp">
   <canvas id="sky" aria-hidden="true"></canvas>
   <section class="panel view" data-view="home">
-    <h1 class="logo">Lanternfall</h1>
+    <h1 class="logo">Lanternfall<span class="fed" id="fed" hidden>Founders Edition</span></h1>
     <p class="tag">Things come down the trail at night. Hang lanterns to stop them. Every run ends eventually, and the embers you bring home make the next one stronger.</p>
     <button class="player" data-go="profile" aria-label="View your level and progress">
       <span class="lvl"><small>Level</small><b id="pLv">1</b></span>
@@ -1104,6 +1155,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
         <button class="btn mi" data-go="upgrades"><span>Camp upgrades</span><small id="miU"></small></button>
         <button class="btn mi" data-go="pass"><span>Pass</span><small id="miP"></small></button>
       </div>
+      <button class="btn mi prs" id="miPrB" data-go="prestige"><span>Prestige</span><small id="miPr"></small></button>
       <div class="menu2">
         <button class="btn mi" data-go="howto"><span>How to play</span><small>Rules &amp; tips</small></button>
         <button class="btn mi" data-go="updates"><span>Updates</span><small class="newb" id="miN"></small></button>
@@ -1179,6 +1231,11 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
       <li>Moonstones can't be bought with real money. You earn them by playing.</li></ul></div>
   </section>
 
+  <section class="panel view wide" data-view="prestige" hidden>
+    <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">Prestige</h2><span class="pills"><span class="pill ipill" title="Moonstones"><span class="msi"></span><b class="moonN mb">0</b></span></span></header>
+    <div class="prof" id="prs"></div>
+  </section>
+
   <section class="panel view" data-view="profile" hidden>
     <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">Profile</h2><span class="pills"><span class="pill">Moonstones <b class="moonN mb">0</b></span></span></header>
     <div class="prof" id="prof"></div>
@@ -1215,6 +1272,11 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
       <div class="seg" id="laySeg" role="radiogroup" aria-label="Screen layout">
         <button data-lay="auto" role="radio">Auto</button><button data-lay="portrait" role="radio">Portrait</button><button data-lay="landscape" role="radio">Landscape</button></div>
       <p class="hint" style="margin:0">Auto uses landscape when your screen is wider than it is tall, like a computer, a tablet or a phone turned sideways. In landscape the trail runs left to right.</p>
+      <div id="fedSet" hidden>
+        <hr class="sep">
+        <div class="sr"><span>Founders Edition</span><button class="btn tog" id="fedTog" aria-pressed="true"><span class="sw2"></span><span id="fedTogT">Shown</span></button></div>
+        <p class="hint" style="margin:6px 0 0">Show “Founders Edition” under the Lanternfall title on the title screen.</p>
+      </div>
       <hr class="sep">
       <div class="sr"><span>Docs</span><b>Full player guide</b></div>
       <p class="hint" style="margin:0">How to play, strategy, and every lantern, foe, world, boon and camp upgrade with their numbers. Opens in your browser.</p>
@@ -1417,10 +1479,13 @@ const DIFF={
   easy:{name:'Easy',hp:.7,spd:.92,lives:5,rew:.6,col:'#9be3a9',desc:'Weaker, slower foes and 5 extra lives.'},
   normal:{name:'Normal',hp:1,spd:1,lives:0,rew:1,col:'#cfd8d2',desc:'The night as it was meant to be.'},
   hard:{name:'Hard',hp:1.45,spd:1.08,lives:-3,rew:1.5,col:'#ffb547',desc:'Tougher, faster foes and 3 fewer lives.'},
-  nightmare:{name:'Nightmare',hp:2.1,spd:1.16,lives:-7,rew:2.25,col:'#ff6060',desc:'Brutal foes and only 8 lives to start.'}
+  nightmare:{name:'Nightmare',hp:2.1,spd:1.16,lives:-7,rew:2.25,col:'#ff6060',desc:'Brutal foes and only 8 lives to start.'},
+  /* unlocked by your first prestige */
+  oblivion:{name:'Oblivion',hp:3.1,spd:1.24,lives:-10,rew:3.5,col:'#c08bff',pr:1,desc:'Prestige only. Monstrous, fast foes and just 5 lives to start.'}
 };
-const DORDER=['easy','normal','hard','nightmare'];
-const dOf=k=>DIFF[k]||DIFF.normal;
+const DORDER=['easy','normal','hard','nightmare','oblivion'];
+const dOrder=()=>DORDER.filter(k=>!DIFF[k].pr||(meta.prestige||0)>=DIFF[k].pr);
+const dOf=k=>DIFF[k]&&(!DIFF[k].pr||(meta.prestige||0)>=DIFF[k].pr)?DIFF[k]:DIFF.normal;
 
 /* ---------- camp upgrades ---------- */
 const META=[
@@ -1496,11 +1561,11 @@ const META=[
   {id:'studious',cat:'pro',name:'Studious',max:10,base:7,g:1.5,text:l=>`+10% lantern mastery points. Now +${l*10}%.`},
   {id:'trophy',cat:'pro',name:'Trophy hunter',max:5,base:9,g:1.55,text:l=>`+1 ember for every boss you snuff. Now +${l}.`},
   {id:'longnight',cat:'pro',name:'Long night',max:5,base:10,g:1.55,text:l=>`+8% embers and XP from Endless runs. Now +${l*8}%.`},
-  {id:'daring',cat:'pro',name:'Daring',max:5,base:10,g:1.55,text:l=>`+6% embers and XP on Hard and Nightmare. Now +${l*6}%.`},
+  {id:'daring',cat:'pro',name:'Daring',max:5,base:10,g:1.55,text:l=>`+6% embers and XP on Hard, Nightmare and Oblivion. Now +${l*6}%.`},
   {id:'pathfinder',cat:'pro',name:'Pathfinder',max:4,base:15,g:1.7,text:l=>`Beating a world for the first time gives 5 more moonstones. Now +${l*5}.`}
 ];
 /* deeper camp upgrades (0.18.2): these have twice as many levels, each worth half as much, so the caps stay the same */
-const UPER={"kindling": "Start runs with +10 gold.", "purse": "Kills give +1.5% gold.", "tithe": "+1 gold for every wave you clear.", "thrift": "Lanterns and upgrades cost 0.75% less.", "salvage": "Selling refunds 2% more.", "midpay": "The halfway bonus in each wave pays 10% more.", "appraiser": "Path upgrades cost 1% less.", "compound": "After each wave, earn 0.5% interest on your gold (up to 10 gold per level).", "whet": "+2% tower damage.", "bellows": "+1.5% fire rate.", "wick": "+2% tower range.", "keen": "Shots get a 0.75% chance to hit for double damage.", "focus": "+2.5% damage to bosses.", "breaker": "Enemy armor is 2% weaker.", "lastlight": "With 5 lives or fewer, towers deal +4% damage.", "heavy": "Critical hits deal 7.5% more damage.", "tempered": "Lanterns with a path at tier 5 deal +2.5% damage.", "swarmb": "+2% damage to foes that aren’t bosses.", "piercer": "Shots ignore 1 point of armor.", "hearth": "+1 starting life.", "fog": "Foes move 1% slower.", "smallfry": "Foes that aren’t bosses have 1% less health.", "bane": "Bosses have 2% less health.", "luck": "Rare and better boons show up 7.5% more often.", "highroll": "Legendary and better boons show up 6% more often.", "scholar": "+4% boon XP from kills and upgrades.", "blast": "Cinder and Comet bursts are 2.5% wider.", "frostbite": "Frost slows 1.5% more.", "toxin": "Venom and burn damage +4%.", "forge": "Ascensions cost 3% less.", "jar": "+5% embers per run.", "school": "+2.5% XP per run.", "studious": "+5% lantern mastery points.", "longnight": "+4% embers and XP from Endless runs.", "daring": "+3% embers and XP on Hard and Nightmare.", "lo_spark": "Spark deals +2.5% damage.", "lo_cinder": "Cinder deals +2.5% damage.", "lo_frost": "Frost deals +2.5% damage.", "lo_lance": "Lance deals +2.5% damage.", "lo_venom": "Venom deals +2.5% damage.", "lo_bolt": "Bolt deals +2.5% damage.", "lo_comet": "Comet deals +2.5% damage.", "lo_moonwell": "Moonwell deals +2.5% damage.", "lo_bell": "Hollow Bell deals +2.5% damage.", "lo_eclipse": "Eclipse deals +2.5% damage.", "lo_mint": "Mints earn 4% more gold.", "lo_beacon": "Beacon boosts are half a point stronger."};
+const UPER={"kindling": "Start runs with +10 gold.", "purse": "Kills give +1.5% gold.", "tithe": "+1 gold for every wave you clear.", "thrift": "Lanterns and upgrades cost 0.75% less.", "salvage": "Selling refunds 2% more.", "midpay": "The halfway bonus in each wave pays 10% more.", "appraiser": "Path upgrades cost 1% less.", "compound": "After each wave, earn 0.5% interest on your gold (up to 10 gold per level).", "whet": "+2% tower damage.", "bellows": "+1.5% fire rate.", "wick": "+2% tower range.", "keen": "Shots get a 0.75% chance to hit for double damage.", "focus": "+2.5% damage to bosses.", "breaker": "Enemy armor is 2% weaker.", "lastlight": "With 5 lives or fewer, towers deal +4% damage.", "heavy": "Critical hits deal 7.5% more damage.", "tempered": "Lanterns with a path at tier 5 deal +2.5% damage.", "swarmb": "+2% damage to foes that aren’t bosses.", "piercer": "Shots ignore 1 point of armor.", "hearth": "+1 starting life.", "fog": "Foes move 1% slower.", "smallfry": "Foes that aren’t bosses have 1% less health.", "bane": "Bosses have 2% less health.", "luck": "Rare and better boons show up 7.5% more often.", "highroll": "Legendary and better boons show up 6% more often.", "scholar": "+4% boon XP from kills and upgrades.", "blast": "Cinder and Comet bursts are 2.5% wider.", "frostbite": "Frost slows 1.5% more.", "toxin": "Venom and burn damage +4%.", "forge": "Ascensions cost 3% less.", "jar": "+5% embers per run.", "school": "+2.5% XP per run.", "studious": "+5% lantern mastery points.", "longnight": "+4% embers and XP from Endless runs.", "daring": "+3% embers and XP on Hard, Nightmare and Oblivion.", "lo_spark": "Spark deals +2.5% damage.", "lo_cinder": "Cinder deals +2.5% damage.", "lo_frost": "Frost deals +2.5% damage.", "lo_lance": "Lance deals +2.5% damage.", "lo_venom": "Venom deals +2.5% damage.", "lo_bolt": "Bolt deals +2.5% damage.", "lo_comet": "Comet deals +2.5% damage.", "lo_moonwell": "Moonwell deals +2.5% damage.", "lo_bell": "Hollow Bell deals +2.5% damage.", "lo_eclipse": "Eclipse deals +2.5% damage.", "lo_mint": "Mints earn 4% more gold.", "lo_beacon": "Beacon boosts are half a point stronger."};
 const UPSC={};META.forEach(m=>{if(UPER[m.id]){UPSC[m.id]=2;m.max*=2;const t0=m.text;m.text=l=>UPER[m.id]+' Now '+t0(l/2).split(' Now ').slice(1).join(' Now ')}});
 const UCATS=[['all','All'],['eco','Economy'],['off','Offense'],['def','Defense'],['run','Run & boons'],['lan','Lanterns'],['lore','Lore'],['pro','Progress']];
 const sellRate=()=>.6+.04*ml('salvage');
@@ -1585,20 +1650,23 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='0.19.2';
+const VERSION='0.20.0';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
 /* progression: one XP stream feeds player level and the pass */
 const lvNeed=L=>100+20*(L-1);
-function levelInfo(xp){let L=1,x=xp;while(x>=lvNeed(L)){x-=lvNeed(L);L++}return{L,into:x,need:lvNeed(L)}}
+/* player level caps at 100. At 100 you can prestige (up to 10 times), which starts the climb again */
+const LV_MAX=100,PMAX=10,ROM=['','I','II','III','IV','V','VI','VII','VIII','IX','X'];
+function levelInfo(xp){let L=1,x=xp;while(L<LV_MAX&&x>=lvNeed(L)){x-=lvNeed(L);L++}const max=L>=LV_MAX;return{L,into:max?lvNeed(L):x,need:lvNeed(L),max}}
+const prLv=()=>Math.min(PMAX,meta.prestige||0);
 const lvReward=L=>L%5===0?25:10;
 const PASS_COST=150;
 const tierCost=n=>100+(n-1);                 /* XP to go from tier n-1 to tier n: 100, 101, 102 ... 199 */
 const tierStart=n=>100*n+n*(n-1)/2;          /* total XP needed to reach tier n */
 const PASS_MAX_XP=tierStart(100);            /* 14,950 */
 const passTier=()=>{let k=0;while(k<100&&meta.passXp>=tierStart(k+1))k++;return k};
-const RANKS=[[1,'Wanderer'],[5,'Lamplighter'],[10,'Wickwarden'],[20,'Keeper of Flames'],[35,'Nightwatch'],[50,'Dawnbringer']];
+const RANKS=[[1,'Wanderer'],[5,'Lamplighter'],[10,'Wickwarden'],[20,'Keeper of Flames'],[35,'Nightwatch'],[50,'Dawnbringer'],[60,'Starwarden'],[70,'Moonkeeper'],[80,'Lightbearer'],[90,'Ember Sovereign'],[100,'Eternal Flame']];
 const rankOf=L=>RANKS.filter(r=>L>=r[0]).pop()[1];
 const EM='<span class="em"></span>',MS='<span class="msi"></span>';
 function load(){const d=fresh();try{const s=JSON.parse(localStorage.getItem(KEY));if(s)return Object.assign(d,s)}catch(e){}return d}
@@ -1810,7 +1878,10 @@ function storageUI(){
 let persistAsked=false;
 addEventListener('pointerdown',()=>{if(!persistAsked&&storeInfo.persisted===false){persistAsked=true;requestPersist()}},{capture:true});
 function fixMeta(){   /* 0.18.2 doubled the levels of many camp upgrades: keep each player's bonus the same */
-  if((meta.upv||1)<2){for(const id in UPSC)if(meta.up[id]){const m=META.find(x=>x.id===id);meta.up[id]=Math.min(m.max,meta.up[id]*2)}meta.upv=2}}
+  if((meta.upv||1)<2){for(const id in UPSC)if(meta.up[id]){const m=META.find(x=>x.id===id);meta.up[id]=Math.min(m.max,meta.up[id]*2)}meta.upv=2}
+  /* 0.20.0: players who redeemed REDACTED before it became the Founders Edition code get the full edition */
+  (meta.redeemed||[]).forEach(markCode);
+  if((meta.redeemed||[]).includes('REDACTED')&&!meta.founder){meta.founder=1;if(Date.now()<new Date(2026,10,1).getTime())meta.passPremium=true}}
 let meta=load();fixMeta();
 const ml=id=>(meta.up[id]||0)/((typeof UPSC!=='undefined'&&UPSC[id])||1);   /* effective level */
 const mlr=id=>meta.up[id]||0;   /* levels bought */
@@ -1934,7 +2005,7 @@ const ALT={
   bell:[['brass','Brass','#ffcf6b'],['grave','Gravebell','#a9c4b0']],
   eclipse:[['blood','Blood Moon','#ff4d4d'],['pale','Pale Sun','#fff1c4']]
 };
-const RAR={common:'Common',rare:'Rare',legendary:'Legendary',mythic:'Mythic',celestial:'Celestial',exotic:'Exotic',event:'Event'};
+const RAR={common:'Common',rare:'Rare',legendary:'Legendary',mythic:'Mythic',celestial:'Celestial',exotic:'Exotic',event:'Event',prestige:'Prestige'};
 const SKINS={};
 /* Each tower's own high-rarity line: [legendary], [mythic], [celestial], [exotic cycle] — names and palettes are unique per tower.
    Ids stay gild/abyss/starlit/prism so purchases carry over. MOTIF is the particle shape that tower's effects shed. */
@@ -2007,6 +2078,21 @@ const SHSK={spark:[['Ember Sprite','#ffb04d','#fff0c0'],['Glacier Spark','#5ad0f
   bell:[['Brass Bell','#e0a83d','#fff0c0'],['Funeral Toll','#7a5aa0','#c8a8ff'],['Choirlight','#fff8e8','#ffffff']],
   eclipse:[['Solar Flare','#ffb03d','#fff0a8'],['Umbra','#9a3ad8','#ff5a8a'],['Halo Ring','#ffffff','#ffe8c0']]};
 ORDER.forEach(t=>SHSK[t].forEach(([name,color,col2],i)=>SKINS[t].push({id:['sh_l','sh_m','sh_c'][i],name,rar:['legendary','mythic','celestial'][i],color,col2,moon:[45,80,130][i],shopOnly:1})));
+/* Prestige skins: only in the Prestige shop (and the Lanterns page), each one needs a prestige level to buy.
+   Two per prestige level, 20 in all. Every level up adds more layers to their effects. */
+const PRSK=[
+  [1,'spark','Gilded Oath',['#ffd75e','#fff4c8','#ff9a3d'],5],[1,'cinder','Ember Throne',['#ff4a1f','#ffd36b','#fff1e0'],6],
+  [2,'frost','Winter Crown',['#bfe8ff','#ffffff','#7a9cff'],6],[2,'lance','Sunlance Regalia',['#ffe08a','#ffffff','#ff7a3d'],5],
+  [3,'venom','Verdant Sovereign',['#6bff8a','#e8ffb0','#3dd6c8'],7],[3,'bolt','Storm Sovereign',['#7f9cff','#e0ecff','#c08bff'],6],
+  [4,'mint','Imperial Treasury',['#ffd23d','#ffffff','#ff8a3d'],8],[4,'beacon','Seraph Light',['#fff0f8','#ff9ad5','#ffd75e'],8],
+  [5,'comet','Celestial Herald',['#9fb8ff','#ffffff','#ff6bd6'],7],[5,'moonwell','Lunar Throne',['#e8ecff','#a88cff','#ffffff'],6],
+  [6,'bell','Choir of Dawn',['#fff1c4','#ff8ad6','#8ad6ff'],7],[6,'eclipse','Sunless Crown',['#ff5a3d','#ffb36b','#9b5cff'],8],
+  [7,'spark','Starforged',['#ffffff','#7fd4ff','#ffd75e'],8],[7,'frost','Frozen Eternity',['#7fe3ff','#ffffff','#b48cff'],9],
+  [8,'cinder','Phoenix Ascendant',['#ff3d1f','#ffd23d','#ff7ab0'],9],[8,'bolt','Worldstorm',['#3dfcff','#ffffff','#ff3df0'],7],
+  [9,'lance','Godspear',['#ffffff','#ffe08a','#7fd4ff'],9],[9,'comet','Genesis',['#ff6bd6','#ffe93d','#6bb8ff'],10],
+  [10,'eclipse','Eternal Eclipse',['#ff2e4d','#ffd75e','#ffffff'],10],[10,'moonwell','Heart of the Moon',['#ffffff','#dfe7ff','#a88cff'],10]];
+const prPrice=p=>350+70*(p-1);
+PRSK.forEach(([p,t,name,cy,sig])=>SKINS[t].push({id:'pr'+p,name,rar:'prestige',color:cy[0],col2:cy[1],cycle:cy,pr:p,sig,moon:prPrice(p)}));
 ORDER.forEach(t=>SKINS[t].forEach(s=>{s.tw=t}));
 const SEASON={n:1,name:'The Hollow Moon',end:new Date(2026,10,1,0,0,0)};
 /* limited-time events: their own world, currency and 25-tier pass */
@@ -2018,7 +2104,7 @@ const EVR=(()=>{const sk=EVSK.map(([t,id])=>({k:'skin',t,id})),out=[null],mo=[10
 const evCost=i=>Math.round(15+1.5*(i-1));
 const seasonOver=()=>Date.now()>=SEASON.end.getTime();
 const priceOf=(s,k=1)=>Math.round((s.moon||s.cost)*k);
-const canBuy=(s,k=1,shop)=>!s.code&&!s.ev&&(shop||(!s.pass&&!s.shopOnly&&!s.evShop))&&(!s.evShop||evLive())&&(s.moon?meta.moon:meta.embers)>=priceOf(s,k);
+const canBuy=(s,k=1,shop)=>!s.code&&!s.ev&&(!s.pr||prLv()>=s.pr)&&(shop||(!s.pass&&!s.shopOnly&&!s.evShop))&&(!s.evShop||evLive())&&(s.moon?meta.moon:meta.embers)>=priceOf(s,k);
 const priceHTML=(s,k=1)=>`${s.moon?MS:EM} ${priceOf(s,k)}`;
 function pay(s,k=1){if(s.moon)meta.moon-=priceOf(s,k);else meta.embers-=priceOf(s,k)}
 const ownsSkin=(t,id)=>id==='base'||!!meta.owned[t+':'+id];
@@ -2038,7 +2124,7 @@ function skinColor(s,T){
    Celestial (3): + light rays, orbiting star sparkles, random twinkles, more motes, sparkling shot trails
    Exotic    (4): + color cycling everything, rainbow rays, shockwave ripples, comet ribbon orbit,
                   floating crown shards, prism shots that shed sparks                                  */
-const RLV={legendary:1,mythic:2,celestial:3,event:4,exotic:4};
+const RLV={legendary:1,mythic:2,celestial:3,event:4,exotic:4,prestige:5};
 const rlv=s=>RLV[s&&s.rar]||0;
 function fxCol(s,T,k){if(s.cycle){const n=s.cycle.length;return s.cycle[(Math.floor(T*.8)+k)%n]}return k%2&&s.col2?s.col2:s.color}
 /* the signature particle each tower's skins shed */
@@ -2066,10 +2152,81 @@ function motif(c,m,x,y,r,col){
   }
 }
 function star4(c,x,y,r){if(r<=.3)return;c.beginPath();c.moveTo(x,y-r);c.quadraticCurveTo(x,y,x+r,y);c.quadraticCurveTo(x,y,x,y+r);c.quadraticCurveTo(x,y,x-r,y);c.quadraticCurveTo(x,y,x,y-r);c.fill()}
-function skinFxBack(c,s,cx,cy,SS,T){
-  const L=rlv(s);if(!L)return;const col=skinColor(s,T);
+/* ---------- Prestige skins (rarity 5): built in layers, and every prestige level adds more.
+   Back: aura, turning rune circle, a star sigil, a counter-turning inner ring with gems, light rays (P6+), wings (P9+),
+         the far half of tilted orbit rings with orbs passing behind the lantern.
+   Front: the near half of the orbits with orbs passing in front, a floating crown (P2+), rising motes, prestige pips and a rim glint.
+   Interactive: tapping a preview (or a lantern on the board), and every shot it fires, sets off a nova and spins the orbits up.
+   On previews the orbits tilt toward your pointer. ---------- */
+function prPulse(o){return o&&o.pz!=null&&o.pz>=0&&o.pz<1.4?1-o.pz/1.4:0}
+function prOrbit(c,s,cx,cy,SS,T,o,front){
+  const P=s.pr||1,nr=1+(P>=4?1:0)+(P>=8?1:0),sp=1+2.5*prPulse(o),tilt=o&&o.tilt!=null?o.tilt:.35;
+  for(let k=0;k<nr;k++){
+    const rx=SS*(.8+.13*k),ry=rx*(.27+.07*k),rot=tilt*(k%2?-1:1)+Math.sin(T*.5+k)*.08,col=s.cycle[k%3],dir=k%2?-1:1;
+    c.strokeStyle=hexA(col,front?.6:.28);c.lineWidth=Math.max(1,SS*(front?.022:.015));
+    c.beginPath();c.ellipse(cx,cy,rx,ry,rot,front?0:Math.PI,front?Math.PI:Math.PI*2);c.stroke();
+    const no=Math.max(1,2+Math.floor(P/3)-k),pt=th=>{const lx=Math.cos(th)*rx,ly=Math.sin(th)*ry;return[cx+lx*Math.cos(rot)-ly*Math.sin(rot),cy+lx*Math.sin(rot)+ly*Math.cos(rot)]};
+    for(let i=0;i<no;i++){
+      const th=T*(.9+.25*k)*sp*dir+i*Math.PI*2/no+k,sn=Math.sin(th);if((sn>0)!==front)continue;
+      const [x,y]=pt(th),sz=SS*(.032+.02*(sn+1)/2)*(1+.12*k);
+      for(let j=1;j<7;j++){const [tx,ty]=pt(th-j*.1*dir);c.fillStyle=hexA(col,.32*(1-j/7));c.beginPath();c.arc(tx,ty,Math.max(.6,sz*(1-j/8)),0,7);c.fill()}
+      const g=c.createRadialGradient(x,y,0,x,y,sz*3.2);g.addColorStop(0,hexA('#ffffff',.95));g.addColorStop(.3,hexA(col,.65));g.addColorStop(1,hexA(col,0));
+      c.fillStyle=g;c.fillRect(x-sz*3.2,y-sz*3.2,sz*6.4,sz*6.4);
+    }
+  }
+}
+function prestigeBack(c,s,cx,cy,SS,T,o){
+  const P=s.pr||1,c1=skinColor(s,T),c2=s.cycle[1],c3=s.cycle[2],pu=prPulse(o),spin=1+1.5*pu;
+  c.save();c.lineCap='round';c.lineJoin='round';c.globalCompositeOperation='lighter';
+  const pl=.5+.5*Math.sin(T*1.8),g=c.createRadialGradient(cx,cy,SS*.2,cx,cy,SS*1.05);
+  g.addColorStop(0,hexA(c1,.24+.1*pl+.3*pu));g.addColorStop(.6,hexA(c2,.08+.1*pu));g.addColorStop(1,hexA(c3,0));
+  c.fillStyle=g;c.beginPath();c.arc(cx,cy,SS*1.05,0,7);c.fill();
+  if(P>=9)for(const sd of [-1,1])for(let j=0;j<5;j++){   /* wings */
+    const a=(sd>0?-.95+j*.32:Math.PI+.95-j*.32)+Math.sin(T*2.2)*.07*sd,x=cx+Math.cos(a)*SS*.66,y=cy+Math.sin(a)*SS*.55-SS*.06;
+    const wg=c.createLinearGradient(cx,cy,x,y);wg.addColorStop(0,hexA(c2,0));wg.addColorStop(1,hexA(j%2?c3:c2,.32));
+    c.fillStyle=wg;c.beginPath();c.ellipse(x,y,SS*.24,SS*.055,a,0,7);c.fill()}
+  if(P>=6){const n=8+2*(P-6);for(let i=0;i<n;i++){const a=T*.25*spin+i*Math.PI*2/n,len=SS*(.86+.12*Math.sin(T*2.4+i));
+    c.strokeStyle=hexA(i%2?c2:c3,.13);c.lineWidth=Math.max(1,SS*.05);c.beginPath();c.moveTo(cx+Math.cos(a)*SS*.42,cy+Math.sin(a)*SS*.42);c.lineTo(cx+Math.cos(a)*len,cy+Math.sin(a)*len);c.stroke()}}
+  const R1=SS*.69,nt=24+4*P;c.strokeStyle=hexA(c2,.45);c.lineWidth=Math.max(1,SS*.012);c.beginPath();c.arc(cx,cy,R1,0,7);c.stroke();
+  c.beginPath();for(let i=0;i<nt;i++){const a=-T*.2*spin+i*Math.PI*2/nt,l=i%4===0?SS*.065:SS*.025;c.moveTo(cx+Math.cos(a)*R1,cy+Math.sin(a)*R1);c.lineTo(cx+Math.cos(a)*(R1-l),cy+Math.sin(a)*(R1-l))}c.stroke();
+  const n=s.sig||5,R2=SS*.6,step=n>6?3:2;c.strokeStyle=hexA(c1,.55);c.lineWidth=Math.max(1,SS*.018);c.beginPath();
+  for(let i=0;i<n;i++){const a=T*.3*spin+i*Math.PI*2/n,b=T*.3*spin+(i+step)*Math.PI*2/n;c.moveTo(cx+Math.cos(a)*R2,cy+Math.sin(a)*R2);c.lineTo(cx+Math.cos(b)*R2,cy+Math.sin(b)*R2)}c.stroke();
+  if(P>=3){const R3=SS*.5;c.strokeStyle=hexA(c3,.5);c.lineWidth=Math.max(1,SS*.014);c.beginPath();
+    for(let i=0;i<=n;i++){const a=-T*.5*spin+i*Math.PI*2/n;i?c.lineTo(cx+Math.cos(a)*R3,cy+Math.sin(a)*R3):c.moveTo(cx+Math.cos(a)*R3,cy+Math.sin(a)*R3)}c.stroke();
+    c.fillStyle=hexA(c2,.9);for(let i=0;i<n;i++){const a=-T*.5*spin+i*Math.PI*2/n;star4(c,cx+Math.cos(a)*R3,cy+Math.sin(a)*R3,SS*.05*(.7+.3*Math.sin(T*3+i)))}}
+  prOrbit(c,s,cx,cy,SS,T,o,false);
+  if(pu>0){const p=1-pu;for(const [k,col] of [[1,c1],[.7,c2],[.45,c3]]){c.strokeStyle=hexA(col,pu*.85);c.lineWidth=Math.max(1,SS*.05*pu);c.beginPath();c.arc(cx,cy,SS*(.35+p*k*1.15),0,7);c.stroke()}
+    const fl=c.createRadialGradient(cx,cy,0,cx,cy,SS*.95);fl.addColorStop(0,hexA('#ffffff',pu*.4));fl.addColorStop(1,hexA(c1,0));c.fillStyle=fl;c.beginPath();c.arc(cx,cy,SS*.95,0,7);c.fill()}
+  c.restore();
+}
+function prestigeFront(c,s,cx,cy,SS,T,o){
+  const P=s.pr||1,pu=prPulse(o);
+  c.save();c.lineCap='round';c.globalCompositeOperation='lighter';
+  prOrbit(c,s,cx,cy,SS,T,o,true);
+  const nm=5+P;for(let k=0;k<nm;k++){const p=(T*.4+k/nm)%1,x=cx+Math.sin(k*2.4+T*1.1)*SS*.42,y=cy+SS*.42-p*SS*1.25;
+    motif(c,s.mo||MOTIF[s.tw],x,y,Math.max(1,SS*(.028+.014*(k%2))),hexA(fxCol(s,T,k),Math.sin(p*Math.PI)*.95))}
+  if(P>=2){const m=3+Math.floor(P/3);for(let i=0;i<m;i++){const off=i-(m-1)/2,a=-Math.PI/2+off*.3,bob=Math.sin(T*2+i)*SS*.025,r=SS*(.6+.04*Math.abs(off===0?1:0))+bob,x=cx+Math.cos(a)*r,y=cy+Math.sin(a)*r-SS*.03,sz=SS*(off===0?.07:.045);
+    const gg=c.createRadialGradient(x,y,0,x,y,sz*3);gg.addColorStop(0,hexA(fxCol(s,T,i),.5));gg.addColorStop(1,hexA(fxCol(s,T,i),0));c.fillStyle=gg;c.fillRect(x-sz*3,y-sz*3,sz*6,sz*6);
+    motif(c,'diamond',x,y,sz,hexA(i%2?s.cycle[1]:'#ffffff',.95))}}
+  if(pu>0){const p=1-pu;c.strokeStyle=hexA('#ffffff',pu*.8);c.lineWidth=Math.max(1,SS*.02);c.beginPath();
+    for(let i=0;i<12;i++){const a=i*Math.PI/6+T,r0=SS*(.38+p*.5),r1=r0+SS*.14*pu;c.moveTo(cx+Math.cos(a)*r0,cy+Math.sin(a)*r0);c.lineTo(cx+Math.cos(a)*r1,cy+Math.sin(a)*r1)}c.stroke()}
+  c.globalCompositeOperation='source-over';
+  for(let i=0;i<P;i++){const a=Math.PI/2+(i-(P-1)/2)*.15,x=cx+Math.cos(a)*SS*.46,y=cy+Math.sin(a)*SS*.46;
+    motif(c,'diamond',x,y,Math.max(1,SS*.026),'#ffd75e');motif(c,'diamond',x,y,Math.max(.6,SS*.012),'#ffffff')}
+  {const p=(T*.5)%1;if(p<.4){const a=-Math.PI*.8+p/.4*Math.PI*1.6;c.strokeStyle=hexA('#ffffff',.9*Math.sin(p/.4*Math.PI));c.lineWidth=Math.max(1.2,SS*.05);c.beginPath();c.arc(cx,cy,SS*.33,a,a+.55);c.stroke()}}
+  c.restore();
+}
+function skinFxBack(c,s,cx,cy,SS,T,o){
+  const L=rlv(s);if(!L)return;if(L>=5){prestigeBack(c,s,cx,cy,SS,T,o);return}const col=skinColor(s,T);
   c.save();c.globalCompositeOperation='lighter';c.lineCap='round';
-  c.strokeStyle=hexA(L===1?'#ffd75e':col,.2+.14*Math.sin(T*2));c.lineWidth=Math.max(1,SS*.035);c.beginPath();c.arc(cx,cy,SS*.43,0,7);c.stroke();
+  if(s.id==='founder'){   /* Founders Edition: a double golden halo, each ring with a glint running the other way */
+    const gg=c.createRadialGradient(cx,cy,SS*.36,cx,cy,SS*.66);gg.addColorStop(0,hexA('#ffd75e',0));gg.addColorStop(.5,hexA('#ffd75e',.1+.05*Math.sin(T*2)));gg.addColorStop(1,hexA('#ffd75e',0));
+    c.fillStyle=gg;c.beginPath();c.arc(cx,cy,SS*.66,0,7);c.fill();
+    for(const [rr,dir,ph] of [[.43,1,0],[.57,-1,1.7]]){
+      c.strokeStyle=hexA('#ffd75e',.42+.16*Math.sin(T*2+ph));c.lineWidth=Math.max(1.2,SS*.04);c.beginPath();c.arc(cx,cy,SS*rr,0,7);c.stroke();
+      c.strokeStyle=hexA('#fff4c8',.85);c.lineWidth=Math.max(1,SS*.024);const a=dir*T*1.2+ph;c.beginPath();c.arc(cx,cy,SS*rr,a,a+.75);c.stroke();
+      c.fillStyle='#fff4c8';star4(c,cx+Math.cos(a+.75)*SS*rr,cy+Math.sin(a+.75)*SS*rr,SS*.05*(.7+.3*Math.sin(T*6+ph)))}
+  }else{c.strokeStyle=hexA(L===1?'#ffd75e':col,.2+.14*Math.sin(T*2));c.lineWidth=Math.max(1,SS*.035);c.beginPath();c.arc(cx,cy,SS*.43,0,7);c.stroke()}
   if(L>=3){const n=L>=4?12:8;
     for(let i=0;i<n;i++){const a=T*(L>=4?.55:.35)+i*Math.PI*2/n,len=SS*(.7+.14*Math.sin(T*3+i*1.3));
       c.strokeStyle=hexA(L>=4?fxCol(s,T,i):col,.17);c.lineWidth=Math.max(1,SS*.06);
@@ -2082,8 +2239,8 @@ function skinFxBack(c,s,cx,cy,SS,T){
     c.beginPath();c.arc(cx,cy,SS*(.36+p*.64),0,7);c.stroke()}
   c.restore();
 }
-function skinFx(c,s,cx,cy,SS,T){
-  const L=rlv(s);if(!L)return;const hi=s.col2||'#ffffff';
+function skinFx(c,s,cx,cy,SS,T,o){
+  const L=rlv(s);if(!L)return;if(L>=5){prestigeFront(c,s,cx,cy,SS,T,o);return}const hi=s.col2||'#ffffff';
   c.save();c.lineCap='round';
   {const p=(T*.5)%1;if(p<.4){const a=-Math.PI*.8+p/.4*Math.PI*1.6;
     c.strokeStyle=hexA('#ffffff',.9*Math.sin(p/.4*Math.PI));c.lineWidth=Math.max(1.2,SS*.05);c.beginPath();c.arc(cx,cy,SS*.33,a,a+.55);c.stroke()}}
@@ -2130,7 +2287,9 @@ function swStyle(s){
 const CODES={
   LANTERNFALL:{msg:'+50 embers.',ap:()=>{meta.embers+=50}},
   FIREFLY:{msg:'+100 embers.',ap:()=>{meta.embers+=100}},
-  REDACTED:{msg:"Founder's gold skin unlocked for every lantern.",ap:()=>ORDER.forEach(t=>{meta.owned[t+':founder']=1})},
+  /* Founders Edition: every Founder's gold skin, the current premium pass and the Founders Edition title. One use per player. */
+  REDACTED:{msg:()=>`Founders Edition unlocked: Founder's gold for every lantern${seasonOver()?'':', the Season 1 premium pass'} and the Founders Edition title.`,
+    ap:()=>{ORDER.forEach(t=>{meta.owned[t+':founder']=1});meta.founder=1;meta.fedOff=false;if(!seasonOver())meta.passPremium=true}},
   MOONRISE:{msg:'+50 moonstones.',ap:()=>{meta.moon+=50}}
 };
 
@@ -2186,12 +2345,12 @@ function genPathSnake(){
 }
 function newRun(depth,endless){
   applyTheme(depth);
-  G={depth,world:depth,endless:!!endless,diff:DIFF[meta.diff]?meta.diff:'normal',wave:0,state:'build',lives:Math.max(5,15+2*ml('hearth')+dOf(meta.diff).lives),gold:100+20*ml('kindling'),
+  G={depth,world:depth,endless:!!endless,diff:dOrder().includes(meta.diff)?meta.diff:'normal',wave:0,state:'build',lives:Math.max(5,15+2*ml('hearth')+dOf(meta.diff).lives),gold:100+20*ml('kindling'),
     towers:[],foes:[],shots:[],fx:[],q:[],qt:0,path:genPath(),sel:null,bossKills:0,time:0,amb:makeAmb(),
     m:{dmg:1,rate:1,range:1,goldMul:1+.03*ml('purse'),interest:0,crit:0,splash:1+.05*ml('blast'),chill:0,chain:ml('conductor'),cost:1-.015*ml('thrift'),
        boss:1+.05*ml('focus'),exec:.03*ml('reaper'),armor:1-.04*ml('breaker'),
        pierce:0,lance:1,poison:1+.08*ml('toxin'),income:1,aura:0,comet:1},taken:{},bxp:0,blv:0,bpend:0,ward:ml('ward'),patron:ml('patron'),sw:ml('secondwind'),
-    mast:Object.fromEntries(ORDER.map(t=>[t,mastInfo(t).L])),mk:{},used:new Set()};
+    mast:Object.fromEntries(ORDER.map(t=>[t,mastGate(t)])),mastL:Object.fromEntries(ORDER.map(t=>[t,mastInfo(t).L])),mk:{},used:new Set()};
   drawBG();
 }
 
@@ -2216,7 +2375,8 @@ const ASC={ /* each lantern's first ascension type (unlocked at Mastery 30) */
    highest wins (critX, chainKeep, keepHeat, markT, zoneT, chillT, goldAuraR), everything else adds. */
 const FX_MUL=new Set(['dmg','rate','splash','slowT','poison','poisT','stun','income','bossX','goldX','heatX']);
 const FX_MAX=new Set(['critX','chainKeep','keepHeat','markT','zoneT','chillT','goldAuraR']);
-const TIER_K=[.65,.95,1.45,2.3,3.6],ASC_K=3,CORE_DMG=1.17,CORE_RANGE=.05,ASC_MAST=[30,50,70];
+/* 0.20.0: path tiers cost about twice as much, ascensions twice as much */
+const TIER_K=[1.3,1.95,3,4.7,7.4],ASC_K=6,CORE_DMG=1.17,CORE_RANGE=.05,ASC_MAST=[30,50,70];
 /* balance: damage and fire-rate boosts from tiers are softened (x^0.75) so they don't stack out of control, and extra targets from multi-shot upgrades take half damage */
 const TIER_SOFT=.75,MULTI_F=.5;
 const tierLockAt=(path,tier)=>tier>=5?30:tier===4?20:path===0?1:10;
@@ -2291,12 +2451,22 @@ function ascPartner(t){const T=ascTier(t);let best=null;for(const o of G.towers)
 const MAST_MAX=100,mNeed=L=>10+2*L;
 function mastInfo(t){let x=(meta.mastery&&meta.mastery[t])||0,L=1;while(L<MAST_MAX&&x>=mNeed(L)){x-=mNeed(L);L++}return{L,into:x,need:L>=MAST_MAX?0:mNeed(L)}}
 const mastBonus=L=>({dmg:.005*(L-1),rate:.02*Math.floor(L/10)});
+/* mastery prestige: at Mastery 100 a lantern can reset to level 1 for a permanent +2% boost, up to 10 times.
+   Once a lantern has prestiged, everything its mastery unlocked (path 2, tiers 4-5, ascensions, Radiant) stays unlocked. */
+const MP_MAX=10,MP_BOOST=.02;
+const mPrest=t=>Math.min(MP_MAX,(meta.mprest&&meta.mprest[t])||0);
+const mpMul=t=>1+MP_BOOST*mPrest(t);
+const mastGate=t=>mPrest(t)>0?MAST_MAX:mastInfo(t).L;
+function prestigeMastery(t){
+  if(mastInfo(t).L<MAST_MAX||mPrest(t)>=MP_MAX)return false;
+  meta.mprest=meta.mprest||{};meta.mprest[t]=mPrest(t)+1;meta.mastery[t]=0;save();return true;
+}
 const mastBadge=L=>L>=100?'Radiant':L>=75?'Gold':L>=50?'Silver':L>=25?'Bronze':'';
 
 /* auras: Beacons (and a few ascensions) boost lanterns around them */
 function auraOf(b){
   const f=tFx(b);
-  if(b.type==='beacon')return{R:1+(f.auraR||0)+(asc1(b)?1:0)+(G.m.auraR||0),dmg:.15+(f.aura||0)+G.m.aura+ascBoost(b).aura+.01*ml('lo_beacon'),rate:.08+(f.auraRate||0),range:f.auraRange||0,crit:f.auraCrit||0,mark:f.auraMark||0};
+  if(b.type==='beacon')return{R:1+(f.auraR||0)+(asc1(b)?1:0)+(G.m.auraR||0),dmg:(.15+(f.aura||0)+G.m.aura+ascBoost(b).aura+.01*ml('lo_beacon'))*mpMul('beacon'),rate:.08+(f.auraRate||0),range:f.auraRange||0,crit:f.auraCrit||0,mark:f.auraMark||0};
   if(f.auraRate)return{R:f.auraR||1,dmg:0,rate:f.auraRate,range:0,crit:0,mark:0};
   return null;
 }
@@ -2307,11 +2477,11 @@ function auraAt(t){
   return a;
 }
 function tStats(t){
-  const d=TOWERS[t.type],m=G.m,f=tFx(t),A=asc1(t),mb=mastBonus((G.mast&&G.mast[t.type])||1),ab=ascBoost(t),core=Math.pow(CORE_DMG,f.n);
+  const d=TOWERS[t.type],m=G.m,f=tFx(t),A=asc1(t),mb=mastBonus((G.mastL&&G.mastL[t.type])||(G.mast&&G.mast[t.type])||1),ab=ascBoost(t),core=Math.pow(CORE_DMG,f.n),mp=mpMul(t.type);
   if(t.type==='beacon'){const o=auraOf(t);return{aura:Math.round(o.dmg*100),arate:Math.round(o.rate*100),radius:o.R,arange:o.range,acrit:o.crit,amark:o.mark}}
-  if(t.type==='mint')return{income:Math.round(8*f.income*m.income*(A?2:1)*(1+mb.dmg)*ab.dmg*(1+.08*ml('lo_mint'))),interest:f.interest||0,interestCap:f.interestCap||0,bounty:f.bounty||0,goldAura:f.goldAura||0,goldAuraR:f.goldAuraR||1,jackpot:f.jackpot||0};
+  if(t.type==='mint')return{income:Math.round(8*f.income*m.income*(A?2:1)*(1+mb.dmg)*ab.dmg*(1+.08*ml('lo_mint'))*mp),interest:f.interest||0,interestCap:f.interestCap||0,bounty:f.bounty||0,goldAura:f.goldAura||0,goldAuraR:f.goldAuraR||1,jackpot:f.jackpot||0};
   const a=auraAt(t);
-  const perm=(1+.05*ml('lo_'+t.type))*(G.lives<=5?1+.08*ml('lastlight'):1)*(t.p&&(t.p[0]>=5||t.p[1]>=5)?1+.05*ml('tempered'):1);
+  const perm=mp*(1+.05*ml('lo_'+t.type))*(G.lives<=5?1+.08*ml('lastlight'):1)*(t.p&&(t.p[0]>=5||t.p[1]>=5)?1+.05*ml('tempered'):1);
   const td=(m.tdmg&&m.tdmg[t.type])||1,phal=m.phal?Math.min(.2,.04*(G.towers.filter(x=>x.type===t.type).length-1)):0;
   let dmg=d.dmg*f.dmg*core*(1+.04*ml('whet'))*m.dmg*a.dmg*(1+mb.dmg)*ab.dmg*perm*td*(1+phal)*(isAsc(t)?(m.ascd||1):1);
   let rate=d.rate*f.rate*(1+.03*ml('bellows'))*m.rate*a.rate*(1+mb.rate)*ab.rate*((m.trate&&m.trate[t.type])||1);
@@ -2440,6 +2610,7 @@ function puff(x,y,col,n){
 }
 function fire(t,s,tg){
   const d=TOWERS[t.type],cx=t.x+.5,cy=t.y+.5;t.flash=.1;sfx(t.type);
+  if(curSkin(t.type).rar==='prestige'&&G.time-(t._pz==null?-9:t._pz)>1.1)t._pz=G.time;   /* prestige skins answer their own shots */
   const A=asc1(t),src=t.type;
   if(t.type==='bell'){
     for(const e of [...G.foes])if(!e.dead&&Math.hypot(e.x-cx,e.y-cy)<=s.range){e.stunT=Math.max(e.stunT||0,e.t==='boss'?s.stun*.4:s.stun);strike(e,s,s.dmg,src)}
@@ -2711,7 +2882,7 @@ const TINFO={
   bell:{how:'Tolls to hit every foe nearby at once and freeze them in place for a moment.',good:'Clumps of foes and buying time for your damage lanterns.',weak:'Bosses, which are only frozen briefly.',tip:'Ring it next to your heavy hitters so frozen foes sit in their fire.'},
   eclipse:{how:'Strikes the healthiest foe in range for heavy damage plus a share of its max health.',good:'Bosses and the toughest foes in each wave.',weak:'Waves of many small foes.',tip:'Let other lanterns handle the crowd. The Eclipse is your boss killer.'}};
 function openTInfo(t){
-  const ty=t.type,T=TOWERS[ty],st=tStats(t),u=UPG[ty],p=t.p||[0,0],mL=G.mast[ty],mb=mastBonus(mL),I=TINFO[ty],AT=ascTier(t);
+  const ty=t.type,T=TOWERS[ty],st=tStats(t),u=UPG[ty],p=t.p||[0,0],mL=G.mast[ty],rL=(G.mastL&&G.mastL[ty])||mL,mb=mastBonus(rL),mpN=mPrest(ty),I=TINFO[ty],AT=ascTier(t);
   const row=(k,v,d)=>`<div class="tir"><span>${k}</span><b>${v}</b><small>${d}</small></div>`;
   let stats='';
   if(ty==='beacon')stats=row('Boost',`+${st.aura}% damage, +${st.arate}% fire rate`,`For lanterns within ${st.radius} tile${st.radius>1?'s':''}.`);
@@ -2731,7 +2902,7 @@ function openTInfo(t){
     <div class="tis"><h4>How it works</h4><p>${I.how}</p><div class="tgw"><p><b class="g">Strong against</b> ${I.good}</p><p><b class="w">Weak against</b> ${I.weak}</p></div><p class="ttip"><b>Tip</b> ${I.tip}</p></div>
     <div class="tis"><h4>Right now</h4><div class="tirs">${stats}</div></div>
     <div class="tis"><h4>Upgrades</h4>${paths}${asc}</div>
-    <div class="tis"><h4>Mastery ${mL}</h4><p>Mastery adds +${(mb.dmg*100).toFixed(1)}% damage${mb.rate?` and +${Math.round(mb.rate*100)}% fire rate`:''} to every ${T.name}. It grows as you play this lantern and unlocks its later tiers and ascensions.</p></div>
+    <div class="tis"><h4>Mastery ${rL}${mpN?` · prestige ${ROM[mpN]}`:''}</h4><p>Mastery adds +${(mb.dmg*100).toFixed(1)}% damage${mb.rate?` and +${Math.round(mb.rate*100)}% fire rate`:''}${mpN?`, plus +${mpN*2}% from mastery prestige,`:''} to every ${T.name}. It grows as you play this lantern and unlocks its later tiers and ascensions.</p></div>
     ${T.lore?`<p class="lore" style="margin:0">${T.lore}</p>`:''}
     <button class="btn primary" id="tiClose">Back to the trail</button>`;
   if(G.state==='wave')paused=true;show('tinfo');
@@ -2760,7 +2931,7 @@ function endRun(win){
   const cleared=win?MAXW:Math.max(0,G.wave-(G.state==='wave'?1:0));
   G.state='over';
   let base=0;for(let i=1;i<=cleared;i++)base+=1+Math.floor(i/8);
-  const DF=dOf(G.diff),boss=G.bossKills*(3+ml('trophy')),vic=win?30:0,perk=(G.endless?1+.08*ml('longnight'):1)*(G.diff==='hard'||G.diff==='nightmare'?1+.06*ml('daring'):1),mult=(1+.1*ml('jar'))*(1+.25*G.depth)*DF.rew*perk;
+  const DF=dOf(G.diff),boss=G.bossKills*(3+ml('trophy')),vic=win?30:0,perk=(G.endless?1+.08*ml('longnight'):1)*(G.diff==='hard'||G.diff==='nightmare'||G.diff==='oblivion'?1+.06*ml('daring'):1),mult=(1+.1*ml('jar'))*(1+.25*G.depth)*DF.rew*perk;
   const total=Math.round((base+boss+vic)*mult);
   meta.embers+=total;meta.runs++;
   const newD=win&&G.depth>=meta.maxDepth&&meta.maxDepth<MAXD;
@@ -2801,7 +2972,7 @@ function endRun(win){
 let view='home';
 function campPreview(){newRun(meta.depth);G.state='camp'}
 function go(v){
-  if(v!==view)sfx('nav');
+  if(v!==view){sfx('nav');prArm=false;mpArm=null}
   view=v;document.querySelectorAll('#camp .view').forEach(s=>{s.hidden=s.dataset.view!==v});
   $('#camp').scrollTop=0;renderView();
 }
@@ -2810,7 +2981,7 @@ function renderView(){
   document.querySelectorAll('.embersN').forEach(n=>{n.textContent=meta.embers});
   document.querySelectorAll('.moonN').forEach(n=>{n.textContent=meta.moon});
   document.querySelectorAll('[data-ver]').forEach(n=>{n.textContent='v'+VERSION});
-  ({home:renderHome,profile:renderProfile,play:renderWorlds,lanterns:renderLanterns,upgrades:renderUps,pass:renderPass,settings:renderSettings,howto:renderHow,updates:renderLog,shop:renderShop,boons:renderBoons})[view]();
+  ({home:renderHome,profile:renderProfile,play:renderWorlds,lanterns:renderLanterns,upgrades:renderUps,pass:renderPass,settings:renderSettings,howto:renderHow,updates:renderLog,shop:renderShop,boons:renderBoons,prestige:renderPrestige})[view]();
 }
 
 /* profile */
@@ -2819,12 +2990,13 @@ function renderProfile(){
   const hero=`<div class="pcard phwrap">
     <div class="phero"><svg class="ring" viewBox="0 0 128 128" aria-hidden="true"><circle cx="64" cy="64" r="54" class="rb"/><circle cx="64" cy="64" r="54" class="rf" style="stroke-dasharray:${C.toFixed(1)};stroke-dashoffset:${(C*(1-pct)).toFixed(1)}"/></svg>
       <div class="rin"><small>Level</small><b>${L}</b></div></div>
-    <div class="pinfo"><span class="sec" style="margin:0">Rank</span><b class="rk">${cur}</b>
-      <p><b>${li.need-li.into} XP</b> to level ${L+1} (${Math.round(pct*100)}%)</p>
+    <div class="pinfo"><span class="sec" style="margin:0">Rank${prLv()?` · <span class="prb">Prestige ${ROM[prLv()]}</span>`:''}</span><b class="rk">${cur}</b>
+      <p>${li.max?(prLv()<PMAX?'<b>Max level.</b> Prestige to start the climb again and unlock new rewards.':'<b>Max level</b> at the highest prestige.'):`<b>${li.need-li.into} XP</b> to level ${L+1} (${Math.round(pct*100)}%)`}</p>
       <p>${next?`<b>${next[1]}</b> at level ${next[0]}, ${next[0]-L} level${next[0]-L>1?'s':''} away`:'You have the highest rank.'}</p>
       <p class="mono">${meta.xp.toLocaleString()} XP earned in total</p></div></div>`;
-  const road=`<div class="pcard"><h3>Rank road</h3><div class="road">${RANKS.map(r=>`<div class="rr${L>=r[0]?' on':''}${cur===r[1]?' cur':''}"><span class="rd"></span><b>${r[1]}</b><small>Lv ${r[0]}</small></div>`).join('')}</div></div>`;
-  const from=Math.max(2,L-2),lv=[];for(let l=from;l<from+12;l++)lv.push(l);
+  const road=`<div class="pcard"><h3>Rank road</h3><div class="road">${RANKS.map(r=>`<div class="rr${L>=r[0]?' on':''}${cur===r[1]?' cur':''}"><span class="rd"></span><b>${r[1]}</b><small>Lv ${r[0]}</small></div>`).join('')}<div class="rr${li.max?' on':''}"><span class="rd"></span><b class="prb">Prestige</b><small>${prLv()}/${PMAX}</small></div></div>
+    <p class="hint">Climb to level 100, then prestige from the Prestige page to start again with new rewards. Up to ${PMAX} times.</p></div>`;
+  const from=Math.max(2,Math.min(L-2,LV_MAX-11)),lv=[];for(let l=from;l<from+12&&l<=LV_MAX;l++)lv.push(l);
   const rewards=`<div class="pcard"><h3>Level rewards</h3><div class="lrs">${lv.map(l=>`<div class="lr${l<=L?' got':''}${l===L+1?' next':''}${l%5===0?' big':''}"><small>Lv ${l}</small><span>${MS} ${lvReward(l)}</span><i>${l<=L?'Earned':l===L+1?'Next':'&nbsp;'}</i></div>`).join('')}</div>
     <p class="hint">Every level gives 10 moonstones. Every 5th level gives 25.</p></div>`;
   const h=(meta.history||[]).slice(-12),mx=Math.max(1,...h.map(r=>r.xp));
@@ -2833,14 +3005,72 @@ function renderProfile(){
   const tiles=[['Runs',meta.runs],['Wins',st.wins||0],['Best wave',meta.best],['Deepest world',THEMES[meta.maxDepth].name],
     ['Worlds beaten',`${(meta.cleared||[]).length} / ${THEMES.length}`],['Waves cleared',st.waves||0],['Foes snuffed',(st.kills||0).toLocaleString()],['Bosses snuffed',st.bosses||0],
     ['Embers earned',(st.embers||0).toLocaleString()],['Moonstones earned',st.moon||0],['Lanterns',`${ORDER.filter(unlocked).length} / ${ORDER.length}`],
-    ['Skins owned',`${ORDER.reduce((a,t)=>a+SKINS[t].filter(s=>ownsSkin(t,s.id)).length,0)} / ${ORDER.reduce((a,t)=>a+SKINS[t].length,0)}`],['Pass tier',passTier()]];
+    ['Skins owned',`${ORDER.reduce((a,t)=>a+SKINS[t].filter(s=>ownsSkin(t,s.id)).length,0)} / ${ORDER.reduce((a,t)=>a+SKINS[t].length,0)}`],['Pass tier',passTier()],['Prestige',`${prLv()} / ${PMAX}`]];
   const stats=`<div class="pcard"><h3>Lifetime stats</h3><div class="sgrid">${tiles.map(([a,b])=>`<div class="sg"><small>${a}</small><b>${b}</b></div>`).join('')}</div>
     <p class="hint">Wins, kills and earnings are counted from v0.5.1 onward.</p></div>`;
   $('#prof').innerHTML=hero+road+rewards+hist+stats;
 }
 
+/* ---------- account prestige: at level 100, start over with new rewards (up to 10 times) ----------
+   Kept: moonstones, both passes and everything claimed from them, skins, menu themes, lanterns you unlocked, lantern mastery
+   and mastery prestige, codes, lifetime stats and settings. Reset: level and XP, embers, camp upgrades, worlds unlocked and beaten,
+   best waves and any saved runs. */
+const PR_KEEP=['moon','owned','eq','passXp','passPremium','claimed','ptow','themes','menuTheme','mastery','mprest','redeemed','founder','fedOff',
+  'stats','history','boonsTaken','candy','evp','bestEvent','seenVer','majorSeen','mus','musMute','sfx','mute','layout','mode','diff','upv','prestige'];
+function doPrestige(){
+  if(!levelInfo(meta.xp).max||prLv()>=PMAX)return false;
+  const nm=fresh();for(const k of PR_KEEP)if(meta[k]!==undefined)nm[k]=meta[k];
+  nm.up={};for(const id in meta.up)if(id.startsWith('u_'))nm.up[id]=meta.up[id];   /* lanterns you unlocked stay unlocked */
+  nm.prestige=prLv()+1;nm.prAt=(meta.prAt||[]).concat(Date.now());  meta=nm;save();applySkins();campPreview();return true;
+}
+let prArm=false;
+const PR_REWARD=p=>p===1?'Unlocks the Oblivion difficulty and the Prestige shop with 2 Prestige skins.':`Unlocks 2 more Prestige skins in the Prestige shop.`;
+function renderPrestige(){
+  const li=levelInfo(meta.xp),P=prLv(),can=li.max&&P<PMAX,pct=li.into/li.need;
+  const pips=Array.from({length:PMAX},(_,i)=>`<i class="${i<P?'on':''}"></i>`).join('');
+  const hero=`<div class="prhero"><div class="prtop"><div class="prnum"><small>Prestige</small><b>${P?ROM[P]:'0'}</b></div>
+      <div class="prinfo"><b class="t">${P>=PMAX?'Prestige X':can?`Prestige ${ROM[P+1]} is ready`:`Level ${li.L} of ${LV_MAX}`}</b>
+      <p>${P>=PMAX?'You have reached the highest prestige. Every Prestige skin is open to you.':can?PR_REWARD(P+1):`Reach level ${LV_MAX} to prestige. ${li.max?'':`${(li.need-li.into).toLocaleString()} XP to level ${li.L+1}.`}`}</p>
+      <div class="prpips" aria-label="Prestige ${P} of ${PMAX}">${pips}</div></div></div>
+    ${P<PMAX?`<div class="xpbar" aria-hidden="true"><i style="width:${li.max?100:Math.min(100,((li.L-1)+pct)/(LV_MAX-1)*100)}%"></i></div>`:''}
+    ${P<PMAX?`<div class="prcols"><div class="k"><b>You keep</b><ul><li>Moonstones</li><li>Both passes and their rewards</li><li>Every skin and menu theme</li><li>Lanterns you unlocked, their mastery and mastery prestige</li><li>Codes, lifetime stats and settings</li></ul></div>
+      <div class="r"><b>Starts over</b><ul><li>Level and XP (back to 1)</li><li>Embers</li><li>Camp upgrades</li><li>Worlds unlocked and beaten, best waves</li><li>Saved runs</li></ul></div></div>
+      <button class="btn primary big prgo${prArm?' armed':''}" id="prGo" ${can?'':'disabled'}>${can?(prArm?`Tap again to prestige. Your level goes back to 1`:`Prestige to ${ROM[P+1]}`):`Prestige at level ${LV_MAX}`}</button>`:''}</div>`;
+  const mpT=ORDER.filter(t=>mPrest(t)).map(t=>`${TOWERS[t].name} ${ROM[mPrest(t)]}`);
+  const mast=`<div class="pcard"><h3>Mastery prestige</h3><p class="hint" style="margin:0">Every lantern can prestige too. At Mastery 100, prestige it from its Mastery tab on the Lanterns page: it goes back to Mastery 1 for a permanent <b>+2%</b> boost, up to ${MP_MAX} times (+20%). Everything it has unlocked stays unlocked. ${mpT.length?`<br>Yours so far: <b>${mpT.join(', ')}</b>.`:''}</p></div>`;
+  const diff=`<div class="pcard"><h3 style="color:${DIFF.oblivion.col}">Oblivion difficulty</h3><p class="hint" style="margin:0">${P?'Unlocked. ':'Unlocks at Prestige I. '}${DIFF.oblivion.desc} Foes have ×${DIFF.oblivion.hp} health and rewards are ×${DIFF.oblivion.rew}. Pick it on the Play page.</p></div>`;
+  const grp=[];for(let p=1;p<=PMAX;p++){const items=PRSK.filter(x=>x[0]===p),open=P>=p;
+    grp.push(`<div class="prgrp"><div class="prgh"><b>Prestige ${ROM[p]}</b><span class="${open?'ok':''}">${open?'Open':'Locked'}</span></div><div class="feat">${items.map(([pp,t])=>{const s=SKINS[t].find(x=>x.id==='pr'+pp),own=ownsSkin(t,s.id),pr=priceOf(s);
+      return `<div class="fc r-prestige${open?'':' lk'}"><canvas data-t="${t}" data-s="${s.id}" width="240" height="240" aria-label="${s.name} preview. Tap it."></canvas><span class="rt r-prestige">Prestige ${ROM[pp]}</span><b class="fn">${s.name}</b>
+        <span class="ft">${TOWERS[t].name} skin${unlocked(t)?'':' · lantern not unlocked yet'}</span><div class="fp"><span>${MS} ${pr}</span></div>
+        <button class="btn primary" data-prbuy="${t}:${s.id}" ${own||!open||meta.moon<pr?'disabled':''}>${own?'Owned':open?'Buy':`Prestige ${ROM[pp]}`}</button></div>`}).join('')}</div></div>`)}
+  $('#prs').innerHTML=hero+`<div class="sec">Prestige shop · tap a skin to see it react</div>`+grp.join('')+diff+mast;
+}
+document.querySelector('[data-view=prestige]').addEventListener('click',e=>{
+  let b;
+  if((b=e.target.closest('#prGo'))&&!b.disabled){
+    if(!prArm){prArm=true;renderPrestige();return}
+    prArm=false;const P=prLv()+1;
+    if(doPrestige()){sfx('win');renderView();
+      showMajor({kick:'Prestige',title:`Prestige ${ROM[P]}`,sub:`Level 1 · prestige ${P} of ${PMAX}`,go:'Begin again',
+        hl:[['A new climb','Back to level 1 with fresh embers and camp upgrades. Every level pays moonstones again.'],
+          ['Prestige shop',`${PRSK.filter(x=>x[0]===P).map(x=>x[2]).join(' and ')} are now in the Prestige shop.`],
+          ...(P===1?[['Oblivion','A new difficulty above Nightmare is open on the Play page.']]:[]),
+          ['You kept','Moonstones, passes, skins, lanterns and their mastery.']]})}
+    return}
+  if((b=e.target.closest('[data-prbuy]'))&&!b.disabled){const [t,id]=b.dataset.prbuy.split(':'),s=SKINS[t].find(x=>x.id===id);
+    if(!ownsSkin(t,id)&&canBuy(s)){pay(s);meta.owned[t+':'+id]=1;if(unlocked(t))meta.eq[t]=id;applySkins();save();toast(`${s.name} unlocked`,`Prestige ${TOWERS[t].name} skin${unlocked(t)?', equipped':''}.`);renderView()}}
+});
+function drawPrestige(){const T=performance.now()/1000;document.querySelectorAll('#prs canvas').forEach((cv,i)=>drawPrev(cv,cv.dataset.t,SKINS[cv.dataset.t].find(x=>x.id===cv.dataset.s),T,i))}
+
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'0.20.0',d:'Oct 15, 2026',major:1,title:'Prestige',
+   hl:[['Rank road to 100','Ten new ranks and levels up to 100, ending at Eternal Flame.'],
+       ['Prestige','At level 100, start the climb again for new rewards, up to Prestige X. You keep your moonstones, passes, skins and lanterns.'],
+       ['Prestige shop','20 new Prestige skins, the most detailed in the game. They react when you tap them and when they fire.'],
+       ['Mastery prestige','Reset a lantern from Mastery 100 to 1 for a permanent +2% boost, up to 10 times.']],
+   notes:['Player levels now go up to 100, with five new ranks on the rank road: Starwarden, Moonkeeper, Lightbearer, Ember Sovereign and Eternal Flame.','Prestige: at level 100, prestige from the new Prestige page on the title screen. Your level, embers, camp upgrades, worlds and best waves start over. You keep moonstones, both passes and their rewards, every skin and menu theme, the lanterns you unlocked with their mastery, codes, lifetime stats and settings. You can prestige up to 10 times.','Your first prestige unlocks Oblivion, a new difficulty above Nightmare: foes with ×3.1 health, 5 lives to start, and ×3.5 rewards.','The Prestige shop has 20 Prestige skins, two for each prestige level. Prestige is a new rarity above Exotic: turning sigils, tilted orbits with orbs that pass in front of and behind the lantern, a floating crown, wings at the highest levels, and a nova when you tap them or when they fire. Previews lean toward your pointer. They cost 350 to 980 moonstones.','Mastery prestige: once a lantern reaches Mastery 100, prestige it from its Mastery tab. It goes back to Mastery 1 for a permanent +2% boost (up to +20%), and everything its mastery unlocked stays unlocked.','Lantern upgrades cost about twice as much: path tiers and ascensions both.','Founder’s gold now has a double golden halo.','The REDACTED code is now the Founders Edition: every Founder’s gold skin, the Season 1 premium pass and a Founders Edition title under the logo, which you can hide in Settings. It works once per player. If you already redeemed it, you get the rest automatically.']},
   {v:'0.19.2',d:'Oct 15, 2026',notes:['Tougher waves: regular foes now gain health faster from wave 6 to wave 30 (bosses are unchanged), so strong builds stop melting every wave before the boss.','Kills pay about 16% less gold.','New Docs button in Settings (and on How to play) that opens the full player guide: every lantern, foe, world, boon and camp upgrade.','Fixed the Your boons list squashing cards together when you have a lot of boons. It now scrolls.']},
   {v:'0.19.1',d:'Oct 15, 2026',notes:['Fixed drag and drop on phones in landscape: drag a lantern sideways from the tray onto the board. The lantern column can also scroll up and down now.']},
   {v:'0.19.0',d:'Oct 15, 2026',major:1,title:'The Wide Night',
@@ -2913,13 +3143,13 @@ function maybeMajor(){
 function showMajor(e){
   if(!e)return;sfx('major');
   const hw=e.theme==='halloween',el0=$('#major');el0.classList.toggle('hw',hw);$('#mjHw').hidden=!hw;
-  $('#mjKick').textContent=hw?'Halloween update':'Major update';$('#mjGo').textContent=hw?'Enter the harvest':'Into the night';
+  $('#mjKick').textContent=e.kick||(hw?'Halloween update':'Major update');$('#mjGo').textContent=e.go||(hw?'Enter the harvest':'Into the night');
   if(hw){{let k=0;$('#mjTitle').innerHTML=(e.title||'').split(' ').map(w=>`<em class="hww">${[...w].map(ch=>`<span style="--i:${k++}">${ch}</span>`).join('')}</em>`).join(' ')}$('#mjTitle').setAttribute('aria-label',e.title);
     const B=$('#mjBats');B.innerHTML='';for(let i=0;i<9;i++){const d=document.createElement('i');d.style.top=(6+Math.random()*48)+'vh';d.style.setProperty('--s',(.5+Math.random()*.9).toFixed(2));
       d.style.animationDuration=(6+Math.random()*7).toFixed(2)+'s';d.style.animationDelay=(i<3?.6+i*.35:-Math.random()*10).toFixed(2)+'s';
       d.innerHTML='<svg viewBox="0 0 24 12"><path d="M0 5C4 0 8 2 10 4.5 11 3 13 3 14 4.5 16 2 20 0 24 5 21 4.5 19 6.5 18 8.5 16 7.5 14 8.5 12 11 10 8.5 8 7.5 6 8.5 5 6.5 3 4.5 0 5Z"/></svg>';B.appendChild(d)}}
   else{$('#mjTitle').textContent=e.title||'Major update';$('#mjTitle').removeAttribute('aria-label')}
-  $('#mjVer').textContent=`Version ${e.v} · ${e.d}`;
+  $('#mjVer').textContent=e.sub||`Version ${e.v} · ${e.d}`;
   const items=e.hl||e.notes.map(n=>[n,'']);
   $('#mjList').innerHTML=items.map(([h,d],i)=>`<li style="--i:${i}"><span class="mjd"></span><div><b>${h}</b>${d?`<span>${d}</span>`:''}</div></li>`).join('');
   $('#mjGo').style.setProperty('--n',items.length);
@@ -2985,7 +3215,8 @@ function renderHow(){
   <div class="hc"><h3>Foes</h3><p>Every depth brings a new foe with its own trick, like shields, burrowing, blinking or healing its friends. Each world card on the Play page tells you what to expect, and you meet the new foe in the first wave.</p></div>
   <div class="hc"><h3>Events</h3><p>Limited-time events open their own world on the Play page. Event worlds are endless and harder, and they pay <b>candy</b>, which you spend on the free event pass on the Pass page.</p></div>
   <div class="hc"><h3>Saving runs</h3><p>Campaign and Endless runs both save after every wave. Close the game, or pick <b>Save and quit</b> from the pause menu, and continue later from the Play page. You can keep one campaign run and one endless run saved at a time. If you quit mid-wave, you replay that wave when you continue.</p></div>
-  <div class="hc"><h3>Difficulty</h3><p>Pick <b>Easy, Normal, Hard or Nightmare</b> on the Play page. Harder nights mean tougher, faster foes and fewer lives, but pay more embers and XP: ×0.6, ×1, ×1.5 and ×2.25.</p></div>
+  <div class="hc"><h3>Difficulty</h3><p>Pick <b>Easy, Normal, Hard or Nightmare</b> on the Play page. Harder nights mean tougher, faster foes and fewer lives, but pay more embers and XP: ×0.6, ×1, ×1.5 and ×2.25. After your first prestige, <b>Oblivion</b> pays ×3.5.</p></div>
+  <div class="hc"><h3>Prestige</h3><p>Levels go up to <b>100</b>. At 100, open <b>Prestige</b> on the title screen to start the climb again, up to <b>10 times</b>. Your level, embers, camp upgrades and worlds start over, but you keep moonstones, passes, skins and lanterns with their mastery. Each prestige opens two <b>Prestige skins</b> in the Prestige shop. Lanterns prestige too: at <b>Mastery 100</b>, reset one to Mastery 1 for a permanent <b>+2%</b>.</p></div>
   <div class="hc"><h3>Full docs</h3><p>Want every number? The <a href="https://github.com/ZhanderMusic/lanternfall/wiki" target="_blank" rel="noopener" style="color:var(--acc)">Lanternfall docs</a> cover every lantern, foe, world, boon and camp upgrade. You can also open them from Settings.</p></div>
   <div class="hc"><h3>Worlds</h3><p>Clear all 50 waves to unlock the <b>next depth</b>. Each one is a new world with its own twist, tougher foes and bigger ember rewards.</p></div>
   <div class="hc full"><h3>Tips</h3><ul>
@@ -3006,7 +3237,12 @@ function renderHow(){
 function renderHome(){
   $('#best').textContent=meta.best;$('#deepest').textContent=meta.maxDepth;
   const li=levelInfo(meta.xp);
-  $('#pLv').textContent=li.L;$('#pRank').textContent=rankOf(li.L);$('#pXp').textContent=`${li.into} / ${li.need} XP`;$('#pBar').style.width=(li.into/li.need*100)+'%';
+  $('#pLv').textContent=li.L;$('#pRank').textContent=rankOf(li.L);$('#pXp').textContent=li.max?'Max level':`${li.into} / ${li.need} XP`;$('#pBar').style.width=(li.into/li.need*100)+'%';
+  const P=prLv(),canP=li.max&&P<PMAX;
+  document.querySelector('[data-view=home] .ptap').innerHTML=canP?'<span class="prb">Level 100 · ready to prestige</span>':P?`<span class="prb">Prestige ${ROM[P]}</span> · tap to view your progress`:'Tap to view your progress';
+  $('#fed').hidden=!meta.founder||!!meta.fedOff;
+  $('#miPr').textContent=canP?`Ready! Prestige ${ROM[P+1]} awaits`:P>=PMAX?'Prestige X · max':P?`Prestige ${ROM[P]} · shop open`:`Unlocks at level 100 · you're ${li.L}`;
+  $('#miPrB').classList.toggle('rdy',canP);
   const nc=claimable().length;
   $('#miP').textContent=evLive()?`Halloween event live!${nc?` · ${nc} to claim`:''}`:`Season 1 · tier ${passTier()}${nc?` · ${nc} to claim`:''}`;$('#miP').classList.toggle('newb',nc>0||evLive());
   $('#miL').textContent=`${ORDER.filter(unlocked).length}/${ORDER.length} unlocked`;
@@ -3054,10 +3290,10 @@ function renderWorlds(){
     <p class="hint" style="margin:0">Each wave you clear pays candy, more as the night goes on, plus 6 for every Pumpkin King. Harder difficulties pay more candy.</p></div>`;
   document.querySelectorAll('#modes .mode').forEach(b=>{const on=b.dataset.mode===meta.mode;b.classList.toggle('on',on);b.setAttribute('aria-checked',on)});
   $('#bestEnd').textContent=meta.bestEndless?`Best: wave ${meta.bestEndless}`:'';
-  const cd=DIFF[meta.diff]?meta.diff:'normal';
-  if(!$('#dRange')){$('#diffs').innerHTML=`<div class="dsl"><div class="dcard" id="dCard"></div>
-      <input type="range" id="dRange" min="0" max="${DORDER.length-1}" step="1" aria-label="Difficulty">
-      <div class="dticks">${DORDER.map((k,i)=>`<button data-diff="${k}" style="--dc:${DIFF[k].col}">${DIFF[k].name}</button>`).join('')}</div></div>`}
+  const DO=dOrder(),cd=DO.includes(meta.diff)?meta.diff:'normal';
+  if(!$('#dRange')||+$('#dRange').max!==DO.length-1){$('#diffs').innerHTML=`<div class="dsl"><div class="dcard" id="dCard"></div>
+      <input type="range" id="dRange" class="${DO.length>4?'five':''}" min="0" max="${DO.length-1}" step="1" aria-label="Difficulty">
+      <div class="dticks" style="grid-template-columns:repeat(${DO.length},1fr)">${DO.map((k,i)=>`<button data-diff="${k}" style="--dc:${DIFF[k].col}">${DIFF[k].name}</button>`).join('')}</div></div>`}
   diffUI(cd);
   if(meta.endlessSave&&meta.endlessSave.v!==2){delete meta.endlessSave;save()}   /* runs saved before upgrade paths can't be continued */
   if(meta.eventSave&&(meta.eventSave.ev!==EVENT.id||!live)){delete meta.eventSave;save()}
@@ -3067,11 +3303,11 @@ function renderWorlds(){
   $('#start').textContent=ev?`Enter the ${EVT.name} · ${dn}`:en?`Start endless · ${THEMES[meta.depth].name} · ${dn}`:`Light the lanterns · ${THEMES[meta.depth].name} · ${dn}`;
   requestAnimationFrame(drawEvFoes);
 }
-function diffUI(k){const D=DIFF[k],i=DORDER.indexOf(k),r=$('#dRange');r.value=i;$('#diffs').style.setProperty('--dc',D.col);r.style.setProperty('--p',(i/(DORDER.length-1)*100)+'%');
+function diffUI(k){const DO=dOrder(),D=DIFF[k],i=DO.indexOf(k),r=$('#dRange');r.value=i;$('#diffs').style.setProperty('--dc',D.col);r.style.setProperty('--p',(i/(DO.length-1)*100)+'%');
   $('#dCard').innerHTML=`<b>${D.name}</b><span class="rw">Rewards ×${D.rew}</span><small>${D.desc}</small>`;
   document.querySelectorAll('.dticks button').forEach(b=>{const on=b.dataset.diff===k;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)})}
-$('#diffs').addEventListener('input',e=>{if(e.target.id!=='dRange')return;diffUI(DORDER[+e.target.value])});
-$('#diffs').addEventListener('change',e=>{if(e.target.id!=='dRange')return;meta.diff=DORDER[+e.target.value];save();renderWorlds()});
+$('#diffs').addEventListener('input',e=>{if(e.target.id!=='dRange')return;diffUI(dOrder()[+e.target.value])});
+$('#diffs').addEventListener('change',e=>{if(e.target.id!=='dRange')return;meta.diff=dOrder()[+e.target.value];save();renderWorlds()});
 $('#diffs').onclick=e=>{const b=e.target.closest('[data-diff]');if(!b)return;meta.diff=b.dataset.diff;save();renderWorlds()};
 $('#modes').onclick=e=>{const b=e.target.closest('[data-mode]');if(!b)return;meta.mode=b.dataset.mode;save();renderWorlds()};
 $('#worlds').addEventListener('click',e=>{const h=e.target.closest('[data-coll]');if(!h)return;const ci=+h.dataset.coll,o=collOpen(),i=o.indexOf(ci);if(i<0)o.push(ci);else o.splice(i,1);
@@ -3187,7 +3423,7 @@ let hideUn=false;try{hideUn=localStorage.getItem('lanternfall.hideUnowned')==='1
 /* lanterns are shown grouped by role; each lantern has Skins / Mastery / Paths sections */
 const LORDER=ROLES.flatMap(r=>r.t);
 let lanTab='skins';try{lanTab=localStorage.getItem('lanternfall.lanTab')||'skins'}catch(e){}
-const lanDet={};
+const lanDet={};let mpArm=null;
 function mastRoad(t){
   const u=UPG[t],a=k=>ascInfo(t,k)[0],tn=(i,j)=>u.p[i].tiers[j][0];
   return [[1,`${u.p[0].name} 1–3`,`${tn(0,0)}, ${tn(0,1)}, ${tn(0,2)}`],
@@ -3196,24 +3432,25 @@ function mastRoad(t){
     [30,`Tier 5 + ${a(0)}`,`${tn(0,4)}, ${tn(1,4)} · bronze badge at 25`],
     [50,a(1),'Second ascension · silver badge'],
     [70,a(2),'Third ascension · gold badge at 75'],
-    [100,'Radiant look','Radiant badge, color-shifting crown']];
+    [100,'Radiant look','Radiant badge, color-shifting crown'],
+    [100,'Mastery prestige',`Reset to Mastery 1 for +2% forever. Unlocks stay. ${mPrest(t)}/${MP_MAX} done`]];
 }
 function lanPanel(t,mi){
   if(lanTab==='mastery'){
-    return `<ol class="mroad">${mastRoad(t).map(([lv,ti,sub])=>{const ok=mi.L>=lv,nx=!ok&&mastRoad(t).find(r=>r[0]>mi.L)[0]===lv;
-      return `<li class="${ok?'ok':''}${nx?' nx':''}"><span class="mlv">${lv}</span><div><b>${ti}</b><span>${sub}</span></div><i>${ok?'✓':nx?`in ${lv-mi.L}`:''}</i></li>`}).join('')}</ol>`;
+    return `<ol class="mroad">${mastRoad(t).map(([lv,ti,sub],ri)=>{const isP=ri===mastRoad(t).length-1,ok=isP?mPrest(t)>0:mi.G>=lv,rdy=isP&&!ok&&mi.L>=lv,nx=rdy||(!ok&&!isP&&(mastRoad(t).find(r=>r[0]>mi.L)||[])[0]===lv);
+      return `<li class="${ok?'ok':''}${nx?' nx':''}"><span class="mlv">${lv}</span><div><b>${ti}</b><span>${sub}</span></div><i>${ok?'✓':rdy?'ready':nx?`in ${lv-mi.L}`:''}</i></li>`}).join('')}</ol>`;
   }
   if(lanTab==='paths'){
     const u=UPG[t],d=lanDet[t]||{k:'p',i:0,j:0};
-    const col=i=>`<div class="pcol" style="--pc:${PCOL[i]}"><b class="pch">${u.p[i].name}</b>${u.p[i].tiers.map((x,j)=>{const need=tierLockAt(i,j+1),ok=mi.L>=need,sel=d.k==='p'&&d.i===i&&d.j===j;
+    const col=i=>`<div class="pcol" style="--pc:${PCOL[i]}"><b class="pch">${u.p[i].name}</b>${u.p[i].tiers.map((x,j)=>{const need=tierLockAt(i,j+1),ok=mi.G>=need,sel=d.k==='p'&&d.i===i&&d.j===j;
       return `<button class="ptier${ok?' ok':''}${sel?' sel':''}" data-pdet="p:${i}:${j}" aria-pressed="${sel}"><span class="tn">${j+1}</span><span class="tnm">${x[0]}</span><span class="tl">${ok?'':'M'+need}</span></button>`}).join('')}</div>`;
-    return `<div class="pgrid">${col(0)}${col(1)}</div><div class="ascs"><b class="pch">Ascensions</b><div>${[0,1,2].map(k=>{const ok=mi.L>=ASC_MAST[k],sel=d.k==='a'&&d.i===k;
+    return `<div class="pgrid">${col(0)}${col(1)}</div><div class="ascs"><b class="pch">Ascensions</b><div>${[0,1,2].map(k=>{const ok=mi.G>=ASC_MAST[k],sel=d.k==='a'&&d.i===k;
       return `<button class="atag${ok?' ok':''}${sel?' sel':''}" data-pdet="a:${k}" aria-pressed="${sel}">${ascInfo(t,k)[0]}<span>${ok?'✓':'M'+ASC_MAST[k]}</span></button>`}).join('')}</div></div>`;
   }
   return '';
 }
 function slideHTML(t){
-  const T=TOWERS[t],un=unlocked(t),u=UNLOCKS.find(x=>x.t===t),base=SKINS[t][0].color,role=roleOf(t),ri=role.t.indexOf(t),mi=mastInfo(t),mb=mastBonus(mi.L),bd=mastBadge(mi.L),nu=MAST_UNLOCKS.find(x=>x[0]>mi.L);
+  const T=TOWERS[t],un=unlocked(t),u=UNLOCKS.find(x=>x.t===t),base=SKINS[t][0].color,role=roleOf(t),ri=role.t.indexOf(t),mi=Object.assign(mastInfo(t),{G:mastGate(t)}),mp=mPrest(t),mb=mastBonus(mi.L),bd=mastBadge(mi.L),nu=MAST_UNLOCKS.find(x=>x[0]>mi.L);
   let pid=lanPrev[t]||eqSkin(t);if(hideUn&&!ownsSkin(t,pid))pid=eqSkin(t);
   const sk=SKINS[t].find(s=>s.id===pid),shown=hideUn?SKINS[t].filter(s=>ownsSkin(t,s.id)):SKINS[t],nHid=SKINS[t].length-shown.length;
   const rows=T.passive?(t==='mint'?[['Income','8 gold / wave']]:[['Boost','+15% damage'],['Fire rate','+8%'],['Area','8 tiles']]):
@@ -3225,7 +3462,7 @@ function slideHTML(t){
   let panel,bar;
   if(lanTab==='skins'){
     const tiles=shown.map(s=>{const own=ownsSkin(t,s.id),eq=eqSkin(t)===s.id;
-      const lab=eq?'Equipped':own?'Owned':s.ev?'Event':s.evShop?'Event shop':s.shopOnly?'Shop':s.pass?(seasonOver()?'Shop':'Pass'):s.code?'Code':priceHTML(s),alab=eq?'Equipped':own?'Owned':s.ev?'Halloween event pass':s.evShop?'Halloween event shop':s.shopOnly?'Shop rotation only':s.pass?'Season 1 exclusive':s.code?'Code only':`${priceOf(s)} ${s.moon?'moonstones':'embers'}`;
+      const lab=eq?'Equipped':own?'Owned':s.pr&&prLv()<s.pr?`Prestige ${ROM[s.pr]}`:s.ev?'Event':s.evShop?'Event shop':s.shopOnly?'Shop':s.pass?(seasonOver()?'Shop':'Pass'):s.code?'Code':priceHTML(s),alab=eq?'Equipped':own?'Owned':s.pr&&prLv()<s.pr?`Unlocks at Prestige ${ROM[s.pr]}`:s.ev?'Halloween event pass':s.evShop?'Halloween event shop':s.shopOnly?'Shop rotation only':s.pass?'Season 1 exclusive':s.code?'Code only':`${priceOf(s)} ${s.moon?'moonstones':'embers'}`;
       return `<button class="skt r-${s.rar}${s.id===pid?' sel':''}${eq?' eq':''}${!own&&!canBuy(s)?' nope':''}" data-skin="${t}:${s.id}" aria-pressed="${s.id===pid}" aria-label="${s.name}, ${RAR[s.rar]}, ${alab}">
         <span class="sw${s.cycle?' spin':''}" style="${swStyle(s)}"></span><span class="sn">${s.name}</span><span class="sp">${lab}</span></button>`}).join('');
     panel=`<div class="skhead"><span>${shown.length} of ${SKINS[t].length} skins${nHid?' · unowned hidden':''}</span><button class="btn tog" data-hideun aria-pressed="${hideUn}"><span class="sw2"></span>Hide unowned</button></div><div class="skins${shown.length>10?' many':''}">${tiles}</div>`;
@@ -3236,24 +3473,27 @@ function slideHTML(t){
       own?`<button class="btn primary" data-equip="${t}:${pid}">Equip</button>`:
       sk.pass?`<span class="hint" style="margin:0">${seasonOver()?'Season 1 exclusive. Look for it in the Shop rotation.':`Season 1 Pass reward · tier ${passTierOf('skin',t,pid)}`}</span>`:
       sk.code?`<span class="hint" style="margin:0">Unlocked by redeeming a code in Settings</span>`:
+      sk.pr&&prLv()<sk.pr?`<span class="hint" style="margin:0">Prestige skin · unlocks at Prestige ${ROM[sk.pr]} · ${MS} ${priceOf(sk)}</span>`:
       `<button class="btn primary" data-buy="${t}:${pid}" ${!canBuy(sk)?'disabled':''}>Buy · ${priceHTML(sk)}</button>`;
     bar=`<div class="who"><span class="rt r-${sk.rar}">${RAR[sk.rar]}</span><b>${sk.name}</b></div>${act}`;
   }else if(lanTab==='mastery'){
     panel=lanPanel(t,mi);
-    bar=`<p class="bbt">Mastery bonus: <b>+${(mb.dmg*100).toFixed(1)}% damage${mb.rate?`, +${Math.round(mb.rate*100)}% fire rate`:''}</b>. Earn mastery by using this lantern: half a point per kill and 3 per wave cleared.</p>`;
+    bar=mi.L>=MAST_MAX&&mp<MP_MAX?`<div class="mprow"><p class="bbt">Mastery 100. Prestige it to reset to Mastery 1 for a permanent <b>+2% boost</b> (${mp}/${MP_MAX} done). Everything it has unlocked stays unlocked.</p>
+        <button class="btn primary${mpArm===t?' armed':''}" data-mprest="${t}">${mpArm===t?'Tap again to reset to Mastery 1':`Prestige mastery · ${ROM[mp+1]}`}</button></div>`:
+      `<p class="bbt">Mastery bonus: <b>+${(mb.dmg*100).toFixed(1)}% damage${mb.rate?`, +${Math.round(mb.rate*100)}% fire rate`:''}</b>${mp?` and <b>+${mp*2}%</b> from ${mp>1?`${mp} mastery prestiges`:'mastery prestige'}`:''}. Earn mastery by using this lantern: half a point per kill and 3 per wave cleared.${mp>=MP_MAX?' Mastery prestige is maxed.':' Prestige it at Mastery 100 for +2% forever.'}</p>`;
   }else{
     panel=lanPanel(t,mi);
     const d=lanDet[t]||{k:'p',i:0,j:0};
     if(d.k==='p'){const x=UPG[t].p[d.i].tiers[d.j],need=tierLockAt(d.i,d.j+1);
-      bar=`<p class="bbt"><b>${x[0]}</b> · ${UPG[t].p[d.i].name} tier ${d.j+1}. ${x[1]} <span class="${mi.L>=need?'okt':'lkt'}">${mi.L>=need?'Unlocked.':`Unlocks at Mastery ${need}.`}</span></p>`}
+      bar=`<p class="bbt"><b>${x[0]}</b> · ${UPG[t].p[d.i].name} tier ${d.j+1}. ${x[1]} <span class="${mi.G>=need?'okt':'lkt'}">${mi.G>=need?'Unlocked.':`Unlocks at Mastery ${need}.`}</span></p>`}
     else{const [nm,ds]=ascInfo(t,d.i),need=ASC_MAST[d.i];
-      bar=`<p class="bbt"><b>${nm}</b> · ascension. ${ds} <span class="${mi.L>=need?'okt':'lkt'}">${mi.L>=need?'Unlocked.':`Unlocks at Mastery ${need}.`}</span> Needs both paths at tier 5.</p>`}
+      bar=`<p class="bbt"><b>${nm}</b> · ascension. ${ds} <span class="${mi.G>=need?'okt':'lkt'}">${mi.G>=need?'Unlocked.':`Unlocks at Mastery ${need}.`}</span> Needs both paths at tier 5.</p>`}
   }
   return `<article class="slide${un?'':' locked'}" data-t="${t}" style="--tc:${base};--rc:${role.col}" aria-label="${T.name}">
     <div class="stage"><canvas data-prev="${t}" width="360" height="360" aria-hidden="true"></canvas>${un?'':'<span class="lockt">Locked</span>'}</div>
     <div class="info"><span class="lrole">${role.name} · ${ri+1} of ${role.t.length}${T.pass?' · Season 1':''}</span><h3 style="color:${base}">${T.name}</h3><p>${T.desc}</p>
       <dl class="stats">${rows.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl></div>
-    <div class="lmast"><span class="mlvl" title="Mastery level" aria-label="Mastery level ${mi.L}"><b>${mi.L}</b></span><div class="mbody"><div class="mr"><span>${bd?`<b class="bdg">${bd}</b> `:''}${mi.L>=MAST_MAX?'Max mastery':`${mi.into} / ${mi.need} to level ${mi.L+1}`}</span></div>
+    <div class="lmast"><span class="mlvl" title="Mastery level" aria-label="Mastery level ${mi.L}"><b>${mi.L}</b></span><div class="mbody"><div class="mr"><span>${bd?`<b class="bdg">${bd}</b> `:''}${mi.L>=MAST_MAX?'Max mastery':`${mi.into} / ${mi.need} to level ${mi.L+1}`}${mp?`<span class="mpb" title="Mastery prestige ${mp}: +${mp*2}% forever"><i></i>${ROM[mp]} · +${mp*2}%</span>`:''}</span></div>
       <div class="xpbar"><i style="width:${mi.L>=MAST_MAX?100:mi.into/mi.need*100}%"></i></div><small>${nu?`Mastery ${mi.L} · next: <b>${nu[1]}</b> at ${nu[0]}`:`Mastery ${mi.L} · everything unlocked`}</small></div></div>
     <div class="stabs" role="tablist">${[['skins','Skins'],['mastery','Mastery'],['paths','Paths']].map(([k,n])=>`<button class="stab${lanTab===k?' on':''}" data-ltab="${k}" role="tab" aria-selected="${lanTab===k}">${n}</button>`).join('')}</div>
     <div class="lp">${panel}</div>
@@ -3283,6 +3523,10 @@ $('#lDots').onclick=e=>{const b=e.target.closest('button');if(b)toSlide(+b.datas
 $('#lan').onclick=e=>{
   const g=k=>e.target.closest(`[data-${k}]`);let b,t;
   if(b=g('ltab')){lanTab=b.dataset.ltab;try{localStorage.setItem('lanternfall.lanTab',lanTab)}catch(_){}renderLanterns();return}
+  if(b=g('mprest')){t=b.dataset.mprest;if(mpArm!==t){mpArm=t;refreshSlide(t);return}
+    mpArm=null;if(prestigeMastery(t)){sfx('ascend');toast(`${TOWERS[t].name}: mastery prestige ${ROM[mPrest(t)]}`,`+${mPrest(t)*2}% for ${TOWERS[t].name}, forever. Its unlocks stay unlocked.`);
+      showMajor({kick:'Mastery prestige',title:TOWERS[t].name,sub:`Prestige ${ROM[mPrest(t)]} · +${mPrest(t)*2}% forever`,hl:[[`Back to Mastery 1`,`Its damage bonus from mastery climbs again from the start.`],[`+2% boost`,`Every ${TOWERS[t].name} you build is ${mPrest(t)*2}% stronger, in every run, for good.`],['Unlocks kept','Path 2, tiers 4 and 5, every ascension and the Radiant look stay unlocked.']],go:'Back to camp'})}
+    refreshSlide(t);return}
   if(g('hideun')){hideUn=!hideUn;try{localStorage.setItem('lanternfall.hideUnowned',hideUn?'1':'0')}catch(_){}renderLanterns();return}
   if(b=g('pdet')){const sl=b.closest('.slide'),q=b.dataset.pdet.split(':');t=sl.dataset.t;lanDet[t]=q[0]==='p'?{k:'p',i:+q[1],j:+q[2]}:{k:'a',i:+q[1]};refreshSlide(t);return}
   if((b=g('unlock'))&&!b.disabled){t=b.dataset.unlock;const m=UNLOCKS.find(x=>x.t===t);if(meta.embers>=m.base&&!ml(m.id)){meta.embers-=m.base;meta.up[m.id]=1}}
@@ -3302,15 +3546,23 @@ function drawPreviews(){
 }
 function drawPrev(cv,t,s,T,i){
   {const c=cv.getContext('2d'),w=cv.width,SS=w*.6,cx=w/2,cy=w/2+Math.sin(T*1.5+i)*SS*.03,col=skinColor(s,T);
+    /* prestige previews react to the pointer: orbits lean toward it, and a tap sets off a nova */
+    cv._pr=s.rar==='prestige';cv._tl=cv._tl==null?.35:cv._tl+((.35+(cv._tx||0)*.6)-cv._tl)*.08;
+    const o={pz:cv._pz!=null?T-cv._pz:null,tilt:cv._tl};
     c.clearRect(0,0,w,w);
     c.fillStyle='rgba(0,0,0,.35)';c.beginPath();c.ellipse(w/2,w/2+SS*.52,SS*.42,SS*.09,0,0,7);c.fill();
     const R=SS*(1.05+.05*Math.sin(T*2)),gr=c.createRadialGradient(cx,cy,0,cx,cy,R);gr.addColorStop(0,hexA(col,.42));gr.addColorStop(1,hexA(col,0));
     c.globalCompositeOperation='lighter';c.fillStyle=gr;c.fillRect(cx-R,cy-R,R*2,R*2);c.globalCompositeOperation='source-over';
-    skinFxBack(c,s,cx,cy,SS,T);
+    skinFxBack(c,s,cx,cy,SS,T,o);
     c.fillStyle='#090d0e';c.beginPath();c.arc(cx,cy,SS*.33,0,7);c.fill();c.strokeStyle=col;c.lineWidth=SS*.045;c.stroke();
-    lantern(t,cx,cy,col,c,SS);skinFx(c,s,cx,cy,SS,T);
+    lantern(t,cx,cy,col,c,SS);skinFx(c,s,cx,cy,SS,T,o);
   }
 }
+/* prestige skin previews are interactive: they lean toward the pointer and a tap sets off a nova */
+const prevCv=e=>{const c=e.target;return c&&c.tagName==='CANVAS'&&c._pr?c:null};
+document.addEventListener('pointermove',e=>{const c=prevCv(e);if(!c)return;const r=c.getBoundingClientRect();c._tx=Math.max(-1,Math.min(1,(e.clientX-r.left)/Math.max(1,r.width)*2-1))},{passive:true});
+document.addEventListener('pointerout',e=>{const c=prevCv(e);if(c)c._tx=0},{passive:true});
+document.addEventListener('pointerdown',e=>{const c=prevCv(e);if(!c)return;c._pz=performance.now()/1000;sfx('claim')},{passive:true});
 
 /* pass */
 const LOCK='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
@@ -3477,7 +3729,7 @@ function buyPass(){if(!meta.passPremium&&!seasonOver()&&meta.moon>=PASS_COST){me
 $('#psBuy').onclick=buyPass;
 
 /* shop */
-const PREM=[];ORDER.forEach(t=>SKINS[t].forEach(s=>{if(s.moon&&!s.pass&&!s.evShop)PREM.push([t,s])}));
+const PREM=[];ORDER.forEach(t=>SKINS[t].forEach(s=>{if(s.moon&&!s.pass&&!s.evShop&&!s.pr)PREM.push([t,s])}));
 const TOWER_PRICE={moonwell:200,bell:300,eclipse:450};
 /* after Season 1 ends, pass skins and pass lanterns join the featured rotation */
 function shopPool(){
@@ -3653,6 +3905,7 @@ function renderLayout(){const p=layoutPref();document.querySelectorAll('#laySeg 
 $('#laySeg').onclick=e=>{const b=e.target.closest('[data-lay]');if(!b)return;meta.layout=b.dataset.lay;save();applyLayout();renderLayout()};
 function renderSettings(){
   renderLayout();renderSfx();renderMus();
+  $('#fedSet').hidden=!meta.founder;$('#fedTog').setAttribute('aria-pressed',!meta.fedOff);$('#fedTogT').textContent=meta.fedOff?'Hidden':'Shown';
   $('#savedAt').textContent=meta.savedAt?new Date(meta.savedAt).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Never';
   $('#expTxt').value=exportCode();$('#expMsg').textContent='';
   impArmed=false;resetArmed=false;$('#impBtn').textContent='Import';$('#reset').textContent='Reset all progress';
@@ -3687,9 +3940,13 @@ $('#redeem').onclick=()=>{
   if(!k)return;
   const c=CODES[k];
   if(!c){msg.textContent="That code isn't valid.";return}
-  if(meta.redeemed.includes(k)){msg.textContent="You've already redeemed that code.";return}
-  c.ap();meta.redeemed.push(k);save();msg.textContent='Redeemed: '+c.msg;$('#codeIn').value='';renderView();
+  /* codes are one use per player: the save remembers them, and so does this device, so resetting or prestiging can't redeem them again */
+  if(meta.redeemed.includes(k)||usedCodes().includes(k)){msg.textContent="You've already redeemed that code.";return}
+  c.ap();meta.redeemed.push(k);markCode(k);applySkins();save();msg.textContent='Redeemed: '+(typeof c.msg==='function'?c.msg():c.msg);$('#codeIn').value='';renderView();
 };
+function usedCodes(){try{return JSON.parse(localStorage.getItem('lanternfall.codes'))||[]}catch(e){return[]}}
+function markCode(k){try{const u=usedCodes();if(!u.includes(k)){u.push(k);localStorage.setItem('lanternfall.codes',JSON.stringify(u))}}catch(e){}}
+$('#fedTog').onclick=()=>{meta.fedOff=!meta.fedOff;save();renderSettings()};
 $('#codeIn').addEventListener('keydown',e=>{if(e.key==='Enter')$('#redeem').click()});
 $('#reset').onclick=()=>{
   if(!resetArmed){resetArmed=true;$('#reset').textContent=cloud.state==='on'?'Tap again to erase everything, including your cloud save':'Tap again to erase everything';return}
@@ -3809,7 +4066,7 @@ function renderSheet(){
   sh.innerHTML=`<div class="shd"><h3 style="color:${TOWERS[ty].color}">${TOWERS[ty].name}<span class="rolec" style="--rc:${roleOf(ty).col}">${roleOf(ty).name}</span>${AT?`<span class="ascb at${AT}">${ASC_NAME[AT]}</span>`:''}</h3>
     <div class="sha"><button class="btn tib" data-act="info" aria-label="About ${TOWERS[ty].name}" title="About this lantern">i</button><button class="btn" data-act="sell">Sell +${refund}</button><button class="btn" data-act="close" aria-label="Close">✕</button></div></div>
     <div class="nums">${statLine(t,st)}</div>${body}
-    <div class="mst">Mastery ${mL}${mb?` · ${mb}`:''}${nu?` · next: ${nu[1]} at ${nu[0]}`:''}</div>`;
+    <div class="mst">Mastery ${(G.mastL&&G.mastL[ty])||mL}${mPrest(ty)?` · prestige ${ROM[mPrest(ty)]}`:''}${mb?` · ${mb}`:''}${nu?` · next: ${nu[1]} at ${nu[0]}`:''}</div>`;
   sh.hidden=false;afford();
 }
 function buildAt(type,x,y){
@@ -4026,11 +4283,11 @@ function draw(){
   for(const t of G.towers){const cx=(t.x+.5)*S,cy=(t.y+.5)*S,col=skinColor(curSkin(t.type),T),R=S*(1+.04*((t.p?t.p[0]+t.p[1]:0)+(isAsc(t)?2:0)))*(1+(t.flash?.15:0)+.04*Math.sin(T*3+t.x));
     const g=ctx.createRadialGradient(cx,cy,0,cx,cy,R);g.addColorStop(0,hexA(col,.3));g.addColorStop(1,hexA(col,0));ctx.fillStyle=g;ctx.fillRect(cx-R,cy-R,R*2,R*2)}
   ctx.globalCompositeOperation='source-over';
-  for(const t of G.towers){const cx=(t.x+.5)*S,cy=(t.y+.5)*S,sk=curSkin(t.type),col=skinColor(sk,T);upright(ctx,cx,cy,()=>{
-    skinFxBack(ctx,sk,cx,cy,S,T);
+  for(const t of G.towers){const cx=(t.x+.5)*S,cy=(t.y+.5)*S,sk=curSkin(t.type),col=skinColor(sk,T),so={pz:t._pz!=null?T-t._pz:null,tilt:.3+.12*Math.sin(T*.4+t.x)};upright(ctx,cx,cy,()=>{
+    skinFxBack(ctx,sk,cx,cy,S,T,so);
     ctx.fillStyle='#090d0e';ctx.beginPath();ctx.arc(cx,cy,S*.33,0,7);ctx.fill();
     ctx.strokeStyle=col;ctx.lineWidth=Math.max(1.5,S*.05);ctx.stroke();
-    lantern(t.type,cx,cy,t.flash?'#fff':col,ctx,S);skinFx(ctx,sk,cx,cy,S,T);
+    lantern(t.type,cx,cy,t.flash?'#fff':col,ctx,S);skinFx(ctx,sk,cx,cy,S,T,so);
     const asc=isAsc(t),rad=asc&&G.mast[t.type]>=100;
     if(asc){const AT=ascTier(t),ac=AT>=3||rad?['#ff9af0','#9fd8ff','#fff1a8'][Math.floor(T*2)%3]:ASC_COL[AT];
       ctx.save();ctx.setLineDash([S*.08,S*.06]);ctx.lineDashOffset=-T*S*.4;ctx.strokeStyle=hexA(ac,.9);ctx.lineWidth=Math.max(1.5,S*.04);
@@ -4106,7 +4363,7 @@ cv.addEventListener('pointerdown',e=>{if(e.button===2)return;
   if(!G||G.state==='camp'||G.state==='over'||paused||drag)return;
   const c=cellAt(e.clientX,e.clientY);if(!c)return;
   const t=G.towers.find(t=>t.x===c.x&&t.y===c.y);
-  if(t){armT=null;G.sel=G.sel&&G.sel.t===t?null:{kind:'tower',t}}
+  if(t){armT=null;G.sel=G.sel&&G.sel.t===t?null:{kind:'tower',t};if(curSkin(t.type).rar==='prestige')t._pz=G.time}
   else if(armT&&canPlace(c.x,c.y)){buildAt(armT,c.x,c.y);if(G.gold<buildCost(armT))armT=null}
   else{G.sel=null}
   renderTray();
@@ -4121,7 +4378,7 @@ function loop(now){
   else if(!paused&&(G.state==='wave'||G.state==='build')){
     let tot=dt*speed;while(tot>0){const d=Math.min(.03,tot);step(d);tot-=d;if(G.state==='over'||G.state==='cards')break}
   }
-  if(campEl.hidden)draw();else{drawSky(dt);if(view==='lanterns')drawPreviews();else if(view==='shop')drawShop();else if(view==='pass')drawPassPrev()}
+  if(campEl.hidden)draw();else{drawSky(dt);if(view==='lanterns')drawPreviews();else if(view==='shop')drawShop();else if(view==='pass')drawPassPrev();else if(view==='prestige')drawPrestige()}
   hud();
   requestAnimationFrame(loop);
 }

@@ -43,6 +43,7 @@ That rate multiplies on itself every wave. A moth that has 10 health on wave 1 h
 | Normal | ×1 | ×1 | – | ×1 |
 | Hard | ×1.45 | ×1.08 | −3 | ×1.5 |
 | Nightmare | ×2.1 | ×1.16 | −7 | ×2.25 |
+| Oblivion | ×3.1 | ×1.24 | −10 | ×3.5 |
 
 **World twists.** Some worlds add more: tougher foes (×1.15 to ×1.2 health), faster foes (up to +18%), extra armor (+2 to +5), bigger swarms (up to +30% foes), healing tides or surprise mini-bosses. The Hollow Harvest event has ×1.35 health and +8% speed.
 
