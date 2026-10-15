@@ -31,7 +31,7 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 1. **Pick a world and slide the difficulty.** Easy through Nightmare, then survive 50 waves. Harder nights pay up to ×2.25 embers and XP.
 2. **Drag lanterns onto the grass.** Every run carves a brand-new random trail, so no two layouts play the same.
 3. **Upgrade as the waves build.** Each lantern has two upgrade paths of five tiers. Max both and it can ascend, then merge with another ascended lantern for even more power.
-4. **Earn boons.** Every foe you snuff and every upgrade you buy fills boon XP. Level it up to pick a boon from Common, Rare, Legendary, Mythic or Exotic cards.
+4. **Earn boons.** Every foe you snuff and every upgrade you buy fills boon XP. Level it up to pick one of 53 boons, from Common and Rare up to Legendary, Mythic and Exotic.
 5. **Bring your embers home.** Win or lose, the run pays out. Spend embers at camp on permanent upgrades and new lanterns, then go deeper.
 
 ---
@@ -87,7 +87,7 @@ It's a full Progressive Web App: install it once and it runs full screen, works 
 
 **Play:** https://zhandermusic.github.io/lanternfall/
 
-Plays upright on phones and in landscape on computers, tablets and phones turned sideways (switch any time in Settings), with soft sound effects you can turn down or mute. On PC there are keyboard shortcuts: **Space** sends a wave, **1–9** pick lanterns, **U** upgrades, **M** merges, **F** changes speed, **P** pauses and **Esc** cancels.
+Plays upright on phones and in landscape on computers, tablets and phones turned sideways (switch any time in Settings), with atmospheric music for every world and menu theme and soft sound effects, each with its own volume and mute. On PC there are keyboard shortcuts: **Space** sends a wave, **1–9** pick lanterns, **U** upgrades, **M** merges, **F** changes speed, **P** pauses and **Esc** cancels.
 
 ## Saves
 
