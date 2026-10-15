@@ -100,7 +100,7 @@ Plays upright on phones and in landscape on computers, tablets and phones turned
 
 ## Docs
 
-Want the numbers? See **[how foes get tougher](docs/enemy-scaling.md)**: health, foe counts, bosses and speed, wave by wave.
+The **[Lanternfall docs](docs/README.md)** cover everything: [how to play](docs/how-to-play.md), a [strategy guide](docs/strategy.md), every [lantern](docs/lanterns.md), [foe](docs/foes.md), [world](docs/worlds.md), [boon](docs/boons.md) and [camp upgrade](docs/camp-upgrades.md), [how foes get tougher](docs/enemy-scaling.md), and [progression and rewards](docs/progression.md).
 
 ## Saves
 

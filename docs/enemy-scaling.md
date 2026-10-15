@@ -1,6 +1,6 @@
 # How foes get tougher
 
-[← Docs](README.md) · [Play Lanternfall](https://zhandermusic.github.io/lanternfall/)
+[← Docs home](README.md) · [Play Lanternfall](https://zhandermusic.github.io/lanternfall/)
 
 Every wave sends more foes, and each one is tougher, faster, better armored and worth a little more gold. Your depth, difficulty and the world's twist stack on top of that.
 
@@ -80,3 +80,7 @@ Foes move 1.2% faster every wave and 4% faster for every depth. Ice and storm wo
 ## Gold
 
 Every kill pays 3% more gold per wave than on wave 1. Clearing a wave also pays a bonus of 6 gold plus about 0.7 per wave (the Wave tithe camp upgrade adds more).
+
+---
+
+← [Worlds and modes](worlds.md) · [Boons](boons.md) →
