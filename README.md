@@ -98,6 +98,10 @@ It's a full Progressive Web App: install it once and it runs full screen, works 
 
 Plays upright on phones and in landscape on computers, tablets and phones turned sideways (switch any time in Settings), with atmospheric music for every world and menu theme and soft sound effects, each with its own volume and mute. On PC there are keyboard shortcuts: **Space** sends a wave, **1–9** pick lanterns, **U** upgrades, **M** merges, **F** changes speed, **P** pauses and **Esc** cancels.
 
+## Docs
+
+Want the numbers? See **[how foes get tougher](docs/enemy-scaling.md)**: health, foe counts, bosses and speed, wave by wave.
+
 ## Saves
 
 Progress saves on your device automatically. Campaign, Endless and event runs all save between waves, so you can close the game mid-run and continue later. To move your progress between devices, use **Settings → Export save** and **Import save**.
