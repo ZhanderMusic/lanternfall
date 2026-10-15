@@ -26,6 +26,15 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 
 ---
 
+## 🌙 New in 0.19: The Wide Night
+
+- **Landscape mode.** On computers, tablets and sideways phones the trail runs left to right, with your controls beside the board. Choose Auto, Portrait or Landscape in Settings.
+- **Music.** Quiet, atmospheric tracks for every world and every menu theme, crossfading as you go.
+- **Sound effects.** Soft menu sounds and a quiet voice for every lantern.
+- **29 new boons, 53 in all.** Lantern boons only show up while that lantern is on the board.
+
+---
+
 ## How a run works
 
 1. **Pick a world and slide the difficulty.** Easy through Nightmare, then survive 50 waves. Harder nights pay up to ×2.25 embers and XP.
