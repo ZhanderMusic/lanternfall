@@ -108,6 +108,7 @@ html.lside .pal{flex-direction:column;overflow:visible;gap:8px}
 html.lside .pg+.pg{padding-left:0;padding-top:8px}
 html.lside .pg+.pg::before{display:none}
 html.lside .pgr{flex-wrap:wrap}
+html.lside .pc{touch-action:pan-y}
 html.lside .sheet{right:auto;width:calc(clamp(250px,26vw,330px) + 4px);top:8px;max-height:calc(100% - 16px);overflow-y:auto;overscroll-behavior:contain}
 @media (max-height:520px){html.lside .stat b{font-size:15px}html.lside .bar .btn{padding:7px 10px;font-size:13px}html.lside #app{padding-block:6px;row-gap:6px}html.lside .trh{display:none}}
 canvas#cv{display:block;border-radius:8px;touch-action:none;box-shadow:0 0 0 1px var(--line)}
@@ -1019,7 +1020,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 
 
 <script>
-/* PWA: offline support and updates (Lanternfall v0.19.0) */
+/* PWA: offline support and updates (Lanternfall v0.19.1) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -1579,7 +1580,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='0.19.0';
+const VERSION='0.19.1';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -2835,6 +2836,7 @@ function renderProfile(){
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'0.19.1',d:'Oct 15, 2026',notes:['Fixed drag and drop on phones in landscape: drag a lantern sideways from the tray onto the board. The lantern column can also scroll up and down now.']},
   {v:'0.19.0',d:'Oct 15, 2026',major:1,title:'The Wide Night',
    hl:[['Landscape mode','On computers, tablets and sideways phones the trail runs left to right. Pick Auto, Portrait or Landscape in Settings.'],
        ['Music','Quiet, atmospheric music. Every world and every menu theme has its own track.'],
@@ -3850,7 +3852,8 @@ function dragPos(){return{x:drag.x,y:drag.y-(drag.touch?GOFF:0)}}
 addEventListener('pointermove',e=>{
   if(!drag||e.pointerId!==drag.id)return;drag.x=e.clientX;drag.y=e.clientY;
   if(!drag.on){const dx=e.clientX-drag.sx,dy=e.clientY-drag.sy;
-    if(drag.touch?(dy<-8&&Math.abs(dy)>Math.abs(dx)*.8):Math.hypot(dx,dy)>6){drag.on=true;armT=null;G.sel=null;
+    const side=document.documentElement.classList.contains('lside');
+    if(drag.touch?(side?(dx>8&&dx>Math.abs(dy)*.8):(dy<-8&&Math.abs(dy)>Math.abs(dx)*.8)):Math.hypot(dx,dy)>6){drag.on=true;armT=null;G.sel=null;
       try{drag.el.setPointerCapture(e.pointerId)}catch(_){}
       ghostEl.style.setProperty('--gc',TOWERS[drag.t].color);document.body.classList.add('dragging')}}
   if(drag.on){e.preventDefault();const p=dragPos(),over=cellAt(p.x,p.y);
