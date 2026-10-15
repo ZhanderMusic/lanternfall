@@ -91,25 +91,4 @@ Built for phones first, and fully playable on PC with keyboard shortcuts: **Spac
 
 ## Saves
 
-Progress saves in your browser on each device, with a backup copy and persistent storage so it isn't cleared. Campaign, Endless and event runs all save between waves, so you can close the game mid-run and continue later. To move your progress between devices, use **Settings → Export save** and **Import save**.
-
-## Files
-
-| File | What it is |
-|---|---|
-| `index.html` | The whole game in one file |
-| `manifest.webmanifest` | App name, icons and colors for installing |
-| `sw.js` | Service worker: offline play and updates |
-| `version.json` | The current version, which the game checks to tell players about updates |
-| `icons/` | App icons |
-| `media/` | Screenshots and GIFs for this page |
-
-## Releasing an update
-
-1. Replace `index.html` with the new version.
-2. Update `version.json` and change `CACHE` at the top of `sw.js` (for example `lanternfall-v0.18.2`) so installed copies refresh their offline files.
-3. Commit to `main`. GitHub Pages republishes within a minute or two.
-
----
-
-<sub>Fonts: Jersey 10, Atkinson Hyperlegible and IBM Plex Mono, all under the SIL Open Font License.</sub>
+Progress saves on your device automatically. Campaign, Endless and event runs all save between waves, so you can close the game mid-run and continue later. To move your progress between devices, use **Settings → Export save** and **Import save**.
