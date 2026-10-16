@@ -46,7 +46,7 @@ Damage is per hit, fire rate is shots per second and range is in tiles. These ar
 - Every lantern has **two paths of five tiers**. You can buy both paths all the way to tier 5.
 - Every tier also gives a **core boost** on top of its listed effect: about +17% damage and +0.05 range.
 - Damage and fire-rate boosts from tiers are softened a little as they stack, and extra targets from multi-shot upgrades deal half damage.
-- **Tier prices** are a multiple of the lantern's build cost: ×1.3, ×1.95, ×3, ×4.7 and ×7.4 for tiers 1 to 5. Camp upgrades like Thrift and Appraiser lower them.
+- **Tier prices** are a multiple of the lantern's build cost: ×1.3, ×1.95, ×3, ×4.7 and ×7.4 for tiers 1 to 5, and then 15% more on top of that. Camp upgrades like Thrift and Appraiser lower them.
 - **Ascending** needs both paths at tier 5 and costs 6× the build cost. You pick one of the lantern's ascension types: the first unlocks at mastery 30, the second at 50 and the third at 70.
 - **Merging** two ascended lanterns of the same type and level makes Ascended II, then Ascended III. Each merge gives ×1.75 damage, ×1.2 fire rate and ×1.12 range.
 - **Selling** refunds 60% of everything spent on the lantern.
@@ -87,21 +87,21 @@ Each mastery level also adds **+0.5% damage**, and every 10 levels add **+2% fir
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Honed tips | +20% damage. | 39 | 1 |
-| 2 | Keen aim | 8% chance to crit for 3× damage. | 59 | 1 |
-| 3 | Armor piercer | Ignores 3 armor. | 90 | 1 |
-| 4 | Deadeye | +0.5 range and +8% crit chance. | 141 | 20 |
-| 5 | Marksman | +35% damage. Crits hit for 3.5×. | 222 | 30 |
+| 1 | Honed tips | +20% damage. | 45 | 1 |
+| 2 | Keen aim | 8% chance to crit for 3× damage. | 67 | 1 |
+| 3 | Armor piercer | Ignores 3 armor. | 103 | 1 |
+| 4 | Deadeye | +0.5 range and +8% crit chance. | 162 | 20 |
+| 5 | Marksman | +35% damage. Crits hit for 3.5×. | 255 | 30 |
 
 **Path 2: Rapid fire**
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Quick hands | +15% fire rate. | 39 | 10 |
-| 2 | Light darts | +15% fire rate. | 59 | 10 |
-| 3 | Twin darts | Fires at 2 foes at once. | 90 | 10 |
-| 4 | Hair trigger | +20% fire rate. | 141 | 20 |
-| 5 | Spark swarm | Fires at 3 foes at once. +15% fire rate. | 222 | 30 |
+| 1 | Quick hands | +15% fire rate. | 45 | 10 |
+| 2 | Light darts | +15% fire rate. | 67 | 10 |
+| 3 | Twin darts | Fires at 2 foes at once. | 103 | 10 |
+| 4 | Hair trigger | +20% fire rate. | 162 | 20 |
+| 5 | Spark swarm | Fires at 3 foes at once. +15% fire rate. | 255 | 30 |
 
 **Ascensions** (180 gold)
 
@@ -128,21 +128,21 @@ Each mastery level also adds **+0.5% damage**, and every 10 levels add **+2% fir
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Hotter coals | +20% damage. | 72 | 1 |
-| 2 | Embers | Bursts burn foes for 2 seconds. | 107 | 1 |
-| 3 | Napalm | Burns deal 80% more. | 165 | 1 |
-| 4 | Firestorm | Bursts are 25% wider. | 259 | 20 |
-| 5 | Hellfire | +50% damage and stronger burns. | 407 | 30 |
+| 1 | Hotter coals | +20% damage. | 82 | 1 |
+| 2 | Embers | Bursts burn foes for 2 seconds. | 123 | 1 |
+| 3 | Napalm | Burns deal 80% more. | 190 | 1 |
+| 4 | Firestorm | Bursts are 25% wider. | 297 | 20 |
+| 5 | Hellfire | +50% damage and stronger burns. | 468 | 30 |
 
 **Path 2: Bombardier**
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Bigger shells | Bursts are 15% wider. | 72 | 10 |
-| 2 | Quick fuse | +15% fire rate. | 107 | 10 |
-| 3 | Concussion | Bursts stun regular foes for 0.2 seconds. | 165 | 10 |
-| 4 | Long fuse | +0.6 range. | 259 | 20 |
-| 5 | Carpet bomb | Fires at 2 foes at once. | 407 | 30 |
+| 1 | Bigger shells | Bursts are 15% wider. | 82 | 10 |
+| 2 | Quick fuse | +15% fire rate. | 123 | 10 |
+| 3 | Concussion | Bursts stun regular foes for 0.2 seconds. | 190 | 10 |
+| 4 | Long fuse | +0.6 range. | 297 | 20 |
+| 5 | Carpet bomb | Fires at 2 foes at once. | 468 | 30 |
 
 **Ascensions** (330 gold)
 
@@ -169,21 +169,21 @@ Each mastery level also adds **+0.5% damage**, and every 10 levels add **+2% fir
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Colder | Slows 8% more. | 59 | 1 |
-| 2 | Lingering chill | Slows last 40% longer. | 88 | 1 |
-| 3 | Brittle | Chilled foes take 15% more damage. | 135 | 1 |
-| 4 | Permafrost | Slows 10% more. | 212 | 20 |
-| 5 | Absolute zero | Freezes regular foes solid for 0.4 seconds. | 333 | 30 |
+| 1 | Colder | Slows 8% more. | 67 | 1 |
+| 2 | Lingering chill | Slows last 40% longer. | 101 | 1 |
+| 3 | Brittle | Chilled foes take 15% more damage. | 155 | 1 |
+| 4 | Permafrost | Slows 10% more. | 243 | 20 |
+| 5 | Absolute zero | Freezes regular foes solid for 0.4 seconds. | 383 | 30 |
 
 **Path 2: Blizzard**
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Wide reach | +0.4 range. | 59 | 10 |
-| 2 | Ice shards | +60% damage. | 88 | 10 |
-| 3 | Frost nova | Shots splash 0.8 tiles, chilling everything nearby. | 135 | 10 |
-| 4 | Quick freeze | +25% fire rate. | 212 | 20 |
-| 5 | Hailstorm | Fires at 3 foes at once. | 333 | 30 |
+| 1 | Wide reach | +0.4 range. | 67 | 10 |
+| 2 | Ice shards | +60% damage. | 101 | 10 |
+| 3 | Frost nova | Shots splash 0.8 tiles, chilling everything nearby. | 155 | 10 |
+| 4 | Quick freeze | +25% fire rate. | 243 | 20 |
+| 5 | Hailstorm | Fires at 3 foes at once. | 383 | 30 |
 
 **Ascensions** (270 gold)
 
@@ -210,21 +210,21 @@ Each mastery level also adds **+0.5% damage**, and every 10 levels add **+2% fir
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Barbed tips | +20% damage. | 65 | 1 |
-| 2 | Long spear | Pierces 2 more foes. | 98 | 1 |
-| 3 | Armor breaker | Ignores 4 armor. | 150 | 1 |
-| 4 | Heavy shaft | +35% damage. | 235 | 20 |
-| 5 | Executioner | Instantly finishes regular foes below 10% health. | 370 | 30 |
+| 1 | Barbed tips | +20% damage. | 75 | 1 |
+| 2 | Long spear | Pierces 2 more foes. | 112 | 1 |
+| 3 | Armor breaker | Ignores 4 armor. | 172 | 1 |
+| 4 | Heavy shaft | +35% damage. | 270 | 20 |
+| 5 | Executioner | Instantly finishes regular foes below 10% health. | 425 | 30 |
 
 **Path 2: Volley**
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Quick throw | +15% fire rate. | 65 | 10 |
-| 2 | Reach | +0.5 range. | 98 | 10 |
-| 3 | Twin spears | Throws at 2 foes at once. | 150 | 10 |
-| 4 | Rapid volley | +20% fire rate. | 235 | 20 |
-| 5 | Spear rain | Throws at 3 foes at once. | 370 | 30 |
+| 1 | Quick throw | +15% fire rate. | 75 | 10 |
+| 2 | Reach | +0.5 range. | 112 | 10 |
+| 3 | Twin spears | Throws at 2 foes at once. | 172 | 10 |
+| 4 | Rapid volley | +20% fire rate. | 270 | 20 |
+| 5 | Spear rain | Throws at 3 foes at once. | 425 | 30 |
 
 **Ascensions** (300 gold)
 
@@ -251,21 +251,21 @@ Each mastery level also adds **+0.5% damage**, and every 10 levels add **+2% fir
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Stronger poison | +30% poison. | 65 | 1 |
-| 2 | Lingering toxin | Poison lasts 50% longer. | 98 | 1 |
-| 3 | Corrosion | Poisoned foes take 15% more damage. | 150 | 1 |
-| 4 | Lethal dose | +50% poison. | 235 | 20 |
-| 5 | Neurotoxin | Poison also slows foes 30%. | 370 | 30 |
+| 1 | Stronger poison | +30% poison. | 75 | 1 |
+| 2 | Lingering toxin | Poison lasts 50% longer. | 112 | 1 |
+| 3 | Corrosion | Poisoned foes take 15% more damage. | 172 | 1 |
+| 4 | Lethal dose | +50% poison. | 270 | 20 |
+| 5 | Neurotoxin | Poison also slows foes 30%. | 425 | 30 |
 
 **Path 2: Spitter**
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Quick spit | +15% fire rate. | 65 | 10 |
-| 2 | Glob | Shots splash 0.6 tiles. | 98 | 10 |
-| 3 | Acid pool | Shots leave a pool that hurts foes for 2 seconds. | 150 | 10 |
-| 4 | Long range | +0.5 range. | 235 | 20 |
-| 5 | Twin glands | Spits at 2 foes at once. | 370 | 30 |
+| 1 | Quick spit | +15% fire rate. | 75 | 10 |
+| 2 | Glob | Shots splash 0.6 tiles. | 112 | 10 |
+| 3 | Acid pool | Shots leave a pool that hurts foes for 2 seconds. | 172 | 10 |
+| 4 | Long range | +0.5 range. | 270 | 20 |
+| 5 | Twin glands | Spits at 2 foes at once. | 425 | 30 |
 
 **Ascensions** (300 gold)
 
@@ -292,21 +292,21 @@ Passive: doesn't attack.
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Fresh press | +25% gold. | 78 | 1 |
-| 2 | Silver dies | +25% gold. | 117 | 1 |
-| 3 | Lucky coin | Foes defeated within 1 tile give 15% more gold. | 180 | 1 |
-| 4 | Gold dies | +40% gold. | 282 | 20 |
-| 5 | Royal mint | +50% gold. | 444 | 30 |
+| 1 | Fresh press | +25% gold. | 90 | 1 |
+| 2 | Silver dies | +25% gold. | 135 | 1 |
+| 3 | Lucky coin | Foes defeated within 1 tile give 15% more gold. | 207 | 1 |
+| 4 | Gold dies | +40% gold. | 324 | 20 |
+| 5 | Royal mint | +50% gold. | 511 | 30 |
 
 **Path 2: Bank**
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Savings | After each wave, earn 2% interest on your gold (up to 10). | 78 | 10 |
-| 2 | Deposits | +1% interest, up to 10 more. | 117 | 10 |
-| 3 | Bounty board | Each boss defeated pays 15 extra gold. | 180 | 10 |
-| 4 | Compound | +1% interest, up to 15 more. | 282 | 20 |
-| 5 | Vault | +50% gold. Interest up to 15 more. | 444 | 30 |
+| 1 | Savings | After each wave, earn 2% interest on your gold (up to 10). | 90 | 10 |
+| 2 | Deposits | +1% interest, up to 10 more. | 135 | 10 |
+| 3 | Bounty board | Each boss defeated pays 15 extra gold. | 207 | 10 |
+| 4 | Compound | +1% interest, up to 15 more. | 324 | 20 |
+| 5 | Vault | +50% gold. Interest up to 15 more. | 511 | 30 |
 
 **Ascensions** (360 gold)
 
@@ -333,21 +333,21 @@ Passive: doesn't attack.
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Higher voltage | +20% damage. | 104 | 1 |
-| 2 | Longer arcs | Chains to 1 more foe. | 156 | 1 |
-| 3 | Superconductor | Chain hits lose almost no damage. | 240 | 1 |
-| 4 | Arc reach | Chains to 1 more foe. +0.3 range. | 376 | 20 |
-| 5 | Thunder | +50% damage. | 592 | 30 |
+| 1 | Higher voltage | +20% damage. | 120 | 1 |
+| 2 | Longer arcs | Chains to 1 more foe. | 179 | 1 |
+| 3 | Superconductor | Chain hits lose almost no damage. | 276 | 1 |
+| 4 | Arc reach | Chains to 1 more foe. +0.3 range. | 432 | 20 |
+| 5 | Thunder | +50% damage. | 681 | 30 |
 
 **Path 2: Tesla**
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Capacitor | +15% fire rate. | 104 | 10 |
-| 2 | Static shock | Stuns regular foes for 0.15 seconds. | 156 | 10 |
-| 3 | Supercharge | +20% fire rate. | 240 | 10 |
-| 4 | Forked bolt | Strikes 2 foes at once. | 376 | 20 |
-| 5 | Tempest | Stuns for 0.3 seconds. +15% fire rate. | 592 | 30 |
+| 1 | Capacitor | +15% fire rate. | 120 | 10 |
+| 2 | Static shock | Stuns regular foes for 0.15 seconds. | 179 | 10 |
+| 3 | Supercharge | +20% fire rate. | 276 | 10 |
+| 4 | Forked bolt | Strikes 2 foes at once. | 432 | 20 |
+| 5 | Tempest | Stuns for 0.3 seconds. +15% fire rate. | 681 | 30 |
 
 **Ascensions** (480 gold)
 
@@ -374,21 +374,21 @@ Passive: doesn't attack.
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Polished lens | Boost +5% damage. | 91 | 1 |
-| 2 | Brighter flame | Boost +5% damage. | 137 | 1 |
-| 3 | Far light | Reaches lanterns 2 tiles away. | 210 | 1 |
-| 4 | Radiance | Boost +8% damage. | 329 | 20 |
-| 5 | Blaze | Boost +12% damage. | 518 | 30 |
+| 1 | Polished lens | Boost +5% damage. | 105 | 1 |
+| 2 | Brighter flame | Boost +5% damage. | 157 | 1 |
+| 3 | Far light | Reaches lanterns 2 tiles away. | 241 | 1 |
+| 4 | Radiance | Boost +8% damage. | 378 | 20 |
+| 5 | Blaze | Boost +12% damage. | 596 | 30 |
 
 **Path 2: Signal**
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Quickening | Boosted lanterns fire 5% faster. | 91 | 10 |
-| 2 | Drumbeat | Boosted lanterns fire 5% faster. | 137 | 10 |
-| 3 | Focus lens | Boosted lanterns get +0.3 range. | 210 | 10 |
-| 4 | Rally | Boosted lanterns fire 8% faster. | 329 | 20 |
-| 5 | Eagle eye | Boosted lanterns crit 10% of the time for 3×. | 518 | 30 |
+| 1 | Quickening | Boosted lanterns fire 5% faster. | 105 | 10 |
+| 2 | Drumbeat | Boosted lanterns fire 5% faster. | 157 | 10 |
+| 3 | Focus lens | Boosted lanterns get +0.3 range. | 241 | 10 |
+| 4 | Rally | Boosted lanterns fire 8% faster. | 378 | 20 |
+| 5 | Eagle eye | Boosted lanterns crit 10% of the time for 3×. | 596 | 30 |
 
 **Ascensions** (420 gold)
 
@@ -415,21 +415,21 @@ Passive: doesn't attack.
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Denser core | +20% damage. | 143 | 1 |
-| 2 | Shockwave | Bursts are 20% wider. | 215 | 1 |
-| 3 | Crater | Impacts leave burning ground for 3 seconds. | 330 | 1 |
-| 4 | Heavy core | +40% damage. | 517 | 20 |
-| 5 | Extinction | Impacts stun regular foes for 0.5 seconds. | 814 | 30 |
+| 1 | Denser core | +20% damage. | 164 | 1 |
+| 2 | Shockwave | Bursts are 20% wider. | 247 | 1 |
+| 3 | Crater | Impacts leave burning ground for 3 seconds. | 379 | 1 |
+| 4 | Heavy core | +40% damage. | 595 | 20 |
+| 5 | Extinction | Impacts stun regular foes for 0.5 seconds. | 936 | 30 |
 
 **Path 2: Meteor shower**
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Orbit | +15% fire rate. | 143 | 10 |
-| 2 | Far sight | +0.6 range. | 215 | 10 |
-| 3 | Split comet | Drops on 2 foes at once. | 330 | 10 |
-| 4 | Swift orbit | +20% fire rate. | 517 | 20 |
-| 5 | Shower | Drops on 3 foes at once. | 814 | 30 |
+| 1 | Orbit | +15% fire rate. | 164 | 10 |
+| 2 | Far sight | +0.6 range. | 247 | 10 |
+| 3 | Split comet | Drops on 2 foes at once. | 379 | 10 |
+| 4 | Swift orbit | +20% fire rate. | 595 | 20 |
+| 5 | Shower | Drops on 3 foes at once. | 936 | 30 |
 
 **Ascensions** (660 gold)
 
@@ -456,21 +456,21 @@ Passive: doesn't attack.
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Silver light | +20% damage. | 91 | 1 |
-| 2 | Quick heat | Heats up 40% faster. | 137 | 1 |
-| 3 | Moonburn | The beam burns its target. | 210 | 1 |
-| 4 | Hotter core | Heat climbs one step higher. | 329 | 20 |
-| 5 | Blue moon | +50% damage. | 518 | 30 |
+| 1 | Silver light | +20% damage. | 105 | 1 |
+| 2 | Quick heat | Heats up 40% faster. | 157 | 1 |
+| 3 | Moonburn | The beam burns its target. | 241 | 1 |
+| 4 | Hotter core | Heat climbs one step higher. | 378 | 20 |
+| 5 | Blue moon | +50% damage. | 596 | 30 |
 
 **Path 2: Tides**
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Wide well | +0.4 range. | 91 | 10 |
-| 2 | Undertow | The beam slows its target 20%. | 137 | 10 |
-| 3 | Twin beam | Beams 2 foes at once. | 210 | 10 |
-| 4 | High tide | +0.4 range. | 329 | 20 |
-| 5 | Spring tide | Keeps its heat when it switches targets. | 518 | 30 |
+| 1 | Wide well | +0.4 range. | 105 | 10 |
+| 2 | Undertow | The beam slows its target 20%. | 157 | 10 |
+| 3 | Twin beam | Beams 2 foes at once. | 241 | 10 |
+| 4 | High tide | +0.4 range. | 378 | 20 |
+| 5 | Spring tide | Keeps its heat when it switches targets. | 596 | 30 |
 
 **Ascensions** (420 gold)
 
@@ -497,21 +497,21 @@ Passive: doesn't attack.
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Heavier clapper | +20% damage. | 117 | 1 |
-| 2 | Resonance | +0.3 range. | 176 | 1 |
-| 3 | Deafening | Tolled foes take 15% more damage. | 270 | 1 |
-| 4 | Bronze bell | +40% damage. | 423 | 20 |
-| 5 | Cathedral | +0.4 range. | 666 | 30 |
+| 1 | Heavier clapper | +20% damage. | 135 | 1 |
+| 2 | Resonance | +0.3 range. | 202 | 1 |
+| 3 | Deafening | Tolled foes take 15% more damage. | 310 | 1 |
+| 4 | Bronze bell | +40% damage. | 486 | 20 |
+| 5 | Cathedral | +0.4 range. | 766 | 30 |
 
 **Path 2: Chime**
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Long ring | Freezes last 25% longer. | 117 | 10 |
-| 2 | Quick toll | +20% fire rate. | 176 | 10 |
-| 3 | Echo | +25% fire rate. | 270 | 10 |
-| 4 | Deep ring | Freezes last 30% longer. | 423 | 20 |
-| 5 | Requiem | Tolled foes stay slowed 30% after they thaw. | 666 | 30 |
+| 1 | Long ring | Freezes last 25% longer. | 135 | 10 |
+| 2 | Quick toll | +20% fire rate. | 202 | 10 |
+| 3 | Echo | +25% fire rate. | 310 | 10 |
+| 4 | Deep ring | Freezes last 30% longer. | 486 | 20 |
+| 5 | Requiem | Tolled foes stay slowed 30% after they thaw. | 766 | 30 |
 
 **Ascensions** (540 gold)
 
@@ -538,21 +538,21 @@ Passive: doesn't attack.
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Dark edge | +20% damage. | 195 | 1 |
-| 2 | Gravity | +1% of max health per hit. | 293 | 1 |
-| 3 | Void piercer | Ignores 6 armor. | 450 | 1 |
-| 4 | Umbra | +35% damage. | 705 | 20 |
-| 5 | Black sun | +2% of max health per hit. | 1110 | 30 |
+| 1 | Dark edge | +20% damage. | 224 | 1 |
+| 2 | Gravity | +1% of max health per hit. | 336 | 1 |
+| 3 | Void piercer | Ignores 6 armor. | 518 | 1 |
+| 4 | Umbra | +35% damage. | 811 | 20 |
+| 5 | Black sun | +2% of max health per hit. | 1,276 | 30 |
 
 **Path 2: Corona**
 
 | Tier | Upgrade | Effect | Cost | Mastery |
 |---:|---|---|---:|---:|
-| 1 | Solar wind | +15% fire rate. | 195 | 10 |
-| 2 | Long shadow | +0.5 range. | 293 | 10 |
-| 3 | Solar flare | Strikes splash 0.8 tiles for 40% damage. | 450 | 10 |
-| 4 | Quick dusk | +20% fire rate. | 705 | 20 |
-| 5 | Twin suns | Strikes 2 foes at once. | 1110 | 30 |
+| 1 | Solar wind | +15% fire rate. | 224 | 10 |
+| 2 | Long shadow | +0.5 range. | 336 | 10 |
+| 3 | Solar flare | Strikes splash 0.8 tiles for 40% damage. | 518 | 10 |
+| 4 | Quick dusk | +20% fire rate. | 811 | 20 |
+| 5 | Twin suns | Strikes 2 foes at once. | 1,276 | 30 |
 
 **Ascensions** (900 gold)
 

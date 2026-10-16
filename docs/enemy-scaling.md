@@ -22,16 +22,16 @@ These numbers are for the Surface level on Normal. A campaign is 40 waves; if yo
 
 ## Health
 
-Foe health grows in three stages, so the early waves ramp up quickly, the middle of a campaign is the steep climb, and the late game levels off:
+Foe health grows by a little less each stage, so the early waves ramp up quickly, the middle of a campaign is the steep climb, and the late game levels off:
 
 | Waves | Foes, per wave | Bosses, per wave |
 |---|---|---|
 | 1 to 5 | +22% | +22% |
-| 6 to 25 | +20% | +17% |
-| 26 to 30 | +32% | +17% |
-| 31 and up | +10% | +10% |
+| 6 to 25 | +21% | +17% |
+| 26 to 30 | +19% | +17% |
+| 31 and up | +14% | +10% |
 
-That rate multiplies on itself every wave. A wave whose foes share 10 health on wave 1 shares about 55 on wave 10, 340 on wave 20 and 8,800 on wave 40. A boss starts at 650 and reaches about 15,000 on wave 20 and 190,000 on wave 40.
+That rate multiplies on itself every wave. A wave whose foes share 10 health on wave 1 shares about 57 on wave 10, 390 on wave 20, 2,400 on wave 30 and 8,900 on wave 40. A boss starts at 650 and reaches about 15,000 on wave 20 and 190,000 on wave 40.
 
 **Depth.** Each depth adds +35% health on top of that. Depth 10 foes have ×4.5 health, depth 20 foes have ×8.
 

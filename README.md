@@ -26,6 +26,11 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 
 ---
 
+## 🌙 1.0.4 (Oct 16, 2026)
+
+- A smoother difficulty curve: foes grow +21% a wave through wave 25, +19% to wave 30 and +14% after. Waves 6 to 25 are tougher, and there is no sudden wall at 26 to 30.
+- Lantern path upgrades cost 15% more.
+
 ## 🌙 1.0.3 (Oct 16, 2026)
 
 - Removed the Replay the tutorial button from Settings. The tutorial lives on the Play page.

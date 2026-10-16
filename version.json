@@ -1,9 +1,10 @@
 {
-  "version": "1.0.3",
+  "version": "1.0.4",
   "date": "Oct 16, 2026",
   "major": false,
   "title": "",
   "notes": [
-    "Removed the Replay the tutorial button from Settings. The tutorial lives on the Play page."
+    "A smoother difficulty curve: waves 6 to 25 push back harder, with no sudden wall at waves 26 to 30.",
+    "Lantern path upgrades cost 15% more."
   ]
 }
