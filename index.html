@@ -2894,12 +2894,13 @@ function endWave(){
   snapRun();renderTray();hud(true);bxHud();
   if(auto)setTimeout(()=>{if(G.state==='build'&&!paused)sendWave()},700);
 }
-/* endless: every 5 waves the world (and its twist) changes and a new trail is carved */
+/* endless: after every 5th wave (and that world's boss) the world changes to another unlocked one.
+   The trail stays, and so does the run's foe health and ember scaling: only the twist, foes and boss change. */
 function shiftWorld(){
   const pool=THEMES.map((_,i)=>i).filter(i=>i!==G.world&&i<=meta.maxDepth);if(!pool.length)return;   /* only worlds you've unlocked */
   G.world=pool[Math.floor(Math.random()*pool.length)];
   applyTheme(G.world);G.amb=makeAmb();drawBG();   /* same trail, new world and conditions */
-  toast(`World shift: ${TH.name}`,TH.twist);
+  toast(`World shift: ${TH.name}`,`${TH.twist} Its own foes walk the trail now, and ${BOSSES[G.world].name} waits at wave ${G.wave+5}.`);
 }
 /* runs checkpoint between waves (after the boon pick) and can be continued from the Play page: one campaign save and one endless save */
 const saveKey=m=>m==='event'?'eventSave':m==='endless'||m===true?'endlessSave':m==='tutorial'?'tutSave':'campSave';
@@ -3172,7 +3173,7 @@ function drawPrestige(){const T=performance.now()/1000;document.querySelectorAll
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
-  {v:'0.21.1',d:'Oct 15, 2026',notes:['Endless no longer asks for a world. Each run starts in a random world you\u2019ve unlocked, and every 5 waves it shifts to another one you\u2019ve unlocked, bringing that world\u2019s twist, foes and boss while your trail and lanterns stay. Foes and rewards scale as if you were halfway down to your deepest world.','The tutorial now has its own card next to Whisperwood when you pick a world, so you can play it again any time. It saves on its own and never touches a campaign run in progress.','Fixed the Whisperwood card\u2019s new foe and boss lines drawing on top of each other.']},
+  {v:'0.21.1',d:'Oct 15, 2026',notes:['Endless no longer asks for a world. Each run starts in a random world you\u2019ve unlocked, and each world lasts 5 waves: its own foes walk the trail and its boss comes on the 5th wave, then the run shifts to another world you\u2019ve unlocked. Your trail and lanterns stay, and switching worlds doesn\u2019t change foe health or embers: the whole run scales as if you were halfway down to your deepest world.','The tutorial now has its own card next to Whisperwood when you pick a world, so you can play it again any time. It saves on its own and never touches a campaign run in progress.','Fixed the Whisperwood card\u2019s new foe and boss lines drawing on top of each other.']},
   {v:'0.21.0',d:'Oct 15, 2026',major:1,title:'Lords of the Night',
    hl:[['21 world bosses','Every world now has its own boss with its own name, look and tricks, from the Elder Moth to the Moth Queen herself.'],
        ['Boss health bar','A health bar at the top of the board shows the boss, its title, its shield and how much is left.'],
@@ -3406,7 +3407,7 @@ function renderWorlds(){
   if(live){$('#evEnds').textContent=`ends in ${timeLeftTo(EVENT.end)}`;$('#bestEv').innerHTML=`${CANDY} ${meta.candy||0} candy${meta.bestEvent?` · best wave ${meta.bestEvent}`:''}`}
   $('#worlds').hidden=ev||en;$('#worldSec').textContent=ev?'Event world':'World';$('#evWorld').hidden=!ev&&!en;
   if(en){const n=meta.maxDepth+1;$('#evWorld').innerHTML=`<div class="enw"><span class="d">Endless · random world</span><span class="n">${n>1?`Any of your ${n} worlds`:'Whisperwood, for now'}</span>
-    <p>You start in a random world you've unlocked. Every 5 waves the world, its twist, its foes and its boss change, but your trail and lanterns stay. ${n>1?'':'Beat Whisperwood to add more worlds to the mix.'}</p></div>`}
+    <p>You start in a random world you've unlocked. Each world lasts 5 waves and ends with its own boss, then the next world brings its twist and foes. Your trail, your lanterns, and how tough foes are stay the same. ${n>1?'':'Beat Whisperwood to add more worlds to the mix.'}</p></div>`}
   if(ev)$('#evWorld').innerHTML=`<div class="evw"><div class="evwt"><span class="d">Halloween event · endless</span><span class="n">${EVT.name}</span><p>${EVT.twist}</p></div>
     <div class="evfo">${['bat','pumpkin','ghost','skeleton'].map(k=>`<div class="evf"><canvas data-foe="${k}" width="96" height="96" aria-hidden="true"></canvas><b>${FOES[k].name}</b><small>${FOES[k].tip}</small></div>`).join('')}
     <div class="evf"><canvas data-foe="king" width="96" height="96" aria-hidden="true"></canvas><b>Pumpkin King</b><small>Every 5th wave. Shielded, and calls bats to its side.</small></div></div>
