@@ -39,7 +39,7 @@ Spend embers on [camp upgrades](camp-upgrades.md), lantern unlocks and skins.
 
 Every run also earns **XP**: 4 per wave cleared (plus 1 more every 4 waves), 20 per boss and 150 for a win. XP gets **+20% per depth**, the same difficulty multiplier as embers, and the Night school, Long night and Daring camp upgrades.
 
-XP raises your **player level** (each level needs 20 more XP than the last, starting at 100) and your **Season Pass tier** at the same time. Levels go up to **100**.
+XP raises your **player level** (level 2 needs 70 XP and each level after needs 10 more than the last, about 55,000 XP for all 100) and your **Season Pass tier** at the same time. Levels go up to **100**.
 
 | Level | Rank |
 |---:|---|

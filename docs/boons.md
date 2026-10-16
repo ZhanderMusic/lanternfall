@@ -90,7 +90,7 @@ These odds assume every lantern is unlocked and nothing is excluded. **Lucky dra
 |---|---|---|
 | **Crowned** | Ascended lanterns deal 30% more damage. |  |
 | **Giant slayer** | Towers deal 40% more damage to bosses. |  |
-| **Gold rush** | Kills give 40% more gold. |  |
+| **Gold rush** | Kills give 25% more gold. |  |
 | **Hoard** | After each wave, earn 8% interest on your gold (up to 30). |  |
 | **Phalanx** | Each lantern deals 4% more damage for every other lantern of its type on the board, up to 20%. | Once per run |
 | **Twin wicks** | All towers fire 22% faster. |  |
@@ -138,7 +138,7 @@ These odds assume every lantern is unlocked and nothing is excluded. **Lucky dra
 | **Quick hands** | All towers fire 12% faster. |  |
 | **Quick study** | Earn 20% more boon XP. |  |
 | **Salvage rights** | Selling a lantern refunds 15% more. |  |
-| **Scavenger** | Kills give 25% more gold. |  |
+| **Scavenger** | Kills give 15% more gold. |  |
 | **Steady hands** | All towers fire 8% faster and reach 5% farther. |  |
 | **Tall poles** | All towers reach 10% farther. |  |
 | **Whetted edges** | All shots ignore 2 points of armor. |  |

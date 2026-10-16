@@ -1,12 +1,11 @@
 {
-  "version": "1.0.1",
+  "version": "1.0.2",
   "date": "Oct 16, 2026",
   "major": false,
   "title": "",
   "notes": [
-    "Campaigns are now 40 waves. After wave 40, end the run or keep going (everything past 40 pays ×0.25).",
-    "Shorter waves with fewer, tougher foes, a steeper last stretch and slightly less gold.",
-    "Lanterns show their snuffs this run and a live mastery bar; the run summary shows level and mastery bars.",
-    "Auto never sends wave 1. The Season Pass needs more XP per tier (your tier is kept). Fixed waves that could stall."
+    "Leveling up is about twice as fast (level 100 takes about 55,000 XP, down from 107,000).",
+    "Hollow Harvest scales from wave 10, and regular foes start their extra +10% a wave at wave 25.",
+    "Gold is tighter: Gold rush +25%, Scavenger +15%, Deep purse +15% at max."
   ]
 }

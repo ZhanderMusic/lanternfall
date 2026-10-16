@@ -27,10 +27,11 @@ Foe health grows in three stages, so the early waves ramp up quickly, the middle
 | Waves | Foes, per wave | Bosses, per wave |
 |---|---|---|
 | 1 to 5 | +22% | +22% |
-| 6 to 30 | +20% | +17% |
+| 6 to 25 | +20% | +17% |
+| 26 to 30 | +32% | +17% |
 | 31 and up | +10% | +10% |
 
-That rate multiplies on itself every wave. A wave whose foes share 10 health on wave 1 shares about 55 on wave 10, 340 on wave 20 and 5,500 on wave 40. A boss starts at 650 and reaches about 15,000 on wave 20 and 190,000 on wave 40.
+That rate multiplies on itself every wave. A wave whose foes share 10 health on wave 1 shares about 55 on wave 10, 340 on wave 20 and 8,800 on wave 40. A boss starts at 650 and reaches about 15,000 on wave 20 and 190,000 on wave 40.
 
 **Depth.** Each depth adds +35% health on top of that. Depth 10 foes have ×4.5 health, depth 20 foes have ×8.
 
@@ -44,7 +45,7 @@ That rate multiplies on itself every wave. A wave whose foes share 10 health on 
 | Nightmare | ×2.1 | ×1.16 | −7 | ×2.25 |
 | Oblivion | ×3.1 | ×1.24 | −10 | ×3.5 |
 
-**World twists.** Some worlds add more: tougher foes (×1.15 to ×1.2 health), faster foes (up to +18%), extra armor (+2 to +5), bigger swarms (up to +30% foes), healing tides or surprise mini-bosses. The Hollow Harvest event has ×1.35 health and +8% speed.
+**World twists.** Some worlds add more: tougher foes (×1.15 to ×1.2 health), faster foes (up to +18%), extra armor (+2 to +5), bigger swarms (up to +30% foes), healing tides or surprise mini-bosses. The Hollow Harvest event has ×1.35 health and +8% speed, and its foes and bosses start gaining the extra +10% a wave from wave 11 instead of wave 31.
 
 **Camp upgrades.** Giant’s bane lowers boss health and Small fry lowers the health of every other foe.
 

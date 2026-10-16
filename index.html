@@ -1112,12 +1112,9 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 </style>
 
 <script>
-/* PWA: offline support and updates (Lanternfall v1.0.1) */
+/* PWA: offline support and updates (Lanternfall v1.0.2) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
-</head>
-<body>
-
 <div id="app">
   <div class="bar">
     <div class="stat"><small>Wave</small><b id="wave">0/20</b></div>
@@ -1577,7 +1574,7 @@ const dOf=k=>DIFF[k]&&(!DIFF[k].pr||(meta.prestige||0)>=DIFF[k].pr)?DIFF[k]:DIFF
 const META=[
   /* Economy */
   {id:'kindling',cat:'eco',name:'Kindling',max:8,base:4,g:1.55,text:l=>`Start runs with +20 gold. Now +${l*20}.`},
-  {id:'purse',cat:'eco',name:'Deep purse',max:10,base:5,g:1.45,text:l=>`Kills give +3% gold. Now +${l*3}%.`},
+  {id:'purse',cat:'eco',name:'Deep purse',max:10,base:5,g:1.45,text:l=>`Kills give +1.5% gold. Now +${(l*1.5).toFixed(1).replace('.0','')}%.`},
   {id:'tithe',cat:'eco',name:'Wave tithe',max:10,base:5,g:1.45,text:l=>`+2 gold for every wave you clear. Now +${l*2}.`},
   {id:'thrift',cat:'eco',name:'Thrift',max:10,base:7,g:1.5,text:l=>`Lanterns and upgrades cost 1.5% less. Now −${(l*1.5).toFixed(1)}%.`},
   {id:'salvage',cat:'eco',name:'Salvage',max:5,base:6,g:1.6,text:l=>`Selling refunds 4% more. Now ${60+l*4}% back.`},
@@ -1651,7 +1648,7 @@ const META=[
   {id:'pathfinder',cat:'pro',name:'Pathfinder',max:4,base:15,g:1.7,text:l=>`Beating a world for the first time gives 5 more moonstones. Now +${l*5}.`}
 ];
 /* deeper camp upgrades (0.18.2): these have twice as many levels, each worth half as much, so the caps stay the same */
-const UPER={"kindling": "Start runs with +10 gold.", "purse": "Kills give +1.5% gold.", "tithe": "+1 gold for every wave you clear.", "thrift": "Lanterns and upgrades cost 0.75% less.", "salvage": "Selling refunds 2% more.", "midpay": "The halfway bonus in each wave pays 10% more.", "appraiser": "Path upgrades cost 1% less.", "compound": "After each wave, earn 0.5% interest on your gold (up to 10 gold per level).", "whet": "+2% tower damage.", "bellows": "+1.5% fire rate.", "wick": "+2% tower range.", "keen": "Shots get a 0.75% chance to hit for double damage.", "focus": "+2.5% damage to bosses.", "breaker": "Enemy armor is 2% weaker.", "lastlight": "With 5 lives or fewer, towers deal +4% damage.", "heavy": "Critical hits deal 7.5% more damage.", "tempered": "Lanterns with a path at tier 5 deal +2.5% damage.", "swarmb": "+2% damage to foes that aren’t bosses.", "piercer": "Shots ignore 1 point of armor.", "hearth": "+1 starting life.", "fog": "Foes move 1% slower.", "smallfry": "Foes that aren’t bosses have 1% less health.", "bane": "Bosses have 2% less health.", "luck": "Rare and better boons show up 7.5% more often.", "highroll": "Legendary and better boons show up 6% more often.", "scholar": "+4% boon XP from kills and upgrades.", "blast": "Cinder and Comet bursts are 2.5% wider.", "frostbite": "Frost slows 1.5% more.", "toxin": "Venom and burn damage +4%.", "forge": "Ascensions cost 3% less.", "jar": "+5% embers per run.", "school": "+2.5% XP per run.", "studious": "+5% lantern mastery points.", "longnight": "+4% embers and XP from Endless runs.", "daring": "+3% embers and XP on Hard, Nightmare and Oblivion.", "lo_spark": "Spark deals +2.5% damage.", "lo_cinder": "Cinder deals +2.5% damage.", "lo_frost": "Frost deals +2.5% damage.", "lo_lance": "Lance deals +2.5% damage.", "lo_venom": "Venom deals +2.5% damage.", "lo_bolt": "Bolt deals +2.5% damage.", "lo_comet": "Comet deals +2.5% damage.", "lo_moonwell": "Moonwell deals +2.5% damage.", "lo_bell": "Hollow Bell deals +2.5% damage.", "lo_eclipse": "Eclipse deals +2.5% damage.", "lo_mint": "Mints earn 4% more gold.", "lo_beacon": "Beacon boosts are half a point stronger."};
+const UPER={"kindling": "Start runs with +10 gold.", "purse": "Kills give +0.75% gold.", "tithe": "+1 gold for every wave you clear.", "thrift": "Lanterns and upgrades cost 0.75% less.", "salvage": "Selling refunds 2% more.", "midpay": "The halfway bonus in each wave pays 10% more.", "appraiser": "Path upgrades cost 1% less.", "compound": "After each wave, earn 0.5% interest on your gold (up to 10 gold per level).", "whet": "+2% tower damage.", "bellows": "+1.5% fire rate.", "wick": "+2% tower range.", "keen": "Shots get a 0.75% chance to hit for double damage.", "focus": "+2.5% damage to bosses.", "breaker": "Enemy armor is 2% weaker.", "lastlight": "With 5 lives or fewer, towers deal +4% damage.", "heavy": "Critical hits deal 7.5% more damage.", "tempered": "Lanterns with a path at tier 5 deal +2.5% damage.", "swarmb": "+2% damage to foes that aren’t bosses.", "piercer": "Shots ignore 1 point of armor.", "hearth": "+1 starting life.", "fog": "Foes move 1% slower.", "smallfry": "Foes that aren’t bosses have 1% less health.", "bane": "Bosses have 2% less health.", "luck": "Rare and better boons show up 7.5% more often.", "highroll": "Legendary and better boons show up 6% more often.", "scholar": "+4% boon XP from kills and upgrades.", "blast": "Cinder and Comet bursts are 2.5% wider.", "frostbite": "Frost slows 1.5% more.", "toxin": "Venom and burn damage +4%.", "forge": "Ascensions cost 3% less.", "jar": "+5% embers per run.", "school": "+2.5% XP per run.", "studious": "+5% lantern mastery points.", "longnight": "+4% embers and XP from Endless runs.", "daring": "+3% embers and XP on Hard, Nightmare and Oblivion.", "lo_spark": "Spark deals +2.5% damage.", "lo_cinder": "Cinder deals +2.5% damage.", "lo_frost": "Frost deals +2.5% damage.", "lo_lance": "Lance deals +2.5% damage.", "lo_venom": "Venom deals +2.5% damage.", "lo_bolt": "Bolt deals +2.5% damage.", "lo_comet": "Comet deals +2.5% damage.", "lo_moonwell": "Moonwell deals +2.5% damage.", "lo_bell": "Hollow Bell deals +2.5% damage.", "lo_eclipse": "Eclipse deals +2.5% damage.", "lo_mint": "Mints earn 4% more gold.", "lo_beacon": "Beacon boosts are half a point stronger."};
 const UPSC={};META.forEach(m=>{if(UPER[m.id]){UPSC[m.id]=2;m.max*=2;const t0=m.text;m.text=l=>UPER[m.id]+' Now '+t0(l/2).split(' Now ').slice(1).join(' Now ')}});
 const UCATS=[['all','All'],['eco','Economy'],['off','Offense'],['def','Defense'],['run','Run & boons'],['lan','Lanterns'],['lore','Lore'],['pro','Progress']];
 const sellRate=()=>.6+.04*ml('salvage');
@@ -1665,7 +1662,7 @@ const CARDS=[
   {id:'flame',ic:'flame',name:'Fiercer flame',rar:0,text:'All towers deal +15% damage.',ap:m=>m.dmg*=1.15},
   {id:'quick',ic:'fast',name:'Quick hands',rar:0,text:'All towers fire 12% faster.',ap:m=>m.rate*=1.12},
   {id:'poles',ic:'range',name:'Tall poles',rar:0,text:'All towers reach 10% farther.',ap:m=>m.range*=1.1},
-  {id:'scav',ic:'coin',name:'Scavenger',rar:0,text:'Kills give 25% more gold.',ap:m=>m.goldMul*=1.25},
+  {id:'scav',ic:'coin',name:'Scavenger',rar:0,text:'Kills give 15% more gold.',ap:m=>m.goldMul*=1.15},
   {id:'mend',ic:'heart',name:'Mended fence',rar:0,text:'Gain 4 lives.',ap:(m,g)=>g.lives+=4},
   {id:'wind',ic:'bag',name:'Windfall',rar:0,dex:'Gain 60 gold now, plus 10 for every wave cleared.',text:g=>`Gain ${windfall(g)} gold now.`,ap:(m,g)=>g.gold+=windfall(g)},
   {id:'hoard',name:'Hoard',rar:2,ic:'chest',text:'After each wave, earn 8% interest on your gold (up to 30).',ap:m=>m.interest+=1},
@@ -1708,7 +1705,7 @@ const CARDS=[
   {id:'umbra',ic:'dawn',name:'Deep umbra',rar:1,need:'eclipse',text:'Eclipse fires 25% faster.',ap:m=>tmul(m,'trate','eclipse',1.25)},
   {id:'widebeam',ic:'range',name:'Wide beam',rar:1,need:'beacon',once:1,text:'Beacons boost lanterns one tile farther away.',ap:m=>{m.auraR=(m.auraR||0)+1}},
   {id:'crowned',ic:'crown',name:'Crowned',rar:2,text:'Ascended lanterns deal 30% more damage.',ap:m=>{m.ascd=(m.ascd||1)*1.3}},
-  {id:'goldrush',ic:'coin',name:'Gold rush',rar:2,text:'Kills give 40% more gold.',ap:m=>m.goldMul*=1.4},
+  {id:'goldrush',ic:'coin',name:'Gold rush',rar:2,text:'Kills give 25% more gold.',ap:m=>m.goldMul*=1.25},
   {id:'phalanx',ic:'twin',name:'Phalanx',rar:2,once:1,text:'Each lantern deals 4% more damage for every other lantern of its type on the board, up to 20%.',ap:m=>{m.phal=1}},
   {id:'timewarp',ic:'moon',name:'Time warp',rar:3,once:1,text:'All foes move 10% slower.',ap:m=>{m.fslow=(m.fslow||1)*.9}},
   {id:'doubletap',ic:'twin',name:'Double tap',rar:3,once:1,text:'Every shot has a 12% chance to reload instantly.',ap:m=>{m.dt=(m.dt||0)+.12}},
@@ -1736,12 +1733,12 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='1.0.1';
+const VERSION='1.0.2';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
 /* progression: one XP stream feeds player level and the pass */
-const lvNeed=L=>100+20*(L-1);
+const lvNeed=L=>70+10*(L-1);
 /* player level caps at 100. At 100 you can prestige (up to 10 times), which starts the climb again */
 const LV_MAX=100,PMAX=10,ROM=['','I','II','III','IV','V','VI','VII','VIII','IX','X'];
 function levelInfo(xp){let L=1,x=xp;while(L<LV_MAX&&x>=lvNeed(L)){x-=lvNeed(L);L++}const max=L>=LV_MAX;return{L,into:max?lvNeed(L):x,need:lvNeed(L),max}}
@@ -2448,7 +2445,7 @@ function newRun(depth,endless){
   applyTheme(depth);
   G={depth,world:depth,endless:!!endless,diff:dOrder().includes(meta.diff)?meta.diff:'normal',wave:0,state:'build',lives:Math.max(5,15+2*ml('hearth')+dOf(meta.diff).lives),gold:120+20*ml('kindling')+10*depth,
     towers:[],foes:[],shots:[],fx:[],q:[],qt:0,path:genPath(),sel:null,bossKills:0,time:0,amb:makeAmb(),
-    m:{dmg:1,rate:1,range:1,goldMul:1+.03*ml('purse'),interest:0,crit:0,splash:1+.05*ml('blast'),chill:0,chain:ml('conductor'),cost:1-.015*ml('thrift'),
+    m:{dmg:1,rate:1,range:1,goldMul:1+.015*ml('purse'),interest:0,crit:0,splash:1+.05*ml('blast'),chill:0,chain:ml('conductor'),cost:1-.015*ml('thrift'),
        boss:1+.05*ml('focus'),exec:.03*ml('reaper'),armor:1-.04*ml('breaker'),
        pierce:0,lance:1,poison:1+.08*ml('toxin'),income:1,aura:0,comet:1},taken:{},bxp:0,blv:0,bpend:0,ward:ml('ward'),patron:ml('patron'),sw:ml('secondwind'),
     mast:Object.fromEntries(ORDER.map(t=>[t,mastGate(t)])),mastL:Object.fromEntries(ORDER.map(t=>[t,mastInfo(t).L])),mk:{},used:new Set()};
@@ -2615,6 +2612,7 @@ const upTierCost=(type,tier)=>Math.round(TOWERS[type].cost*TIER_K[tier-1]*G.m.co
 const ascCost=type=>Math.round(TOWERS[type].cost*ASC_K*G.m.cost*(1-.06*ml('forge')));
 /* WAVE_LEN: how many times more foes a wave sends than the original design. Each regular foe gets 1/WAVE_LEN of the
    health and gold, so a wave's total health and total gold stay the same while the wave lasts about WAVE_LEN times longer. */
+const LATE0=25;   /* 1.0.2: regular foes start their +10% a wave from wave 25 (bosses 30, Hollow Harvest 10) */
 const WAVE_LEN=1.3,PULSE=8,PULSE_GAP=1.1;   /* 1.0.1: shorter waves (was 2): fewer, tougher foes, same total health and gold */
 const clearBonus=()=>8+Math.round(G.wave*.8)+2*ml('tithe');
 function pickNew(w){   /* a foe from the ones this depth has introduced; the newest one shows up most. In endless, the current world's */
@@ -2644,7 +2642,7 @@ function makeWave(w){
   return q;
 }
 function spawn(type,at,mini){
-  const f=FOES[type],w=G.wave,sc=Math.pow(1.22,Math.min(w,5)-1)*Math.pow(type==='boss'?1.17:1.2,Math.min(25,Math.max(0,w-5)))*Math.pow(1.1,Math.max(0,w-30))*(1+.35*G.depth)*(mini?.45:1)*(type==='boss'&&w<10?.1+.09*w:1)*dOf(G.diff).hp*(type==='boss'?1-.04*ml('bane'):1-.02*ml('smallfry'))*(TM.hp||1);
+  const f=FOES[type],w=G.wave,sc=Math.pow(1.22,Math.min(w,5)-1)*Math.pow(type==='boss'?1.17:1.2,Math.min(25,Math.max(0,w-5)))*Math.pow(1.1,Math.max(0,w-(G.event?10:type==='boss'?30:LATE0)))*(1+.35*G.depth)*(mini?.45:1)*(type==='boss'&&w<10?.1+.09*w:1)*dOf(G.diff).hp*(type==='boss'?1-.04*ml('bane'):1-.02*ml('smallfry'))*(TM.hp||1);
   const hp=f.hp*sc/(type==='boss'?1:WAVE_LEN);
   const e={t:type,hp,max:hp,d:0,seg:0,x:G.path.pts[0][0],y:G.path.pts[0][1],ang:0,mini:!!mini,
     speed:f.speed*(1+.012*w)*(1+.04*G.depth)*(TM.speed||1)*dOf(G.diff).spd*(1-.02*ml('fog')),
@@ -3236,6 +3234,7 @@ function drawPrestige(){const T=performance.now()/1000;document.querySelectorAll
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'1.0.2',d:'Oct 16, 2026',notes:['Leveling up is about twice as fast: level 1 to 2 needs 70 XP and each level adds 10 (was 100 and 20), so level 100 takes about 55,000 XP instead of 107,000. Your current level can only go up.','Hollow Harvest scales from wave 10 instead of wave 30: its foes gain their extra +10% a wave much sooner, so the harvest gets hard fast.','Regular foes (not bosses) start gaining their extra +10% a wave at wave 25 instead of wave 30, so the end of a campaign is tougher.','Gold is tighter: Gold rush gives 25% more gold (was 40%), Scavenger 15% (was 25%), and Deep purse is half as strong (+15% at max, was +30%). Levels you already bought stay, and embers are not refunded.']},
   {v:'1.0.1',d:'Oct 16, 2026',notes:['Campaigns are now 40 waves. When you clear wave 40 you choose: end the run and collect your rewards, or keep going until your lives run out. The win counts either way, but every wave, boss and snuff after wave 40 pays \u00d70.25 embers, XP and mastery.','Shorter waves: fewer foes that are each a little tougher, arriving closer together. A wave holds the same total health and gold as before, and takes about a third less time.','Harder: foes toughen faster from wave 30 on, so the last waves are a real test, and kills pay about 5% less gold.','Early bosses cost fewer lives if they slip through: 4 on wave 5, 6 on wave 10, and their full cost from wave 15.','Fixed waves that could drag on with foes stuck in place. A foe held stunned for 1.5 seconds in a row now shrugs off stuns for 1.5 seconds.','Tap a lantern during a run to see how many foes it has snuffed this run, and a live bar of that lantern\u2019s mastery, including what this run has earned so far.','The run summary now shows your level and every lantern you used, each with a progress bar.','Auto never sends wave 1. Press Send wave to start, and Auto takes over from wave 2.','The difficulty slider\u2019s stops now sit right above their names.','The Season 1 pass needs more XP: tiers cost 120 XP, rising by 8 each tier to 912 (51,600 in all, up from 14,950). Your current tier and progress into it are kept.']},
   {v:'1.0.0',d:'Oct 15, 2026',major:1,kick:'Welcome to version 1.0',title:'Lanternfall',go:'Light the lanterns',
    hl:[['21 worlds, 21 bosses','Every world has its own twist, its own foe and its own boss, all the way down to the Moth Queen at the Hollow Moon.'],

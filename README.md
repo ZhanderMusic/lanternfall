@@ -26,6 +26,12 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 
 ---
 
+## 🌙 1.0.2 (Oct 16, 2026)
+
+- Leveling up is about twice as fast: level 100 takes about 55,000 XP, down from 107,000.
+- Hollow Harvest foes scale from wave 10 instead of wave 30, and regular foes everywhere start their extra +10% a wave at wave 25.
+- Gold is tighter: Gold rush gives 25% (was 40%), Scavenger 15% (was 25%), and Deep purse tops out at +15% (was +30%).
+
 ## 🌙 1.0.1 (Oct 16, 2026)
 
 - **40-wave campaigns.** After wave 40, end the run or keep going until the lanterns go dark (×0.25 rewards past 40).

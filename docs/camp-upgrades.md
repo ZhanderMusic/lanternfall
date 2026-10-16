@@ -22,7 +22,7 @@ In the tables, **Per level** is what each level adds, **At max** is the total at
 | Upgrade | Per level | Levels | At max | First level | Total cost |
 |---|---|---:|---|---:|---:|
 | **Kindling** | Start runs with +10 gold. | 16 | +160 | 10 | 2,412 |
-| **Deep purse** | Kills give +1.5% gold. | 20 | +30% | 12 | 5,314 |
+| **Deep purse** | Kills give +0.75% gold. | 20 | +15% | 12 | 5,314 |
 | **Wave tithe** | +1 gold for every wave you clear. | 20 | +20 | 12 | 5,314 |
 | **Thrift** | Lanterns and upgrades cost 0.75% less. | 20 | −15.0% | 17 | 9,685 |
 | **Salvage** | Selling refunds 2% more. | 10 | 80% back | 14 | 742 |
