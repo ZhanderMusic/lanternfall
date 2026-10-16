@@ -26,6 +26,10 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 
 ---
 
+## 🌙 1.0.5 (Oct 16, 2026)
+
+- Fixed the empty strip under the game on iPhones when it is installed to the home screen. The game now fills the whole screen and keeps clear of the notch and home bar.
+
 ## 🌙 1.0.4 (Oct 16, 2026)
 
 - A smoother difficulty curve: foes grow +21% a wave through wave 25, +19% to wave 30 and +14% after. Waves 6 to 25 are tougher, and there is no sudden wall at 26 to 30.
