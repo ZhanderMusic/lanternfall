@@ -1112,7 +1112,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 </style>
 
 <script>
-/* PWA: offline support and updates (Lanternfall v1.0.2) */
+/* PWA: offline support and updates (Lanternfall v1.0.3) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 <div id="app">
@@ -1320,7 +1320,6 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
       <hr class="sep">
       <div class="sr"><span>Docs</span><b>Full player guide</b></div>
       <p class="hint" style="margin:0">How to play, strategy, and every lantern, foe, world, boon and camp upgrade with their numbers. Opens in your browser.</p>
-      <div class="row"><button class="btn" id="tutReplay">Replay the tutorial</button></div>
       <div class="row"><a class="btn" id="docsBtn" href="https://github.com/ZhanderMusic/lanternfall/wiki" target="_blank" rel="noopener" style="text-decoration:none;text-align:center">Open the docs</a></div>
       <hr class="sep">
       <div class="sr"><span>Version</span><b data-ver></b></div>
@@ -1733,7 +1732,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='1.0.2';
+const VERSION='1.0.3';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -3234,6 +3233,7 @@ function drawPrestige(){const T=performance.now()/1000;document.querySelectorAll
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'1.0.3',d:'Oct 16, 2026',notes:['Removed the Replay the tutorial button from Settings. The tutorial lives on the Play page, and on the How to play page.']},
   {v:'1.0.2',d:'Oct 16, 2026',notes:['Leveling up is about twice as fast: level 1 to 2 needs 70 XP and each level adds 10 (was 100 and 20), so level 100 takes about 55,000 XP instead of 107,000. Your current level can only go up.','Hollow Harvest scales from wave 10 instead of wave 30: its foes gain their extra +10% a wave much sooner, so the harvest gets hard fast.','Regular foes (not bosses) start gaining their extra +10% a wave at wave 25 instead of wave 30, so the end of a campaign is tougher.','Gold is tighter: Gold rush gives 25% more gold (was 40%), Scavenger 15% (was 25%), and Deep purse is half as strong (+15% at max, was +30%). Levels you already bought stay, and embers are not refunded.']},
   {v:'1.0.1',d:'Oct 16, 2026',notes:['Campaigns are now 40 waves. When you clear wave 40 you choose: end the run and collect your rewards, or keep going until your lives run out. The win counts either way, but every wave, boss and snuff after wave 40 pays \u00d70.25 embers, XP and mastery.','Shorter waves: fewer foes that are each a little tougher, arriving closer together. A wave holds the same total health and gold as before, and takes about a third less time.','Harder: foes toughen faster from wave 30 on, so the last waves are a real test, and kills pay about 5% less gold.','Early bosses cost fewer lives if they slip through: 4 on wave 5, 6 on wave 10, and their full cost from wave 15.','Fixed waves that could drag on with foes stuck in place. A foe held stunned for 1.5 seconds in a row now shrugs off stuns for 1.5 seconds.','Tap a lantern during a run to see how many foes it has snuffed this run, and a live bar of that lantern\u2019s mastery, including what this run has earned so far.','The run summary now shows your level and every lantern you used, each with a progress bar.','Auto never sends wave 1. Press Send wave to start, and Auto takes over from wave 2.','The difficulty slider\u2019s stops now sit right above their names.','The Season 1 pass needs more XP: tiers cost 120 XP, rising by 8 each tier to 912 (51,600 in all, up from 14,950). Your current tier and progress into it are kept.']},
   {v:'1.0.0',d:'Oct 15, 2026',major:1,kick:'Welcome to version 1.0',title:'Lanternfall',go:'Light the lanterns',
@@ -4661,7 +4661,6 @@ setInterval(tutTick,250);
 $('#coachSkip').onclick=()=>tutEnd(true);
 $('#coachOk').onclick=()=>tutEnd(false);
 const tutRe=()=>{meta.tut=0;save();toast('Tutorial on','It starts with your next campaign run.');sfx('nav')};
-$('#tutReplay').onclick=()=>{tutRe();$('#tutReplay').textContent='It starts with your next run'};
 $('#tutReplay2').onclick=()=>{tutRe();$('#tutReplay2').textContent='Starts next run'};
 
 /* ---------- loop ---------- */

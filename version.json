@@ -1,11 +1,9 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "date": "Oct 16, 2026",
   "major": false,
   "title": "",
   "notes": [
-    "Leveling up is about twice as fast (level 100 takes about 55,000 XP, down from 107,000).",
-    "Hollow Harvest scales from wave 10, and regular foes start their extra +10% a wave at wave 25.",
-    "Gold is tighter: Gold rush +25%, Scavenger +15%, Deep purse +15% at max."
+    "Removed the Replay the tutorial button from Settings. The tutorial lives on the Play page."
   ]
 }

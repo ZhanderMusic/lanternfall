@@ -26,6 +26,10 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 
 ---
 
+## 🌙 1.0.3 (Oct 16, 2026)
+
+- Removed the Replay the tutorial button from Settings. The tutorial lives on the Play page.
+
 ## 🌙 1.0.2 (Oct 16, 2026)
 
 - Leveling up is about twice as fast: level 100 takes about 55,000 XP, down from 107,000.
