@@ -54,7 +54,7 @@ Every world also has its own **boss** on every 5th wave. See [World bosses](foes
 
 ### Campaign
 
-The main mode. Pick a world and survive **50 waves** to win. Winning opens the next depth and pays a victory bonus.
+The main mode. Pick a world and survive **40 waves** to win. Winning opens the next depth and pays a victory bonus. After wave 40 you choose: **end the run** and collect your rewards, or **keep going** until your lives run out. The win counts either way, but every wave, boss and snuff after wave 40 pays ×0.25 embers, XP and mastery.
 
 ### Endless
 

@@ -19,7 +19,7 @@
 
 Every run pays embers, **win or lose**:
 
-- **Waves:** each cleared wave pays 3 embers, plus 1 more for every 4 waves (wave 4 pays 4, wave 8 pays 5 and so on).
+- **Waves:** each cleared wave pays 3 embers, plus 1 more for every 4 waves (wave 4 pays 4, wave 8 pays 5 and so on). Waves past 40, if you keep going after winning, pay ×0.25, and so do bosses snuffed and XP and mastery earned past wave 40.
 - **Bosses:** 5 embers for every boss snuffed (Trophy hunter adds more).
 - **Victory:** 30 embers for winning a campaign.
 
@@ -87,7 +87,7 @@ Spend them in the **Shop** on skins, Season lanterns, ember packs and the premiu
 
 ## Season Pass
 
-**Season 1: The Hollow Moon.** A 100-tier pass that tells the story of the hollow moon, filled by the same XP as your player level. It has a **free track** and a **premium track**, which costs **150 moonstones** and unlocks every premium tier you've already reached.
+**Season 1: The Hollow Moon.** A 100-tier pass that tells the story of the hollow moon, filled by the same XP as your player level. It has a **free track** and a **premium track**, which costs **150 moonstones** and unlocks every premium tier you've already reached. Tier 1 costs 120 XP and each tier after costs 8 more, up to 912 for tier 100 (51,600 XP in all).
 
 - Most tiers pay embers. Every 5th tier pays moonstones.
 - The premium track has the three Season lanterns: **Moonwell** (tier 1), **Hollow Bell** (tier 50) and **Eclipse** (tier 100).

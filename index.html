@@ -654,14 +654,16 @@ body.dragging{cursor:grabbing}
 .dsl{border:2px solid color-mix(in srgb,var(--dc) 55%,var(--line));border-radius:12px;background:color-mix(in srgb,var(--moss) 92%,transparent);padding:12px 14px 10px;display:flex;flex-direction:column;gap:10px;box-shadow:0 0 18px -8px var(--dc);transition:border-color .2s,box-shadow .2s}
 .dcard{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;align-items:baseline}
 .dcard b{font:400 30px/1 var(--display);color:var(--dc)}.dcard .rw{font:500 12px var(--mono);color:var(--ink);justify-self:end}.dcard small{grid-column:1/-1;font-size:12.5px;color:var(--dim)}
-#dRange{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;margin:0;cursor:pointer;touch-action:pan-y}
+#dRange{-webkit-appearance:none;appearance:none;height:28px;background:transparent;cursor:pointer;touch-action:pan-y;
+  /* 1.0.1: inset so each stop sits right above its centered label */
+  width:calc(100% - 100% / var(--n,4) + 26px);margin:0 0 0 calc(50% / var(--n,4) - 13px);cursor:pointer;touch-action:pan-y}
 #dRange::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg,#9be3a9,#cfd8d2 33%,#ffb547 66%,#ff6060)}
 #dRange::-moz-range-track{height:8px;border-radius:999px;background:linear-gradient(90deg,#9be3a9,#cfd8d2 33%,#ffb547 66%,#ff6060)}
 #dRange::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;margin-top:-9px;border-radius:50%;background:var(--dc);border:3px solid #0b0d10;box-shadow:0 0 0 2px var(--dc),0 0 14px var(--dc)}
 #dRange::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--dc);border:3px solid #0b0d10;box-shadow:0 0 0 2px var(--dc),0 0 14px var(--dc)}
 #dRange:focus-visible{outline:2px solid var(--flame);outline-offset:4px;border-radius:8px}
 .dticks{display:grid;grid-template-columns:repeat(4,1fr)}
-.dticks button{all:unset;cursor:pointer;font:500 11px var(--mono);color:var(--dim);text-align:center;padding:2px 0}.dticks button:first-child{text-align:left}.dticks button:last-child{text-align:right}
+.dticks button{all:unset;cursor:pointer;font:500 11px var(--mono);color:var(--dim);text-align:center;padding:2px 0}
 .dticks button.on{color:var(--dc)}
 @media (max-width:560px){.diffs{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .dif{all:unset;box-sizing:border-box;cursor:pointer;border-radius:10px;border:2px solid var(--line);background:color-mix(in srgb,var(--moss) 92%,transparent);padding:10px 12px;display:flex;flex-direction:column;gap:3px;min-width:0}
@@ -768,6 +770,19 @@ button.player:focus-visible{outline:2px solid var(--flame);outline-offset:2px}
 .pe{font-family:var(--mono);font-size:18px;display:inline-flex;align-items:center;gap:6px}
 .pk .btn{width:100%;display:inline-flex;justify-content:center;align-items:center;gap:6px;font-family:var(--mono);font-weight:500;margin-top:4px}
 .ledger .xp{color:#bfe3ff}
+.dawnb{display:grid;grid-template-columns:1fr 1fr;gap:10px}.dawnb .btn{display:flex;flex-direction:column;gap:3px;padding:12px}.dawnb small{font-size:11px;font-weight:400;opacity:.8}
+.eprog{display:flex;flex-direction:column;gap:8px;background:var(--moss);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.eprog:empty{display:none}
+.epr{display:flex;flex-direction:column;gap:4px}
+.eph{display:flex;align-items:baseline;gap:8px;font-size:13px}.eph b{font:400 18px/1 var(--display)}.eph span{color:var(--dim)}.eph em{font-style:normal;color:var(--good)}.eph .epx{margin-left:auto;font:500 11px var(--mono)}
+.ebar{display:block;height:6px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.ebar i{display:block;height:100%;width:var(--t);background:var(--c);border-radius:99px;box-shadow:0 0 8px var(--c);animation:ebar 1.1s .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes ebar{from{width:var(--f)}to{width:var(--t)}}
+@media (prefers-reduced-motion:reduce){.ebar i{animation:none}}
+.tkl{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--dim);margin-top:6px}.tkl b{font:500 14px var(--mono);color:var(--ink)}
+.mbr{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+.mbh{display:flex;justify-content:space-between;font-size:12px;color:var(--dim)}.mbh b{color:var(--ink)}.mbh em{font-style:normal;color:var(--good)}#shMX{font:500 11px var(--mono)}
+.mtr{display:block;height:6px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}.mtr i{display:block;height:100%;width:0;background:var(--c);box-shadow:0 0 8px var(--c);transition:width .3s}
 @media (prefers-reduced-motion:reduce){.fc.r-celestial,.fc.r-exotic{animation:none}}
 .newb{color:var(--flame)!important;font-family:var(--mono)}
 /* how to play */
@@ -1097,7 +1112,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 </style>
 
 <script>
-/* PWA: offline support and updates (Lanternfall v1.0.0) */
+/* PWA: offline support and updates (Lanternfall v1.0.1) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -1199,7 +1214,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
   <section class="panel view wide" data-view="play" hidden>
     <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">Choose a world</h2></header>
     <div class="modes" id="modes" role="radiogroup" aria-label="Game mode">
-      <button class="mode" data-mode="campaign" role="radio"><b>Campaign</b><small>Survive 50 waves to beat the world and unlock the next. Your run saves between waves.</small></button>
+      <button class="mode" data-mode="campaign" role="radio"><b>Campaign</b><small>Survive 40 waves to beat the world and unlock the next, then end the run or keep going. Your run saves between waves.</small></button>
       <button class="mode" data-mode="endless" role="radio"><b>Endless</b><small>No final wave. A random world you've unlocked, changing every 5 waves. Your run saves between waves.</small><span class="best" id="bestEnd"></span></button>
       <button class="mode evmode" data-mode="event" role="radio" hidden><span class="evk">Halloween event · <span id="evEnds"></span></span><b>Hollow Harvest</b><small>An endless, harder night with its own creatures. Earn candy for the event pass.</small><span class="best" id="bestEv"></span></button>
     </div>
@@ -1239,7 +1254,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
     </div>
     <div class="trackwrap"><div class="tlabs" aria-hidden="true"><span></span><span>Free</span><span class="prem">Premium</span></div><div class="track" id="track"></div></div>
     <div class="rdet" id="rdet" aria-live="polite"></div>
-    <p class="hint" style="margin:0">Every run's XP fills the pass. Tier 1 costs 100 XP and each tier after costs 1 more, up to 199. Tap any reward to see it. Rewards you've reached glow green until you claim them.</p>
+    <p class="hint" style="margin:0">Every run's XP fills the pass. Tier 1 costs 120 XP and each tier after costs 8 more, up to 912. Tap any reward to see it. Rewards you've reached glow green until you claim them.</p>
     </div>
   </section>
 
@@ -1374,10 +1389,20 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
   </div>
 </div>
 
+<div class="ov" id="dawn" hidden role="dialog" aria-labelledby="dawnT">
+  <div class="panel" style="max-width:420px">
+    <h2 class="big" id="dawnT">Dawn breaks</h2>
+    <p class="hint" id="dawnSub" style="margin:0"></p>
+    <div class="dawnb"><button class="btn primary" id="dawnEnd">End the run<small>Collect your rewards now</small></button>
+      <button class="btn" id="dawnGo">Keep going<small>Play until your lives run out</small></button></div>
+    <p class="hint" style="margin:0">You keep the win either way. If you keep going, every wave, boss and snuff after wave 40 pays <b>×0.25</b> embers, XP and mastery.</p>
+  </div>
+</div>
 <div class="ov" id="end" hidden>
   <div class="panel" style="max-width:420px">
     <h2 class="big" id="endTitle">The lanterns went dark</h2>
     <div class="ledger" id="ledger"></div>
+    <div class="eprog" id="endProg"></div>
     <button class="btn primary" id="toCamp">Back to camp</button>
   </div>
 </div>
@@ -1385,7 +1410,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
 <script>
 (()=>{
 const $=s=>document.querySelector(s);
-const W=9,H=13,MAXW=50,MAXL=6,KEY='lanternfall.save.v1';
+const W=9,H=13,MAXW=40,MAXL=6,KEY='lanternfall.save.v1';
 
 /* ---------- towers ---------- */
 const TOWERS={
@@ -1480,11 +1505,11 @@ const BOSSES=[
   {name:'Shade Sovereign',title:'Crown of Night',sh:'crescent',col:'#9a75d8',col2:'#ffe96b',pas:{phase:[5,1.2]},sum:[4,'shade',1],toll:[8,2,1.4],tip:'Fades in and out, calls eclipse shades and silences lanterns near it.'},
   {name:'The Moth Queen',title:'She Who Woke Hungry',sh:'queen',col:'#f0e0ff',col2:'#ff4d6b',hp:1,r:.56,lives:8,pas:{noStun:1,shield:.15},sum:[4.5,'moth',2],
    ph:[[.66,'summon',['moth',6]],[.66,'blink',2.5],[.33,'rage',1.45],[.33,'toll',[2.8,2.5]],[.33,'shield',.15]],
-   tip:'The Queen herself. Shielded and always calling her swarm. At two thirds she summons a cloud of moths, and at one third she rages, silences lanterns around her and shields again. Costs 8 lives if she gets through.'}
+   tip:'The Queen herself. Shielded and always calling her swarm. At two thirds she summons a cloud of moths, and at one third she rages, silences lanterns around her and shields again. Costs up to 8 lives if she gets through.'}
 ];
 const bossOf=w=>typeof w==='number'?BOSSES[w]:null;
 const FD=e=>e.F||FOES[e.t];
-const GOLD_K=.42;   /* gold per kill, trimmed in 0.18.0 and 0.19.2 */
+const GOLD_K=.4;   /* gold per kill, trimmed in 0.18.0 and 0.19.2 */
 const NEWFOES=Object.keys(FOES).filter(k=>FOES[k].intro);
 const introAt=d=>NEWFOES.find(k=>FOES[k].intro===d);
 
@@ -1711,7 +1736,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='1.0.0';
+const VERSION='1.0.1';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -1724,9 +1749,9 @@ const prLv=()=>Math.min(PMAX,meta.prestige||0);
 const prBonus=()=>1+.2*prLv();   /* every prestige: +20% embers and XP from runs, forever */
 const lvReward=L=>L%5===0?25:10;
 const PASS_COST=150;
-const tierCost=n=>100+(n-1);                 /* XP to go from tier n-1 to tier n: 100, 101, 102 ... 199 */
-const tierStart=n=>100*n+n*(n-1)/2;          /* total XP needed to reach tier n */
-const PASS_MAX_XP=tierStart(100);            /* 14,950 */
+const tierCost=n=>120+8*(n-1);               /* 1.0.1: XP from tier n-1 to tier n: 120, 128, 136 ... 912 (was 100 ... 199) */
+const tierStart=n=>120*n+4*n*(n-1);          /* total XP needed to reach tier n */
+const PASS_MAX_XP=tierStart(100);            /* 51,600 (was 14,950) */
 const passTier=()=>{let k=0;while(k<100&&meta.passXp>=tierStart(k+1))k++;return k};
 const RANKS=[[1,'Wanderer'],[5,'Lamplighter'],[10,'Wickwarden'],[20,'Keeper of Flames'],[35,'Nightwatch'],[50,'Dawnbringer'],[60,'Starwarden'],[70,'Moonkeeper'],[80,'Lightbearer'],[90,'Ember Sovereign'],[100,'Eternal Flame']];
 const rankOf=L=>RANKS.filter(r=>L>=r[0]).pop()[1];
@@ -1939,7 +1964,10 @@ function storageUI(){
 }
 let persistAsked=false;
 addEventListener('pointerdown',()=>{if(!persistAsked&&storeInfo.persisted===false){persistAsked=true;requestPersist()}},{capture:true});
-function fixMeta(){   /* 0.18.2 doubled the levels of many camp upgrades: keep each player's bonus the same */
+function fixMeta(){
+  /* 1.0.1: the pass needs more XP per tier. Keep each player's tier and progress into it */
+  if((meta.passV||1)<2){const oS=n=>100*n+n*(n-1)/2,oC=n=>100+(n-1),x=meta.passXp||0;let k=0;while(k<100&&x>=oS(k+1))k++;
+    meta.passXp=k>=100?tierStart(100):Math.round(tierStart(k)+Math.min(1,(x-oS(k))/oC(k+1))*tierCost(k+1));meta.passV=2}   /* 0.18.2 doubled the levels of many camp upgrades: keep each player's bonus the same */
   if((meta.upv||1)<2){for(const id in UPSC)if(meta.up[id]){const m=META.find(x=>x.id===id);meta.up[id]=Math.min(m.max,meta.up[id]*2)}meta.upv=2}
   /* 0.21.0: codes are stored as hashes; convert codes redeemed by name in older saves */
   const toH=k=>/[A-Z]/.test(k)?codeHash(k):k;   /* names are upper case, hashes lower case */
@@ -2522,6 +2550,13 @@ function ascPartner(t){const T=ascTier(t);let best=null;for(const o of G.towers)
 
 /* ---------- lantern mastery (permanent, levels 1-100 per lantern) ---------- */
 const MAST_MAX=100,mNeed=L=>10+2*L;
+/* mastery from a run: 1 point per snuff (per foe of the original wave size) plus 3 per wave cleared; past wave 40 at x0.25 */
+function mastGain(t,cleared){
+  const k=G.mk[t]||0,k40=G.over40&&G.mk40?(G.mk40[t]||0):k,w40=Math.min(cleared,MAXW),wOT=Math.max(0,cleared-MAXW);
+  const raw=(G.over40?(k40+(k-k40)*.25):k)/WAVE_LEN+3*(G.endless?cleared:w40+wOT*.25);
+  return Math.round(raw*(1+.1*ml('studious')));
+}
+function mastInfoX(t,extra){let x=((meta.mastery&&meta.mastery[t])||0)+extra,L=1;while(L<MAST_MAX&&x>=mNeed(L)){x-=mNeed(L);L++}return{L,into:x,need:L>=MAST_MAX?0:mNeed(L)}}
 function mastInfo(t){let x=(meta.mastery&&meta.mastery[t])||0,L=1;while(L<MAST_MAX&&x>=mNeed(L)){x-=mNeed(L);L++}return{L,into:x,need:L>=MAST_MAX?0:mNeed(L)}}
 const mastBonus=L=>({dmg:.005*(L-1),rate:.02*Math.floor(L/10)});
 /* mastery prestige: at Mastery 100 a lantern can reset to level 1 for a permanent +2% boost, up to 10 times.
@@ -2580,7 +2615,7 @@ const upTierCost=(type,tier)=>Math.round(TOWERS[type].cost*TIER_K[tier-1]*G.m.co
 const ascCost=type=>Math.round(TOWERS[type].cost*ASC_K*G.m.cost*(1-.06*ml('forge')));
 /* WAVE_LEN: how many times more foes a wave sends than the original design. Each regular foe gets 1/WAVE_LEN of the
    health and gold, so a wave's total health and total gold stay the same while the wave lasts about WAVE_LEN times longer. */
-const WAVE_LEN=2,PULSE=8,PULSE_GAP=1.3;
+const WAVE_LEN=1.3,PULSE=8,PULSE_GAP=1.1;   /* 1.0.1: shorter waves (was 2): fewer, tougher foes, same total health and gold */
 const clearBonus=()=>8+Math.round(G.wave*.8)+2*ml('tithe');
 function pickNew(w){   /* a foe from the ones this depth has introduced; the newest one shows up most. In endless, the current world's */
   const D=G.endless&&!G.event&&typeof G.world==='number'?G.world:G.depth;
@@ -2599,7 +2634,7 @@ function makeWave(w){
     else if(w>=3&&r<nv+.2+Math.min(.3,w*.03))t='beetle';
     else if(w>=6&&r<nv+.2+Math.min(.3,w*.03)+.1)t='brood';
     const F=FOES[t],g=F.group||1;
-    for(let k=0;k<g;k++)q.push({t,gap:k<g-1?.14:(t==='wisp'||F.speed>1.6?.25:.45)});
+    for(let k=0;k<g;k++)q.push({t,gap:k<g-1?.14:(t==='wisp'||F.speed>1.6?.2:.34)});   /* 1.0.1: tighter spacing, shorter waves */
     if(t==='wisp'&&TM.wisp2)q.push({t,gap:.15});
   }
   /* the world's own foe shows up in the first wave so you meet it right away */
@@ -2609,7 +2644,7 @@ function makeWave(w){
   return q;
 }
 function spawn(type,at,mini){
-  const f=FOES[type],w=G.wave,sc=Math.pow(1.22,Math.min(w,5)-1)*Math.pow(type==='boss'?1.17:1.2,Math.min(25,Math.max(0,w-5)))*Math.pow(1.07,Math.max(0,w-30))*(1+.35*G.depth)*(mini?.45:1)*(type==='boss'&&w<10?.1+.09*w:1)*dOf(G.diff).hp*(type==='boss'?1-.04*ml('bane'):1-.02*ml('smallfry'))*(TM.hp||1);
+  const f=FOES[type],w=G.wave,sc=Math.pow(1.22,Math.min(w,5)-1)*Math.pow(type==='boss'?1.17:1.2,Math.min(25,Math.max(0,w-5)))*Math.pow(1.1,Math.max(0,w-30))*(1+.35*G.depth)*(mini?.45:1)*(type==='boss'&&w<10?.1+.09*w:1)*dOf(G.diff).hp*(type==='boss'?1-.04*ml('bane'):1-.02*ml('smallfry'))*(TM.hp||1);
   const hp=f.hp*sc/(type==='boss'?1:WAVE_LEN);
   const e={t:type,hp,max:hp,d:0,seg:0,x:G.path.pts[0][0],y:G.path.pts[0][1],ang:0,mini:!!mini,
     speed:f.speed*(1+.012*w)*(1+.04*G.depth)*(TM.speed||1)*dOf(G.diff).spd*(1-.02*ml('fog')),
@@ -2620,7 +2655,7 @@ function spawn(type,at,mini){
   if(type==='boss'&&!mini)sfx('boss');
   if(type==='boss'&&G.event){e.king=1;e.hp=e.max=e.max*1.3}
   else if(type==='boss'&&!mini){const B=bossOf(G.world);
-    if(B){e.B=B;e.F=Object.assign({},f,{r:B.r||.5},B.pas);e.hp=e.max=e.max*(B.hp||1);e.speed*=B.spd||1;e.armor+=B.ar||0;if(B.lives)e.lives=B.lives;e.bt={s:0,b:0,c:0,t:0};
+    if(B){e.B=B;e.F=Object.assign({},f,{r:B.r||.5},B.pas);e.hp=e.max=e.max*(B.hp||1);e.speed*=B.spd||1;e.armor+=B.ar||0;if(B.lives)e.lives=B.lives;e.lives=Math.min(e.lives,2+Math.floor(w*.4));   /* 1.0.1: early bosses cost fewer lives if they slip through: 4 on wave 5, 6 on wave 10, full from wave 15 */e.bt={s:0,b:0,c:0,t:0};
       if(G.bossIntro!==G.wave){G.bossIntro=G.wave;meta.bossSeen=meta.bossSeen||{};if(!meta.bossSeen[G.world]){meta.bossSeen[G.world]=1;toast(B.name,B.tip)}}}}
   const shd=e.king?.3:FD(e).shield;if(shd)e.sh=e.shm=e.max*shd;
   if(at){e.d=at.d;e.seg=at.seg;e.x=at.x;e.y=at.y}
@@ -2655,7 +2690,7 @@ function sendWave(){
 }
 
 /* ---------- combat ---------- */
-function hurt(e,dmg,raw,src,st){
+function hurt(e,dmg,raw,src,st,tw){
   if(e.dead||e.inv)return;
   const F=FD(e);
   if(!raw&&F.evade&&Math.random()<F.evade){if(Math.random()<.3)G.fx.push({k:'t',x:e.x,y:e.y-.3,txt:'miss',life:.5,max:.5,col:'#f0d9a0'});return}
@@ -2679,7 +2714,8 @@ function hurt(e,dmg,raw,src,st){
     if(e.t==='boss'){G.bossKills++;if(G.bounty)G.gold+=G.bounty;G.gold+=15*ml('bountyb');G.lives+=ml('rally')}
     G.kills=(G.kills||0)+1;sfx('pop');gainBXP(e.t==='boss'?(e.mini?6:15):e.child||e.gold===0?.3:1);
     if(src)G.mk[src]=(G.mk[src]||0)+1;
-    if(e.poisAsc&&e.poisT>0)for(const o of G.foes)if(!o.dead&&o!==e&&Math.hypot(o.x-e.x,o.y-e.y)<1.3){o.pois=Math.max(o.poisT>0?o.pois:0,e.pois);o.poisT=3;o.poisSrc='venom';o.poisAsc=true}
+    {const T=tw||(st&&st.tw);if(T)T.kills=(T.kills||0)+1}   /* snuffs per lantern, shown in its upgrade sheet */
+    if(e.poisAsc&&e.poisT>0)for(const o of G.foes)if(!o.dead&&o!==e&&Math.hypot(o.x-e.x,o.y-e.y)<1.3){o.pois=Math.max(o.poisT>0?o.pois:0,e.pois);o.poisT=3;o.poisSrc='venom';o.poisTw=e.poisTw;o.poisAsc=true}
     if(e.t==='brood'){const n=TM.brood||3;for(let i=0;i<n;i++){const m=spawn('moth',e);m.hp=m.max=m.max*.45;m.gold=GOLD_K/WAVE_LEN;m.d=Math.max(0,e.d-.2*i)}}
     puff(e.x,e.y,TH.foes[e.t]||F.col,e.t==='boss'?26:8);
   }
@@ -2698,7 +2734,7 @@ function splashAround(x,y,st,dmg,src,except){
   for(const o of [...G.foes])if(!o.dead&&o!==except&&Math.hypot(o.x-x,o.y-y)<=st.splashR){
     strike(o,st,dmg*st.splashF,src);
     if(src==='frost'&&!o.dead){o.slowF=Math.max(o.slowT>0?o.slowF:0,st.slow);o.slowT=Math.max(o.slowT||0,st.slowT)}
-    if(src==='venom'&&!o.dead){o.pois=Math.max(o.poisT>0?o.pois:0,st.poison*st.splashF);o.poisT=Math.max(o.poisT||0,st.poisT);o.poisSrc='venom'}}
+    if(src==='venom'&&!o.dead){o.pois=Math.max(o.poisT>0?o.pois:0,st.poison*st.splashF);o.poisT=Math.max(o.poisT||0,st.poisT);o.poisSrc='venom';o.poisTw=st.tw}}
   G.fx.push({k:'r',x,y,r:st.splashR,life:.22,max:.22,col:TOWERS[src].color});
 }
 function dropZone(x,y,st,base,src){
@@ -2750,7 +2786,7 @@ function land(sh){
   if(sh.type==='cinder'||sh.type==='comet'){
     const R=s.splash;
     for(const e of [...G.foes])if(!e.dead&&Math.hypot(e.x-sh.tx,e.y-sh.ty)<=R){
-      if(sh.asc&&sh.type==='cinder'){e.pois=Math.max(e.poisT>0?e.pois:0,sh.dmg*.35);e.poisT=Math.max(e.poisT,3);e.poisSrc='cinder'}
+      if(sh.asc&&sh.type==='cinder'){e.pois=Math.max(e.poisT>0?e.pois:0,sh.dmg*.35);e.poisT=Math.max(e.poisT,3);e.poisSrc='cinder';e.poisTw=s.tw}
       if(sh.asc&&sh.type==='comet')e.stunT=Math.max(e.stunT||0,e.t==='boss'?.1:.3);
       strike(e,s,sh.dmg,sh.type)}
     dropZone(sh.tx,sh.ty,s,sh.dmg,sh.type);
@@ -2759,7 +2795,7 @@ function land(sh){
   }else if(sh.tg&&!sh.tg.dead){
     const e=sh.tg;
     if(sh.type==='frost'){e.slowF=Math.max(e.slowT>0?e.slowF:0,s.slow);e.slowT=Math.max(e.slowT||0,s.slowT)}
-    if(sh.type==='venom'){e.pois=Math.max(e.poisT>0?e.pois:0,s.poison);e.poisT=Math.max(e.poisT||0,s.poisT);e.poisSrc='venom';e.poisBX=s.bossX;if(sh.asc)e.poisAsc=true}
+    if(sh.type==='venom'){e.pois=Math.max(e.poisT>0?e.pois:0,s.poison);e.poisT=Math.max(e.poisT||0,s.poisT);e.poisSrc='venom';e.poisTw=s.tw;e.poisBX=s.bossX;if(sh.asc)e.poisAsc=true}
     strike(e,s,sh.dmg,sh.type);
     splashAround(sh.tx,sh.ty,s,sh.dmg,sh.type,e);
     dropZone(sh.tx,sh.ty,s,sh.type==='venom'?s.poison:sh.dmg,sh.type);
@@ -2768,7 +2804,7 @@ function land(sh){
 }
 /* Moonwell: beams lock onto foes and heat up the longer they hold one */
 function moonwellStep(t,dt,onBoard){
-  const s=tStats(t),cx=t.x+.5,cy=t.y+.5,A=asc1(t),inR=e=>!e.dead&&onBoard(e)&&Math.hypot(e.x-cx,e.y-cy)<=s.range;
+  const s=tStats(t);s.tw=t;const cx=t.x+.5,cy=t.y+.5,A=asc1(t),inR=e=>!e.dead&&onBoard(e)&&Math.hypot(e.x-cx,e.y-cy)<=s.range;
   const maxH=(A?5:3)+s.heatMax,hr=(A?2:1)*s.heatX,n=1+s.multi;
   t.beams=(t.beams||[]).filter(b=>inR(b.e));if(t.beams.length)sfx('moonwell');
   if(t.beams.length<n){const have=new Set(t.beams.map(b=>b.e));
@@ -2778,7 +2814,7 @@ function moonwellStep(t,dt,onBoard){
     hurt(e,dmg*dt,true,'moonwell',s);if(e.dead)continue;
     if(s.chill){e.slowF=Math.max(e.slowT>0?e.slowF:0,s.chill);e.slowT=Math.max(e.slowT||0,s.chillT)}
     if(s.mark){e.markX=Math.max(e.markT>0?(e.markX||1):1,1+s.mark);e.markT=Math.max(e.markT||0,.3)}
-    if(s.burn){e.pois=Math.max(e.poisT>0?e.pois:0,dmg*s.burn);e.poisT=Math.max(e.poisT||0,1);e.poisSrc='moonwell';e.poisBX=s.bossX}
+    if(s.burn){e.pois=Math.max(e.poisT>0?e.pois:0,dmg*s.burn);e.poisT=Math.max(e.poisT||0,1);e.poisSrc='moonwell';e.poisTw=s.tw;e.poisBX=s.bossX}
   }
   if(!t.beams.length&&!s.keepHeat)t.lastHeat=0;
 }
@@ -2811,8 +2847,11 @@ function step(dt){
     if(e.slowT>0)e.slowT-=dt;
     if(e.markT>0)e.markT-=dt;
     if(TM.regen&&e.hp<e.max)e.hp=Math.min(e.max,e.hp+e.max*TM.regen*dt);
-    if(e.poisT>0){e.poisT-=dt;hurt(e,e.pois*dt*(e.t==='boss'?(e.poisBX||1):1),true,e.poisSrc);if(e.dead)continue}
+    if(e.poisT>0){e.poisT-=dt;hurt(e,e.pois*dt*(e.t==='boss'?(e.poisBX||1):1),true,e.poisSrc,undefined,e.poisTw);if(e.dead)continue}
     if(e.B)bossStep(e,dt,spawned);
+    /* 1.0.1: stun fatigue. A foe held stunned for 1.5s in a row shrugs off stuns for 1.5s, so stun-locks can't stall a wave forever */
+    if(e.stunImm>0){e.stunImm-=dt;e.stunT=0}
+    else if(e.stunT>0){e.stunRun=(e.stunRun||0)+dt;if(e.stunRun>1.5){e.stunRun=0;e.stunT=0;e.stunImm=1.5}}else e.stunRun=0;
     if(e.stunT>0){e.stunT-=dt;e.flash=Math.max(0,e.flash-dt);continue}
     e.flash=Math.max(0,e.flash-dt);
     const dash=F.dash&&(e.tm%F.dash[0])>F.dash[0]-F.dash[1]?F.dash[2]:1,rage=F.enrage?2-e.hp/e.max:1;
@@ -2836,7 +2875,7 @@ function step(dt){
     t.cd-=dt;t.flash=Math.max(0,(t.flash||0)-dt);
     const fz=tFx(t).frenzy;
     if(t.cd>0&&!fz)continue;
-    const s=tStats(t),cx=t.x+.5,cy=t.y+.5,inR=[];
+    const s=tStats(t),cx=t.x+.5,cy=t.y+.5,inR=[];s.tw=t;
     for(const e of G.foes){if(e.dead||e.inv||!onBoard(e))continue;if(Math.hypot(e.x-cx,e.y-cy)<=s.range)inR.push(e)}
     if(fz)t.fz=inR.length?Math.min(1,(t.fz||0)+dt/3):Math.max(0,(t.fz||0)-dt);
     if(t.cd>0||!inR.length)continue;
@@ -2886,14 +2925,29 @@ function endWave(){
   if(G.event){if(G.wave>(meta.bestEvent||0)){meta.bestEvent=G.wave;save()}}
   else if(G.endless){if(G.wave>(meta.bestEndless||0)){meta.bestEndless=G.wave;save()}}
   else if(G.wave>meta.best){meta.best=G.wave;save()}
-  if(!G.endless&&G.wave>=MAXW){endRun(true);return}
+  if(!G.endless&&!G.over40&&G.wave>=MAXW){G.state='dawn';showDawn();return}
   if(G.endless&&!G.event&&G.wave%5===0)G.shiftNext=true;
   if(nextBoon())return;
   G.state='build';
   if(G.shiftNext){G.shiftNext=false;shiftWorld()}
   snapRun();renderTray();hud(true);bxHud();
-  if(auto)setTimeout(()=>{if(G.state==='build'&&!paused)sendWave()},700);
+  if(auto&&G.wave>=1)setTimeout(()=>{if(G.state==='build'&&!paused&&G.wave>=1)sendWave()},700);
 }
+/* 1.0.1: after wave 40 the player picks: end the run now, or keep going until the lanterns go dark.
+   Waves, bosses and snuffs after wave 40 pay a quarter of the usual embers, XP and mastery. */
+function showDawn(){
+  $('#dawnSub').textContent=`You held all ${MAXW} waves of ${TH.name}. The night is yours.`;
+  hide('menu');show('dawn');sfx('win');
+}
+function dawnGo(){
+  hide('dawn');G.over40=true;G.mk40=Object.assign({},G.mk);G.boss40=G.bossKills;
+  toast('Into the long night','No final wave now. Everything past wave 40 pays ×0.25 embers, XP and mastery.');
+  if(nextBoon())return;
+  G.state='build';snapRun();renderTray();hud(true);bxHud();
+  if(auto&&G.wave>=1)setTimeout(()=>{if(G.state==='build'&&!paused&&G.wave>=1)sendWave()},700);
+}
+$('#dawnEnd').onclick=()=>{hide('dawn');endRun(true)};
+$('#dawnGo').onclick=dawnGo;
 /* endless: after every 5th wave (and that world's boss) the world changes to another unlocked one.
    The trail stays, and so does the run's foe health and ember scaling: only the twist, foes and boss change. */
 function shiftWorld(){
@@ -2912,7 +2966,7 @@ function pathFrom(cells,pts){const cum=[0];for(let i=1;i<pts.length;i++)cum.push
 function snapRun(){
   if(!G||G.state!=='build')return;
   meta[saveKey(runMode())]={v:2,ev:G.event?EVENT.id:undefined,depth:G.depth,world:G.world,diff:G.diff,wave:G.wave,lives:G.lives,gold:G.gold,bossKills:G.bossKills,kills:G.kills||0,ward:G.ward||0,patron:G.patron||0,sw:G.sw||0,bxp:G.bxp||0,blv:G.blv||0,bpend:G.bpend||0,
-    gf:G.gf||0,towers:G.towers.map(t=>({type:t.type,x:t.x,y:t.y,p:(t.p||[0,0]).slice(),ak:t.ak==null?null:t.ak,at:t.at||0,spent:t.spent})),path:{cells:G.path.cells,pts:G.path.pts},
+    gf:G.gf||0,towers:G.towers.map(t=>({type:t.type,x:t.x,y:t.y,p:(t.p||[0,0]).slice(),ak:t.ak==null?null:t.ak,at:t.at||0,spent:t.spent,kills:t.kills||0})),path:{cells:G.path.cells,pts:G.path.pts},ot:G.over40?{mk:G.mk40,b:G.boss40}:null,
     m:G.m,taken:G.taken,mk:G.mk,used:[...G.used],at:Date.now()};
   save();
 }
@@ -2922,7 +2976,8 @@ function resumeRun(mode){
   newRun(r.depth,mode!=='campaign');if(mode==='event'){G.event=true}applyTheme(r.world);
   Object.assign(G,{gf:r.gf||0,world:r.world,diff:r.diff,wave:r.wave,lives:r.lives,gold:r.gold,bossKills:r.bossKills,kills:r.kills,ward:r.ward,patron:r.patron||0,sw:r.sw||0,bxp:r.bxp||0,blv:r.blv||0,bpend:r.bpend||0,
     m:Object.assign(G.m,r.m),taken:r.taken||{},mk:r.mk||{},used:new Set(r.used||[])});
-  G.towers=(r.towers||[]).filter(t=>TOWERS[t.type]).map(t=>({type:t.type,x:t.x,y:t.y,p:(t.p||[0,0]).slice(),ak:t.ak==null?undefined:t.ak,at:t.at||undefined,spent:t.spent,cd:0}));
+  G.towers=(r.towers||[]).filter(t=>TOWERS[t.type]).map(t=>({type:t.type,x:t.x,y:t.y,p:(t.p||[0,0]).slice(),ak:t.ak==null?undefined:t.ak,at:t.at||undefined,spent:t.spent,kills:t.kills||0,cd:0}));
+  if(r.ot){G.over40=true;G.mk40=r.ot.mk||{};G.boss40=r.ot.b||0}
   G.path=pathFrom(r.path.cells,r.path.pts);G.amb=makeAmb();drawBG();
   return true;
 }
@@ -3027,25 +3082,28 @@ function takeCard(c){
   if(G.shiftNext){G.shiftNext=false;shiftWorld()}
   snapRun();
   renderTray();hud(true);
-  if(auto)setTimeout(()=>{if(G.state==='build'&&!paused)sendWave()},700);
+  if(auto&&G.wave>=1)setTimeout(()=>{if(G.state==='build'&&!paused&&G.wave>=1)sendWave()},700);
 }
 $('#reroll').onclick=()=>{if(G.rerolls>0){G.rerolls--;offerCards()}};
 $('#skip').onclick=()=>takeCard(null);
 
 /* ---------- run end ---------- */
 function endRun(win){
+  const ot=!G.endless&&G.over40;if(ot)win=true;   /* past wave 40: the night was already won */
   if(G.state!=='over')sfx(win?'win':'lose');
   if(G.state==='over')return;
-  const cleared=win?MAXW:Math.max(0,G.wave-(G.state==='wave'?1:0));
+  const cleared=ot?Math.max(MAXW,G.wave-(G.state==='wave'?1:0)):win?MAXW:Math.max(0,G.wave-(G.state==='wave'?1:0));
+  const OTK=.25,wk=i=>i>MAXW&&!G.endless?OTK:1,bossOT=ot?G.bossKills-(G.boss40||0):0,bossEff=G.bossKills-bossOT*(1-OTK);
+  const lvB=levelInfo(meta.xp),mB={};for(const t of G.used)mB[t]=mastInfo(t);
   G.state='over';
-  let base=0;for(let i=1;i<=cleared;i++)base+=3+Math.floor(i/4);   /* 0.21.0: more embers per wave */
-  const DF=dOf(G.diff),boss=G.bossKills*(5+ml('trophy')),vic=win?30:0,perk=(G.endless?1+.08*ml('longnight'):1)*(G.diff==='hard'||G.diff==='nightmare'||G.diff==='oblivion'?1+.06*ml('daring'):1),mult=(1+.1*ml('jar'))*(1+.25*G.depth)*DF.rew*perk;
+  let base=0;for(let i=1;i<=cleared;i++)base+=(3+Math.floor(i/4))*wk(i);base=Math.round(base);   /* 0.21.0: more embers per wave; 1.0.1: x0.25 past wave 40 */
+  const DF=dOf(G.diff),boss=Math.round(bossEff*(5+ml('trophy'))),vic=win?30:0,perk=(G.endless?1+.08*ml('longnight'):1)*(G.diff==='hard'||G.diff==='nightmare'||G.diff==='oblivion'?1+.06*ml('daring'):1),mult=(1+.1*ml('jar'))*(1+.25*G.depth)*DF.rew*perk;
   const total=Math.round((base+boss+vic)*mult*prBonus());
   meta.embers+=total;meta.runs++;
   const newD=win&&G.depth>=meta.maxDepth&&meta.maxDepth<MAXD;
   if(newD)meta.maxDepth=G.depth+1;
-  let xp=0;for(let i=1;i<=cleared;i++)xp+=4+Math.floor(i/4);   /* 50-wave campaigns: XP per wave grows gently */
-  xp=Math.round((xp+G.bossKills*20+(win?150:0))*(1+.2*G.depth)*DF.rew*(1+.05*ml('school'))*perk*prBonus());
+  let xp=0;for(let i=1;i<=cleared;i++)xp+=(4+Math.floor(i/4))*wk(i);   /* XP per wave grows gently; x0.25 past wave 40 */
+  xp=Math.round((xp+bossEff*20+(win?150:0))*(1+.2*G.depth)*DF.rew*(1+.05*ml('school'))*perk*prBonus());
   const lvBefore=levelInfo(meta.xp).L,tierBefore=passTier();
   meta.xp+=xp;if(!seasonOver())meta.passXp=Math.min(meta.passXp+xp,PASS_MAX_XP);
   const lvAfter=levelInfo(meta.xp).L,tierAfter=passTier();
@@ -3059,21 +3117,26 @@ function endRun(win){
   let candy=0;if(G.event){for(let i=1;i<=cleared;i++)candy+=2+Math.floor(i/5);candy=Math.round((candy+G.bossKills*6)*DF.rew);meta.candy=(meta.candy||0)+candy;add('candy',candy)}
   /* mastery: 1 point per kill, plus 3 per wave cleared for every lantern type you built */
   meta.mastery=meta.mastery||{};const mUp=[];
-  for(const t of G.used){const before=mastInfo(t).L;meta.mastery[t]=(meta.mastery[t]||0)+Math.round(((G.mk[t]||0)/WAVE_LEN+3*cleared)*(1+.1*ml('studious')));const after=mastInfo(t).L;if(after>before)mUp.push(`${TOWERS[t].name} ${before}→${after}`)}
+  for(const t of G.used){const before=mastInfo(t).L;meta.mastery[t]=(meta.mastery[t]||0)+mastGain(t,cleared);const after=mastInfo(t).L;if(after>before)mUp.push(`${TOWERS[t].name} ${before}→${after}`)}
   save();
-  $('#endTitle').textContent=win?'Dawn breaks':G.event?`${EVT.name}: wave ${cleared}`:G.endless?`Endless: wave ${cleared}`:'The lanterns went dark';
+  $('#endTitle').textContent=ot?`Dawn broke · held to wave ${cleared}`:win?'Dawn breaks':G.event?`${EVT.name}: wave ${cleared}`:G.endless?`Endless: wave ${cleared}`:'The lanterns went dark';
   $('#ledger').innerHTML=(G.event?`<span style="grid-column:1/3;color:var(--dim)">Best ${EVT.name} run: wave ${meta.bestEvent||0}</span><span class="cdl">Candy earned</span><span class="cdl">${CANDY} +${candy}</span>`:G.endless?`<span style="grid-column:1/3;color:var(--dim)">Best endless run: wave ${meta.bestEndless||0}</span>`:'')+
-    `<span>Waves cleared (${cleared})</span><span>${base}</span><span>Bosses snuffed (${G.bossKills})</span><span>${boss}</span>`+
+    `<span>Waves cleared (${cleared})${ot&&cleared>MAXW?` · past ${MAXW} ×0.25`:''}</span><span>${base}</span><span>Bosses snuffed (${G.bossKills})</span><span>${boss}</span>`+
     (win?`<span>Survived the night</span><span>${vic}</span>`:'')+
     `<span>Difficulty: ${DF.name}</span><span style="color:${DF.col}">×${DF.rew}</span><span>Total multiplier</span><span>×${mult.toFixed(2)}</span><span class="tot">Embers earned</span><span class="tot">${total}</span>`+
     (newD?`<span style="grid-column:1/3;color:var(--good)">New world unlocked: ${THEMES[G.depth+1].name}.</span>`:'')+
     `<span class="xp" style="border-top:1px solid var(--line);padding-top:6px">XP earned</span><span class="xp" style="border-top:1px solid var(--line);padding-top:6px">+${xp}</span>`+
-    (lvAfter>lvBefore?`<span style="color:var(--good)">Level up! Now level ${lvAfter}</span><span style="color:var(--good)">${rankOf(lvAfter)}</span>`:'')+
     (tierAfter>tierBefore?`<span>Pass tier</span><span>${tierBefore} → ${tierAfter}</span>`:'')+
     (first?`<span>First clear of ${THEMES[G.depth].name}</span><span class="mb">+20</span>`:'')+
     (moon?`<span class="mb">Moonstones earned</span><span class="mb">+${moon}</span>`:'')+
-    (mUp.length?`<span style="grid-column:1/3;border-top:1px solid var(--line);padding-top:6px;color:var(--flame)">Mastery up: ${mUp.join(', ')}</span>`:'');
-  hide('pick');hide('menu');show('end');
+    '';
+  /* progress: your level and every lantern you used, with bars */
+  const lvA=levelInfo(meta.xp),bar=(pct,col,from)=>`<span class="ebar" style="--c:${col}"><i style="--f:${from==null?pct:from}%;--t:${pct}%"></i></span>`;
+  const pc=I=>I.need?Math.min(100,I.into/I.need*100):100;
+  $('#endProg').innerHTML=`<div class="epr"><div class="eph"><b>Level ${lvA.L}</b><span>${lvA.L>lvB.L?`<em>up from ${lvB.L}</em> · `:''}${rankOf(lvA.L)}</span><span class="epx">${lvA.max?'max':`${lvA.into} / ${lvA.need} XP`}</span></div>${bar(pc(lvA),'#bfe3ff',lvA.L>lvB.L?0:pc(lvB))}</div>`+
+    [...G.used].filter(t=>TOWERS[t]).map(t=>{const A=mastInfo(t),B=mB[t],up=A.L>B.L;
+      return `<div class="epr"><div class="eph"><b style="color:${TOWERS[t].color}">${TOWERS[t].name}</b><span>Mastery ${A.L}${up?` <em>up from ${B.L}</em>`:''}</span><span class="epx">${A.need?`${A.into} / ${A.need}`:'max'}</span></div>${bar(pc(A),TOWERS[t].color,up?0:pc(B))}</div>`}).join('');
+  hide('pick');hide('menu');hide('dawn');$('#toast').hidden=true;show('end');
 }
 
 /* ---------- title screen & pages ---------- */
@@ -3173,6 +3236,7 @@ function drawPrestige(){const T=performance.now()/1000;document.querySelectorAll
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'1.0.1',d:'Oct 16, 2026',notes:['Campaigns are now 40 waves. When you clear wave 40 you choose: end the run and collect your rewards, or keep going until your lives run out. The win counts either way, but every wave, boss and snuff after wave 40 pays \u00d70.25 embers, XP and mastery.','Shorter waves: fewer foes that are each a little tougher, arriving closer together. A wave holds the same total health and gold as before, and takes about a third less time.','Harder: foes toughen faster from wave 30 on, so the last waves are a real test, and kills pay about 5% less gold.','Early bosses cost fewer lives if they slip through: 4 on wave 5, 6 on wave 10, and their full cost from wave 15.','Fixed waves that could drag on with foes stuck in place. A foe held stunned for 1.5 seconds in a row now shrugs off stuns for 1.5 seconds.','Tap a lantern during a run to see how many foes it has snuffed this run, and a live bar of that lantern\u2019s mastery, including what this run has earned so far.','The run summary now shows your level and every lantern you used, each with a progress bar.','Auto never sends wave 1. Press Send wave to start, and Auto takes over from wave 2.','The difficulty slider\u2019s stops now sit right above their names.','The Season 1 pass needs more XP: tiers cost 120 XP, rising by 8 each tier to 912 (51,600 in all, up from 14,950). Your current tier and progress into it are kept.']},
   {v:'1.0.0',d:'Oct 15, 2026',major:1,kick:'Welcome to version 1.0',title:'Lanternfall',go:'Light the lanterns',
    hl:[['21 worlds, 21 bosses','Every world has its own twist, its own foe and its own boss, all the way down to the Moth Queen at the Hollow Moon.'],
        ['12 lanterns, 53 boons','Four roles, two upgrade paths each, ascensions and merges, and boons that change every run.'],
@@ -3311,7 +3375,7 @@ function renderBoons(){
 $('#bcats').onclick=e=>{const b=e.target.closest('[data-bx]');if(!b)return;bxCat=+b.dataset.bx;renderBoons()};
 function renderHow(){
   $('#how').innerHTML=`
-  <div class="hc"><h3>The goal</h3><p>Foes walk the trail from the top of the board to the bottom. Every foe that gets through costs you lives. <b>Survive 50 waves</b> to win the run.</p></div>
+  <div class="hc"><h3>The goal</h3><p>Foes walk the trail from the top of the board to the bottom. Every foe that gets through costs you lives. <b>Survive 40 waves</b> to win the run. Then end it there, or keep going until your lives run out (waves past 40 pay ×0.25).</p></div>
   <div class="hc"><h3>Building</h3><ol>
     <li><b>Drag a lantern</b> from the tray onto a grassy tile. Green means it fits, red means it doesn't. You can also tap a lantern, then tap tiles to place it.</li>
     <li>Max <b>both paths</b> to <b>ascend</b> a lantern. Pick one of up to three ascension types, unlocked at Mastery 30, 50 and 70.</li>
@@ -3342,7 +3406,7 @@ function renderHow(){
     <ul>${BOSSES.map((B,d)=>d>meta.maxDepth?`<li><b>${d?`Depth ${d}`:'Surface'}:</b> ???</li>`:`<li><b style="color:${B.col2}">${B.name}</b> (${d?`depth ${d}`:'surface'}). ${B.tip}</li>`).join('')}</ul></div>
   <div class="hc"><h3>Prestige</h3><p>Levels go up to <b>100</b>. At 100, open <b>Prestige</b> on the title screen to start the climb again, up to <b>10 times</b>. Your level, embers, camp upgrades and worlds start over, but you keep moonstones, passes, skins and lanterns with their mastery. Each prestige opens two <b>Prestige skins</b> in the Prestige shop. Lanterns prestige too: at <b>Mastery 100</b>, reset one to Mastery 1 for a permanent <b>+2%</b>.</p></div>
   <div class="hc"><h3>Full docs</h3><p>Want every number? The <a href="https://github.com/ZhanderMusic/lanternfall/wiki" target="_blank" rel="noopener" style="color:var(--acc)">Lanternfall docs</a> cover every lantern, foe, world, boon and camp upgrade. You can also open them from Settings.</p></div>
-  <div class="hc"><h3>Worlds</h3><p>Clear all 50 waves to unlock the <b>next depth</b>. Each one is a new world with its own twist, tougher foes and bigger ember rewards.</p></div>
+  <div class="hc"><h3>Worlds</h3><p>Clear all 40 waves to unlock the <b>next depth</b>. Each one is a new world with its own twist, tougher foes and bigger ember rewards.</p></div>
   <div class="hc full"><h3>Tips</h3><ul>
     <li>Armor cuts flat damage from every hit. Use <b>Cinder, Bolt, Comet</b> or <b>Venom</b> against beetles.</li>
     <li><b>Frost</b> next to splash lanterns keeps foes inside the blast.</li>
@@ -3395,7 +3459,7 @@ function renderWorlds(){
   const wcard=d=>{const T=THEMES[d],lock=d>meta.maxDepth,nf=introAt(d),beat=(meta.cleared||[]).includes(d);
     return `<button class="wc${d===meta.depth?' on':''}${lock?' locked':''}" data-d="${d}" ${lock?'disabled':''} style="background:${T.tiles[1]};--acc:${T.acc}" aria-pressed="${d===meta.depth}">
       <span class="d">${d?`Depth ${d}`:'Surface level'}${lock?' · locked':beat?' · beaten':''}</span><span class="n">${lock?'???':T.name}</span>
-      <p>${lock?`Clear all 50 waves ${d>1?`at depth ${d-1}`:'on the surface'} to reveal this world.`:T.twist}</p>
+      <p>${lock?`Clear all ${MAXW} waves ${d>1?`at depth ${d-1}`:'on the surface'} to reveal this world.`:T.twist}</p>
       ${lock?'':nf?`<span class="nf"><i style="background:${FOES[nf].col}"></i>New foe: <b>${FOES[nf].name}</b>. ${FOES[nf].tip}</span>`:'<span class="nf"><i style="background:#e9e2cf"></i>Meet the moths, wisps, beetles and broods.</span>'}
       ${lock?'':`<span class="nf"><i style="background:${BOSSES[d].col2}"></i>Boss: <b>${BOSSES[d].name}</b> · ${BOSSES[d].title}</span>`}
       ${!lock&&d?`<span class="sc">Foes +${d*35}% health · embers +${d*25}%</span>`:''}</button>`};
@@ -3422,7 +3486,7 @@ function renderWorlds(){
   document.querySelectorAll('#modes .mode').forEach(b=>{const on=b.dataset.mode===meta.mode;b.classList.toggle('on',on);b.setAttribute('aria-checked',on)});
   $('#bestEnd').textContent=meta.bestEndless?`Best: wave ${meta.bestEndless}`:'';
   const DO=dOrder(),cd=DO.includes(meta.diff)?meta.diff:'normal';
-  if(!$('#dRange')||+$('#dRange').max!==DO.length-1){$('#diffs').innerHTML=`<div class="dsl"><div class="dcard" id="dCard"></div>
+  if(!$('#dRange')||+$('#dRange').max!==DO.length-1){$('#diffs').innerHTML=`<div class="dsl" style="--n:${DO.length}"><div class="dcard" id="dCard"></div>
       <input type="range" id="dRange" class="${DO.length>4?'five':''}" min="0" max="${DO.length-1}" step="1" aria-label="Difficulty">
       <div class="dticks" style="grid-template-columns:repeat(${DO.length},1fr)">${DO.map((k,i)=>`<button data-diff="${k}" style="--dc:${DIFF[k].col}">${DIFF[k].name}</button>`).join('')}</div></div>`}
   diffUI(cd);
@@ -4090,7 +4154,7 @@ let speed=1,auto=false,paused=false,armed=false;
 function show(id){$('#'+id).hidden=false}
 function hide(id){$('#'+id).hidden=true}
 $('#spd').onclick=()=>{speed=speed%3+1;$('#spd').textContent=speed+'×'};
-$('#auto').onclick=()=>{auto=!auto;$('#auto').textContent='Auto: '+(auto?'on':'off');if(auto&&G.state==='build')sendWave()};
+$('#auto').onclick=()=>{auto=!auto;$('#auto').textContent='Auto: '+(auto?'on':'off');if(auto&&G.state==='build'&&G.wave>=1)sendWave()};   /* wave 1 always waits for Send wave */
 $('#send').onclick=sendWave;
 function openMenu(){renderSfx();renderMus();paused=true;$('#abandon').textContent='Abandon run';armed=false;
   $('#menuHint').textContent=G.state==='wave'?`Save and quit keeps your run from before wave ${G.wave}, so you'll replay this wave when you continue. Abandoning ends the run and pays embers for the waves you cleared.`:'Save and quit keeps your run so you can continue it from the Play page. Abandoning ends the run and pays embers for the waves you cleared.';show('menu')}
@@ -4140,7 +4204,8 @@ function bossHud(){
 }
 function hud(force){
   if(G&&G.foes)bossHud();
-  const w=G.endless?`${G.wave}/∞`:`${G.wave}/${MAXW}`,l=G.lives,g=G.gold;
+  const w=G.endless||G.over40?`${G.wave}/∞`:`${G.wave}/${MAXW}`,l=G.lives,g=G.gold;
+  sheetLive();
   if(force){bxHud()}
   if(force||last.w!==w){$('#wave').textContent=w;last.w=w}
   if(force||last.l!==l){$('#lives').textContent=l;$('#lives').classList.toggle('low',l<=5);last.l=l}
@@ -4149,6 +4214,14 @@ function hud(force){
   if(force||last.st!==st){last.st=st;const b=$('#send');
     b.disabled=st!=='build';b.classList.toggle('ready',st==='build');
     b.textContent=st==='wave'?`Wave ${G.wave} …`:`Send wave ${G.wave+1}`}
+}
+let shLast='';
+function sheetLive(){   /* the open lantern's snuffs and mastery progress, live */
+  const s=G&&G.sel;if(!s||s.kind!=='tower'||$('#sheet').hidden||!$('#shK'))return;
+  const t=s.t,ty=t.type,cl=Math.max(0,G.wave-(G.state==='wave'?1:0)),I=mastInfoX(ty,G.used.has(ty)?mastGain(ty,cl):0),B=mastInfo(ty);
+  const key=(t.kills||0)+'|'+I.L+'|'+I.into;if(key===shLast)return;shLast=key;
+  $('#shK').textContent=t.kills||0;$('#shML').textContent=I.L;$('#shMU').textContent=I.L>B.L?` +${I.L-B.L} this run`:'';
+  $('#shMX').textContent=I.need?`${I.into} / ${I.need}`:'max';$('#shMF').style.width=(I.need?Math.min(100,I.into/I.need*100):100).toFixed(1)+'%';
 }
 function afford(){
   document.querySelectorAll('#tray [data-cost],#sheet [data-cost]').forEach(b=>{b.disabled=G.gold<+b.dataset.cost||b.dataset.lock==='1'});
@@ -4180,7 +4253,7 @@ function statLine(t,st){
   return `dmg ${st.dmg.toFixed(1)} · ${st.rate.toFixed(2)}/s · range ${st.range.toFixed(1)}${ex}${tg}${cr}`;
 }
 const tpips=(n,c)=>`<span class="tpips" style="--pc:${c}">${[1,2,3,4,5].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')}</span>`;
-function renderSheet(){
+function renderSheet(){shLast='';
   const sh=$('#sheet'),s=G&&G.sel;
   if(!s||s.kind!=='tower'||!G.towers.includes(s.t)||G.state==='over'||G.state==='camp'){sh.hidden=true;return}
   const t=s.t,ty=t.type,st=tStats(t),u=UPG[ty],mL=G.mast[ty],refund=Math.round(t.spent*runSell()),AT=ascTier(t),p=t.p||[0,0],both5=p[0]>=5&&p[1]>=5;
@@ -4209,7 +4282,9 @@ function renderSheet(){
   sh.innerHTML=`<div class="shd"><h3 style="color:${TOWERS[ty].color}">${TOWERS[ty].name}<span class="rolec" style="--rc:${roleOf(ty).col}">${roleOf(ty).name}</span>${AT?`<span class="ascb at${AT}">${ASC_NAME[AT]}</span>`:''}</h3>
     <div class="sha"><button class="btn tib" data-act="info" aria-label="About ${TOWERS[ty].name}" title="About this lantern">i</button><button class="btn" data-act="sell">Sell +${refund}</button><button class="btn" data-act="close" aria-label="Close">✕</button></div></div>
     <div class="nums">${statLine(t,st)}</div>${body}
-    <div class="mst">Mastery ${(G.mastL&&G.mastL[ty])||mL}${mPrest(ty)?` · prestige ${ROM[mPrest(ty)]}`:''}${mb?` · ${mb}`:''}${nu?` · next: ${nu[1]} at ${nu[0]}`:''}</div>`;
+    <div class="tkl"><span>Snuffs this run</span><b id="shK">${t.kills||0}</b></div>
+    <div class="mbr" style="--c:${TOWERS[ty].color}"><div class="mbh"><span>Mastery <b id="shML">${mL}</b><em id="shMU"></em></span><span id="shMX"></span></div><span class="mtr"><i id="shMF"></i></span></div>
+    <div class="mst">${[mPrest(ty)?`Prestige ${ROM[mPrest(ty)]}`:'',mb||'',nu?`next: ${nu[1]} at ${nu[0]}`:''].filter(Boolean).join(' · ')}</div>`;
   sh.hidden=false;afford();
 }
 function buildAt(type,x,y){

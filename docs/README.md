@@ -27,7 +27,7 @@ New to the game? Read **[How to play](how-to-play.md)** first, then the **[Strat
 
 | | |
 |---|---|
-| Waves to win a campaign | 50 |
+| Waves to win a campaign | 40 (then end the run or keep going) |
 | Lanterns | 12 (9 from camp, 3 from the Season 1 Pass) |
 | Upgrades per lantern | 2 paths × 5 tiers, then 3 ascension types and 2 merges |
 | Worlds | 21 (the Surface level plus depths 1–20) |

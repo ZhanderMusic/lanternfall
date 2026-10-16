@@ -8,18 +8,17 @@ Every wave sends more foes, and each one is tougher, faster, better armored and 
 
 | Wave | Foe health | Boss health | Foes in the wave | Bosses | Speed | Bonus armor | Gold per kill |
 |---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 | ×1 | ×1 | 18 | – | +1% | +0 | ×1.00 |
-| 5 | ×2.2 | ×1.2 | 38 | 1 | +6% | +2 | ×1.12 |
-| 10 | ×5.5 | ×4.9 | 62 | 1 | +12% | +5 | ×1.27 |
-| 15 | ×14 | ×10.6 | 86 | 1 | +18% | +7 | ×1.42 |
-| 20 | ×34 | ×23 | 110 | 2 | +24% | +10 | ×1.57 |
-| 25 | ×85 | ×51 | 134 | 2 | +30% | +12 | ×1.72 |
-| 30 | ×211 | ×112 | 158 | 2 | +36% | +15 | ×1.87 |
-| 35 | ×296 | ×157 | 182 | 3 | +42% | +17 | ×2.02 |
-| 40 | ×416 | ×221 | 206 | 3 | +48% | +20 | ×2.17 |
-| 50 | ×818 | ×434 | 254 | 3 | +60% | +25 | ×2.47 |
+| 1 | ×1 | – | 11 | – | +1% | +0 | ×1.00 |
+| 5 | ×2.2 | ×1.2 | 24 | 1 | +6% | +2 | ×1.12 |
+| 10 | ×5.5 | ×4.9 | 40 | 1 | +12% | +5 | ×1.27 |
+| 15 | ×14 | ×11 | 55 | 1 | +18% | +7 | ×1.42 |
+| 20 | ×34 | ×23 | 71 | 2 | +24% | +10 | ×1.57 |
+| 25 | ×85 | ×51 | 87 | 2 | +30% | +12 | ×1.72 |
+| 30 | ×211 | ×112 | 102 | 2 | +36% | +15 | ×1.87 |
+| 35 | ×340 | ×181 | 118 | 3 | +42% | +17 | ×2.02 |
+| 40 | ×548 | ×291 | 133 | 3 | +48% | +20 | ×2.17 |
 
-These numbers are for the Surface level on Normal. Bosses arrive on every fifth wave. Bonus armor only applies to foes that already have armor, like beetles.
+These numbers are for the Surface level on Normal. A campaign is 40 waves; if you keep going after wave 40, the same growth carries on. Bosses arrive on every fifth wave. Bonus armor only applies to foes that already have armor, like beetles.
 
 ## Health
 
@@ -29,9 +28,9 @@ Foe health grows in three stages, so the early waves ramp up quickly, the middle
 |---|---|---|
 | 1 to 5 | +22% | +22% |
 | 6 to 30 | +20% | +17% |
-| 31 and up | +7% | +7% |
+| 31 and up | +10% | +10% |
 
-That rate multiplies on itself every wave. A moth that has 10 health on wave 1 has about 55 on wave 10, 340 on wave 20 and 8,200 on wave 50. A boss starts at 650 and reaches about 15,000 on wave 20 and 280,000 on wave 50.
+That rate multiplies on itself every wave. A wave whose foes share 10 health on wave 1 shares about 55 on wave 10, 340 on wave 20 and 5,500 on wave 40. A boss starts at 650 and reaches about 15,000 on wave 20 and 190,000 on wave 40.
 
 **Depth.** Each depth adds +35% health on top of that. Depth 10 foes have ×4.5 health, depth 20 foes have ×8.
 
@@ -51,7 +50,7 @@ That rate multiplies on itself every wave. A moth that has 10 health on wave 1 h
 
 ## How many foes
 
-A wave sends about 18 foes on wave 1 and roughly 5 more each wave after that. They come in clumps of eight with a short breather between clumps. Swarm worlds send up to 30% more.
+A wave sends about 11 foes on wave 1 and roughly 3 more each wave after that, close together. They come in clumps of eight with a short breather between clumps. Each foe carries its share of the wave's total health and gold, so fewer foes means each is tougher, not that the wave is easier. Swarm worlds send up to 30% more.
 
 The mix changes as you go:
 
@@ -69,10 +68,10 @@ A boss comes every fifth wave:
 |---|---|
 | 5 to 15 | 1 |
 | 20 to 30 | 2 |
-| 35 to 50 | 3 |
+| 35 to 40, and on past 40 if you keep going | 3 |
 | Endless, after 50 | one more every 15 waves, up to 8 |
 
-A boss that gets through costs 8 lives.
+A boss that gets through costs 8 lives, but early bosses cost less: 4 on wave 5 and 6 on wave 10, full cost from wave 15.
 
 Early bosses are gentler. Before wave 10 a boss's health is cut (55% on wave 5, full by wave 10), and its armor ramps up until wave 15: a boss wears about 2 armor on wave 5 and 6 on wave 10 instead of the full 6 and 9.
 

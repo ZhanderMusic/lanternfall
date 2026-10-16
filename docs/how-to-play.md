@@ -22,7 +22,7 @@ Lanternfall is a tower defense roguelike. Foes walk a winding trail, you build l
 
 ## The goal
 
-Foes walk the trail from one end of the board to the other. Every foe that gets through costs you lives (most cost 1, bigger foes cost more, a boss costs 8). **Survive 50 waves** to win a campaign run. If your lives hit zero, the run ends, but you still keep everything you earned.
+Foes walk the trail from one end of the board to the other. Every foe that gets through costs you lives (most cost 1, bigger foes cost more, a boss costs 8). **Survive 40 waves** to win a campaign run. Then end the run, or keep going until your lives run out (everything past wave 40 pays ×0.25). If your lives hit zero, the run ends, but you still keep everything you earned.
 
 ## Your first run
 
@@ -73,7 +73,7 @@ Some tiers are locked until that lantern reaches enough **mastery** (see [Lanter
 - **Halfway** through each wave you get half of the wave's clear bonus, and the rest when the wave is cleared.
 - Every 5th wave brings the world's own **boss**: 1 until wave 15, 2 from wave 20 and 3 from wave 35. Each world's boss has its own tricks; see [World bosses](foes.md#world-bosses).
 - **Speed:** tap the speed button to switch between 1×, 2× and 3×.
-- **Auto** sends the next wave for you as soon as the last one is cleared.
+- **Auto** sends the next wave for you as soon as the last one is cleared. Wave 1 always waits for you to press **Send wave**.
 - Each world introduces its own **new foe**, and you meet it in the first wave.
 
 Foes get tougher every wave. For the exact numbers, see [How foes get tougher](enemy-scaling.md).
@@ -131,6 +131,8 @@ Win or lose, the run pays out:
 - **Embers** for waves cleared, bosses beaten and a win bonus, multiplied by depth and difficulty.
 - **XP**, which raises your player level and your Pass tier.
 - **Mastery** for every lantern you used.
+
+The summary shows your level and each lantern's mastery with progress bars. During a run, tap a lantern to see how many foes it has snuffed this run and a live bar of its mastery.
 - **Moonstones** for any level ups, and for clearing a world for the first time.
 
 Winning a campaign on your deepest unlocked world opens the next depth. See [Progression and rewards](progression.md) for the formulas.

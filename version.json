@@ -1,13 +1,12 @@
 {
-  "version": "1.0.0",
-  "date": "Oct 15, 2026",
-  "major": true,
-  "title": "Lanternfall 1.0",
+  "version": "1.0.1",
+  "date": "Oct 16, 2026",
+  "major": false,
+  "title": "",
   "notes": [
-    "Lanternfall 1.0: 21 worlds, each with its own twist, foe and boss, down to the Moth Queen at the Hollow Moon.",
-    "12 lanterns, 53 boons, camp upgrades, lantern mastery, a rank road to level 100 and Prestige up to X.",
-    "Endless now starts in a random world you've unlocked; each world lasts 5 waves and ends with its boss.",
-    "The tutorial has its own card on the world list, so you can play it again any time.",
-    "The Season 1 pass and the Hollow Harvest event pass both end November 1."
+    "Campaigns are now 40 waves. After wave 40, end the run or keep going (everything past 40 pays ×0.25).",
+    "Shorter waves with fewer, tougher foes, a steeper last stretch and slightly less gold.",
+    "Lanterns show their snuffs this run and a live mastery bar; the run summary shows level and mastery bars.",
+    "Auto never sends wave 1. The Season Pass needs more XP per tier (your tier is kept). Fixed waves that could stall."
   ]
 }

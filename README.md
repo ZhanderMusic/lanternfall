@@ -26,6 +26,13 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 
 ---
 
+## 🌙 1.0.1 (Oct 16, 2026)
+
+- **40-wave campaigns.** After wave 40, end the run or keep going until the lanterns go dark (×0.25 rewards past 40).
+- **Shorter, harder waves.** Fewer, tougher foes, tighter spacing, a steeper last stretch and less gold per kill.
+- **Snuffs and live mastery** in every lantern's upgrade sheet, and level and mastery bars in the run summary.
+- **Auto** never sends wave 1. A tougher Season Pass curve, and a fix for waves that could stall.
+
 ## 🏮 Lanternfall 1.0 (Oct 15, 2026)
 
 - **21 worlds, 21 bosses.** Every world has its own twist, its own foe and its own boss, down to the Moth Queen at the Hollow Moon.
