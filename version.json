@@ -1,11 +1,13 @@
 {
-  "version": "0.21.1",
+  "version": "1.0.0",
   "date": "Oct 15, 2026",
-  "major": false,
-  "title": "",
+  "major": true,
+  "title": "Lanternfall 1.0",
   "notes": [
-    "Endless now starts in a random world you've unlocked and shifts between your unlocked worlds every 5 waves.",
-    "The tutorial has its own card on the world list, so you can replay it any time without touching a campaign run.",
-    "Fixed overlapping text on the Whisperwood card."
+    "Lanternfall 1.0: 21 worlds, each with its own twist, foe and boss, down to the Moth Queen at the Hollow Moon.",
+    "12 lanterns, 53 boons, camp upgrades, lantern mastery, a rank road to level 100 and Prestige up to X.",
+    "Endless now starts in a random world you've unlocked; each world lasts 5 waves and ends with its boss.",
+    "The tutorial has its own card on the world list, so you can play it again any time.",
+    "The Season 1 pass and the Hollow Harvest event pass both end November 1."
   ]
 }

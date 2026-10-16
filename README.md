@@ -20,11 +20,20 @@
 
 ## 🎃 Live now: the Hollow Harvest
 
-The Halloween event runs until **November 3**. Pick it on the Play page for an endless, harder night with its own creatures: Vampire bats in flocks, Jacks that burst into seeds, Ghosts that fade out of reach, Skeletons that pull themselves back together, and the Pumpkin King every fifth wave.
+The Halloween event runs until **November 1**. Pick it on the Play page for an endless, harder night with its own creatures: Vampire bats in flocks, Jacks that burst into seeds, Ghosts that fade out of reach, Skeletons that pull themselves back together, and the Pumpkin King every fifth wave.
 
 Every wave you hold pays **candy**, which only drops here. Spend it on a **free 25-tier event pass** packed with Event skins, or pick up the **Hallow's Eve** set in the shop: an Event skin for every lantern and a matching menu theme.
 
 ---
+
+## 🏮 Lanternfall 1.0 (Oct 15, 2026)
+
+- **21 worlds, 21 bosses.** Every world has its own twist, its own foe and its own boss, down to the Moth Queen at the Hollow Moon.
+- **12 lanterns, 53 boons.** Four roles, two upgrade paths each, ascensions and merges, and boons that change every run.
+- **Campaign and Endless.** Hold 50 waves to unlock the next world, or go Endless through random worlds you've unlocked.
+- **Grow between runs.** Camp upgrades, lantern mastery, a rank road to level 100 and Prestige up to X.
+- **New player tutorial.** Play it any time from the Tutorial card on the world list.
+- **Season 1 and Hollow Harvest** passes both end **November 1**.
 
 ## 👑 New in 0.21: Lords of the Night
 

@@ -920,7 +920,7 @@ hr.sep{border:0;border-top:1px solid var(--line);margin:4px 0;width:100%}
 .updn{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;color:var(--dim);font-size:14px;line-height:1.4}
 .updn:empty{display:none}
 /* major update cinematic */
-.major{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;overflow:auto;box-sizing:border-box;
+.major{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-start;justify-content:center;overflow:auto;box-sizing:border-box;
   padding:calc(env(safe-area-inset-top,0px) + 20px) max(20px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 20px) max(20px,env(safe-area-inset-left,0px));
   background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--flame) 22%,#05070a),#05070a 62%)}
 .mj-bg{position:fixed;inset:0;overflow:hidden;pointer-events:none}
@@ -931,7 +931,7 @@ hr.sep{border:0;border-top:1px solid var(--line);margin:4px 0;width:100%}
 .mj-lan i{position:absolute;bottom:-60px;width:calc(16px*var(--s));height:calc(22px*var(--s));border-radius:40% 40% 30% 30%;
   background:linear-gradient(#fff3c8,var(--flame));box-shadow:0 0 calc(26px*var(--s)) var(--flame);opacity:.85;animation:mjrise linear infinite}
 @keyframes mjrise{0%{transform:translate(0,0) rotate(-6deg)}50%{transform:translate(18px,-60vh) rotate(6deg)}100%{transform:translate(-10px,-125vh) rotate(-4deg)}}
-.mj-panel{position:relative;width:100%;max-width:440px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+.mj-panel{position:relative;margin:auto;width:100%;max-width:440px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
 .mj-kick{font:700 12px/1 var(--body);letter-spacing:.5em;text-transform:uppercase;color:var(--flame);padding-left:.5em}
 .mj-title{margin:0;font:400 clamp(54px,17vw,92px)/.9 var(--display);text-wrap:balance;
   background:linear-gradient(90deg,var(--flame) 0%,#fff6dc 25%,var(--flame) 50%,#fff6dc 75%,var(--flame) 100%);background-size:200% 100%;
@@ -1097,7 +1097,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 </style>
 
 <script>
-/* PWA: offline support and updates (Lanternfall v0.21.1) */
+/* PWA: offline support and updates (Lanternfall v1.0.0) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -1711,7 +1711,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='0.21.1';
+const VERSION='1.0.0';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -2162,7 +2162,7 @@ PRSK.forEach(([p,t,name,cy,sig])=>SKINS[t].push({id:'pr'+p,name,rar:'prestige',c
 ORDER.forEach(t=>SKINS[t].forEach(s=>{s.tw=t}));
 const SEASON={n:1,name:'The Hollow Moon',end:new Date(2026,10,1,0,0,0)};
 /* limited-time events: their own world, currency and 25-tier pass */
-const EVENT={id:'hw26',name:'Hollow Harvest',kind:'Halloween event',start:new Date(2026,9,14,0,0,0),end:new Date(2026,10,3,0,0,0)};
+const EVENT={id:'hw26',name:'Hollow Harvest',kind:'Halloween event',start:new Date(2026,9,14,0,0,0),end:new Date(2026,10,1,0,0,0)};   /* 1.0.0: ends with Season 1 on November 1 */
 const evLive=()=>{const n=Date.now();return n>=EVENT.start.getTime()&&n<EVENT.end.getTime()};
 const CANDY='<svg class="cdy" viewBox="0 0 24 14" aria-hidden="true"><path d="M7.5 4.5 1 1l1.2 6L1 13l6.5-3.5zM16.5 4.5 23 1l-1.2 6L23 13l-6.5-3.5z" fill="#ffd36b"/><ellipse cx="12" cy="7" rx="6" ry="5.2" fill="#ff7a1a"/><path d="M9.5 2.6 11.3 11.6M13.2 2.4 15 11.2" stroke="#fff3c4" stroke-width="1.3" opacity=".75"/></svg>';
 const EVR=(()=>{const sk=EVSK.map(([t,id])=>({k:'skin',t,id})),out=[null],mo=[10,10,15,15,15,20,20,20,25];let a=0,b=0;
@@ -3173,7 +3173,14 @@ function drawPrestige(){const T=performance.now()/1000;document.querySelectorAll
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
-  {v:'0.21.1',d:'Oct 15, 2026',notes:['Endless no longer asks for a world. Each run starts in a random world you\u2019ve unlocked, and each world lasts 5 waves: its own foes walk the trail and its boss comes on the 5th wave, then the run shifts to another world you\u2019ve unlocked. Your trail and lanterns stay, and switching worlds doesn\u2019t change foe health or embers: the whole run scales as if you were halfway down to your deepest world.','The tutorial now has its own card next to Whisperwood when you pick a world, so you can play it again any time. It saves on its own and never touches a campaign run in progress.','Fixed the Whisperwood card\u2019s new foe and boss lines drawing on top of each other.']},
+  {v:'1.0.0',d:'Oct 15, 2026',major:1,kick:'Welcome to version 1.0',title:'Lanternfall',go:'Light the lanterns',
+   hl:[['21 worlds, 21 bosses','Every world has its own twist, its own foe and its own boss, all the way down to the Moth Queen at the Hollow Moon.'],
+       ['12 lanterns, 53 boons','Four roles, two upgrade paths each, ascensions and merges, and boons that change every run.'],
+       ['Campaign and Endless','Hold 50 waves to unlock the next world, or go Endless through random worlds you\u2019ve unlocked, each ending with its boss.'],
+       ['Grow between runs','Embers buy camp upgrades and lanterns, and every lantern earns mastery the more you use it.'],
+       ['Level 100 and Prestige','Climb the rank road, then prestige up to X for Prestige skins, the Oblivion difficulty and +20% embers and XP each time.'],
+       ['Season 1 and Hollow Harvest','The Season 1 pass and the Halloween event pass both end November 1. New to the night? Tap Tutorial on the world list.']],
+   notes:['Lanternfall 1.0. Thank you for playing through the early versions.','Endless no longer asks for a world. Each run starts in a random world you\u2019ve unlocked, and each world lasts 5 waves: its own foes walk the trail and its boss comes on the 5th wave, then the run shifts to another world you\u2019ve unlocked. Your trail and lanterns stay, and switching worlds doesn\u2019t change foe health or embers: the whole run scales as if you were halfway down to your deepest world.','The tutorial now has its own card next to Whisperwood when you pick a world, so you can play it again any time. It saves on its own and never touches a campaign run in progress.','The Season 1 pass and the Hollow Harvest event (and its pass and shop) now both end November 1.','Fixed the Whisperwood card\u2019s new foe and boss lines drawing on top of each other.']},
   {v:'0.21.0',d:'Oct 15, 2026',major:1,title:'Lords of the Night',
    hl:[['21 world bosses','Every world now has its own boss with its own name, look and tricks, from the Elder Moth to the Moth Queen herself.'],
        ['Boss health bar','A health bar at the top of the board shows the boss, its title, its shield and how much is left.'],

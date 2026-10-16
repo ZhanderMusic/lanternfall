@@ -2,7 +2,7 @@
    - The game page is fetched network-first, so a new version shows up the next time you open the app online.
    - Everything is cached, so the game also works offline.
    - Bump CACHE on every release (the build script does this from the game's VERSION). */
-const CACHE='lanternfall-v0.21.1';
+const CACHE='lanternfall-v1.0.0';
 const SHELL=[
   './',
   './index.html',
