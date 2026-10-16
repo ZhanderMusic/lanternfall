@@ -866,9 +866,9 @@ button.ps{font:inherit;color:inherit;cursor:pointer;padding:0;box-sizing:border-
 .wc .n{font:400 clamp(20px,6.2vw,26px)/1 var(--display);color:var(--acc);overflow-wrap:break-word}
 .wc p{margin:0;font-size:12px;color:#cfc6b4;line-height:1.35}
 .wc .sc{color:var(--dim);font-family:var(--mono);font-size:11px;margin-top:auto}
-.wc.surf{grid-column:1/-1;min-height:0;display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:center}
-.wc.surf .d,.wc.surf .n{grid-column:1}.wc.surf p,.wc.surf .nf{grid-column:2}.wc.surf .d{grid-row:1}.wc.surf .n{grid-row:2}.wc.surf p{grid-row:1;align-self:end}.wc.surf .nf{grid-row:2;align-self:start}
-@media (max-width:420px){.wc.surf{grid-template-columns:1fr}.wc.surf p,.wc.surf .nf{grid-column:1;grid-row:auto}}
+.wc.tutc{background:color-mix(in srgb,#ffb547 9%,var(--moss));border-color:color-mix(in srgb,#ffb547 40%,transparent)}
+.enw{border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:4px;background:var(--moss)}
+.enw .d{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}.enw .n{font:400 22px/1.1 var(--display);color:var(--flame)}.enw p{margin:0;font-size:13px;color:var(--dim)}
 .wc .nf{font-size:11.5px;line-height:1.35;color:#cfc6b4;display:block}.wc .nf i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:1px;box-shadow:0 0 6px currentColor}.wc .nf b{color:var(--ink);font-weight:600}
 .coll{grid-column:1/-1;border:1px solid color-mix(in srgb,var(--cc) 35%,var(--line));border-radius:12px;background:linear-gradient(160deg,color-mix(in srgb,var(--cc) 10%,var(--moss)),var(--moss) 60%);overflow:hidden}
 .collh{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center;padding:12px 14px}
@@ -1097,7 +1097,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 </style>
 
 <script>
-/* PWA: offline support and updates (Lanternfall v0.21.0) */
+/* PWA: offline support and updates (Lanternfall v0.21.1) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 </head>
@@ -1200,7 +1200,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
     <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">Choose a world</h2></header>
     <div class="modes" id="modes" role="radiogroup" aria-label="Game mode">
       <button class="mode" data-mode="campaign" role="radio"><b>Campaign</b><small>Survive 50 waves to beat the world and unlock the next. Your run saves between waves.</small></button>
-      <button class="mode" data-mode="endless" role="radio"><b>Endless</b><small>No final wave. Every 5 waves the world and its twist change. Your run saves between waves.</small><span class="best" id="bestEnd"></span></button>
+      <button class="mode" data-mode="endless" role="radio"><b>Endless</b><small>No final wave. A random world you've unlocked, changing every 5 waves. Your run saves between waves.</small><span class="best" id="bestEnd"></span></button>
       <button class="mode evmode" data-mode="event" role="radio" hidden><span class="evk">Halloween event · <span id="evEnds"></span></span><b>Hollow Harvest</b><small>An endless, harder night with its own creatures. Earn candy for the event pass.</small><span class="best" id="bestEv"></span></button>
     </div>
     <div class="sec">Difficulty</div>
@@ -1711,7 +1711,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='0.21.0';
+const VERSION='0.21.1';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -2582,8 +2582,9 @@ const ascCost=type=>Math.round(TOWERS[type].cost*ASC_K*G.m.cost*(1-.06*ml('forge
    health and gold, so a wave's total health and total gold stay the same while the wave lasts about WAVE_LEN times longer. */
 const WAVE_LEN=2,PULSE=8,PULSE_GAP=1.3;
 const clearBonus=()=>8+Math.round(G.wave*.8)+2*ml('tithe');
-function pickNew(w){   /* a foe from the ones this depth has introduced; the newest one shows up most */
-  const av=NEWFOES.filter(k=>FOES[k].intro<=G.depth&&w>=(FOES[k].minW||2)),wt=k=>(FOES[k].wt||1)*(FOES[k].intro===G.depth?4:1);
+function pickNew(w){   /* a foe from the ones this depth has introduced; the newest one shows up most. In endless, the current world's */
+  const D=G.endless&&!G.event&&typeof G.world==='number'?G.world:G.depth;
+  const av=NEWFOES.filter(k=>FOES[k].intro<=D&&w>=(FOES[k].minW||2)),wt=k=>(FOES[k].wt||1)*(FOES[k].intro===D?4:1);
   if(!av.length)return null;let r=Math.random()*av.reduce((a,k)=>a+wt(k),0);for(const k of av){r-=wt(k);if(r<=0)return k}return av[0];
 }
 function makeWave(w){
@@ -2895,13 +2896,16 @@ function endWave(){
 }
 /* endless: every 5 waves the world (and its twist) changes and a new trail is carved */
 function shiftWorld(){
-  const pool=THEMES.map((_,i)=>i).filter(i=>i!==G.world);G.world=pool[Math.floor(Math.random()*pool.length)];
+  const pool=THEMES.map((_,i)=>i).filter(i=>i!==G.world&&i<=meta.maxDepth);if(!pool.length)return;   /* only worlds you've unlocked */
+  G.world=pool[Math.floor(Math.random()*pool.length)];
   applyTheme(G.world);G.amb=makeAmb();drawBG();   /* same trail, new world and conditions */
   toast(`World shift: ${TH.name}`,TH.twist);
 }
 /* runs checkpoint between waves (after the boon pick) and can be continued from the Play page: one campaign save and one endless save */
-const saveKey=m=>m==='event'?'eventSave':m==='endless'||m===true?'endlessSave':'campSave';
-const runMode=()=>G.event?'event':G.endless?'endless':'campaign';
+const saveKey=m=>m==='event'?'eventSave':m==='endless'||m===true?'endlessSave':m==='tutorial'?'tutSave':'campSave';
+const runMode=()=>G.event?'event':G.endless?'endless':G.tutRun?'tutorial':'campaign';
+/* endless difficulty: foes and rewards scale like a world halfway down to your deepest one */
+const endDepth=()=>Math.round(meta.maxDepth/2);
 function pathFrom(cells,pts){const cum=[0];for(let i=1;i<pts.length;i++)cum.push(cum[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));
   return{cells,pts,cum,total:cum[cum.length-1],set:new Set(cells.map(([a,b])=>a+','+b))}}
 function snapRun(){
@@ -3168,6 +3172,7 @@ function drawPrestige(){const T=performance.now()/1000;document.querySelectorAll
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'0.21.1',d:'Oct 15, 2026',notes:['Endless no longer asks for a world. Each run starts in a random world you\u2019ve unlocked, and every 5 waves it shifts to another one you\u2019ve unlocked, bringing that world\u2019s twist, foes and boss while your trail and lanterns stay. Foes and rewards scale as if you were halfway down to your deepest world.','The tutorial now has its own card next to Whisperwood when you pick a world, so you can play it again any time. It saves on its own and never touches a campaign run in progress.','Fixed the Whisperwood card\u2019s new foe and boss lines drawing on top of each other.']},
   {v:'0.21.0',d:'Oct 15, 2026',major:1,title:'Lords of the Night',
    hl:[['21 world bosses','Every world now has its own boss with its own name, look and tricks, from the Elder Moth to the Moth Queen herself.'],
        ['Boss health bar','A health bar at the top of the board shows the boss, its title, its shield and how much is left.'],
@@ -3380,14 +3385,18 @@ function drawEvFoes(){
 function renderWorlds(){
   meta.depth=Math.min(meta.depth,meta.maxDepth);
   const wcard=d=>{const T=THEMES[d],lock=d>meta.maxDepth,nf=introAt(d),beat=(meta.cleared||[]).includes(d);
-    return `<button class="wc${d===meta.depth?' on':''}${lock?' locked':''}${d?'':' surf'}" data-d="${d}" ${lock?'disabled':''} style="background:${T.tiles[1]};--acc:${T.acc}" aria-pressed="${d===meta.depth}">
+    return `<button class="wc${d===meta.depth?' on':''}${lock?' locked':''}" data-d="${d}" ${lock?'disabled':''} style="background:${T.tiles[1]};--acc:${T.acc}" aria-pressed="${d===meta.depth}">
       <span class="d">${d?`Depth ${d}`:'Surface level'}${lock?' · locked':beat?' · beaten':''}</span><span class="n">${lock?'???':T.name}</span>
       <p>${lock?`Clear all 50 waves ${d>1?`at depth ${d-1}`:'on the surface'} to reveal this world.`:T.twist}</p>
       ${lock?'':nf?`<span class="nf"><i style="background:${FOES[nf].col}"></i>New foe: <b>${FOES[nf].name}</b>. ${FOES[nf].tip}</span>`:'<span class="nf"><i style="background:#e9e2cf"></i>Meet the moths, wisps, beetles and broods.</span>'}
       ${lock?'':`<span class="nf"><i style="background:${BOSSES[d].col2}"></i>Boss: <b>${BOSSES[d].name}</b> · ${BOSSES[d].title}</span>`}
       ${!lock&&d?`<span class="sc">Foes +${d*35}% health · embers +${d*25}%</span>`:''}</button>`};
   const open=collOpen();
-  $('#worlds').innerHTML=wcard(0)+COLLS.map((C,ci)=>{const ds=[];for(let d=C.from;d<=C.to&&d<=MAXD;d++)ds.push(d);if(!ds.length)return'';
+  const tcard=`<button class="wc tutc" id="tutCard" style="--acc:#ffb547">
+      <span class="d">Tutorial${meta.tut?' · done':' · start here'}</span><span class="n">How to play</span>
+      <p>A guided run on Whisperwood: hang lanterns, send a wave, upgrade, and pick a boon.</p>
+      <span class="sc">${meta.tut?'Tap to play it again':'Takes about 3 minutes'}</span></button>`;
+  $('#worlds').innerHTML=tcard+wcard(0)+COLLS.map((C,ci)=>{const ds=[];for(let d=C.from;d<=C.to&&d<=MAXD;d++)ds.push(d);if(!ds.length)return'';
     const beat=ds.filter(d=>(meta.cleared||[]).includes(d)).length,seen=ds.filter(d=>d<=meta.maxDepth).length,on=open.includes(ci);
     return `<div class="coll${on?' open':''}" style="--cc:${C.col}"><button class="collh" data-coll="${ci}" aria-expanded="${on}"><span class="ct"><small>Depths ${C.from}–${C.to} · ${seen?`${beat}/${ds.length} beaten`:'locked'}</small><b>${C.name}</b><em>${C.desc}</em></span><span class="cbar"><i style="width:${beat/ds.length*100}%"></i></span><span class="chev" aria-hidden="true">›</span></button>
       <div class="collb"${on?'':' hidden'}>${ds.map(wcard).join('')}</div></div>`}).join('');
@@ -3395,7 +3404,9 @@ function renderWorlds(){
   const en=meta.mode==='endless',ev=meta.mode==='event',mode=meta.mode==='endless'||ev?meta.mode:'campaign';
   document.querySelector('#modes .evmode').hidden=!live;
   if(live){$('#evEnds').textContent=`ends in ${timeLeftTo(EVENT.end)}`;$('#bestEv').innerHTML=`${CANDY} ${meta.candy||0} candy${meta.bestEvent?` · best wave ${meta.bestEvent}`:''}`}
-  $('#worlds').hidden=ev;$('#worldSec').textContent=ev?'Event world':'World';$('#evWorld').hidden=!ev;
+  $('#worlds').hidden=ev||en;$('#worldSec').textContent=ev?'Event world':'World';$('#evWorld').hidden=!ev&&!en;
+  if(en){const n=meta.maxDepth+1;$('#evWorld').innerHTML=`<div class="enw"><span class="d">Endless · random world</span><span class="n">${n>1?`Any of your ${n} worlds`:'Whisperwood, for now'}</span>
+    <p>You start in a random world you've unlocked. Every 5 waves the world, its twist, its foes and its boss change, but your trail and lanterns stay. ${n>1?'':'Beat Whisperwood to add more worlds to the mix.'}</p></div>`}
   if(ev)$('#evWorld').innerHTML=`<div class="evw"><div class="evwt"><span class="d">Halloween event · endless</span><span class="n">${EVT.name}</span><p>${EVT.twist}</p></div>
     <div class="evfo">${['bat','pumpkin','ghost','skeleton'].map(k=>`<div class="evf"><canvas data-foe="${k}" width="96" height="96" aria-hidden="true"></canvas><b>${FOES[k].name}</b><small>${FOES[k].tip}</small></div>`).join('')}
     <div class="evf"><canvas data-foe="king" width="96" height="96" aria-hidden="true"></canvas><b>Pumpkin King</b><small>Every 5th wave. Shielded, and calls bats to its side.</small></div></div>
@@ -3412,7 +3423,7 @@ function renderWorlds(){
   const dn=dOf(meta.diff).name,sv=meta[saveKey(mode)],rb=$('#resumeEnd');newArmed=false;
   rb.hidden=!sv;
   if(sv)rb.innerHTML=`<b>Continue ${ev?EVT.name:en?'endless':'campaign'}</b><span>${en||ev?`Wave ${sv.wave}`:`Wave ${sv.wave}/${MAXW}`} · ${ev?'':worldOf(sv.world).name+' · '}${dOf(sv.diff).name} · ${sv.lives} lives</span>`;
-  $('#start').textContent=ev?`Enter the ${EVT.name} · ${dn}`:en?`Start endless · ${THEMES[meta.depth].name} · ${dn}`:`Light the lanterns · ${THEMES[meta.depth].name} · ${dn}`;
+  $('#start').textContent=ev?`Enter the ${EVT.name} · ${dn}`:en?`Start endless · random world · ${dn}`:`Light the lanterns · ${THEMES[meta.depth].name} · ${dn}`;
   requestAnimationFrame(drawEvFoes);
 }
 function diffUI(k){const DO=dOrder(),D=DIFF[k],i=DO.indexOf(k),r=$('#dRange');r.value=i;$('#diffs').style.setProperty('--dc',D.col);r.style.setProperty('--p',(i/(DO.length-1)*100)+'%');
@@ -3424,7 +3435,7 @@ $('#diffs').onclick=e=>{const b=e.target.closest('[data-diff]');if(!b)return;met
 $('#modes').onclick=e=>{const b=e.target.closest('[data-mode]');if(!b)return;meta.mode=b.dataset.mode;save();renderWorlds()};
 $('#worlds').addEventListener('click',e=>{const h=e.target.closest('[data-coll]');if(!h)return;const ci=+h.dataset.coll,o=collOpen(),i=o.indexOf(ci);if(i<0)o.push(ci);else o.splice(i,1);
   try{localStorage.setItem('lanternfall.colls',JSON.stringify(o))}catch(_){}renderWorlds()});
-$('#worlds').onclick=e=>{const b=e.target.closest('.wc');if(!b||b.disabled)return;meta.depth=+b.dataset.d;save();campPreview();renderWorlds()};
+$('#worlds').onclick=e=>{if(e.target.closest('#tutCard')){tutStartRun();return}const b=e.target.closest('.wc');if(!b||b.disabled)return;meta.depth=+b.dataset.d;save();campPreview();renderWorlds()};
 let newArmed=false;
 $('#resumeEnd').onclick=()=>{if(!resumeRun(meta.mode==='event'&&evLive()?'event':meta.mode==='endless'?'endless':'campaign'))return;armT=null;hide('camp');paused=false;renderTray();hud(true);toast(`Welcome back · wave ${G.wave}`,`${TH.name}. ${TH.twist}`)};
 $('#start').onclick=()=>{
@@ -3432,10 +3443,11 @@ $('#start').onclick=()=>{
   if(meta[k]&&!newArmed){newArmed=true;$('#start').textContent=`Tap again to start over (your saved ${ev?'event':mode} run will be lost)`;return}
   delete meta[k];
   if(ev){newRun(Math.min(8,meta.maxDepth),true);G.event=true;G.world=EVW;applyTheme(EVW);G.amb=makeAmb();drawBG()}
-  else newRun(meta.depth,meta.mode==='endless');
+  else if(meta.mode==='endless'){const w=Math.floor(Math.random()*(meta.maxDepth+1));newRun(endDepth(),true);G.world=w;applyTheme(w);G.amb=makeAmb();drawBG()}
+  else newRun(meta.depth,false);
   armT=null;hide('camp');paused=false;renderTray();hud(true);
   if(G.event)toast(EVT.name,'Bats, jacks, ghosts and skeletons. Every wave you clear earns candy.');
-  else if(G.endless)toast(`Endless · ${TH.name}`,'The world shifts every 5 waves. How long can you hold?');
+  else if(G.endless)toast(`Endless · ${TH.name}`,meta.maxDepth?'A random world. It shifts every 5 waves. How long can you hold?':'How long can you hold? Beat Whisperwood to add more worlds to the mix.');
   if(ml('gift')){const pool=CARDS.filter(c=>c.rar===0),got=[];for(let i=0;i<ml('gift');i++){const c=pool[Math.floor(Math.random()*pool.length)];c.ap(G.m,G);G.taken[c.id]=(G.taken[c.id]||0)+1;got.push(c.name)}
     if(!G.endless)toast('Morning gift',got.join(' and '))}
   if(!G.endless&&!G.event){const nf=introAt(G.depth);if(nf&&!(meta.cleared||[]).includes(G.depth))toast(`New foe: ${FOES[nf].name}`,FOES[nf].tip)}
@@ -4530,6 +4542,13 @@ function tutBest(R){const P=G.path;let bv=-1,bc=null;
     for(let d=0;d<P.total;d+=.4){let i=0;while(i<P.pts.length-2&&d>P.cum[i+1])i++;const a=P.pts[i],b=P.pts[i+1],k=(d-P.cum[i])/(P.cum[i+1]-P.cum[i]);if(Math.hypot(a[0]+(b[0]-a[0])*k-x-.5,a[1]+(b[1]-a[1])*k-y-.5)<=R)v++}
     if(v>bv){bv=v;bc=[x,y]}}return bc}
 function tutMaybe(){if(meta.tut||G.endless||G.event)return;tutI=0;tutEnter()}
+/* the Tutorial card: a guided Whisperwood run any time. It saves on its own slot, so it never touches a campaign run in progress */
+function tutStartRun(){
+  delete meta.tutSave;meta.tut=0;save();
+  newRun(0,false);G.tutRun=true;
+  armT=null;hide('camp');paused=false;renderTray();hud(true);snapRun();
+  tutI=0;tutEnter();
+}
 function tutEnter(){const s=TUT[tutI];if(s&&s.enter)s.enter();tutDraw()}
 function tutEnd(skip){tutI=-1;meta.tut=1;save();tutClear();$('#coach').hidden=true;if(skip)toast('Tutorial skipped','You can replay it from How to play or Settings.')}
 function tutClear(){if(tutHL){tutHL.classList.remove('tuthl');tutHL=null}}

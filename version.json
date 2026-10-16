@@ -1,12 +1,11 @@
 {
-  "version": "0.21.0",
+  "version": "0.21.1",
   "date": "Oct 15, 2026",
-  "major": true,
-  "title": "Lords of the Night",
+  "major": false,
+  "title": "",
   "notes": [
-    "21 world bosses: every world now has its own boss with its own name, look and tricks, ending with the Moth Queen at the Hollow Moon.",
-    "A boss health bar at the top of the board shows each boss's name, title, shield and health.",
-    "Tutorial: new players get a short guided first run. Skip it any time, or replay it from How to play or Settings.",
-    "Balance: gentler early bosses, about 50% more embers per wave, 5 embers per boss, more gold in deeper worlds, and +20% embers and XP for every prestige."
+    "Endless now starts in a random world you've unlocked and shifts between your unlocked worlds every 5 waves.",
+    "The tutorial has its own card on the world list, so you can replay it any time without touching a campaign run.",
+    "Fixed overlapping text on the Whisperwood card."
   ]
 }

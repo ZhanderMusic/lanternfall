@@ -33,7 +33,7 @@ Foes walk the trail from one end of the board to the other. Every foe that gets 
 5. Drag a **Spark** next to the trail, near a bend if you can.
 6. Tap **Send wave**. Build more lanterns as gold comes in.
 
-On your very first run a short **tutorial** walks you through this: hanging two Sparks (a pulsing tile shows a good spot), sending a wave, opening a lantern, buying an upgrade, building a Cinder and picking a boon. You can skip it at any time, and replay it from **How to play** or **Settings**.
+On your very first run a short **tutorial** walks you through this: hanging two Sparks (a pulsing tile shows a good spot), sending a wave, opening a lantern, buying an upgrade, building a Cinder and picking a boon. You can skip it at any time. To play it again, tap the **Tutorial** card next to Whisperwood on the world list (it saves separately, so it never replaces a campaign run in progress), or turn it back on from **How to play** or **Settings**.
 
 ## The run screen
 

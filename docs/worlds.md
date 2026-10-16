@@ -58,7 +58,7 @@ The main mode. Pick a world and survive **50 waves** to win. Winning opens the n
 
 ### Endless
 
-No last wave. **Every 5 waves the world shifts** to a random new one with its own look and twist, while your trail and lanterns stay put. Endless keeps going until you run out of lives, and your best wave is saved. Bosses keep growing in number after wave 50.
+No last wave, and no world to pick: each run **starts in a random world you've unlocked**, and **every 5 waves it shifts** to another one you've unlocked, with that world's look, twist, foes and boss, while your trail and lanterns stay put. Foes and rewards scale as if you were halfway down to your deepest world (half your deepest depth, rounded). Endless keeps going until you run out of lives, and your best wave is saved. Bosses keep growing in number after wave 50.
 
 ### Events
 
