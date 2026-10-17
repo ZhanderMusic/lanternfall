@@ -26,11 +26,13 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 
 ---
 
-## 🌙 1.0.9 (Oct 16, 2026)
+## 🌙 1.1 · Your progress, anywhere (Oct 17, 2026)
 
-- **Sign in with Google** in Settings. Your online backup then follows you to any device where you sign in with the same Google account.
-- If this device and your online save differ, the game asks which one to keep.
-- Online backup (added in 1.0.8) still works with no account at all.
+- **Online backup** in Settings. Turn it on and your progress saves online as you play. No account is needed to start.
+- **Sign in with Google** to get your progress on any device. If two saves differ, the game asks which one to keep.
+- **Save as file** and **Import from file** replace the long copy-and-paste codes.
+- **Redeem codes** are checked online now, so new ones can arrive any time. Redeeming needs an internet connection.
+- **News** posts can show pictures.
 
 The full update history is in the **Updates** tab in the game and in the [docs](docs/README.md).
 

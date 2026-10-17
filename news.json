@@ -20,6 +20,14 @@
       "tag": "Tip",
       "title": "Keep your progress safe",
       "body": "Add Lanternfall to your home screen, and back up your save any time with Save as file in Settings. On iPhone: Share, then Add to Home Screen. On Android: the menu, then Install app."
+    },
+    {
+      "id": "cloud-saves",
+      "date": "2026-10-17",
+      "tag": "Update",
+      "title": "Your progress can follow you now",
+      "body": "Turn on Online backup in Settings and sign in with Google, and your progress follows you to any device. Prefer to carry it yourself? Save as file and Import from file move it in a tap.",
+      "art": "cloud"
     }
   ]
 }

@@ -1,9 +1,13 @@
 {
-  "version": "1.0.9",
-  "date": "Oct 16, 2026",
-  "major": false,
-  "title": "",
+  "version": "1.1.0",
+  "date": "Oct 17, 2026",
+  "major": true,
+  "title": "Your progress, anywhere",
   "notes": [
-    "Sign in with Google in Settings, so your online backup follows you to other devices."
+    "Online backup in Settings, with no account needed to start.",
+    "Sign in with Google to get your progress on any device.",
+    "Save as file and Import from file replace the long copy-and-paste codes.",
+    "Redeem codes are now checked online.",
+    "News posts can now show pictures."
   ]
 }

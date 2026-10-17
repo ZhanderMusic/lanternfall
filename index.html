@@ -799,6 +799,16 @@ button.player:focus-visible{outline:2px solid var(--flame);outline-offset:2px}
 .foe canvas{grid-row:1/3;width:44px;height:44px}
 .foe b{font-size:14px}
 .foe span{font-size:12px;color:var(--dim);line-height:1.3}
+/* news pictures */
+.newsart{margin:0 0 10px;border-radius:8px;overflow:hidden;border:1px solid var(--line);background:radial-gradient(ellipse 70% 90% at 50% 38%,rgba(255,181,71,.16),transparent 70%),linear-gradient(180deg,#0f1816,#0b1012)}
+.newsart svg{display:block;width:100%;height:auto}
+.newsart .na-t{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;fill:var(--dim);text-anchor:middle}
+.newsart .na-tf{font-family:var(--mono);font-size:9.5px;fill:var(--ink);text-anchor:middle}
+@keyframes naflow{to{stroke-dashoffset:-24}}
+@keyframes napulse{0%,100%{opacity:1}50%{opacity:.45}}
+.newsart .na-flow{stroke-dasharray:5 7;animation:naflow 1.1s linear infinite}
+.newsart .na-glow{animation:napulse 2.6s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.newsart .na-flow,.newsart .na-glow{animation:none}}
 /* updates */
 .log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 .log li{background:color-mix(in srgb,var(--moss) 92%,transparent);border:1px solid var(--line);border-radius:10px;padding:14px}
@@ -1114,7 +1124,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 </style>
 
 <script>
-/* PWA: offline support and updates (Lanternfall v1.0.9) */
+/* PWA: offline support and updates (Lanternfall v1.1.0) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 <div id="app">
@@ -1770,7 +1780,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='1.0.9';
+const VERSION='1.1.0';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -3454,6 +3464,14 @@ function drawPrestige(){const T=performance.now()/1000;document.querySelectorAll
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'1.1.0',d:'Oct 17, 2026',major:1,kick:'Version 1.1',title:'Your progress, anywhere',go:'Back to the lanterns',
+   hl:[['Online backup','Turn it on in Settings and your progress saves online as you play. No account needed to start.'],
+       ['Sign in with Google','Sign in on any device and your progress is there. If two saves differ, the game asks which one to keep.'],
+       ['Save as file','Save your progress as a file and import it anywhere. The long copy-and-paste codes are gone.'],
+       ['Codes arrive online','Redeem codes are checked online now, so new ones can show up any time. Redeeming needs a connection.'],
+       ['News with pictures','The News button shows announcements, now with pictures.']],
+   notes:['Lanternfall 1.1: your progress can follow you. Online backup and Sign in with Google live in Settings, and Save as file and Import from file move your save by hand.','Online backup is optional and off until you turn it on. The game always saves on your device first, so it still works offline.','Redeem codes are now checked online. News posts can show pictures.']},
+  {v:'1.0.10',d:'Oct 17, 2026',notes:['News posts can now show pictures. The latest one explains online backup, Sign in with Google, and Save as file.']},
   {v:'1.0.9',d:'Oct 16, 2026',notes:['Sign in with Google in Settings, so your online backup follows you to your other devices.','If this device and your online save differ, the game asks which one to keep.']},
   {v:'1.0.8',d:'Oct 16, 2026',notes:['New in Settings: Online backup. Turn it on and your progress backs up automatically, no account needed.','If this device and your online save ever differ, the game asks which one to keep.','Redeem codes are now checked online, so they can be added or switched off any time. Redeeming a code needs an internet connection.']},
   {v:'1.0.7',d:'Oct 16, 2026',notes:['Saves now move by file. Settings has Save as file and Import from file, and the copy and paste box is gone, since long codes kept getting cut off.']},
@@ -3551,8 +3569,25 @@ $('#log').addEventListener('click',e=>{const b=e.target.closest('[data-replay]')
 const NEWS_LOCAL=[
   {id:'hw26-end',date:'2026-10-15',tag:'Event',title:'Hollow Harvest and Season 1 end November 1',body:'The Halloween event, its pass and the Season 1 pass all run until November 1. Finish your tiers and claim your rewards before then.'},
   {id:'v1',date:'2026-10-15',tag:'Release',title:'Lanternfall 1.0 is out',body:'21 worlds with 21 bosses, 12 lanterns, a rank road to level 100 and Prestige. Thanks for playing.'},
-  {id:'keep-safe',date:'2026-10-16',tag:'Tip',title:'Keep your progress safe',body:'Add Lanternfall to your home screen, and back up your save any time with Save as file in Settings. On iPhone: Share, then Add to Home Screen. On Android: the menu, then Install app.'}
+  {id:'keep-safe',date:'2026-10-16',tag:'Tip',title:'Keep your progress safe',body:'Add Lanternfall to your home screen, and back up your save any time with Save as file in Settings. On iPhone: Share, then Add to Home Screen. On Android: the menu, then Install app.'},
+  {id:'cloud-saves',date:'2026-10-17',tag:'Update',title:'Your progress can follow you now',body:'Turn on Online backup in Settings and sign in with Google, and your progress follows you to any device. Prefer to carry it yourself? Save as file and Import from file move it in a tap.',art:'cloud'}
 ];
+const NEWS_ART={
+  cloud:`<svg viewBox="0 0 320 176" role="img" aria-label="A phone and a computer connected through a glowing lantern cloud, with a save file below">
+  <g fill="#f1e8d4" opacity=".5"><circle cx="30" cy="16" r="1.2"/><circle cx="96" cy="10" r="1"/><circle cx="214" cy="14" r="1.2"/><circle cx="292" cy="22" r="1"/><circle cx="256" cy="8" r=".9"/></g>
+  <circle class="na-glow" cx="160" cy="60" r="40" fill="#ffb547" opacity=".13"/>
+  <circle class="na-glow" cx="160" cy="60" r="26" fill="#ffb547" opacity=".12"/>
+  <path d="M120 80h80a21 21 0 0 0 2-41.9A29 29 0 0 0 147 31a24 24 0 0 0-27 49z" fill="#16201d" stroke="#ffb547" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M160 40l12 17-12 17-12-17z" fill="#ffb547"/><path d="M160 49l5.5 8-5.5 8-5.5-8z" fill="#fff4dc" opacity=".75"/>
+  <g stroke="#ffb547" stroke-width="2.4" fill="none" stroke-linecap="round"><path class="na-flow" d="M80 72C98 72 100 64 118 64"/><path class="na-flow" d="M202 64C220 64 222 72 240 72"/></g>
+  <g><rect x="26" y="40" width="54" height="86" rx="9" fill="#111a18" stroke="#9fd8ff" stroke-width="2.4"/><rect x="33" y="50" width="40" height="62" rx="3" fill="#0b1012"/><path d="M53 66l7 10-7 10-7-10z" fill="#ffb547"/><rect x="45" y="118" width="16" height="2.6" rx="1.3" fill="#9fd8ff"/></g>
+  <g><rect x="240" y="48" width="58" height="40" rx="4" fill="#111a18" stroke="#d6a3ff" stroke-width="2.4"/><rect x="246" y="54" width="46" height="28" rx="2" fill="#0b1012"/><path d="M269 59l6 8-6 8-6-8z" fill="#ffb547"/><path d="M232 94h74l-6 10h-62z" fill="#16201d" stroke="#d6a3ff" stroke-width="2.4" stroke-linejoin="round"/></g>
+  <text class="na-t" x="53" y="140">PHONE</text><text class="na-t" x="160" y="112" style="fill:var(--ink)">ONLINE BACKUP</text><text class="na-t" x="269" y="120">COMPUTER</text>
+  <g><rect x="92" y="132" width="136" height="30" rx="15" fill="#111a18" stroke="#2a3833" stroke-width="1.6"/><rect x="104" y="140" width="12" height="15" rx="2" fill="#16201d" stroke="#9be3a9" stroke-width="1.6"/><path d="M107 145h6M107 149h6" stroke="#9be3a9" stroke-width="1.2"/>
+  <text class="na-tf" x="175" y="151">lanternfall-save.txt</text></g>
+  <g stroke="#ffb547" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M78 146h8m-3-3l3 3-3 3"/><path d="M242 146h-8m3-3l-3 3 3 3"/></g>
+</svg>`
+};
 var newsItems=NEWS_LOCAL.slice(),newsOnline=false;
 const escN=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function newsSorted(){return newsItems.slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)))}
@@ -3568,7 +3603,7 @@ async function loadNews(){
   newsBadge();if(view==='news')renderNews();
 }
 function renderNews(){
-  $('#newsList').innerHTML=newsSorted().map((n,i)=>`<li class="${i?'':'cur'}"><small>${escN(n.tag||'News')}<i>${escN(n.date||'')}</i></small><h3>${escN(n.title)}</h3><p>${escN(n.body||'')}</p></li>`).join('');
+  $('#newsList').innerHTML=newsSorted().map((n,i)=>`<li class="${i?'':'cur'}"><small>${escN(n.tag||'News')}<i>${escN(n.date||'')}</i></small>${NEWS_ART[n.art]?`<div class="newsart">${NEWS_ART[n.art]}</div>`:''}<h3>${escN(n.title)}</h3><p>${escN(n.body||'')}</p></li>`).join('');
   $('#newsNote').textContent=newsOnline?'':'Showing the news saved on this device. Connect to the internet for the latest.';
   if(newsLatest()&&meta.newsSeen!==newsLatest()){meta.newsSeen=newsLatest();save()}
 }
