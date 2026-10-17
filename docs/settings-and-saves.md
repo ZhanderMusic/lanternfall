@@ -20,7 +20,7 @@
 | **Menu theme** | Change your camp's look and music. |
 | **Check for updates** | See if a newer version is out. |
 | **Permanent storage** | Ask your browser to never clear your save (where supported). |
-| **Export / Import save** | Copy your save as a code, or load one. |
+| **Save as file / Import from file** | Save your progress as a file, or load one. |
 | **Redeem a code** | Enter a reward code. |
 | **Reset all progress** | Start over completely. Tap twice to confirm. This can't be undone. |
 
@@ -30,7 +30,7 @@ Music and sound pause when you leave the app. The pause menu during a run also h
 
 - Your progress **saves automatically** on your device.
 - **Runs save after every wave.** You can keep one campaign run, one Endless run and one event run at a time, and continue them from the Play page. If you quit mid-wave, you replay that wave.
-- **Moving devices:** go to **Settings → Export save**, copy the code, then on the other device paste it into **Import save**.
+- **Moving devices:** go to **Settings → Save as file**, send the file to the other device, then there tap **Import from file** and pick it.
 - Keep an export code somewhere safe as a backup, especially if your browser clears site data.
 
 ## Installing the app

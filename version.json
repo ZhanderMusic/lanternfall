@@ -1,11 +1,10 @@
 {
-  "version": "1.0.6",
+  "version": "1.0.7",
   "date": "Oct 16, 2026",
   "major": false,
   "title": "",
   "notes": [
-    "A News button on the home screen for events, announcements and tips.",
-    "Lantern mastery takes about 50% more points per level.",
-    "Tap the version number 5 times for a screen-size readout (for debugging layouts)."
+    "Saves now move by file: Save as file and Import from file in Settings.",
+    "Importing is more forgiving, and failures say why."
   ]
 }

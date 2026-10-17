@@ -1114,7 +1114,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 </style>
 
 <script>
-/* PWA: offline support and updates (Lanternfall v1.0.6) */
+/* PWA: offline support and updates (Lanternfall v1.0.7) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 <div id="app">
@@ -1348,11 +1348,9 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
     <div class="sec">Menu theme</div>
     <div class="themes" id="themes"></div>
     <div class="sec">Export save</div>
-    <textarea id="expTxt" rows="3" readonly aria-label="Your save code"></textarea>
-    <div class="row"><button class="btn" id="expBtn">Copy code</button><span class="hint" id="expMsg" style="margin:0"></span></div>
+    <div class="row"><button class="btn" id="expFile">Save as file</button><span class="hint" id="expMsg" style="margin:0"></span></div>
     <div class="sec">Import save</div>
-    <textarea id="impTxt" rows="3" placeholder="Paste a save code here" aria-label="Save code to import"></textarea>
-    <div class="row"><button class="btn" id="impBtn">Import</button><span class="hint" id="impMsg" style="margin:0"></span></div>
+    <div class="row"><button class="btn" id="impFileBtn">Import from file</button><button class="btn" id="impBtn" style="display:none">Replace my save</button><input type="file" id="impFile" accept=".txt,text/plain" hidden><span class="hint" id="impMsg" style="margin:0"></span></div>
     <div class="sec">Redeem a code</div>
     <div class="row"><input id="codeIn" type="text" autocomplete="off" autocapitalize="characters" placeholder="Enter code" aria-label="Redeem code"><button class="btn primary" id="redeem">Redeem</button></div>
     <span class="hint" id="codeMsg" style="margin:0"></span>
@@ -1741,7 +1739,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='1.0.6';
+const VERSION='1.0.7';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -3242,6 +3240,7 @@ function drawPrestige(){const T=performance.now()/1000;document.querySelectorAll
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'1.0.7',d:'Oct 16, 2026',notes:['Saves now move by file. Settings has Save as file and Import from file, and the copy and paste box is gone, since long codes kept getting cut off.']},
   {v:'1.0.6',d:'Oct 16, 2026',notes:['A News button on the home screen: events, announcements and tips. New items show a New badge, and news can be added between releases.','Lantern mastery takes about 50% more points per level (12 + 3 per level, was 10 + 2), so reaching Mastery 100 takes closer to 30 full runs. Your points are kept, so some lanterns may drop a few levels.','Tap the version number on the home screen 5 times to see a screen-size readout. It helps track down layout bugs on phones.']},
   {v:'1.0.5',d:'Oct 16, 2026',notes:['Fixed the empty strip under the game on iPhones when it is installed to the home screen. The game now fills the whole screen and keeps clear of the notch and home bar.','The skipped-tutorial message no longer points to Settings.']},
   {v:'1.0.4',d:'Oct 16, 2026',notes:['A smoother difficulty curve: foes grow +21% a wave through wave 25, +19% to wave 30 and +14% after, so there is no sudden wall at waves 26 to 30. Waves 6 to 25 push back harder, and wave 40 is about as tough as before.','Lantern path upgrades cost 15% more.']},
@@ -3336,7 +3335,7 @@ $('#log').addEventListener('click',e=>{const b=e.target.closest('[data-replay]')
 const NEWS_LOCAL=[
   {id:'hw26-end',date:'2026-10-15',tag:'Event',title:'Hollow Harvest and Season 1 end November 1',body:'The Halloween event, its pass and the Season 1 pass all run until November 1. Finish your tiers and claim your rewards before then.'},
   {id:'v1',date:'2026-10-15',tag:'Release',title:'Lanternfall 1.0 is out',body:'21 worlds with 21 bosses, 12 lanterns, a rank road to level 100 and Prestige. Thanks for playing.'},
-  {id:'keep-safe',date:'2026-10-16',tag:'Tip',title:'Keep your progress safe',body:'Add Lanternfall to your home screen, and back up your save any time with Export in Settings. On iPhone: Share, then Add to Home Screen. On Android: the menu, then Install app.'}
+  {id:'keep-safe',date:'2026-10-16',tag:'Tip',title:'Keep your progress safe',body:'Add Lanternfall to your home screen, and back up your save any time with Save as file in Settings. On iPhone: Share, then Add to Home Screen. On Android: the menu, then Install app.'}
 ];
 var newsItems=NEWS_LOCAL.slice(),newsOnline=false;
 const escN=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -3361,9 +3360,9 @@ function renderNews(){
 let diagN=0,diagT=0;
 function diagTap(){const t=Date.now();diagN=t-diagT<1500?diagN+1:1;diagT=t;if(diagN<5)return;diagN=0;
   const pr=document.createElement('div');pr.style.cssText='position:fixed;inset:0;visibility:hidden;padding-bottom:env(safe-area-inset-bottom,0px);padding-top:env(safe-area-inset-top,0px)';document.body.appendChild(pr);
-  const cs=getComputedStyle(pr),rc=pr.getBoundingClientRect(),vv=window.visualViewport;pr.remove();
+  const cs=getComputedStyle(pr),rc=pr.getBoundingClientRect(),vv=window.visualViewport,sat=cs.paddingTop,sab=cs.paddingBottom;pr.remove();
   const a=$('#app'),ar=a?a.getBoundingClientRect():null;
-  alert(['v'+VERSION,'inner '+innerWidth+'x'+innerHeight,'screen '+screen.width+'x'+screen.height,'visual '+(vv?Math.round(vv.width)+'x'+Math.round(vv.height):'n/a'),'fixed probe '+Math.round(rc.width)+'x'+Math.round(rc.height),'safe top/bottom '+cs.paddingTop+' / '+cs.paddingBottom,'standalone '+(navigator.standalone===true||matchMedia('(display-mode: standalone)').matches),'app '+(ar?Math.round(ar.top)+' to '+Math.round(ar.bottom):'hidden'),'dpr '+devicePixelRatio].join('\n'))}
+  alert(['v'+VERSION,'inner '+innerWidth+'x'+innerHeight,'screen '+screen.width+'x'+screen.height,'visual '+(vv?Math.round(vv.width)+'x'+Math.round(vv.height):'n/a'),'fixed probe '+Math.round(rc.width)+'x'+Math.round(rc.height),'safe top/bottom '+sat+' / '+sab,'standalone '+(navigator.standalone===true||matchMedia('(display-mode: standalone)').matches),'app '+(ar?Math.round(ar.top)+' to '+Math.round(ar.bottom):'hidden'),'dpr '+devicePixelRatio].join('\n'))}
 function majorSince(from){return CHANGELOG.find(e=>e.major&&cmpVer(e.v,from||'0.0.0')>0&&cmpVer(e.v,VERSION)<=0)}
 function maybeMajor(){
   if(!meta.savedAt){meta.majorSeen=VERSION;return}   /* brand-new players skip straight to the game */
@@ -4146,8 +4145,8 @@ function renderSettings(){
   renderLayout();renderSfx();renderMus();
   $('#fedSet').hidden=!meta.founder;$('#fedTog').setAttribute('aria-pressed',!meta.fedOff);$('#fedTogT').textContent=meta.fedOff?'Hidden':'Shown';
   $('#savedAt').textContent=meta.savedAt?new Date(meta.savedAt).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Never';
-  $('#expTxt').value=exportCode();$('#expMsg').textContent='';
-  impArmed=false;resetArmed=false;$('#impBtn').textContent='Import';$('#reset').textContent='Reset all progress';
+  $('#expMsg').textContent='';
+  impPend=null;$('#impBtn').style.display='none';$('#impMsg').textContent='';resetArmed=false;$('#reset').textContent='Reset all progress';
   cloudUI();updUI();storageUI();
   const cur=meta.menuTheme||'default';
   $('#themes').innerHTML=Object.entries(MENU_THEMES).map(([id,m])=>{const own=id==='default'||meta.themes[id],bg=m.bg||THEMES[meta.depth].bg,acc=m.acc||THEMES[meta.depth].acc;
@@ -4161,18 +4160,38 @@ $('#updNow').onclick=applyUpdate;
 $('#updLater').onclick=()=>{upd.dismissed=upd.latest;hide('upd');if(G&&G.state==='wave'&&$('#menu').hidden)paused=false};
 $('#permBtn').onclick=requestPersist;
 $('#cloudSync').onclick=()=>{if(cloud.state==='error')cloudInit();else{cloud.at=-1;cloudPush()}};
-$('#expBtn').onclick=()=>{
-  const t=$('#expTxt');t.value=exportCode();
-  const fallback=()=>{t.focus();t.select();$('#expMsg').textContent='Code selected. Copy it from your keyboard menu.'};
-  try{navigator.clipboard.writeText(t.value).then(()=>{$('#expMsg').textContent='Copied.'},fallback)}catch(e){fallback()}
-};
+/* a save code is LF1: plus base64. Be forgiving about what got pasted: stray spaces, line breaks, quotes, or text around the code */
+function parseSave(raw){
+  let t=String(raw||'');const i=t.indexOf('LF1:');if(i>=0)t=t.slice(i+4).replace(/LF1:/g,'');
+  t=t.replace(/[\s"'`\u200b-\u200d\ufeff\u00a0]/g,'').replace(/-/g,'+').replace(/_/g,'/').replace(/=+$/,'');
+  if(!t)return{err:'That file is empty.'};
+  if(/[^A-Za-z0-9+/]/.test(t))return{err:'That file is not a Lanternfall save.'};
+  let json;try{json=decodeURIComponent(escape(atob(t+'='.repeat((4-t.length%4)%4))))}catch(e){return{err:`The save file looks cut off or changed. Save it again and pick the new file.`}}
+  let data;try{data=JSON.parse(json)}catch(e){return{err:`The save file looks cut off. Save it again and pick the new file.`}}
+  if(!data||typeof data!=='object'||typeof data.embers!=='number'||typeof data.up!=='object')return{err:'That file is not a Lanternfall save.'};
+  return{data};
+}
+let impPend=null;
 $('#impBtn').onclick=()=>{
-  const raw=$('#impTxt').value.trim(),msg=$('#impMsg');let data;
-  try{data=JSON.parse(decodeURIComponent(escape(atob(raw.replace(/^LF1:/,'')))))}catch(e){data=null}
-  if(!data||typeof data.embers!=='number'||typeof data.up!=='object'){msg.textContent='That code is not a Lanternfall save. Check that you pasted all of it.';impArmed=false;return}
-  if(!impArmed){impArmed=true;$('#impBtn').textContent='Tap again to replace your save';msg.textContent=`This save has ${data.embers} embers and best wave ${data.best||0}.`;return}
-  meta=Object.assign(fresh(),data);fixMeta();save();applySkins();campPreview();
-  $('#impTxt').value='';msg.textContent='Save imported.';impArmed=false;$('#impBtn').textContent='Import';renderSettings();
+  if(!impPend)return;
+  meta=Object.assign(fresh(),impPend);fixMeta();save();applySkins();campPreview();
+  impPend=null;renderSettings();$('#impMsg').textContent='Save imported.';
+};
+$('#impFileBtn').onclick=()=>$('#impFile').click();
+$('#impFile').onchange=async e=>{const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
+  const msg=$('#impMsg');impPend=null;$('#impBtn').style.display='none';
+  let txt;try{txt=await f.text()}catch(err){msg.textContent='Could not read that file.';return}
+  const res=parseSave(txt);
+  if(res.err){msg.textContent=res.err;return}
+  impPend=res.data;const lv=levelInfo(res.data.xp||0).L;
+  msg.textContent=`This save is level ${lv} with ${res.data.embers} embers and best wave ${res.data.best||0}. Tap Replace my save to use it on this device.`;
+  $('#impBtn').style.display='';
+};
+$('#expFile').onclick=async()=>{
+  const txt=exportCode(),name='lanternfall-save.txt',msg=$('#expMsg');
+  try{const file=new File([txt],name,{type:'text/plain'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Lanternfall save'});msg.textContent='Saved.';return}}catch(e){if(e&&e.name==='AbortError')return}
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);msg.textContent='Saved as '+name+'.';
 };
 $('#redeem').onclick=()=>{
   const k=$('#codeIn').value.trim().toUpperCase(),msg=$('#codeMsg');

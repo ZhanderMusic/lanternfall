@@ -26,11 +26,10 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 
 ---
 
-## 🌙 1.0.6 (Oct 16, 2026)
+## 🌙 1.0.7 (Oct 16, 2026)
 
-- A News button on the home screen for events, announcements and tips. News can be updated between releases.
-- Lantern mastery takes about 50% more points per level (12 + 3 per level, was 10 + 2).
-- Tap the version number on the home screen 5 times for a screen-size readout.
+- Importing a save is more forgiving (stray spaces, line breaks and quotes are ignored), and a failed import now says why.
+- Saves now move by file: **Save as file** and **Import from file** in Settings. The copy and paste box is gone, since long codes kept getting cut off.
 
 The full update history is in the **Updates** tab in the game and in the [docs](docs/README.md).
 
@@ -105,4 +104,4 @@ The **[Lanternfall docs](docs/README.md)** cover everything: [how to play](docs/
 
 ## Saves
 
-Progress saves on your device automatically. Campaign, Endless and event runs all save between waves, so you can close the game mid-run and continue later. To move your progress between devices, use **Settings → Export save** and **Import save**.
+Progress saves on your device automatically. Campaign, Endless and event runs all save between waves, so you can close the game mid-run and continue later. To move your progress between devices, use **Settings → Save as file** and **Import from file**.
