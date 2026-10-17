@@ -1,10 +1,9 @@
 {
-  "version": "1.0.8",
+  "version": "1.0.9",
   "date": "Oct 16, 2026",
   "major": false,
   "title": "",
   "notes": [
-    "New Online backup in Settings: automatic, no account needed.",
-    "Redeem codes are now checked online."
+    "Sign in with Google in Settings, so your online backup follows you to other devices."
   ]
 }

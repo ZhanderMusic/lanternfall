@@ -70,6 +70,7 @@ Online backup is off until you turn it on. Nothing is sent before that.
 
 - **Turn on backup** backs your progress up automatically after each wave and run. No account or email is needed.
 - If this device and your online save are different, the game shows both (level, embers, best wave, time) and you choose which to keep.
+- **Sign in with Google** links your backup to your Google account. Sign in with the same account on another device to get your progress there. The game only receives your email address and a private ID, never your Google password.
 - **Sign out** stops backing up and leaves your progress on this device. **Delete my cloud data** removes your online save and sign-in for good.
 - Your progress always saves on the device first, so the game works offline. Backup catches up when you are online again.
 - Redeem codes are checked online, so redeeming needs an internet connection.

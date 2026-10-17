@@ -1114,7 +1114,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 </style>
 
 <script>
-/* PWA: offline support and updates (Lanternfall v1.0.8) */
+/* PWA: offline support and updates (Lanternfall v1.0.9) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 <div id="app">
@@ -1360,6 +1360,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
         <p class="hint" style="margin:0" id="sbNote"></p>
         <div class="row" style="flex-wrap:wrap">
           <button class="btn" id="sbOn">Turn on backup</button>
+          <button class="btn" id="sbGoogle">Sign in with Google</button>
           <button class="btn" id="sbSignIn">Sign in with email</button>
           <button class="btn" id="sbResolve" hidden>Choose which save to keep</button>
           <button class="btn" id="sbNow" hidden>Back up now</button>
@@ -1769,7 +1770,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='1.0.8';
+const VERSION='1.0.9';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -2120,6 +2121,7 @@ function cloudUI(){
 
 /* ---------- Online backup (Supabase): optional, off until the player turns it on ---------- */
 const SB_URL='https://ockmwmrkudxnktgykcbh.supabase.co',SB_KEY='sb_publishable_io8eEXakMx5cp9a9TPcM6A_-AdozYZN';
+const SB_GOOGLE=/^https?:$/.test(location.protocol); /* needs the Google provider switched on in Supabase */
 const SB_EMAIL=false; /* email sign-in needs custom email sending set up in Supabase first (see docs). Turn on when ready. */
 const SB_LS='lanternfall.sb',SB_SYNC='lanternfall.sbsync';
 var sb={ses:null,state:'off',busy:false,err:'',msg:'',at:0,timer:0,pending:false,form:0,email:'',conflict:null,last:0,delArmed:false};
@@ -2258,6 +2260,27 @@ function applyReward(rw){
     out.push(`Founders Edition unlocked: Founder's gold for every lantern${seasonOver()?'':', the Season 1 premium pass'} and the Founders Edition title.`)}
   return out.join(' ')||'Reward added.';
 }
+
+/* Google sign-in: a full-page trip to Google and back. The session comes back in the page address. */
+function sbGoogleStart(){
+  sb.msg='';
+  location.href=SB_URL+'/auth/v1/authorize?provider=google&redirect_to='+encodeURIComponent(location.origin+location.pathname);
+}
+async function sbHandleReturn(){
+  const h=location.hash||'';
+  if(!/access_token=|error_description=/.test(h))return false;
+  const p=new URLSearchParams(h.replace(/^#/,''));
+  try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}
+  if(p.get('error_description')){sb.msg='Google sign-in did not finish: '+p.get('error_description').replace(/\+/g,' ');return false}
+  const at=p.get('access_token'),rt=p.get('refresh_token');
+  if(!at||!rt)return false;
+  try{
+    const r=await fetch(SB_URL+'/auth/v1/user',{headers:{apikey:SB_KEY,Authorization:'Bearer '+at}});
+    const u=await r.json();if(!r.ok||!u.id)throw 0;
+    sb.ses=sbShape({access_token:at,refresh_token:rt,expires_in:+p.get('expires_in')||3600,expires_at:+p.get('expires_at')||0,user:u});
+    sbStore();sb.state='on';sbSetSynced(0);sb.fromGoogle=true;return true;
+  }catch(e){sb.msg='Signed in with Google, but the game could not finish. Try again.';return false}
+}
 function sbUI(){
   const on=sb.state==='on',el=document.getElementById('sbSt');if(!el)return;
   const anon=!sb.ses||sb.ses.user.anon,when=sb.at?new Date(sb.at).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'';
@@ -2266,22 +2289,25 @@ function sbUI(){
   let note=!on?'Back your progress up online so you do not lose it. Nothing is sent until you turn this on. No account needed.':
     sb.conflict?'This device and your online save are different. Choose which one to keep.':
     sb.err?sb.err:
-    `Your progress backs up automatically${when?`. Last backed up ${when}`:''}. ${anon?(SB_EMAIL?'To use it on another device, add an email.':''):`Signed in as ${sb.ses.user.email}. Sign in with the same email on another device to get your progress there.`}`;
+    `Your progress backs up automatically${when?`. Last backed up ${when}`:''}. ${anon?(SB_GOOGLE?'To use it on another device, sign in with Google.':SB_EMAIL?'To use it on another device, add an email.':''):`Signed in as ${sb.ses.user.email}. Sign in the same way on another device to get your progress there.`}`;
   if(sb.msg&&sb.form===0)note=sb.msg+' '+note;
   const f=sb.form;
   document.getElementById('sbNote').textContent=f?sb.msg||'We will email you a code. No password needed.':note;
   const sh=(id,v)=>{const e=document.getElementById(id);if(e)e.hidden=!v};
-  sh('sbOn',!on&&!f);sh('sbSignIn',!on&&!f&&SB_EMAIL);
+  sh('sbOn',!on&&!f);sh('sbGoogle',SB_GOOGLE&&!f&&(!on||anon));sh('sbSignIn',!on&&!f&&SB_EMAIL);
   sh('sbResolve',on&&!!sb.conflict&&!f);sh('sbNow',on&&!sb.conflict&&!f);sh('sbEmailBtn',on&&anon&&!f&&SB_EMAIL);sh('sbOut',on&&!f);sh('sbDel',on&&!f);
   sh('sbForm',!!f);sh('sbCodeRow',f===2);
+  document.getElementById('sbGoogle').textContent=on?'Sign in with Google to use on other devices':'Sign in with Google';
   document.getElementById('sbGo').textContent=f===2?'Verify':'Send code';
   document.getElementById('sbDel').textContent=sb.delArmed?'Tap again to delete your online data':'Delete my cloud data';
   document.getElementById('sbNow').disabled=sb.busy;
   cloudUI();
 }
-function sbInit(){
+async function sbInit(){
   sbLoad();
-  if(sb.ses){sb.state='on';sbUI();sbSync()}else sbUI();
+  const back=await sbHandleReturn(),pend=sb.msg;
+  if(sb.ses){sb.state='on';sbUI();await sbSync()}else sbUI();
+  if(back||pend){try{go('settings')}catch(e){}sb.msg=pend||(!sb.conflict&&!sb.err?'Signed in with Google.':'');sbUI()}
 }
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&sb.state==='on'&&!sb.busy&&Date.now()-sb.last>60000){const inRun=G&&(G.state==='build'||G.state==='wave'||G.state==='cards');if(!inRun){sb.last=Date.now();sbSync()}}});
 addEventListener('online',()=>{if(sb.state==='on')sbSync()});
@@ -3428,6 +3454,7 @@ function drawPrestige(){const T=performance.now()/1000;document.querySelectorAll
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'1.0.9',d:'Oct 16, 2026',notes:['Sign in with Google in Settings, so your online backup follows you to your other devices.','If this device and your online save differ, the game asks which one to keep.']},
   {v:'1.0.8',d:'Oct 16, 2026',notes:['New in Settings: Online backup. Turn it on and your progress backs up automatically, no account needed.','If this device and your online save ever differ, the game asks which one to keep.','Redeem codes are now checked online, so they can be added or switched off any time. Redeeming a code needs an internet connection.']},
   {v:'1.0.7',d:'Oct 16, 2026',notes:['Saves now move by file. Settings has Save as file and Import from file, and the copy and paste box is gone, since long codes kept getting cut off.']},
   {v:'1.0.6',d:'Oct 16, 2026',notes:['A News button on the home screen: events, announcements and tips. New items show a New badge, and news can be added between releases.','Lantern mastery takes about 50% more points per level (12 + 3 per level, was 10 + 2), so reaching Mastery 100 takes closer to 30 full runs. Your points are kept, so some lanterns may drop a few levels.','Tap the version number on the home screen 5 times to see a screen-size readout. It helps track down layout bugs on phones.']},
@@ -4349,6 +4376,7 @@ $('#updNow').onclick=applyUpdate;
 $('#updLater').onclick=()=>{upd.dismissed=upd.latest;hide('upd');if(G&&G.state==='wave'&&$('#menu').hidden)paused=false};
 $('#permBtn').onclick=requestPersist;
 $('#sbOn').onclick=sbEnable;
+$('#sbGoogle').onclick=sbGoogleStart;
 $('#sbNow').onclick=()=>{sb.at=-1;sbSync()};
 $('#sbResolve').onclick=sbShowDlg;
 $('#sbOut').onclick=sbSignOut;

@@ -26,11 +26,11 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 
 ---
 
-## 🌙 1.0.8 (Oct 16, 2026)
+## 🌙 1.0.9 (Oct 16, 2026)
 
-- **Online backup** in Settings. Turn it on and your progress backs up automatically. No account is needed.
+- **Sign in with Google** in Settings. Your online backup then follows you to any device where you sign in with the same Google account.
 - If this device and your online save differ, the game asks which one to keep.
-- Redeem codes are checked online now, so new ones can be added any time. Redeeming needs an internet connection.
+- Online backup (added in 1.0.8) still works with no account at all.
 
 The full update history is in the **Updates** tab in the game and in the [docs](docs/README.md).
 
