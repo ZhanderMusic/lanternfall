@@ -53,7 +53,7 @@ Damage is per hit, fire rate is shots per second and range is in tiles. These ar
 
 ## Mastery
 
-Every lantern has a permanent **mastery level from 1 to 100**. It goes up at the end of each run: **1 point per foe** the lantern snuffed and **3 points per wave cleared** for every lantern type you built (Studious adds more). Each level needs a little more than the last (10 + 2 × level points).
+Every lantern has a permanent **mastery level from 1 to 100**. It goes up at the end of each run: **1 point per foe** the lantern snuffed and **3 points per wave cleared** for every lantern type you built (Studious adds more). Each level needs a little more than the last (12 + 3 × level points, about 16,000 for all 100 levels).
 
 | Mastery | Unlocks |
 |---:|---|

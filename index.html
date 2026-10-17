@@ -803,6 +803,7 @@ button.player:focus-visible{outline:2px solid var(--flame);outline-offset:2px}
 .log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 .log li{background:color-mix(in srgb,var(--moss) 92%,transparent);border:1px solid var(--line);border-radius:10px;padding:14px}
 .log li.cur{border-color:var(--flame)}
+.nw li small{display:block;font:12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--flame)}.nw li small i{font-style:normal;color:var(--dim);margin-left:8px;letter-spacing:.04em}.nw li h3{margin:4px 0 6px;font-size:18px;font-weight:600}.nw li p{margin:0;color:var(--dim);line-height:1.45}
 .log .vh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px}
 .log .vh b{font:400 28px/1 var(--display)}
 .log .vh span{font-family:var(--mono);font-size:12px;color:var(--dim)}
@@ -1113,7 +1114,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 </style>
 
 <script>
-/* PWA: offline support and updates (Lanternfall v1.0.5) */
+/* PWA: offline support and updates (Lanternfall v1.0.6) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 <div id="app">
@@ -1188,6 +1189,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
     </div>
     <nav class="menu" aria-label="Main menu">
       <button class="btn primary big" data-go="play">Play</button>
+      <button class="btn mi" data-go="news"><span>News</span><small class="newb" id="miNews"></small></button>
       <div class="menu2">
         <button class="btn mi" data-go="lanterns"><span>Lanterns</span><small id="miL"></small></button>
         <button class="btn mi" data-go="shop"><span>Shop</span><small id="miS">New skins hourly</small></button>
@@ -1293,6 +1295,12 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
   <section class="panel view wide" data-view="howto" hidden>
     <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">How to play</h2><button class="btn" id="tutReplay2" style="margin-left:auto">Replay tutorial</button></header>
     <div class="howgrid" id="how"></div>
+  </section>
+
+  <section class="panel view" data-view="news" hidden>
+    <header class="ph"><button class="btn" data-go="home">Back</button><h2 class="big">News</h2></header>
+    <ol class="log nw" id="newsList"></ol>
+    <p class="hint" id="newsNote"></p>
   </section>
 
   <section class="panel view" data-view="updates" hidden>
@@ -1733,7 +1741,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='1.0.5';
+const VERSION='1.0.6';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -2546,7 +2554,7 @@ const ascBoost=t=>{const b=Math.max(0,ascTier(t)-1);return{dmg:Math.pow(1.75,b),
 function ascPartner(t){const T=ascTier(t);let best=null;for(const o of G.towers)if(o!==t&&o.type===t.type&&ascTier(o)>=T&&(!best||ascTier(o)<ascTier(best)))best=o;return best}
 
 /* ---------- lantern mastery (permanent, levels 1-100 per lantern) ---------- */
-const MAST_MAX=100,mNeed=L=>10+2*L;
+const MAST_MAX=100,mNeed=L=>12+3*L;   /* 1.0.6: mastery takes about 50% more points (was 10 + 2 x level) */
 /* mastery from a run: 1 point per snuff (per foe of the original wave size) plus 3 per wave cleared; past wave 40 at x0.25 */
 function mastGain(t,cleared){
   const k=G.mk[t]||0,k40=G.over40&&G.mk40?(G.mk40[t]||0):k,w40=Math.min(cleared,MAXW),wOT=Math.max(0,cleared-MAXW);
@@ -3149,8 +3157,8 @@ $('#camp').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if
 function renderView(){
   document.querySelectorAll('.embersN').forEach(n=>{n.textContent=meta.embers});
   document.querySelectorAll('.moonN').forEach(n=>{n.textContent=meta.moon});
-  document.querySelectorAll('[data-ver]').forEach(n=>{n.textContent='v'+VERSION});
-  ({home:renderHome,profile:renderProfile,play:renderWorlds,lanterns:renderLanterns,upgrades:renderUps,pass:renderPass,settings:renderSettings,howto:renderHow,updates:renderLog,shop:renderShop,boons:renderBoons,prestige:renderPrestige})[view]();
+  document.querySelectorAll('[data-ver]').forEach(n=>{n.textContent='v'+VERSION;n.addEventListener('click',diagTap)});
+  ({home:renderHome,profile:renderProfile,play:renderWorlds,lanterns:renderLanterns,upgrades:renderUps,pass:renderPass,settings:renderSettings,howto:renderHow,updates:renderLog,news:renderNews,shop:renderShop,boons:renderBoons,prestige:renderPrestige})[view]();
 }
 
 /* profile */
@@ -3234,6 +3242,7 @@ function drawPrestige(){const T=performance.now()/1000;document.querySelectorAll
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'1.0.6',d:'Oct 16, 2026',notes:['A News button on the home screen: events, announcements and tips. New items show a New badge, and news can be added between releases.','Lantern mastery takes about 50% more points per level (12 + 3 per level, was 10 + 2), so reaching Mastery 100 takes closer to 30 full runs. Your points are kept, so some lanterns may drop a few levels.','Tap the version number on the home screen 5 times to see a screen-size readout. It helps track down layout bugs on phones.']},
   {v:'1.0.5',d:'Oct 16, 2026',notes:['Fixed the empty strip under the game on iPhones when it is installed to the home screen. The game now fills the whole screen and keeps clear of the notch and home bar.','The skipped-tutorial message no longer points to Settings.']},
   {v:'1.0.4',d:'Oct 16, 2026',notes:['A smoother difficulty curve: foes grow +21% a wave through wave 25, +19% to wave 30 and +14% after, so there is no sudden wall at waves 26 to 30. Waves 6 to 25 push back harder, and wave 40 is about as tough as before.','Lantern path upgrades cost 15% more.']},
   {v:'1.0.3',d:'Oct 16, 2026',notes:['Removed the Replay the tutorial button from Settings. The tutorial lives on the Play page, and on the How to play page.']},
@@ -3323,6 +3332,38 @@ function renderLog(){
 $('#log').addEventListener('click',e=>{const b=e.target.closest('[data-replay]');if(b)showMajor(CHANGELOG.find(x=>x.v===b.dataset.replay))});
 
 /* ---------- major update cinematic: plays once, the first time a player opens a version that contains a major update ---------- */
+/* ---------- news: a short list of announcements. A news.json next to the game (on GitHub Pages) can add or change items without a new release; these are what you see offline ---------- */
+const NEWS_LOCAL=[
+  {id:'hw26-end',date:'2026-10-15',tag:'Event',title:'Hollow Harvest and Season 1 end November 1',body:'The Halloween event, its pass and the Season 1 pass all run until November 1. Finish your tiers and claim your rewards before then.'},
+  {id:'v1',date:'2026-10-15',tag:'Release',title:'Lanternfall 1.0 is out',body:'21 worlds with 21 bosses, 12 lanterns, a rank road to level 100 and Prestige. Thanks for playing.'},
+  {id:'keep-safe',date:'2026-10-16',tag:'Tip',title:'Keep your progress safe',body:'Add Lanternfall to your home screen, and back up your save any time with Export in Settings. On iPhone: Share, then Add to Home Screen. On Android: the menu, then Install app.'}
+];
+var newsItems=NEWS_LOCAL.slice(),newsOnline=false;
+const escN=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function newsSorted(){return newsItems.slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)))}
+const newsLatest=()=>{const n=newsSorted()[0];return n?n.id:''};
+function newsBadge(){const n=document.getElementById('miNews');if(n)n.textContent=newsLatest()&&meta.newsSeen!==newsLatest()?'New':''}
+async function loadNews(){
+  try{
+    const r=await fetch('news.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('http');
+    const j=await r.json();const list=Array.isArray(j)?j:j&&j.items;if(!Array.isArray(list))throw new Error('bad');
+    const ok=list.filter(x=>x&&x.id&&x.title).slice(0,30);
+    if(ok.length){const m=new Map(NEWS_LOCAL.map(x=>[x.id,x]));for(const x of ok)m.set(String(x.id),x);newsItems=[...m.values()];newsOnline=true}
+  }catch(e){}
+  newsBadge();if(view==='news')renderNews();
+}
+function renderNews(){
+  $('#newsList').innerHTML=newsSorted().map((n,i)=>`<li class="${i?'':'cur'}"><small>${escN(n.tag||'News')}<i>${escN(n.date||'')}</i></small><h3>${escN(n.title)}</h3><p>${escN(n.body||'')}</p></li>`).join('');
+  $('#newsNote').textContent=newsOnline?'':'Showing the news saved on this device. Connect to the internet for the latest.';
+  if(newsLatest()&&meta.newsSeen!==newsLatest()){meta.newsSeen=newsLatest();save()}
+}
+/* tap the version number 5 times for a screen-size readout (used to debug layouts on phones) */
+let diagN=0,diagT=0;
+function diagTap(){const t=Date.now();diagN=t-diagT<1500?diagN+1:1;diagT=t;if(diagN<5)return;diagN=0;
+  const pr=document.createElement('div');pr.style.cssText='position:fixed;inset:0;visibility:hidden;padding-bottom:env(safe-area-inset-bottom,0px);padding-top:env(safe-area-inset-top,0px)';document.body.appendChild(pr);
+  const cs=getComputedStyle(pr),rc=pr.getBoundingClientRect(),vv=window.visualViewport;pr.remove();
+  const a=$('#app'),ar=a?a.getBoundingClientRect():null;
+  alert(['v'+VERSION,'inner '+innerWidth+'x'+innerHeight,'screen '+screen.width+'x'+screen.height,'visual '+(vv?Math.round(vv.width)+'x'+Math.round(vv.height):'n/a'),'fixed probe '+Math.round(rc.width)+'x'+Math.round(rc.height),'safe top/bottom '+cs.paddingTop+' / '+cs.paddingBottom,'standalone '+(navigator.standalone===true||matchMedia('(display-mode: standalone)').matches),'app '+(ar?Math.round(ar.top)+' to '+Math.round(ar.bottom):'hidden'),'dpr '+devicePixelRatio].join('\n'))}
 function majorSince(from){return CHANGELOG.find(e=>e.major&&cmpVer(e.v,from||'0.0.0')>0&&cmpVer(e.v,VERSION)<=0)}
 function maybeMajor(){
   if(!meta.savedAt){meta.majorSeen=VERSION;return}   /* brand-new players skip straight to the game */
@@ -3439,7 +3480,7 @@ function renderHome(){
   const lv=META.reduce((a,m)=>a+mlr(m.id),0),mx=META.reduce((a,m)=>a+m.max,0);
   $('#miU').textContent=`${lv}/${mx} levels`;
   $('#miB').textContent=`${CARDS.filter(c=>(meta.boonsTaken||{})[c.id]).length}/${CARDS.length} picked`;
-  $('#miN').textContent=meta.seenVer===VERSION?'':'New';
+  $('#miN').textContent=meta.seenVer===VERSION?'':'New';newsBadge();
 }
 /* worlds are grouped into collections of 10 depths that fold open and shut */
 const COLLS=[{from:1,to:10,name:'The Ember Road',desc:'Marsh, ice, ash and ruin on the long road from the first forest.',col:'#ffb547'},
@@ -4685,7 +4726,7 @@ new ResizeObserver(resize).observe($('#board'));applyLayout();resize();
 addEventListener('resize',applyLayout);
 go('home');renderTray();hud(true);
 storageInit().then(()=>{maybeMajor();cloudInit()});
-checkVersion(false);
+checkVersion(false);loadNews();
 requestAnimationFrame(loop);
 })();
 </script>

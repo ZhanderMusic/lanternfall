@@ -1,0 +1,25 @@
+{
+  "items": [
+    {
+      "id": "hw26-end",
+      "date": "2026-10-15",
+      "tag": "Event",
+      "title": "Hollow Harvest and Season 1 end November 1",
+      "body": "The Halloween event, its pass and the Season 1 pass all run until November 1. Finish your tiers and claim your rewards before then."
+    },
+    {
+      "id": "v1",
+      "date": "2026-10-15",
+      "tag": "Release",
+      "title": "Lanternfall 1.0 is out",
+      "body": "21 worlds with 21 bosses, 12 lanterns, a rank road to level 100 and Prestige. Thanks for playing."
+    },
+    {
+      "id": "keep-safe",
+      "date": "2026-10-16",
+      "tag": "Tip",
+      "title": "Keep your progress safe",
+      "body": "Add Lanternfall to your home screen, and back up your save any time with Export in Settings. On iPhone: Share, then Add to Home Screen. On Android: the menu, then Install app."
+    }
+  ]
+}

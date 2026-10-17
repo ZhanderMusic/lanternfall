@@ -1,9 +1,11 @@
 {
-  "version": "1.0.5",
+  "version": "1.0.6",
   "date": "Oct 16, 2026",
   "major": false,
   "title": "",
   "notes": [
-    "Fixed the empty strip under the game on iPhones when installed to the home screen."
+    "A News button on the home screen for events, announcements and tips.",
+    "Lantern mastery takes about 50% more points per level.",
+    "Tap the version number 5 times for a screen-size readout (for debugging layouts)."
   ]
 }

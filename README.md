@@ -26,62 +26,13 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 
 ---
 
-## 🌙 1.0.5 (Oct 16, 2026)
+## 🌙 1.0.6 (Oct 16, 2026)
 
-- Fixed the empty strip under the game on iPhones when it is installed to the home screen. The game now fills the whole screen and keeps clear of the notch and home bar.
+- A News button on the home screen for events, announcements and tips. News can be updated between releases.
+- Lantern mastery takes about 50% more points per level (12 + 3 per level, was 10 + 2).
+- Tap the version number on the home screen 5 times for a screen-size readout.
 
-## 🌙 1.0.4 (Oct 16, 2026)
-
-- A smoother difficulty curve: foes grow +21% a wave through wave 25, +19% to wave 30 and +14% after. Waves 6 to 25 are tougher, and there is no sudden wall at 26 to 30.
-- Lantern path upgrades cost 15% more.
-
-## 🌙 1.0.3 (Oct 16, 2026)
-
-- Removed the Replay the tutorial button from Settings. The tutorial lives on the Play page.
-
-## 🌙 1.0.2 (Oct 16, 2026)
-
-- Leveling up is about twice as fast: level 100 takes about 55,000 XP, down from 107,000.
-- Hollow Harvest foes scale from wave 10 instead of wave 30, and regular foes everywhere start their extra +10% a wave at wave 25.
-- Gold is tighter: Gold rush gives 25% (was 40%), Scavenger 15% (was 25%), and Deep purse tops out at +15% (was +30%).
-
-## 🌙 1.0.1 (Oct 16, 2026)
-
-- **40-wave campaigns.** After wave 40, end the run or keep going until the lanterns go dark (×0.25 rewards past 40).
-- **Shorter, harder waves.** Fewer, tougher foes, tighter spacing, a steeper last stretch and less gold per kill.
-- **Snuffs and live mastery** in every lantern's upgrade sheet, and level and mastery bars in the run summary.
-- **Auto** never sends wave 1. A tougher Season Pass curve, and a fix for waves that could stall.
-
-## 🏮 Lanternfall 1.0 (Oct 15, 2026)
-
-- **21 worlds, 21 bosses.** Every world has its own twist, its own foe and its own boss, down to the Moth Queen at the Hollow Moon.
-- **12 lanterns, 53 boons.** Four roles, two upgrade paths each, ascensions and merges, and boons that change every run.
-- **Campaign and Endless.** Hold 50 waves to unlock the next world, or go Endless through random worlds you've unlocked.
-- **Grow between runs.** Camp upgrades, lantern mastery, a rank road to level 100 and Prestige up to X.
-- **New player tutorial.** Play it any time from the Tutorial card on the world list.
-- **Season 1 and Hollow Harvest** passes both end **November 1**.
-
-## 👑 New in 0.21: Lords of the Night
-
-- **21 world bosses.** Every world has its own boss with its own tricks, from the Elder Moth to the Moth Queen herself.
-- **Boss health bar.** See each boss's name, title, shield and health at the top of the board.
-- **Tutorial.** New players get a short guided first run.
-- **Balance pass.** Gentler early bosses, more embers per run, and +20% embers and XP for every prestige.
-
-## 🌟 New in 0.20: Prestige
-
-- **Levels to 100.** Five new ranks, all the way to Eternal Flame.
-- **Prestige.** At level 100, start the climb again for new rewards, up to Prestige X. Keep your moonstones, passes, skins and lanterns.
-- **Prestige shop.** 20 Prestige skins, the most detailed in the game. They react when you tap them and when they fire.
-- **Oblivion.** A new difficulty above Nightmare, unlocked by your first prestige.
-- **Mastery prestige.** Reset a lantern from Mastery 100 to 1 for a permanent +2%, up to 10 times.
-
-## 🌙 New in 0.19: The Wide Night
-
-- **Landscape mode.** On computers, tablets and sideways phones the trail runs left to right, with your controls beside the board. Choose Auto, Portrait or Landscape in Settings.
-- **Music.** Quiet, atmospheric tracks for every world and every menu theme, crossfading as you go.
-- **Sound effects.** Soft menu sounds and a quiet voice for every lantern.
-- **29 new boons, 53 in all.** Lantern boons only show up while that lantern is on the board.
+The full update history is in the **Updates** tab in the game and in the [docs](docs/README.md).
 
 ---
 
