@@ -1,13 +1,9 @@
 {
-  "version": "1.1.0",
+  "version": "1.1.1",
   "date": "Oct 17, 2026",
-  "major": true,
-  "title": "Your progress, anywhere",
+  "major": false,
+  "title": "",
   "notes": [
-    "Online backup in Settings, with no account needed to start.",
-    "Sign in with Google to get your progress on any device.",
-    "Save as file and Import from file replace the long copy-and-paste codes.",
-    "Redeem codes are now checked online.",
-    "News posts can now show pictures."
+    "Fixed the lantern tray jumping back to the start when you tap or place a lantern."
   ]
 }

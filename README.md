@@ -26,13 +26,15 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 
 ---
 
-## 🌙 1.1 · Your progress, anywhere (Oct 17, 2026)
+## 🌙 1.1.1 (Oct 17, 2026)
 
-- **Online backup** in Settings. Turn it on and your progress saves online as you play. No account is needed to start.
-- **Sign in with Google** to get your progress on any device. If two saves differ, the game asks which one to keep.
+- Fixed the lantern tray jumping back to the start every time you tap or place a lantern. It stays where you scrolled it now.
+
+### 1.1 · Your progress, anywhere
+
+- **Online backup** in Settings, and **Sign in with Google** to get your progress on any device.
 - **Save as file** and **Import from file** replace the long copy-and-paste codes.
-- **Redeem codes** are checked online now, so new ones can arrive any time. Redeeming needs an internet connection.
-- **News** posts can show pictures.
+- **Redeem codes** are checked online now. **News** posts can show pictures.
 
 The full update history is in the **Updates** tab in the game and in the [docs](docs/README.md).
 

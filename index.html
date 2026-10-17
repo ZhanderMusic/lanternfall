@@ -1124,7 +1124,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 </style>
 
 <script>
-/* PWA: offline support and updates (Lanternfall v1.1.0) */
+/* PWA: offline support and updates (Lanternfall v1.1.1) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 <div id="app">
@@ -1780,7 +1780,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='1.1.0';
+const VERSION='1.1.1';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -3464,6 +3464,7 @@ function drawPrestige(){const T=performance.now()/1000;document.querySelectorAll
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'1.1.1',d:'Oct 17, 2026',notes:['Fixed the lantern tray jumping back to the start every time you tapped or placed a lantern. It now stays where you scrolled it.']},
   {v:'1.1.0',d:'Oct 17, 2026',major:1,kick:'Version 1.1',title:'Your progress, anywhere',go:'Back to the lanterns',
    hl:[['Online backup','Turn it on in Settings and your progress saves online as you play. No account needed to start.'],
        ['Sign in with Google','Sign in on any device and your progress is there. If two saves differ, the game asks which one to keep.'],
@@ -4559,6 +4560,7 @@ function afford(){
 const dotHtml=c=>`<span class="dot" style="background:${c};box-shadow:0 0 10px ${c}"></span>`;
 function renderTray(){
   const tr=$('#tray'),s=G.sel,own=ORDER.filter(unlocked);
+  const op=document.getElementById('pal'),keepL=op?op.scrollLeft:0,keepT=tr.scrollTop; /* keep the tray where the player scrolled it */
   if(!s){
     tr.innerHTML=`<p class="hint trh"><b>${TH.name}${G.endless?' · Endless':''} · <span style="color:${dOf(G.diff).col}">${dOf(G.diff).name}</span>.</b> ${TH.twist} <span class="how">${armT?`Tap a grassy tile to place ${TOWERS[armT].name}.`:'Drag a lantern onto the grass.'}</span></p>
     <div class="pal" id="pal">${ROLES.map(r=>{const ts=r.t.filter(unlocked);if(!ts.length)return '';
@@ -4566,6 +4568,7 @@ function renderTray(){
       <canvas class="pci" data-pci="${t}" width="64" height="64" aria-hidden="true"></canvas><span class="pn">${TOWERS[t].name}</span><span class="pcost">${buildCost(t)}</span></button>`).join('')}</div></div>`}).join('')}</div>`;
     tr.querySelectorAll('canvas[data-pci]').forEach(c=>{const t=c.dataset.pci,x=c.getContext('2d'),col=TOWERS[t].color;
       x.fillStyle='#090d0e';x.beginPath();x.arc(32,32,21,0,7);x.fill();x.strokeStyle=col;x.lineWidth=3;x.stroke();lantern(t,32,32,col,x,62)});
+    const np=document.getElementById('pal');if(np)np.scrollLeft=keepL;tr.scrollTop=keepT;
   }
   afford();renderSheet();
 }
