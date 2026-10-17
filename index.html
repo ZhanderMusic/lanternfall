@@ -1114,7 +1114,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 </style>
 
 <script>
-/* PWA: offline support and updates (Lanternfall v1.0.7) */
+/* PWA: offline support and updates (Lanternfall v1.0.8) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 <div id="app">
@@ -1169,6 +1169,15 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
     <ul class="updn" id="updNotes"></ul>
     <button class="btn primary big" id="updNow">Reload to update</button>
     <button class="btn" id="updLater">Later</button>
+  </div>
+</div>
+<div class="ov" id="sbDlg" hidden role="dialog" aria-modal="true" aria-labelledby="sbDlgT" style="z-index:41;background:color-mix(in srgb,var(--night) 97%,transparent)">
+  <div class="panel" style="max-width:420px">
+    <div><span class="sec">Online backup</span><h2 class="big" id="sbDlgT">Two different saves</h2></div>
+    <p class="tag" id="sbDlgP"></p>
+    <button class="btn primary big" id="sbUseCloud">Use the online save</button>
+    <button class="btn big" id="sbUseHere">Keep this device’s save</button>
+    <button class="btn" id="sbLater">Decide later</button>
   </div>
 </div>
 <div class="ov" id="camp">
@@ -1340,10 +1349,31 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
       <p class="hint" style="margin:0" id="permNote"></p>
       <div class="row"><button class="btn" id="permBtn" hidden>Make storage permanent</button></div>
       <hr class="sep">
+      <div id="claudeCloud">
       <div class="sr"><span>Claude cloud save</span><b id="cloud">Connecting…</b></div>
-      <div class="sr"><span>Last saved</span><b id="savedAt">Never</b></div>
       <p class="hint" style="margin:0" id="cloudNote"></p>
       <div class="row"><button class="btn" id="cloudSync" hidden>Sync now</button></div>
+      <hr class="sep">
+      </div>
+      <div id="sbBox">
+        <div class="sr"><span>Online backup</span><b id="sbSt">Off</b></div>
+        <p class="hint" style="margin:0" id="sbNote"></p>
+        <div class="row" style="flex-wrap:wrap">
+          <button class="btn" id="sbOn">Turn on backup</button>
+          <button class="btn" id="sbSignIn">Sign in with email</button>
+          <button class="btn" id="sbResolve" hidden>Choose which save to keep</button>
+          <button class="btn" id="sbNow" hidden>Back up now</button>
+          <button class="btn" id="sbEmailBtn" hidden>Add an email</button>
+          <button class="btn" id="sbOut" hidden>Sign out</button>
+          <button class="btn" id="sbDel" hidden>Delete my cloud data</button>
+        </div>
+        <div id="sbForm" hidden>
+          <div class="row"><input id="sbEmail" type="text" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="you@example.com" aria-label="Email address" style="text-transform:none"></div>
+          <div class="row" id="sbCodeRow" hidden><input id="sbCode" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="Code from the email" aria-label="Code from the email"></div>
+          <div class="row"><button class="btn primary" id="sbGo">Send code</button><button class="btn" id="sbCancel">Cancel</button></div>
+        </div>
+      </div>
+      <div class="sr"><span>Last saved on this device</span><b id="savedAt">Never</b></div>
     </div>
     <div class="sec">Menu theme</div>
     <div class="themes" id="themes"></div>
@@ -1739,7 +1769,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='1.0.7';
+const VERSION='1.0.8';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -2031,7 +2061,7 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 
 /* ---------- Claude cloud save: one private doc per signed-in player, newest save wins ---------- */
 var cloud={state:'checking',at:0,ref:null,busy:false,pending:false,timer:0,msg:''};
-function cloudQueue(){if(cloud.state!=='on')return;clearTimeout(cloud.timer);cloud.timer=setTimeout(cloudPush,1500)}
+function cloudQueue(){sbQueue();if(cloud.state!=='on')return;clearTimeout(cloud.timer);cloud.timer=setTimeout(cloudPush,1500)}
 async function cloudPush(){
   if(!cloud.ref)return;
   if(cloud.busy){cloud.pending=true;return}
@@ -2083,9 +2113,178 @@ function cloudUI(){
     'Cloud save works when you play on Claude while signed in. Here, progress is saved in this browser only. Use an export code to move it to another device.';
   const n=document.getElementById('cloudNote');if(n)n.textContent=(cloud.msg&&st==='on'?cloud.msg+' ':'')+note;
   const b=document.getElementById('cloudSync');if(b){b.hidden=!(st==='on'||st==='error');b.disabled=cloud.busy;b.textContent=st==='error'?'Try again':'Sync now'}
-  document.documentElement.classList.toggle('cloud-on',st==='on');
-  const c=document.getElementById('cloudChip');if(c)c.textContent=st==='on'?(cloud.busy?'Cloud: saving…':'Cloud save on'):st==='checking'?'':st==='error'?'Cloud: offline':'Saved on this device';
+  document.documentElement.classList.toggle('cloud-on',st==='on'||sb.state==='on');
+  const cc=document.getElementById('claudeCloud');if(cc)cc.hidden=(st==='off'||st==='checking');
+  const c=document.getElementById('cloudChip');const sbOn=sb.state==='on';if(c)c.textContent=st==='on'?(cloud.busy?'Cloud: saving…':'Cloud save on'):sbOn?(sb.err?'Backup: offline':sb.busy?'Backup: saving…':'Online backup on'):st==='checking'?'':st==='error'?'Cloud: offline':'Saved on this device';
 }
+
+/* ---------- Online backup (Supabase): optional, off until the player turns it on ---------- */
+const SB_URL='https://ockmwmrkudxnktgykcbh.supabase.co',SB_KEY='sb_publishable_io8eEXakMx5cp9a9TPcM6A_-AdozYZN';
+const SB_EMAIL=false; /* email sign-in needs custom email sending set up in Supabase first (see docs). Turn on when ready. */
+const SB_LS='lanternfall.sb',SB_SYNC='lanternfall.sbsync';
+var sb={ses:null,state:'off',busy:false,err:'',msg:'',at:0,timer:0,pending:false,form:0,email:'',conflict:null,last:0,delArmed:false};
+function sbLoad(){try{sb.ses=JSON.parse(localStorage.getItem(SB_LS))||null}catch(e){sb.ses=null}}
+function sbStore(){try{sb.ses?localStorage.setItem(SB_LS,JSON.stringify(sb.ses)):localStorage.removeItem(SB_LS)}catch(e){}}
+function sbSynced(){try{return +localStorage.getItem(SB_SYNC)||0}catch(e){return 0}}
+function sbSetSynced(v){try{localStorage.setItem(SB_SYNC,String(v))}catch(e){}}
+function sbShape(j){const u=j.user||{};return{access_token:j.access_token,refresh_token:j.refresh_token,expires_at:j.expires_at||Math.floor(Date.now()/1000)+(j.expires_in||3600),user:{id:u.id,email:u.email||'',anon:!!u.is_anonymous}}}
+async function sbFetch(path,o={}){
+  const h=Object.assign({apikey:SB_KEY,'Content-Type':'application/json'},o.headers||{});
+  if(o.auth!==false&&sb.ses)h.Authorization='Bearer '+sb.ses.access_token;
+  const r=await fetch(SB_URL+path,{method:o.method||'GET',headers:h,body:o.body!==undefined?JSON.stringify(o.body):undefined});
+  let j=null;try{j=await r.json()}catch(e){}
+  return{ok:r.ok,status:r.status,j};
+}
+/* a usable session, refreshed when it is about to expire. null = signed out. Throws when offline. */
+async function sbSession(){
+  if(!sb.ses)return null;
+  if(sb.ses.expires_at*1000-Date.now()<60000){
+    const r=await sbFetch('/auth/v1/token?grant_type=refresh_token',{method:'POST',auth:false,body:{refresh_token:sb.ses.refresh_token}});
+    if(r.ok&&r.j&&r.j.access_token){sb.ses=sbShape(r.j);sbStore()}
+    else if(r.status>=400&&r.status<500){sb.ses=null;sbStore();return null}
+    else throw new Error('net');
+  }
+  return sb.ses;
+}
+async function sbAnon(){
+  const r=await sbFetch('/auth/v1/signup',{method:'POST',auth:false,body:{data:{}}});
+  if(r.ok&&r.j&&r.j.access_token){sb.ses=sbShape(r.j);sbStore();return true}
+  return false;
+}
+function sbQueue(){if(sb.state!=='on'||sb.conflict)return;clearTimeout(sb.timer);sb.timer=setTimeout(()=>sbPush(),2500)}
+async function sbPush(force){
+  if(sb.state!=='on'||(sb.conflict&&!force))return;
+  if(sb.busy){sb.pending=true;return}
+  if(!force&&sb.at===meta.savedAt){sbUI();return}
+  sb.busy=true;sbUI();const at=meta.savedAt||0;
+  try{
+    const s=await sbSession();
+    if(!s){sb.state='off';sb.msg='You were signed out. Turn backup on again to keep backing up.';throw 0}
+    const r=await sbFetch('/rest/v1/saves?on_conflict=user_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:{user_id:s.user.id,data:meta,saved_at:at,version:VERSION,updated_at:new Date().toISOString()}});
+    if(!r.ok)throw new Error('http '+r.status);
+    sb.at=at;sb.last=Date.now();sbSetSynced(at);sb.err='';
+  }catch(e){if(e!==0)sb.err='Could not reach the server. Your progress is still saved on this device.'}
+  sb.busy=false;sbUI();
+  if(sb.pending&&sb.state==='on'){sb.pending=false;sbPush()}
+}
+function sbLoadCloud(data,at){
+  meta=Object.assign(fresh(),data);fixMeta();meta.savedAt=at;
+  const j=JSON.stringify(meta);try{localStorage.setItem(KEY,j)}catch(e){}try{idbSet('save',j)}catch(e){}
+  applySkins();try{campPreview();renderView()}catch(e){}
+  sb.at=at;sbSetSynced(at);sb.conflict=null;sb.err='';sb.msg='Loaded your online save.';
+}
+async function sbSync(){
+  if(sb.state!=='on')return;
+  sb.busy=true;sbUI();
+  try{
+    const s=await sbSession();
+    if(!s){sb.state='off';sb.busy=false;sb.msg='You were signed out. Turn backup on again to keep backing up.';sbUI();return}
+    const r=await sbFetch('/rest/v1/saves?select=data,saved_at&user_id=eq.'+encodeURIComponent(s.user.id));
+    if(!r.ok)throw new Error('http '+r.status);
+    sb.busy=false;sb.err='';
+    const row=r.j&&r.j[0],L=meta.savedAt||0,S=sbSynced();
+    if(!row){await sbPush(true);return}
+    const C=+row.saved_at||0,fresh0=!(meta.runs>0)&&!(meta.xp>0),inRun=G&&(G.state==='build'||G.state==='wave'||G.state==='cards');
+    if(C===L){sb.at=L;sbSetSynced(L);sbUI();return}
+    if(fresh0||(S&&L===S&&C>S)){ if(inRun){sbUI();return} sbLoadCloud(row.data,C);sbUI();return }
+    if(S&&C===S&&L>S){await sbPush(true);return}
+    sb.conflict={data:row.data,at:C};sbUI();if(!inRun)sbShowDlg();
+  }catch(e){sb.busy=false;sb.err='Could not reach the server. Your progress is still saved on this device.';sbUI()}
+}
+function sbSum(d,at){const lv=levelInfo(d.xp||0).L,t=at?new Date(at).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'unknown';return `level ${lv}, ${d.embers} embers, best wave ${d.best||0} (saved ${t})`}
+function sbShowDlg(){
+  if(!sb.conflict)return;
+  $('#sbDlgP').textContent=`This device: ${sbSum(meta,meta.savedAt)}. Online: ${sbSum(sb.conflict.data,sb.conflict.at)}. Pick the one to keep. The other is replaced.`;
+  show('sbDlg');
+}
+async function sbEnable(){
+  sb.msg='';sb.err='';sb.busy=true;sbUI();
+  try{
+    if(!sb.ses&&!(await sbAnon())){sb.busy=false;sb.err='Could not turn backup on. Try again in a moment.';sbUI();return}
+    sb.state='on';sb.busy=false;await sbSync();
+  }catch(e){sb.busy=false;sb.err='Could not reach the server. Check your connection and try again.';sbUI()}
+}
+async function sbSendCode(){
+  const em=$('#sbEmail').value.trim();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){sb.msg='Enter a valid email address.';sbUI();return}
+  sb.msg='Sending…';sbUI();
+  try{
+    const r=await sbFetch('/auth/v1/otp',{method:'POST',auth:false,body:{email:em,create_user:true}});
+    if(r.ok){sb.email=em;sb.form=2;sb.msg='We sent a code to '+em+'. Enter it below.'}
+    else sb.msg=r.status===429?'Too many emails right now. Wait a minute and try again.':'Could not send the code. Check the address and try again.';
+  }catch(e){sb.msg='Could not reach the server. Check your connection.'}
+  sbUI();
+}
+async function sbVerify(){
+  const code=$('#sbCode').value.replace(/\s/g,'');
+  if(!/^\d{6,10}$/.test(code)){sb.msg='Enter the numbers from the email.';sbUI();return}
+  sb.msg='Checking…';sbUI();
+  try{
+    const r=await sbFetch('/auth/v1/verify',{method:'POST',auth:false,body:{type:'email',email:sb.email,token:code}});
+    if(r.ok&&r.j&&r.j.access_token){sb.ses=sbShape(r.j);sbStore();sb.state='on';sb.form=0;sb.msg='';sbSetSynced(0);await sbSync();return}
+    sb.msg='That code did not work. Check it, or send a new one.';
+  }catch(e){sb.msg='Could not reach the server. Check your connection.'}
+  sbUI();
+}
+async function sbSignOut(){
+  try{if(sb.ses)await sbFetch('/auth/v1/logout',{method:'POST'})}catch(e){}
+  sb.ses=null;sbStore();sbSetSynced(0);sb.state='off';sb.conflict=null;sb.err='';sb.msg='Signed out. Your progress stays on this device.';sb.at=0;sb.delArmed=false;sbUI();
+}
+async function sbDelete(){
+  if(!sb.delArmed){sb.delArmed=true;sbUI();return}
+  sb.delArmed=false;sb.busy=true;sbUI();
+  try{
+    const s=await sbSession();
+    const r=s?await sbFetch('/rest/v1/rpc/delete_my_account',{method:'POST',body:{}}):{ok:true};
+    if(!r.ok)throw new Error('http');
+    sb.busy=false;await sbSignOut();sb.msg='Your online data was deleted. Your progress stays on this device.';sbUI();
+  }catch(e){sb.busy=false;sb.err='Could not delete right now. Try again when you are online.';sbUI()}
+}
+/* codes are checked by the server so they can be added or switched off any time */
+async function sbRedeem(h){
+  try{
+    if(!(await sbSession())&&!(await sbAnon()))return{ok:false,err:'signin'};
+    const r=await sbFetch('/rest/v1/rpc/redeem_code',{method:'POST',body:{p_hash:h}});
+    if(r.ok&&r.j&&typeof r.j==='object')return r.j;
+    return{ok:false,err:'net'};
+  }catch(e){return{ok:false,err:'net'}}
+}
+function applyReward(rw){
+  const out=[],n=v=>Math.max(0,Math.min(100000,Math.floor(+v||0)));
+  rw=rw||{};
+  if(n(rw.embers)){meta.embers+=n(rw.embers);out.push(`+${n(rw.embers)} embers.`)}
+  if(n(rw.moon)){meta.moon+=n(rw.moon);out.push(`+${n(rw.moon)} moonstones.`)}
+  if(rw.founder){ORDER.forEach(t=>{meta.owned[t+':founder']=1});meta.founder=1;meta.fedOff=false;if(!seasonOver())meta.passPremium=true;
+    out.push(`Founders Edition unlocked: Founder's gold for every lantern${seasonOver()?'':', the Season 1 premium pass'} and the Founders Edition title.`)}
+  return out.join(' ')||'Reward added.';
+}
+function sbUI(){
+  const on=sb.state==='on',el=document.getElementById('sbSt');if(!el)return;
+  const anon=!sb.ses||sb.ses.user.anon,when=sb.at?new Date(sb.at).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'';
+  el.textContent=!on?'Off':sb.conflict?'Choose a save':sb.err?'Offline':sb.busy?'Saving…':'On';
+  el.className=!on?'':sb.err?'cs-error':'cs-on';
+  let note=!on?'Back your progress up online so you do not lose it. Nothing is sent until you turn this on. No account needed.':
+    sb.conflict?'This device and your online save are different. Choose which one to keep.':
+    sb.err?sb.err:
+    `Your progress backs up automatically${when?`. Last backed up ${when}`:''}. ${anon?(SB_EMAIL?'To use it on another device, add an email.':''):`Signed in as ${sb.ses.user.email}. Sign in with the same email on another device to get your progress there.`}`;
+  if(sb.msg&&sb.form===0)note=sb.msg+' '+note;
+  const f=sb.form;
+  document.getElementById('sbNote').textContent=f?sb.msg||'We will email you a code. No password needed.':note;
+  const sh=(id,v)=>{const e=document.getElementById(id);if(e)e.hidden=!v};
+  sh('sbOn',!on&&!f);sh('sbSignIn',!on&&!f&&SB_EMAIL);
+  sh('sbResolve',on&&!!sb.conflict&&!f);sh('sbNow',on&&!sb.conflict&&!f);sh('sbEmailBtn',on&&anon&&!f&&SB_EMAIL);sh('sbOut',on&&!f);sh('sbDel',on&&!f);
+  sh('sbForm',!!f);sh('sbCodeRow',f===2);
+  document.getElementById('sbGo').textContent=f===2?'Verify':'Send code';
+  document.getElementById('sbDel').textContent=sb.delArmed?'Tap again to delete your online data':'Delete my cloud data';
+  document.getElementById('sbNow').disabled=sb.busy;
+  cloudUI();
+}
+function sbInit(){
+  sbLoad();
+  if(sb.ses){sb.state='on';sbUI();sbSync()}else sbUI();
+}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&sb.state==='on'&&!sb.busy&&Date.now()-sb.last>60000){const inRun=G&&(G.state==='build'||G.state==='wave'||G.state==='cards');if(!inRun){sb.last=Date.now();sbSync()}}});
+addEventListener('online',()=>{if(sb.state==='on')sbSync()});
 
 /* ---------- skins ---------- */
 const ALT={
@@ -2381,22 +2580,11 @@ function swStyle(s){
 }
 
 /* ---------- redeem codes ----------
-   Codes are stored as hashes so they can't be read from the page source.
-   To add one, run lfCodeHash('YOURCODE') in the browser console and use the result as the key. */
+   Redeem codes live on the server (as hashes). To add one, run lfCodeHash('YOURCODE') in the console and insert the result into the codes table. */
 function codeHash(s){s='lf:'+s;let h1=0xdeadbeef^7,h2=0x41c6ce57^7;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return (4294967296*(2097151&h2)+(h1>>>0)).toString(36)}
 window.lfCodeHash=codeHash;
-const FED_H='1u13o01pler';
-const CODES={
-  wemu1tt7jv:{msg:'+50 embers.',ap:()=>{meta.embers+=50}},
-  '1w3n2a4yn4n':{msg:'+100 embers.',ap:()=>{meta.embers+=100}},
-  /* Founders Edition: every Founder's gold skin, the current premium pass and the Founders Edition title. One use per player. */
-  [FED_H]:{msg:()=>`Founders Edition unlocked: Founder's gold for every lantern${seasonOver()?'':', the Season 1 premium pass'} and the Founders Edition title.`,
-    ap:()=>{ORDER.forEach(t=>{meta.owned[t+':founder']=1});meta.founder=1;meta.fedOff=false;if(!seasonOver())meta.passPremium=true}},
-  '257bh8b1k8u':{msg:'+50 moonstones.',ap:()=>{meta.moon+=50}}
-};
-
 /* ---------- run ---------- */
 const EVT={name:'Hollow Harvest',twist:'Harvest night. Foes are 35% tougher and 8% faster, and only the harvest’s own creatures walk the trail.',bg:'#0e090b',acc:'#ff7a1a',tiles:['#191013','#1d1316'],path:['#2a1a12','#3a2416'],decor:'grave',dc:'#4a3a48',amb:'spore',ac:'#ff9a3d',
   foes:{moth:'#e8d0ff',wisp:'#ffb35a',beetle:'#5a4a6a',brood:'#c86ad6',boss:'#ff7a1a'},mods:{hp:1.35,speed:1.08}};
@@ -3240,6 +3428,7 @@ function drawPrestige(){const T=performance.now()/1000;document.querySelectorAll
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'1.0.8',d:'Oct 16, 2026',notes:['New in Settings: Online backup. Turn it on and your progress backs up automatically, no account needed.','If this device and your online save ever differ, the game asks which one to keep.','Redeem codes are now checked online, so they can be added or switched off any time. Redeeming a code needs an internet connection.']},
   {v:'1.0.7',d:'Oct 16, 2026',notes:['Saves now move by file. Settings has Save as file and Import from file, and the copy and paste box is gone, since long codes kept getting cut off.']},
   {v:'1.0.6',d:'Oct 16, 2026',notes:['A News button on the home screen: events, announcements and tips. New items show a New badge, and news can be added between releases.','Lantern mastery takes about 50% more points per level (12 + 3 per level, was 10 + 2), so reaching Mastery 100 takes closer to 30 full runs. Your points are kept, so some lanterns may drop a few levels.','Tap the version number on the home screen 5 times to see a screen-size readout. It helps track down layout bugs on phones.']},
   {v:'1.0.5',d:'Oct 16, 2026',notes:['Fixed the empty strip under the game on iPhones when it is installed to the home screen. The game now fills the whole screen and keeps clear of the notch and home bar.','The skipped-tutorial message no longer points to Settings.']},
@@ -4147,7 +4336,7 @@ function renderSettings(){
   $('#savedAt').textContent=meta.savedAt?new Date(meta.savedAt).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Never';
   $('#expMsg').textContent='';
   impPend=null;$('#impBtn').style.display='none';$('#impMsg').textContent='';resetArmed=false;$('#reset').textContent='Reset all progress';
-  cloudUI();updUI();storageUI();
+  sb.msg='';sb.form=0;sb.delArmed=false;sbUI();cloudUI();updUI();storageUI();
   const cur=meta.menuTheme||'default';
   $('#themes').innerHTML=Object.entries(MENU_THEMES).map(([id,m])=>{const own=id==='default'||meta.themes[id],bg=m.bg||THEMES[meta.depth].bg,acc=m.acc||THEMES[meta.depth].acc;
     return `<button class="thc${cur===id?' on':''}${own?'':' lock'}" data-theme="${id}" ${own?'':'disabled'} aria-pressed="${cur===id}">
@@ -4159,6 +4348,20 @@ $('#updChk').onclick=()=>{if(upd.state==='outdated')showUpdate();else checkVersi
 $('#updNow').onclick=applyUpdate;
 $('#updLater').onclick=()=>{upd.dismissed=upd.latest;hide('upd');if(G&&G.state==='wave'&&$('#menu').hidden)paused=false};
 $('#permBtn').onclick=requestPersist;
+$('#sbOn').onclick=sbEnable;
+$('#sbNow').onclick=()=>{sb.at=-1;sbSync()};
+$('#sbResolve').onclick=sbShowDlg;
+$('#sbOut').onclick=sbSignOut;
+$('#sbDel').onclick=sbDelete;
+const sbOpenForm=()=>{sb.form=1;sb.msg='';sbUI();$('#sbEmail').focus()};
+$('#sbSignIn').onclick=sbOpenForm;$('#sbEmailBtn').onclick=sbOpenForm;
+$('#sbCancel').onclick=()=>{sb.form=0;sb.msg='';sbUI()};
+$('#sbGo').onclick=()=>{sb.form===2?sbVerify():sbSendCode()};
+$('#sbEmail').addEventListener('keydown',e=>{if(e.key==='Enter')$('#sbGo').click()});
+$('#sbCode').addEventListener('keydown',e=>{if(e.key==='Enter')$('#sbGo').click()});
+$('#sbUseCloud').onclick=()=>{if(sb.conflict){sbLoadCloud(sb.conflict.data,sb.conflict.at)}hide('sbDlg');sbUI()};
+$('#sbUseHere').onclick=()=>{hide('sbDlg');const c=sb.conflict;sb.conflict=null;if(c){meta.savedAt=Math.max(meta.savedAt||0,c.at+1)}sbPush(true)};
+$('#sbLater').onclick=()=>{hide('sbDlg');sbUI()};
 $('#cloudSync').onclick=()=>{if(cloud.state==='error')cloudInit();else{cloud.at=-1;cloudPush()}};
 /* a save code is LF1: plus base64. Be forgiving about what got pasted: stray spaces, line breaks, quotes, or text around the code */
 function parseSave(raw){
@@ -4193,14 +4396,16 @@ $('#expFile').onclick=async()=>{
     if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Lanternfall save'});msg.textContent='Saved.';return}}catch(e){if(e&&e.name==='AbortError')return}
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);msg.textContent='Saved as '+name+'.';
 };
-$('#redeem').onclick=()=>{
+$('#redeem').onclick=async()=>{
   const k=$('#codeIn').value.trim().toUpperCase(),msg=$('#codeMsg');
   if(!k)return;
-  const h=codeHash(k),c=CODES[h];
-  if(!c){msg.textContent="That code isn't valid.";return}
-  /* codes are one use per player: the save remembers them, and so does this device, so resetting or prestiging can't redeem them again */
+  const h=codeHash(k);
+  /* one use per player: the save remembers it, and so does this device, so resetting or prestiging can't redeem it again */
   if(meta.redeemed.includes(h)||usedCodes().includes(h)){msg.textContent="You've already redeemed that code.";return}
-  c.ap();meta.redeemed.push(h);markCode(h);applySkins();save();msg.textContent='Redeemed: '+(typeof c.msg==='function'?c.msg():c.msg);$('#codeIn').value='';renderView();
+  msg.textContent='Checking…';$('#redeem').disabled=true;
+  const r=await sbRedeem(h);$('#redeem').disabled=false;
+  if(!r.ok){msg.textContent=({invalid:"That code isn't valid.",used:"You've already redeemed that code.",gone:'That code has been used up.',slow:'Too many tries. Wait a while and try again.',net:'Codes need an internet connection. Try again when you are online.',signin:'Could not reach the server. Try again in a moment.'})[r.err]||'Something went wrong. Try again.';return}
+  const text=applyReward(r.reward);meta.redeemed.push(h);markCode(h);applySkins();save();msg.textContent='Redeemed: '+text;$('#codeIn').value='';renderView();
 };
 function usedCodes(){try{return JSON.parse(localStorage.getItem('lanternfall.codes'))||[]}catch(e){return[]}}
 function markCode(k){try{const u=usedCodes();if(!u.includes(k)){u.push(k);localStorage.setItem('lanternfall.codes',JSON.stringify(u))}}catch(e){}}
@@ -4744,7 +4949,7 @@ applySkins();campPreview();
 new ResizeObserver(resize).observe($('#board'));applyLayout();resize();
 addEventListener('resize',applyLayout);
 go('home');renderTray();hud(true);
-storageInit().then(()=>{maybeMajor();cloudInit()});
+storageInit().then(()=>{maybeMajor();cloudInit();sbInit()});
 checkVersion(false);loadNews();
 requestAnimationFrame(loop);
 })();

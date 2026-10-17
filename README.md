@@ -26,10 +26,11 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 
 ---
 
-## 🌙 1.0.7 (Oct 16, 2026)
+## 🌙 1.0.8 (Oct 16, 2026)
 
-- Importing a save is more forgiving (stray spaces, line breaks and quotes are ignored), and a failed import now says why.
-- Saves now move by file: **Save as file** and **Import from file** in Settings. The copy and paste box is gone, since long codes kept getting cut off.
+- **Online backup** in Settings. Turn it on and your progress backs up automatically. No account is needed.
+- If this device and your online save differ, the game asks which one to keep.
+- Redeem codes are checked online now, so new ones can be added any time. Redeeming needs an internet connection.
 
 The full update history is in the **Updates** tab in the game and in the [docs](docs/README.md).
 

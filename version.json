@@ -1,10 +1,10 @@
 {
-  "version": "1.0.7",
+  "version": "1.0.8",
   "date": "Oct 16, 2026",
   "major": false,
   "title": "",
   "notes": [
-    "Saves now move by file: Save as file and Import from file in Settings.",
-    "Importing is more forgiving, and failures say why."
+    "New Online backup in Settings: automatic, no account needed.",
+    "Redeem codes are now checked online."
   ]
 }

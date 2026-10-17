@@ -20,6 +20,7 @@
 | **Menu theme** | Change your camp's look and music. |
 | **Check for updates** | See if a newer version is out. |
 | **Permanent storage** | Ask your browser to never clear your save (where supported). |
+| **Online backup** | Back your progress up online, automatically. Optional. |
 | **Save as file / Import from file** | Save your progress as a file, or load one. |
 | **Redeem a code** | Enter a reward code. |
 | **Reset all progress** | Start over completely. Tap twice to confirm. This can't be undone. |
@@ -62,3 +63,13 @@ The game checks for updates on its own. When one is ready you'll be asked to rel
 ---
 
 ← [Progression and rewards](progression.md)
+
+## Online backup
+
+Online backup is off until you turn it on. Nothing is sent before that.
+
+- **Turn on backup** backs your progress up automatically after each wave and run. No account or email is needed.
+- If this device and your online save are different, the game shows both (level, embers, best wave, time) and you choose which to keep.
+- **Sign out** stops backing up and leaves your progress on this device. **Delete my cloud data** removes your online save and sign-in for good.
+- Your progress always saves on the device first, so the game works offline. Backup catches up when you are online again.
+- Redeem codes are checked online, so redeeming needs an internet connection.
