@@ -1811,8 +1811,7 @@ const lvNeed=L=>70+10*(L-1);
 const LV_MAX=100,PMAX=10,ROM=['','I','II','III','IV','V','VI','VII','VIII','IX','X'];
 function levelInfo(xp){let L=1,x=xp;while(L<LV_MAX&&x>=lvNeed(L)){x-=lvNeed(L);L++}const max=L>=LV_MAX;return{L,into:max?lvNeed(L):x,need:lvNeed(L),max}}
 const prLv=()=>Math.min(PMAX,meta.prestige||0);
-const mpBonus=()=>1+.05*ORDER.reduce((a,t)=>a+mPrest(t),0);   /* every lantern prestige: +5% embers and XP, stacking */
-const prBonus=()=>(1+.2*prLv())*mpBonus();   /* every prestige: +20% embers and XP from runs, forever */
+const prBonus=()=>1+.25*prLv();   /* every player prestige: +25% embers and XP from runs, forever (1.2: was +20%) */
 const lvReward=L=>L%5===0?25:10;
 const PASS_COST=150;
 const tierCost=n=>120+8*(n-1);               /* 1.0.1: XP from tier n-1 to tier n: 120, 128, 136 ... 912 (was 100 ... 199) */
@@ -3489,7 +3488,7 @@ function renderPrestige(){
       <div class="r"><b>Starts over</b><ul><li>Level and XP (back to 1)</li><li>Embers</li><li>Camp upgrades</li><li>Worlds unlocked and beaten, best waves</li><li>Saved runs</li></ul></div></div>
       <button class="btn primary big prgo${prArm?' armed':''}" id="prGo" ${can?'':'disabled'}>${can?(prArm?`Tap again to prestige. Your level goes back to 1`:`Prestige to ${ROM[P+1]}`):`Prestige at level ${LV_MAX}`}</button>`:''}</div>`;
   const mpT=ORDER.filter(t=>mPrest(t)).map(t=>`${TOWERS[t].name} ${ROM[mPrest(t)]}`);
-  const mast=`<div class="pcard"><h3>Mastery prestige</h3><p class="hint" style="margin:0">Every lantern can prestige too. At Mastery 100, prestige it from its Mastery tab on the Lanterns page: it goes back to Mastery 1 for a permanent <b>+2%</b> boost, up to ${MP_MAX} times (+20%). Each prestige also gives <b>+5% embers and +5% XP</b> from runs, and it stacks with your account prestige (now ×${mpBonus().toFixed(2)} from lanterns). Everything it has unlocked stays unlocked. ${mpT.length?`<br>Yours so far: <b>${mpT.join(', ')}</b>.`:''}</p></div>`;
+  const mast=`<div class="pcard"><h3>Mastery prestige</h3><p class="hint" style="margin:0">Every lantern can prestige too. At Mastery 100, prestige it from its Mastery tab on the Lanterns page: it goes back to Mastery 1 for a permanent <b>+2%</b> boost, up to ${MP_MAX} times (+20%). Everything it has unlocked stays unlocked. ${mpT.length?`<br>Yours so far: <b>${mpT.join(', ')}</b>.`:''}</p></div>`;
   const diff=`<div class="pcard"><h3 style="color:${DIFF.oblivion.col}">Oblivion difficulty</h3><p class="hint" style="margin:0">${P?'Unlocked. ':'Unlocks at Prestige I. '}${DIFF.oblivion.desc} Foes have ×${DIFF.oblivion.hp} health and rewards are ×${DIFF.oblivion.rew}. Pick it on the Play page.</p></div>`;
   const grp=[];for(let p=1;p<=PMAX;p++){const items=PRSK.filter(x=>x[0]===p),open=P>=p;
     grp.push(`<div class="prgrp"><div class="prgh"><b>Prestige ${ROM[p]}</b><span class="${open?'ok':''}">${open?'Open':'Locked'}</span></div><div class="feat">${items.map(([pp,t])=>{const s=SKINS[t].find(x=>x.id==='pr'+pp),own=ownsSkin(t,s.id),pr=priceOf(s);
@@ -3522,8 +3521,8 @@ const CHANGELOG=[
        ['Three paths, pick two','Every lantern has a third upgrade path, but only two can be active on a lantern. Choose your build.'],
        ['Linked ascensions','Each ascension is linked to one of the three paths, and each ascension type can be on the board once at a time.'],
        ['The Sapling','The Mint is now the Sapling, a support lantern that grows every wave and boosts the lanterns around it. All Mint skins carried over.'],
-       ['Prestige bonus','Each lantern prestige gives +5% embers and +5% XP from runs, stacking with account prestige.']],
-   notes:['Lanternfall 1.2: runs can have crossing paths, every lantern has three upgrade paths with two active at a time, and each ascension is linked to a path.','The Mint became the Sapling. Every skin you own, plus the ones still locked or in the shop, carried over to it.','Lantern prestige now gives +5% embers and +5% XP from runs.','Lanterns at the bottom of the board stay in view when their panel opens. In landscape the panel stays clear of the app buttons in the corners.','The lantern shooting sounds are gone. Foe, menu, building and upgrade sounds stay.']},
+       ['Bigger prestige bonus','Every player prestige now gives +5% more embers and XP from runs, on top of the old +20%. That is +25% per prestige.']],
+   notes:['Lanternfall 1.2: runs can have crossing paths, every lantern has three upgrade paths with two active at a time, and each ascension is linked to a path.','The Mint became the Sapling. Every skin you own, plus the ones still locked or in the shop, carried over to it.','Every player prestige now gives +25% embers and XP from runs, up from +20%.','Lanterns at the bottom of the board stay in view when their panel opens. In landscape the panel stays clear of the app buttons in the corners.','The lantern shooting sounds are gone. Foe, menu, building and upgrade sounds stay.']},
   {v:'1.1.1',d:'Oct 17, 2026',notes:['Fixed the lantern tray jumping back to the start every time you tapped or placed a lantern. It now stays where you scrolled it.']},
   {v:'1.1.0',d:'Oct 17, 2026',major:1,kick:'Version 1.1',title:'Your progress, anywhere',go:'Back to the lanterns',
    hl:[['Online backup','Turn it on in Settings and your progress saves online as you play. No account needed to start.'],
@@ -3632,7 +3631,7 @@ const NEWS_LOCAL=[
   {id:'v1',date:'2026-10-15',tag:'Release',title:'Lanternfall 1.0 is out',body:'21 worlds with 21 bosses, 12 lanterns, a rank road to level 100 and Prestige. Thanks for playing.'},
   {id:'keep-safe',date:'2026-10-16',tag:'Tip',title:'Keep your progress safe',body:'Add Lanternfall to your home screen, and back up your save any time with Save as file in Settings. On iPhone: Share, then Add to Home Screen. On Android: the menu, then Install app.'},
   {id:'cloud-saves',date:'2026-10-17',tag:'Update',title:'Your progress can follow you now',body:'Turn on Online backup in Settings and sign in with Google, and your progress follows you to any device. Prefer to carry it yourself? Save as file and Import from file move it in a tap.',art:'cloud'},
-  {id:'v12',date:'2026-10-18',tag:'Release',title:'Lanternfall 1.2: Crossroads',body:'Paths can cross over themselves. Every lantern gets a third upgrade path, but only two can be active, and each ascension is linked to a path. The Mint is now the Sapling, a support lantern that grows every wave, and all Mint skins carried over. Lantern prestige also gives +5% embers and +5% XP.',art:'crossroads'}
+  {id:'v12',date:'2026-10-18',tag:'Release',title:'Lanternfall 1.2: Crossroads',body:'Paths can cross over themselves. Every lantern gets a third upgrade path, but only two can be active, and each ascension is linked to a path. The Mint is now the Sapling, a support lantern that grows every wave, and all Mint skins carried over. Every player prestige also gives +5% more embers and XP, so +25% each.',art:'crossroads'}
 ];
 const NEWS_ART={
   crossroads:`<svg viewBox="0 0 320 176" role="img" aria-label="Two paths crossing with a glowing lantern at the crossing and a green sapling beside it">
