@@ -32,7 +32,6 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 - **Three upgrade paths** on every lantern, but only two can be active. Each ascension is linked to a path.
 - **One of each ascension** on the board at a time.
 - **The Sapling** replaces the Mint: a support lantern that grows every wave and boosts the lanterns around it. All Mint skins carried over.
-- **Player prestige** now gives +25% embers and XP from runs per level, up from +20%.
 - Lanterns at the bottom of the board stay in view when their panel opens.
 
 ### 1.1.1 (Oct 17, 2026)

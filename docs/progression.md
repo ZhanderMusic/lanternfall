@@ -68,7 +68,7 @@ At **level 100**, open **Prestige** on the title screen to start the climb again
 | Codes, lifetime stats and settings | Saved runs |
 
 - **Prestige I** unlocks **Oblivion**, a difficulty above Nightmare: ×3.1 foe health, ×1.24 speed, 5 starting lives and ×3.5 embers and XP.
-- Every prestige level adds **+25% embers and XP** from runs, so each climb goes faster (up to +250% at Prestige X).
+- Every prestige level adds **+20% embers and XP** from runs, so each climb goes faster (up to +200% at Prestige X).
 - Every prestige opens **2 Prestige skins** in the **Prestige shop** (20 in all). See [Skins](#skins).
 - Level-up moonstones and first-clear moonstones are paid again on every climb.
 - Lanterns prestige separately: see [Mastery prestige](lanterns.md#mastery).
