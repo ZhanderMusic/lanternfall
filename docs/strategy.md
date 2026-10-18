@@ -23,12 +23,11 @@ A strong team covers four jobs:
 | Control (slow or freeze foes) | Frost, Hollow Bell, Venom's Neurotoxin |
 | Armor answer | Venom, Moonwell, Eclipse, armor-piercing upgrades |
 
-Add a **Mint** early if you're confident: it pays more the longer the run lasts. Add a **Beacon** once you have a cluster of lanterns worth boosting.
+Add a **Sapling** early: it grows every wave, so the sooner it is on the board the stronger it gets. Add a **Beacon** once you have a cluster of lanterns worth boosting.
 
 ## Economy
 
-- **Mint first, or not at all.** A Mint placed on wave 2 pays back many times over. One placed on wave 30 barely matters.
-- **Interest** (Mint's Bank path and the Compound camp upgrade) rewards keeping some gold banked between waves.
+- **Sapling timing.** It grows one stage per wave it stands, so place it early and keep it safe.
 - **The halfway bonus** pays out mid-wave, so you can often afford an upgrade before the wave ends.
 - **Don't oversell.** Selling only returns 60% by default.
 

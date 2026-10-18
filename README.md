@@ -26,7 +26,16 @@ Every wave you hold pays **candy**, which only drops here. Spend it on a **free 
 
 ---
 
-## 🌙 1.1.1 (Oct 17, 2026)
+## 🌙 1.2 · Crossroads (Oct 18, 2026)
+
+- **Crossing paths.** Runs can now have paths that cross over themselves.
+- **Three upgrade paths** on every lantern, but only two can be active. Each ascension is linked to a path.
+- **One of each ascension** on the board at a time.
+- **The Sapling** replaces the Mint: a support lantern that grows every wave and boosts the lanterns around it. All Mint skins carried over.
+- **Lantern prestige** now gives +5% embers and +5% XP from runs, stacking with account prestige.
+- Lanterns at the bottom of the board stay in view when their panel opens.
+
+### 1.1.1 (Oct 17, 2026)
 
 - Fixed the lantern tray jumping back to the start every time you tap or place a lantern. It stays where you scrolled it now.
 
@@ -44,7 +53,7 @@ The full update history is in the **Updates** tab in the game and in the [docs](
 
 1. **Pick a world and slide the difficulty.** Easy through Nightmare, then survive 50 waves. Harder nights pay up to ×2.25 embers and XP.
 2. **Drag lanterns onto the grass.** Every run carves a brand-new random trail, so no two layouts play the same.
-3. **Upgrade as the waves build.** Each lantern has two upgrade paths of five tiers. Max both and it can ascend, then merge with another ascended lantern for even more power.
+3. **Upgrade as the waves build.** Each lantern has three upgrade paths of five tiers. Use two of them, max both, and it can ascend, then merge with another ascended lantern for even more power.
 4. **Earn boons.** Every foe you snuff and every upgrade you buy fills boon XP. Level it up to pick one of 53 boons, from Common and Rare up to Legendary, Mythic and Exotic.
 5. **Bring your embers home.** Win or lose, the run pays out. Spend embers at camp on permanent upgrades and new lanterns, then go deeper.
 
@@ -55,7 +64,7 @@ The full update history is in the **Updates** tab in the game and in the [docs](
 <p align="center"><img src="media/screens1.png" alt="Camp, world collections, the Lanterns page and a boon pick" width="100%"></p>
 
 ### 12 lanterns, each with real choices
-Sparks, Cinders, Frost, Lances, Venom, Mints, Bolts, Beacons, Comets, plus three Season 1 lanterns: the Moonwell's burning beam, the Hollow Bell's freezing toll and the Eclipse. Lanterns are grouped into **Damage, Area, Control and Support**, and every one has:
+Sparks, Cinders, Frost, Lances, Venom, Saplings, Bolts, Beacons, Comets, plus three Season 1 lanterns: the Moonwell's burning beam, the Hollow Bell's freezing toll and the Eclipse. Lanterns are grouped into **Damage, Area, Control and Support**, and every one has:
 
 - **Two upgrade paths, five tiers each.** 120 upgrades in all, from crits and armor piercing to burning ground and multi-shot.
 - **Three ascension types** once both paths are maxed, and **merges** that forge Ascended II and III.

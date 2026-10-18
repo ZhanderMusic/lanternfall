@@ -1,9 +1,12 @@
 {
-  "version": "1.1.1",
-  "date": "Oct 17, 2026",
-  "major": false,
-  "title": "",
+  "version": "1.2.0",
+  "date": "Oct 18, 2026",
+  "major": true,
+  "title": "Crossroads",
   "notes": [
-    "Fixed the lantern tray jumping back to the start when you tap or place a lantern."
+    "Runs can have crossing paths.",
+    "Every lantern has three upgrade paths, but only two can be active. Each ascension is linked to a path.",
+    "The Mint is now the Sapling. All its skins carried over.",
+    "Lantern prestige gives +5% embers and +5% XP."
   ]
 }

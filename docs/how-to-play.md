@@ -56,7 +56,7 @@ On your very first run a short **tutorial** walks you through this: hanging two 
 
 **Tap a lantern on the board** to open its panel. From there you can:
 
-- **Upgrade** either of its two paths. Each path has 5 tiers, and you can max **both** paths. Every tier also gives a small core boost on top of its own effect.
+- **Upgrade** two of its three paths. Each path has 5 tiers, and the third path locks once you use two. Every tier also gives a small core boost on top of its own effect.
 - Tap the **i** for a full guide to that lantern: how it works, what it's good and bad against, a tip, its current numbers and every upgrade.
 - **Sell** it for 60% of everything you spent on it (camp upgrades and some boons raise this).
 
@@ -83,9 +83,9 @@ Foes get tougher every wave. For the exact numbers, see [How foes get tougher](e
 **Gold** comes from:
 - every foe you snuff,
 - the halfway and end-of-wave clear bonus (about 6 + 0.7 per wave),
-- Mint lanterns, interest and some boons.
+- Interest and some boons.
 
-Gold resets every run. Spend it: gold sitting in the bank doesn't defend anything (unless you have a Mint's interest upgrades).
+Gold resets every run. Spend it: gold sitting in the bank doesn't defend anything.
 
 **Lives** start at 15 on Normal. Easy gives +5, Hard -3 and Nightmare -7. Camp upgrades and some boons add more.
 

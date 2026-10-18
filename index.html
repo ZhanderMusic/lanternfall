@@ -12,6 +12,18 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="apple-touch-startup-image" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/launch-1320x2868.png">
+<link rel="apple-touch-startup-image" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/launch-1206x2622.png">
+<link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/launch-1290x2796.png">
+<link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/launch-1179x2556.png">
+<link rel="apple-touch-startup-image" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/launch-1284x2778.png">
+<link rel="apple-touch-startup-image" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/launch-1170x2532.png">
+<link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/launch-1125x2436.png">
+<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/launch-1242x2688.png">
+<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="icons/splash/launch-828x1792.png">
+<link rel="apple-touch-startup-image" media="(device-width: 360px) and (device-height: 780px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/launch-1080x2340.png">
+<link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="icons/splash/launch-750x1334.png">
+<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/launch-1242x2208.png">
 <style>html{box-sizing:border-box;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);color-scheme:dark;background:#0b1012}*,*::before,*::after{box-sizing:inherit}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Lanternfall</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -105,6 +117,11 @@ html.lside .bar{grid-area:bar;align-content:flex-start}
 html.lside #board{grid-area:board}
 html.lside #tray{grid-area:tray;height:auto;min-height:0}
 html.lside .bar .spacer{flex-basis:100%;height:0}
+/* the app's own close and menu buttons float over the top corners when the game is opened inside it, so keep the controls clear of them */
+html.inframe.lside .bar{padding-top:56px}
+html.inframe.lside .sheet{top:62px;max-height:calc(100% - 70px)}
+html.lside .sha .btn{min-height:40px;min-width:40px}
+html.lside .shd{flex-wrap:wrap;row-gap:4px}html.lside .shd h3{flex:1 1 100%}html.lside .sha{margin-left:auto}
 html.lside .pal{flex-direction:column;overflow:visible;gap:8px}
 html.lside .pg+.pg{padding-left:0;padding-top:8px}
 html.lside .pg+.pg::before{display:none}
@@ -328,12 +345,13 @@ h2.big{font:400 52px/.9 var(--display);margin:0}
 .mroad li:not(.ok){opacity:.62}
 .mroad li.nx{opacity:1;border-color:var(--flame)}
 .mroad li.nx i{color:var(--flame)}
-.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .pcol{display:flex;flex-direction:column;gap:3px;min-width:0}
 .pch{font-size:12px;color:var(--pc,var(--ink));letter-spacing:.04em}
 .ptier{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:6px;align-items:center;padding:4px 6px;border-radius:7px;background:var(--moss2);border:1px solid transparent;font-size:12px}
 .ptier .tn{font-family:var(--mono);font-size:11px;color:var(--pc)}
-.ptier .tnm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ptier .tnm{white-space:normal;overflow:hidden;line-height:1.1;font-size:11px;overflow-wrap:anywhere}
+.pgrid .ptier{grid-template-columns:12px minmax(0,1fr) auto;gap:4px;min-height:0;padding:2px 5px}
 .ptier .tl{font-family:var(--mono);font-size:10px;color:var(--flame)}
 .ptier:not(.ok){opacity:.6}
 .ptier.sel{border-color:var(--pc);opacity:1}
@@ -609,6 +627,9 @@ body.dragging{cursor:grabbing}
 .sheet .nums{font-family:var(--mono);font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums;line-height:1.35}
 .prow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;background:var(--moss2);border:1px solid var(--line);border-left:3px solid var(--pc);border-radius:9px;padding:8px 10px}
 .pmain{min-width:0;display:flex;flex-direction:column;gap:3px}
+.prow.pblk{opacity:.5}
+.prow.pmax{padding:5px 10px}.prow.pmax .pnx{display:none}
+#board.shifted{overflow:clip}canvas#cv{transition:transform .22s ease-out}
 .ptop{display:flex;align-items:center;gap:8px}
 .pname{font-size:14px}
 .tpips{display:inline-flex;gap:3px}
@@ -1124,7 +1145,7 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 </style>
 
 <script>
-/* PWA: offline support and updates (Lanternfall v1.1.1) */
+/* PWA: offline support and updates (Lanternfall v1.2.0) */
 if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 </script>
 <div id="app">
@@ -1463,7 +1484,7 @@ const TOWERS={
   frost:{name:'Frost',color:'#7fe3ff',cost:45,dmg:3,rate:1.2,range:2.0,slow:.4,slowT:1.5,desc:'Chills and slows foes.',unlock:8},
   lance:{name:'Lance',color:'#e6d3a8',cost:50,dmg:11,rate:.9,range:2.7,pierce:4,desc:'Spears pierce a line of foes.',unlock:12},
   venom:{name:'Venom',color:'#a6ff5c',cost:50,dmg:2,rate:1,range:2.2,poison:7,desc:'Poison that ignores armor.',unlock:15},
-  mint:{name:'Mint',color:'#ffe9a8',cost:60,passive:1,desc:'Earns gold after each wave.',unlock:20},
+  mint:{name:'Sapling',color:'#8fe08a',cost:60,passive:1,desc:'Grows stronger every wave and boosts nearby lanterns.',unlock:20},
   bolt:{name:'Bolt',color:'#c3a6ff',cost:80,dmg:16,rate:.7,range:2.6,chain:3,desc:'Lightning leaps between foes.',unlock:25},
   beacon:{name:'Beacon',color:'#ff8fd0',cost:70,passive:1,desc:'Boosts the 8 tiles around it.',unlock:30},
   comet:{name:'Comet',color:'#6f8cff',cost:110,dmg:75,rate:.28,range:4.2,splash:.7,desc:'Slow, huge, long-range impacts.',unlock:40},
@@ -1481,7 +1502,7 @@ const ROLES=[
   {id:'dmg',name:'Damage',col:'#ff8a7a',desc:'Hits one foe hard.',t:['spark','lance','moonwell','eclipse']},
   {id:'area',name:'Area',col:'#ffb547',desc:'Hits many foes at once.',t:['cinder','bolt','comet']},
   {id:'ctrl',name:'Control',col:'#7fe3ff',desc:'Slows, freezes or poisons.',t:['frost','venom','bell']},
-  {id:'sup',name:'Support',col:'#9be3a9',desc:'Earns gold or boosts others.',t:['mint','beacon']}
+  {id:'sup',name:'Support',col:'#9be3a9',desc:'Boosts the lanterns around it.',t:['mint','beacon']}
 ];
 const roleOf=t=>ROLES.find(r=>r.t.includes(t));
 /* the order lanterns appear in the tray (and the 1-9 hotkeys) */
@@ -1678,7 +1699,7 @@ const META=[
   {id:'lo_frost',cat:'lore',tw:'frost',name:'Frost lore',max:6,base:9,g:1.55,text:l=>`Frost deals +5% damage. Now +${l*5}%.`},
   {id:'lo_lance',cat:'lore',tw:'lance',name:'Lance lore',max:6,base:9,g:1.55,text:l=>`Lance deals +5% damage. Now +${l*5}%.`},
   {id:'lo_venom',cat:'lore',tw:'venom',name:'Venom lore',max:6,base:9,g:1.55,text:l=>`Venom deals +5% damage. Now +${l*5}%.`},
-  {id:'lo_mint',cat:'lore',tw:'mint',name:'Mint lore',max:6,base:9,g:1.55,text:l=>`Mints earn 8% more gold. Now +${l*8}%.`},
+  {id:'lo_mint',cat:'lore',tw:'mint',name:'Sapling lore',max:6,base:9,g:1.55,text:l=>`Saplings grow 8% faster. Now +${l*8}%.`},
   {id:'lo_bolt',cat:'lore',tw:'bolt',name:'Bolt lore',max:6,base:9,g:1.55,text:l=>`Bolt deals +5% damage. Now +${l*5}%.`},
   {id:'lo_beacon',cat:'lore',tw:'beacon',name:'Beacon lore',max:6,base:9,g:1.55,text:l=>`Beacon boosts are 1 point stronger. Now +${l}.`},
   {id:'lo_comet',cat:'lore',tw:'comet',name:'Comet lore',max:6,base:9,g:1.55,text:l=>`Comet deals +5% damage. Now +${l*5}%.`},
@@ -1720,7 +1741,7 @@ const CARDS=[
   {id:'fork',ic:'bolt',name:'Forked bolts',rar:1,need:'bolt',text:'Bolt lightning leaps to 2 more foes.',ap:m=>m.chain+=2},
   {id:'barb',ic:'arrow',name:'Barbed tips',rar:1,need:'lance',text:'Lance spears pierce 2 more foes and hit 20% harder.',ap:m=>{m.pierce+=2;m.lance*=1.2}},
   {id:'viru',ic:'drop',name:'Virulence',rar:1,need:'venom',text:'Venom poison deals 50% more damage.',ap:m=>m.poison*=1.5},
-  {id:'mintx',ic:'stack',name:'Struck coin',rar:1,need:'mint',text:'Mints earn 50% more gold.',ap:m=>m.income*=1.5},
+  {id:'mintx',ic:'stack',name:'Fertile ground',rar:1,need:'mint',text:'Saplings grow 50% faster.',ap:m=>{m.sgrow=(m.sgrow||1)*1.5}},
   {id:'beam',ic:'sun',name:'Bright beacons',rar:1,need:'beacon',text:'Beacon boosts are 10 points stronger.',ap:m=>m.aura+=.1},
   {id:'shower',ic:'comet',name:'Meteor shower',rar:1,need:'comet',text:'Comets fire 30% faster.',ap:m=>m.comet*=1.3},
   {id:'giant',name:'Giant slayer',rar:2,ic:'crown',text:'Towers deal 40% more damage to bosses.',ap:m=>m.boss*=1.4},
@@ -1780,7 +1801,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='1.1.1';
+const VERSION='1.2.0';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -1790,7 +1811,8 @@ const lvNeed=L=>70+10*(L-1);
 const LV_MAX=100,PMAX=10,ROM=['','I','II','III','IV','V','VI','VII','VIII','IX','X'];
 function levelInfo(xp){let L=1,x=xp;while(L<LV_MAX&&x>=lvNeed(L)){x-=lvNeed(L);L++}const max=L>=LV_MAX;return{L,into:max?lvNeed(L):x,need:lvNeed(L),max}}
 const prLv=()=>Math.min(PMAX,meta.prestige||0);
-const prBonus=()=>1+.2*prLv();   /* every prestige: +20% embers and XP from runs, forever */
+const mpBonus=()=>1+.05*ORDER.reduce((a,t)=>a+mPrest(t),0);   /* every lantern prestige: +5% embers and XP, stacking */
+const prBonus=()=>(1+.2*prLv())*mpBonus();   /* every prestige: +20% embers and XP from runs, forever */
 const lvReward=L=>L%5===0?25:10;
 const PASS_COST=150;
 const tierCost=n=>120+8*(n-1);               /* 1.0.1: XP from tier n-1 to tier n: 120, 128, 136 ... 912 (was 100 ... 199) */
@@ -1856,7 +1878,9 @@ const SFX=(()=>{
     burst:()=>noise(.14,{v:.13,f:900*r(.2),fslide:.5})
   };
   const GAP={spark:.07,cinder:.09,frost:.12,lance:.1,venom:.12,bolt:.1,comet:.15,moonwell:.6,bell:.2,eclipse:.2,boom:.12,burst:.08,pop:.05,tap:.03,leak:.15,coin:.06};
-  function play(k,arg){if(!vol())return;if(!init())return;if(ac.state==='suspended')ac.resume();
+  /* lantern shooting and impact sounds are off. Foe deaths, menus, buying, placing, upgrades, ascending, selling and waves keep their sounds. */
+  const QUIET=new Set(['spark','cinder','frost','lance','venom','bolt','comet','moonwell','bell','eclipse','boom','burst']);
+  function play(k,arg){if(QUIET.has(k)||!vol())return;if(!init())return;if(ac.state==='suspended')ac.resume();
     const now=ac.currentTime,g=(GAP[k]||0)*(typeof speed!=='undefined'&&speed>1?1.6:1);if(last[k]&&now-last[k]<g)return;last[k]=now;try{S[k]&&S[k](arg)}catch(e){}}
   document.addEventListener('visibilitychange',()=>{if(!ac)return;document.hidden?ac.suspend():ac.resume()});
   return{play,ctx:()=>init(),unlock:()=>{if(init()&&ac.state==='suspended')ac.resume()}};
@@ -2631,30 +2655,51 @@ function applyTheme(d){
   const r=document.documentElement.style;r.setProperty('--night',TH.bg);r.setProperty('--flame',TH.acc);
 }
 /* random trail: a winding walk that may enter from the top or either side and can double back upward.
-   Path tiles never touch except in sequence, so the trail always reads clearly. */
+   Path tiles never touch except in sequence, so the trail always reads clearly. Since 1.2 the trail can also cross itself:
+   at an intersection it runs straight through a tile an earlier stretch already passes across at a right angle. */
 function genPath(){
   const D4=[[1,0],[-1,0],[0,1],[0,-1]];
-  for(let tries=0;tries<400;tries++){
+  for(let tries=0;tries<600;tries++){
     const side=Math.random();let sx,sy,entry,dir;
     if(side<.55){sx=1+Math.floor(Math.random()*(W-2));sy=0;entry=[sx+.5,-.8];dir=[0,1]}
     else if(side<.775){sx=0;sy=1+Math.floor(Math.random()*4);entry=[-.8,sy+.5];dir=[1,0]}
     else{sx=W-1;sy=1+Math.floor(Math.random()*4);entry=[W+.8,sy+.5];dir=[-1,0]}
-    const vis=new Set([sx+','+sy]),cells=[[sx,sy]];
-    const ok=(x,y,px,py)=>x>=0&&y>=0&&x<W&&y<H&&!vis.has(x+','+y)&&D4.every(([dx,dy])=>{const nx=x+dx,ny=y+dy;return(nx===px&&ny===py)||!vis.has(nx+','+ny)});
+    const vis=new Set([sx+','+sy]),cells=[[sx,sy]],idx=new Map([[sx+','+sy,0]]),crossed=new Set();
+    const inb=(x,y)=>x>=0&&y>=0&&x<W&&y<H;
+    /* can a walker standing at (x,y) and heading d run straight across the tile ahead? */
+    const canCross=(x,y,d)=>{
+      const cx=x+d[0],cy=y+d[1],ex=cx+d[0],ey=cy+d[1],k=cx+','+cy,i=idx.get(k);
+      if(i==null||crossed.has(k)||i<1||i>cells.length-4||!inb(ex,ey)||vis.has(ex+','+ey))return false;
+      const p=cells[i-1],n=cells[i+1];
+      if(d[0]!==0){if(p[0]!==cx||n[0]!==cx)return false}else{if(p[1]!==cy||n[1]!==cy)return false}
+      return D4.every(([dx,dy])=>{const nx=ex+dx,ny=ey+dy;return(nx===cx&&ny===cy)||!vis.has(nx+','+ny)});
+    };
+    const ok=(x,y,px,py)=>{
+      if(!inb(x,y)||vis.has(x+','+y))return false;
+      const d=[x-px,y-py];
+      return D4.every(([dx,dy])=>{const nx=x+dx,ny=y+dy;if(nx===px&&ny===py)return true;if(!vis.has(nx+','+ny))return true;return dx===d[0]&&dy===d[1]&&canCross(x,y,d)});
+    };
     let x=sx,y=sy,stuck=false,guard=0;
-    while(y<H-1&&guard++<120){
+    while(y<H-1&&guard++<160){
+      /* standing right next to a tile we can run across? then we must run across it */
+      if(cells.length>1&&vis.has((x+dir[0])+','+(y+dir[1]))){
+        if(!canCross(x,y,dir)){stuck=true;break}
+        const cx=x+dir[0],cy=y+dir[1],ex=cx+dir[0],ey=cy+dir[1];
+        crossed.add(cx+','+cy);cells.push([cx,cy]);vis.add(ex+','+ey);idx.set(ex+','+ey,cells.length);cells.push([ex,ey]);x=ex;y=ey;continue;
+      }
       const opts=D4.filter(d=>!(d[0]===-dir[0]&&d[1]===-dir[1])&&ok(x+d[0],y+d[1],x,y));
       if(!opts.length){stuck=true;break}
-      const wt=d=>d[1]===1?2.2:d[1]===-1?(y>3?.9:.2):1.8;
+      const wt=d=>d[1]===1?2.2:d[1]===-1?(y>3?1.1:.2):1.8;
       let tot=opts.reduce((a,d)=>a+wt(d),0),r=Math.random()*tot,d=opts[0];for(const o of opts){r-=wt(o);if(r<=0){d=o;break}}
       const run=1+Math.floor(Math.random()*(d[1]===0?4:3));
-      for(let k=0;k<run;k++){const nx=x+d[0],ny=y+d[1];if(!ok(nx,ny,x,y))break;vis.add(nx+','+ny);cells.push([nx,ny]);x=nx;y=ny;if(y===H-1)break}
+      for(let k=0;k<run;k++){const nx=x+d[0],ny=y+d[1];if(!ok(nx,ny,x,y))break;vis.add(nx+','+ny);idx.set(nx+','+ny,cells.length);cells.push([nx,ny]);x=nx;y=ny;if(y===H-1)break}
       dir=d;
     }
-    if(stuck||y<H-1||cells.length<26||cells.length>72)continue;
+    if(stuck||y<H-1||cells.length<26||cells.length>76)continue;
+    if(crossed.size<1&&tries<420)continue;   /* nearly every trail gets at least one intersection */
     const pts=[entry,...cells.map(([a,b])=>[a+.5,b+.5]),[x+.5,H+.8]];
     const cum=[0];for(let i=1;i<pts.length;i++)cum.push(cum[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));
-    return{cells,pts,cum,total:cum[cum.length-1],set:new Set(cells.map(([a,b])=>a+','+b))};
+    return{cells,pts,cum,total:cum[cum.length-1],set:new Set(cells.map(([a,b])=>a+','+b)),cross:crossed.size};
   }
   return genPathSnake();
 }
@@ -2689,7 +2734,7 @@ const ASC={ /* each lantern's first ascension type (unlocked at Mastery 30) */
   frost:'Shatter: slowed foes take 30% more damage from every lantern.',
   lance:'Skewer: spears pierce every foe in their path.',
   venom:'Plague: poisoned foes pass their poison on when they die.',
-  mint:'Treasury: earns double gold after each wave.',
+  mint:'Evergreen: grows twice as fast and can grow 10 stages higher.',
   bolt:'Storm: chains to 3 more foes and stuns each one briefly.',
   beacon:'Lighthouse: boosts every lantern within 2 tiles.',
   comet:'Impact: bursts are 60% wider and stun what they hit.',
@@ -2707,66 +2752,72 @@ const FX_MAX=new Set(['critX','chainKeep','keepHeat','markT','zoneT','chillT','g
 const TIER_K=[1.3,1.95,3,4.7,7.4],ASC_K=6,CORE_DMG=1.17,CORE_RANGE=.05,ASC_MAST=[30,50,70];
 /* balance: damage and fire-rate boosts from tiers are softened (x^0.75) so they don't stack out of control, and extra targets from multi-shot upgrades take half damage */
 const TIER_SOFT=.75,MULTI_F=.5;
-const tierLockAt=(path,tier)=>tier>=5?30:tier===4?20:path===0?1:10;
-const MAST_UNLOCKS=[[10,'Path 2'],[20,'Tier 4'],[30,'Tier 5 and ascension'],[50,'2nd ascension type'],[70,'3rd ascension type'],[100,'Radiant look']];
+const tierLockAt=(path,tier)=>path===2?40:tier>=5?30:tier===4?20:path===0?1:10;   /* 1.2: a third path, unlocked at Mastery 40 */
+const padP=p=>{p=(p||[]).slice(0,3);while(p.length<3)p.push(0);return p};
+const pathBlocked=(t,i)=>((t.p||[])[i]||0)===0&&(t.p||[]).filter(v=>v>0).length>=2;   /* a lantern can only use two of its three paths */
+const maxedPaths=t=>(t.p||[]).filter(v=>v>=5).length;   /* ascending needs any two paths maxed */
+const ascTaken=(ty,k,self)=>G.towers.some(o=>o!==self&&o.type===ty&&o.ak===k);   /* each ascension type can be on the board once at a time */
+const MAST_UNLOCKS=[[10,'Path 2'],[20,'Tier 4'],[30,'Tier 5 and ascension'],[40,'Path 3'],[50,'2nd ascension type'],[70,'3rd ascension type'],[100,'Radiant look']];
 const PT=(name,...tiers)=>({name,tiers});
 const UPG={
   spark:{p:[PT('Sharpshooter',['Honed tips','+20% damage.',{dmg:1.2}],['Keen aim','8% chance to crit for 3× damage.',{crit:.08}],['Armor piercer','Ignores 3 armor.',{ap:3}],['Deadeye','+0.5 range and +8% crit chance.',{range:.5,crit:.08}],['Marksman','+35% damage. Crits hit for 3.5×.',{dmg:1.35,critX:3.5}]),
-           PT('Rapid fire',['Quick hands','+15% fire rate.',{rate:1.15}],['Light darts','+15% fire rate.',{rate:1.15}],['Twin darts','Fires at 2 foes at once.',{multi:1}],['Hair trigger','+20% fire rate.',{rate:1.2}],['Spark swarm','Fires at 3 foes at once. +15% fire rate.',{multi:1,rate:1.15}])],
+           PT('Rapid fire',['Quick hands','+15% fire rate.',{rate:1.15}],['Light darts','+15% fire rate.',{rate:1.15}],['Twin darts','Fires at 2 foes at once.',{multi:1}],['Hair trigger','+20% fire rate.',{rate:1.2}],['Spark swarm','Fires at 3 foes at once. +15% fire rate.',{multi:1,rate:1.15}]),PT('Skirmisher',['Quick study','+10% damage. +0.3 range.',{dmg:1.1,range:.3}],['Tracer rounds','Darts mark foes: +10% damage from every lantern for 1.5 seconds.',{mark:.1,markT:1.5}],['Boss hunter','+30% damage to bosses.',{bossX:1.3}],['Wind-up','Fires up to 25% faster the longer it keeps attacking.',{frenzy:.25}],['Hunter’s mark','Marks hit harder (+10% more) and last longer.',{mark:.1,markT:2.5}])],
          asc:[null,['Static field','Darts mark foes: they take 20% more damage from every lantern for 2 seconds.',{mark:.2,markT:2}],['Starburst','Every dart bursts, hitting foes within 0.7 tiles for 60% damage.',{splashR:.7,splashF:.6}]]},
   cinder:{p:[PT('Inferno',['Hotter coals','+20% damage.',{dmg:1.2}],['Embers','Bursts burn foes for 2 seconds.',{burn:.25}],['Napalm','Burns deal 80% more.',{burn:.2}],['Firestorm','Bursts are 25% wider.',{splash:1.25}],['Hellfire','+50% damage and stronger burns.',{dmg:1.5,burn:.2}]),
-            PT('Bombardier',['Bigger shells','Bursts are 15% wider.',{splash:1.15}],['Quick fuse','+15% fire rate.',{rate:1.15}],['Concussion','Bursts stun regular foes for 0.2 seconds.',{stunHit:.2}],['Long fuse','+0.6 range.',{range:.6}],['Carpet bomb','Fires at 2 foes at once.',{multi:1}])],
+            PT('Bombardier',['Bigger shells','Bursts are 15% wider.',{splash:1.15}],['Quick fuse','+15% fire rate.',{rate:1.15}],['Concussion','Bursts stun regular foes for 0.2 seconds.',{stunHit:.2}],['Long fuse','+0.6 range.',{range:.6}],['Carpet bomb','Fires at 2 foes at once.',{multi:1}]),PT('Pyromancer',['Spark of ruin','Bursts burn foes for 2 seconds.',{burn:.2}],['Slag','Bursts leave fire on the trail for 2 seconds.',{zoneR:.6,zoneDps:.3,zoneT:2}],['Boss burner','+30% damage to bosses.',{bossX:1.3}],['Pressure','Bursts are 15% wider. +10% damage.',{splash:1.15,dmg:1.1}],['Cataclysm blaze','Burns deal more and fire lasts longer.',{burn:.3,zoneT:3}])],
           asc:[null,['Scorched earth','Bursts leave fire on the trail for 3 seconds.',{zoneR:.7,zoneDps:.5,zoneT:3}],['Meltdown','Bursts mark foes: they take 25% more damage from every lantern.',{mark:.25,markT:2.5}]]},
   frost:{p:[PT('Deep freeze',['Colder','Slows 8% more.',{slow:.08}],['Lingering chill','Slows last 40% longer.',{slowT:1.4}],['Brittle','Chilled foes take 15% more damage.',{mark:.15,markT:1.5}],['Permafrost','Slows 10% more.',{slow:.1}],['Absolute zero','Freezes regular foes solid for 0.4 seconds.',{stunHit:.4}]),
-           PT('Blizzard',['Wide reach','+0.4 range.',{range:.4}],['Ice shards','+60% damage.',{dmg:1.6}],['Frost nova','Shots splash 0.8 tiles, chilling everything nearby.',{splashR:.8,splashF:.5}],['Quick freeze','+25% fire rate.',{rate:1.25}],['Hailstorm','Fires at 3 foes at once.',{multi:2}])],
+           PT('Blizzard',['Wide reach','+0.4 range.',{range:.4}],['Ice shards','+60% damage.',{dmg:1.6}],['Frost nova','Shots splash 0.8 tiles, chilling everything nearby.',{splashR:.8,splashF:.5}],['Quick freeze','+25% fire rate.',{rate:1.25}],['Hailstorm','Fires at 3 foes at once.',{multi:2}]),PT('Rime',['Hoarfrost','Slows 6% more.',{slow:.06}],['Sheet ice','Shots leave an icy patch that slows foes 30% for 2 seconds.',{zoneR:.6,zoneSlow:.3,zoneT:2}],['Cold snap','Chilled foes take 10% more damage.',{mark:.1,markT:1.5}],['Whiteout','+0.4 range.',{range:.4}],['Deep winter','Slows 8% more and lasts 30% longer.',{slow:.08,slowT:1.3}])],
          asc:[null,['Glacier','Every shot leaves an icy patch that slows foes 50% for 3 seconds.',{zoneR:.7,zoneSlow:.5,zoneT:3}],['Winter’s heart','Lanterns within 1 tile fire 20% faster.',{auraRate:.2,auraR:1}]]},
   lance:{p:[PT('Impaler',['Barbed tips','+20% damage.',{dmg:1.2}],['Long spear','Pierces 2 more foes.',{pierce:2}],['Armor breaker','Ignores 4 armor.',{ap:4}],['Heavy shaft','+35% damage.',{dmg:1.35}],['Executioner','Instantly finishes regular foes below 10% health.',{exec:.1}]),
-           PT('Volley',['Quick throw','+15% fire rate.',{rate:1.15}],['Reach','+0.5 range.',{range:.5}],['Twin spears','Throws at 2 foes at once.',{multi:1}],['Rapid volley','+20% fire rate.',{rate:1.2}],['Spear rain','Throws at 3 foes at once.',{multi:1}])],
+           PT('Volley',['Quick throw','+15% fire rate.',{rate:1.15}],['Reach','+0.5 range.',{range:.5}],['Twin spears','Throws at 2 foes at once.',{multi:1}],['Rapid volley','+20% fire rate.',{rate:1.2}],['Spear rain','Throws at 3 foes at once.',{multi:1}]),PT('Duelist',['Fine edge','+10% damage. Ignores 2 armor.',{dmg:1.1,ap:2}],['Boss slayer','+30% damage to bosses.',{bossX:1.3}],['Marked for death','Spears mark foes: +10% damage from every lantern.',{mark:.1,markT:1.5}],['Lunge','Pierces 2 more foes.',{pierce:2}],['Coup de grâce','Instantly finishes regular foes below 8% health.',{exec:.08}])],
          asc:[null,['Bloodline','Spears mark foes: they take 20% more damage from every lantern.',{mark:.2,markT:2}],['War drums','Fires up to 60% faster the longer it keeps attacking.',{frenzy:.6}]]},
   venom:{p:[PT('Toxin',['Stronger poison','+30% poison.',{poison:1.3}],['Lingering toxin','Poison lasts 50% longer.',{poisT:1.5}],['Corrosion','Poisoned foes take 15% more damage.',{mark:.15,markT:3}],['Lethal dose','+50% poison.',{poison:1.5}],['Neurotoxin','Poison also slows foes 30%.',{chill:.3,chillT:3}]),
-           PT('Spitter',['Quick spit','+15% fire rate.',{rate:1.15}],['Glob','Shots splash 0.6 tiles.',{splashR:.6,splashF:.6}],['Acid pool','Shots leave a pool that hurts foes for 2 seconds.',{zoneR:.6,zoneDps:.6,zoneT:2}],['Long range','+0.5 range.',{range:.5}],['Twin glands','Spits at 2 foes at once.',{multi:1}])],
+           PT('Spitter',['Quick spit','+15% fire rate.',{rate:1.15}],['Glob','Shots splash 0.6 tiles.',{splashR:.6,splashF:.6}],['Acid pool','Shots leave a pool that hurts foes for 2 seconds.',{zoneR:.6,zoneDps:.6,zoneT:2}],['Long range','+0.5 range.',{range:.5}],['Twin glands','Spits at 2 foes at once.',{multi:1}]),PT('Alchemist',['Bitter dose','+20% poison.',{poison:1.2}],['Slow-acting','Poison lasts 40% longer.',{poisT:1.4}],['Boss bane','+30% damage to bosses, poison included.',{bossX:1.3}],['Toxic cloud','Shots leave a toxic cloud for 2 seconds.',{zoneR:.7,zoneDps:.4,zoneT:2}],['Septic','+40% poison. Poisoned foes take 10% more damage.',{poison:1.4,mark:.1,markT:3}])],
          asc:[null,['Blight','Deals double damage to bosses, poison included.',{bossX:2}],['Miasma','Every shot leaves a wide toxic cloud for 3 seconds.',{zoneR:1,zoneDps:.8,zoneT:3}]]},
-  mint:{p:[PT('Coinage',['Fresh press','+25% gold.',{income:1.25}],['Silver dies','+25% gold.',{income:1.25}],['Lucky coin','Foes defeated within 1 tile give 15% more gold.',{goldAura:.15,goldAuraR:1}],['Gold dies','+40% gold.',{income:1.4}],['Royal mint','+50% gold.',{income:1.5}]),
-          PT('Bank',['Savings','After each wave, earn 2% interest on your gold (up to 10).',{interest:.02,interestCap:10}],['Deposits','+1% interest, up to 10 more.',{interest:.01,interestCap:10}],['Bounty board','Each boss defeated pays 15 extra gold.',{bounty:15}],['Compound','+1% interest, up to 15 more.',{interest:.01,interestCap:15}],['Vault','+50% gold. Interest up to 15 more.',{income:1.5,interestCap:15}])],
-        asc:[null,['Midas','Foes defeated within 2 tiles give 30% more gold.',{goldAura:.3,goldAuraR:2}],['Jackpot','After each wave, a 20% chance to pay out triple.',{jackpot:.2}]]},
+  mint:{p:[PT('Roots',['Rich soil','Grows 25% faster.',{sGrow:.25}],['Deep roots','Can grow 5 stages higher.',{sCap:5}],['Spring rain','Grows 25% faster.',{sGrow:.25}],['Old growth','Can grow 5 stages higher.',{sCap:5}],['Ancient grove','Grows 50% faster and 5 stages higher.',{sGrow:.5,sCap:5}]),
+          PT('Bloom',['Petals','Each stage gives +0.25% more damage.',{sDmg:.0025}],['Pollen','Each stage gives +0.2% more fire rate.',{sRate:.002}],['Sweet nectar','Each stage gives +0.25% more damage.',{sDmg:.0025}],['Full bloom','Each stage gives +0.25% damage and +0.2% fire rate.',{sDmg:.0025,sRate:.002}],['Golden bloom','Each stage gives +0.5% damage and +0.25% fire rate.',{sDmg:.005,sRate:.0025}]),
+          PT('Canopy',['Head start','Starts with 3 stages already grown.',{sHead:3}],['Shade','Each stage gives nearby lanterns +0.01 range.',{sRange:.01}],['Spreading branches','Reaches lanterns 1 tile farther.',{sR:1}],['Windfall','Starts with 5 more stages already grown.',{sHead:5}],['Great tree','Starts with 5 more stages. +0.01 range per stage.',{sHead:5,sRange:.01}])],
+        asc:[null,['Wild seed','Each stage gives nearby lanterns +0.5% crit chance.',{sCrit:.005}],['World tree','Reaches 1 tile farther, grows 10 stages higher, and +0.25% damage per stage.',{sR:1,sCap:10,sDmg:.0025}]]},
   bolt:{p:[PT('Overload',['Higher voltage','+20% damage.',{dmg:1.2}],['Longer arcs','Chains to 1 more foe.',{chain:1}],['Superconductor','Chain hits lose almost no damage.',{chainKeep:.95}],['Arc reach','Chains to 1 more foe. +0.3 range.',{chain:1,range:.3}],['Thunder','+50% damage.',{dmg:1.5}]),
-          PT('Tesla',['Capacitor','+15% fire rate.',{rate:1.15}],['Static shock','Stuns regular foes for 0.15 seconds.',{stunHit:.15}],['Supercharge','+20% fire rate.',{rate:1.2}],['Forked bolt','Strikes 2 foes at once.',{multi:1}],['Tempest','Stuns for 0.3 seconds. +15% fire rate.',{stunHit:.15,rate:1.15}])],
+          PT('Tesla',['Capacitor','+15% fire rate.',{rate:1.15}],['Static shock','Stuns regular foes for 0.15 seconds.',{stunHit:.15}],['Supercharge','+20% fire rate.',{rate:1.2}],['Forked bolt','Strikes 2 foes at once.',{multi:1}],['Tempest','Stuns for 0.3 seconds. +15% fire rate.',{stunHit:.15,rate:1.15}]),PT('Conductor',['Grounding','+0.3 range.',{range:.3}],['Live wire','Chain hits lose less damage.',{chainKeep:.9}],['Overcurrent','Chains to 1 more foe.',{chain:1}],['Thunderclap','Stuns regular foes for 0.15 seconds.',{stunHit:.15}],['Superstorm','Chains to 1 more foe. +15% damage.',{chain:1,dmg:1.15}])],
         asc:[null,['Ball lightning','Strikes mark foes: they take 20% more damage from every lantern.',{mark:.2,markT:2}],['Thunderhead','Deals double damage to bosses.',{bossX:2}]]},
   beacon:{p:[PT('Brilliance',['Polished lens','Boost +5% damage.',{aura:.05}],['Brighter flame','Boost +5% damage.',{aura:.05}],['Far light','Reaches lanterns 2 tiles away.',{auraR:1}],['Radiance','Boost +8% damage.',{aura:.08}],['Blaze','Boost +12% damage.',{aura:.12}]),
-            PT('Signal',['Quickening','Boosted lanterns fire 5% faster.',{auraRate:.05}],['Drumbeat','Boosted lanterns fire 5% faster.',{auraRate:.05}],['Focus lens','Boosted lanterns get +0.3 range.',{auraRange:.3}],['Rally','Boosted lanterns fire 8% faster.',{auraRate:.08}],['Eagle eye','Boosted lanterns crit 10% of the time for 3×.',{auraCrit:.1}])],
+            PT('Signal',['Quickening','Boosted lanterns fire 5% faster.',{auraRate:.05}],['Drumbeat','Boosted lanterns fire 5% faster.',{auraRate:.05}],['Focus lens','Boosted lanterns get +0.3 range.',{auraRange:.3}],['Rally','Boosted lanterns fire 8% faster.',{auraRate:.08}],['Eagle eye','Boosted lanterns crit 10% of the time for 3×.',{auraCrit:.1}]),PT('Prism',['Facets','Boosted lanterns get +0.2 range.',{auraRange:.2}],['Glow','Boost +4% damage.',{aura:.04}],['Wider glow','Reaches lanterns 1 tile farther.',{auraR:1}],['Prismatic','Boosted lanterns crit 6% of the time for 3×.',{auraCrit:.06}],['Brightest hour','Boosted lanterns mark what they hit: +10% damage taken.',{auraMark:.1}])],
           asc:[null,['Sun shrine','Boost +25% more damage.',{aura:.25}],['Starlight','Boosted lanterns mark what they hit: +15% damage taken.',{auraMark:.15}]]},
   comet:{p:[PT('Cataclysm',['Denser core','+20% damage.',{dmg:1.2}],['Shockwave','Bursts are 20% wider.',{splash:1.2}],['Crater','Impacts leave burning ground for 3 seconds.',{zoneR:.7,zoneDps:.15,zoneT:3}],['Heavy core','+40% damage.',{dmg:1.4}],['Extinction','Impacts stun regular foes for 0.5 seconds.',{stunHit:.5}]),
-           PT('Meteor shower',['Orbit','+15% fire rate.',{rate:1.15}],['Far sight','+0.6 range.',{range:.6}],['Split comet','Drops on 2 foes at once.',{multi:1}],['Swift orbit','+20% fire rate.',{rate:1.2}],['Shower','Drops on 3 foes at once.',{multi:1}])],
+           PT('Meteor shower',['Orbit','+15% fire rate.',{rate:1.15}],['Far sight','+0.6 range.',{range:.6}],['Split comet','Drops on 2 foes at once.',{multi:1}],['Swift orbit','+20% fire rate.',{rate:1.2}],['Shower','Drops on 3 foes at once.',{multi:1}]),PT('Astronomer',['Star charts','+0.4 range.',{range:.4}],['Dust trail','Impacts leave burning ground for 2 seconds.',{zoneR:.6,zoneDps:.1,zoneT:2}],['Boss crusher','+30% damage to bosses.',{bossX:1.3}],['Gravity well','Impacts slow foes 40% for 1.5 seconds.',{zoneR:.8,zoneSlow:.4,zoneT:1.5}],['Doomsday','Instantly finishes regular foes below 8% health.',{exec:.08}])],
          asc:[null,['Black hole','Impacts leave a rift that slows foes 60% for 2 seconds.',{zoneR:1,zoneSlow:.6,zoneT:2}],['Supernova','Instantly finishes regular foes below 15% health.',{exec:.15}]]},
   moonwell:{p:[PT('Lunar',['Silver light','+20% damage.',{dmg:1.2}],['Quick heat','Heats up 40% faster.',{heatX:1.4}],['Moonburn','The beam burns its target.',{burn:.3}],['Hotter core','Heat climbs one step higher.',{heatMax:1}],['Blue moon','+50% damage.',{dmg:1.5}]),
-              PT('Tides',['Wide well','+0.4 range.',{range:.4}],['Undertow','The beam slows its target 20%.',{chill:.2,chillT:.5}],['Twin beam','Beams 2 foes at once.',{multi:1}],['High tide','+0.4 range.',{range:.4}],['Spring tide','Keeps its heat when it switches targets.',{keepHeat:1}])],
+              PT('Tides',['Wide well','+0.4 range.',{range:.4}],['Undertow','The beam slows its target 20%.',{chill:.2,chillT:.5}],['Twin beam','Beams 2 foes at once.',{multi:1}],['High tide','+0.4 range.',{range:.4}],['Spring tide','Keeps its heat when it switches targets.',{keepHeat:1}]),PT('Phase',['Waxing','Heats up 25% faster.',{heatX:1.25}],['Silver tide','+0.4 range.',{range:.4}],['Moon halo','The beam marks its target: +10% damage from every lantern.',{mark:.1,markT:1}],['Eclipse light','+30% damage.',{dmg:1.3}],['Full phase','+40% damage to bosses. Heat climbs one step higher.',{bossX:1.4,heatMax:1}])],
             asc:[null,['Moonmark','The beam marks its target: +25% damage from every lantern.',{mark:.25,markT:1}],['Crescent','Deals double damage to bosses.',{bossX:2}]]},
   bell:{p:[PT('Toll',['Heavier clapper','+20% damage.',{dmg:1.2}],['Resonance','+0.3 range.',{range:.3}],['Deafening','Tolled foes take 15% more damage.',{mark:.15,markT:2}],['Bronze bell','+40% damage.',{dmg:1.4}],['Cathedral','+0.4 range.',{range:.4}]),
-          PT('Chime',['Long ring','Freezes last 25% longer.',{stun:1.25}],['Quick toll','+20% fire rate.',{rate:1.2}],['Echo','+25% fire rate.',{rate:1.25}],['Deep ring','Freezes last 30% longer.',{stun:1.3}],['Requiem','Tolled foes stay slowed 30% after they thaw.',{chill:.3,chillT:2}])],
+          PT('Chime',['Long ring','Freezes last 25% longer.',{stun:1.25}],['Quick toll','+20% fire rate.',{rate:1.2}],['Echo','+25% fire rate.',{rate:1.25}],['Deep ring','Freezes last 30% longer.',{stun:1.3}],['Requiem','Tolled foes stay slowed 30% after they thaw.',{chill:.3,chillT:2}]),PT('Carillon',['Small bells','+15% fire rate.',{rate:1.15}],['Wide peal','+0.3 range.',{range:.3}],['Funeral toll','Instantly finishes regular foes below 8% health.',{exec:.08}],['Ring true','Freezes last 20% longer.',{stun:1.2}],['Great bell','Tolled foes take 15% more damage.',{mark:.15,markT:2}])],
         asc:[null,['Sanctuary','Lanterns within 1 tile fire 20% faster.',{auraRate:.2,auraR:1}],['Death knell','Instantly finishes regular foes below 12% health.',{exec:.12}]]},
   eclipse:{p:[PT('Shadow',['Dark edge','+20% damage.',{dmg:1.2}],['Gravity','+1% of max health per hit.',{pct:.01}],['Void piercer','Ignores 6 armor.',{ap:6}],['Umbra','+35% damage.',{dmg:1.35}],['Black sun','+2% of max health per hit.',{pct:.02}]),
-             PT('Corona',['Solar wind','+15% fire rate.',{rate:1.15}],['Long shadow','+0.5 range.',{range:.5}],['Solar flare','Strikes splash 0.8 tiles for 40% damage.',{splashR:.8,splashF:.4}],['Quick dusk','+20% fire rate.',{rate:1.2}],['Twin suns','Strikes 2 foes at once.',{multi:1}])],
+             PT('Corona',['Solar wind','+15% fire rate.',{rate:1.15}],['Long shadow','+0.5 range.',{range:.5}],['Solar flare','Strikes splash 0.8 tiles for 40% damage.',{splashR:.8,splashF:.4}],['Quick dusk','+20% fire rate.',{rate:1.2}],['Twin suns','Strikes 2 foes at once.',{multi:1}]),PT('Penumbra',['Dim light','+0.4 range.',{range:.4}],['Dusk','+15% fire rate.',{rate:1.15}],['Umbral edge','Ignores 4 armor.',{ap:4}],['Dark marks','Strikes mark foes: +10% damage from every lantern for 2 seconds.',{mark:.1,markT:2}],['Corona burst','Strikes splash 0.8 tiles for 40% damage.',{splashR:.8,splashF:.4}])],
            asc:[null,['Event horizon','Strikes mark foes: +25% damage from every lantern for 3 seconds.',{mark:.25,markT:3}],['Sunfall','Deals 60% more damage to bosses.',{bossX:1.6}]]}
 };
 function ascInfo(type,k){if(k===0){const s=ASC[type],i=s.indexOf(': '),d=s.slice(i+2);return[s.slice(0,i),d[0].toUpperCase()+d.slice(1)]}const a=UPG[type].asc[k];return[a[0],a[1]]}
 const isAsc=t=>t.ak!=null;
 const asc1=t=>t.ak===0;
 function tFx(t){
-  const p=t.p||[0,0],key=p[0]+','+p[1]+'|'+(t.ak==null?'-':t.ak);
+  const p=padP(t.p),key=p[0]+','+p[1]+','+p[2]+'|'+(t.ak==null?'-':t.ak);
   if(t._fk===key)return t._fx;
   const f={dmg:1,rate:1,splash:1,slowT:1,poison:1,poisT:1,stun:1,income:1,bossX:1,goldX:1,heatX:1,critX:3,chainKeep:.8,markT:0,zoneT:0,chillT:0,goldAuraR:0,keepHeat:0};
   const add=(fx,soft)=>{for(const k in fx){if(FX_MUL.has(k))f[k]*=soft&&(k==='dmg'||k==='rate')?Math.pow(fx[k],TIER_SOFT):fx[k];else if(FX_MAX.has(k))f[k]=Math.max(f[k]||0,fx[k]);else f[k]=(f[k]||0)+fx[k]}};
   const u=UPG[t.type];
-  for(let i=0;i<2;i++)for(let j=0;j<Math.min(5,p[i]);j++)add(u.p[i].tiers[j][2],true);
+  for(let i=0;i<3;i++)for(let j=0;j<Math.min(5,p[i]);j++)add(u.p[i].tiers[j][2],true);
   if(t.ak>0)add(u.asc[t.ak][2]);
-  f.n=p[0]+p[1];t._fk=key;t._fx=f;return f;
+  f.n=p[0]+p[1]+p[2];t._fk=key;t._fx=f;return f;
 }
 function pathState(t,i){
-  const tier=(t.p||[0,0])[i];if(tier>=5)return{tier,max:true};
+  const tier=(t.p||[0,0,0])[i]||0;if(tier>=5)return{tier,max:true};
+  if(pathBlocked(t,i))return{tier,blocked:true,next:1,info:UPG[t.type].p[i].tiers[0]};
   const next=tier+1,need=tierLockAt(i,next);
   return{tier,next,cost:upTierCost(t.type,next),lock:G.mast[t.type]<need?need:0,info:UPG[t.type].p[i].tiers[next-1]};
 }
-function freeUpgrade(t){const p=t.p||(t.p=[0,0]);let best=-1;for(let i=0;i<2;i++){if(p[i]>=5||G.mast[t.type]<tierLockAt(i,p[i]+1))continue;if(best<0||p[i]<p[best])best=i}if(best>=0){p[best]++;t._fk=null}}
+function freeUpgrade(t){const p=t.p=padP(t.p);let best=-1;for(let i=0;i<3;i++){if(p[i]>=5||pathBlocked(t,i)||G.mast[t.type]<tierLockAt(i,p[i]+1))continue;if(best<0||p[i]<p[best])best=i}if(best>=0){p[best]++;t._fk=null}}
 
 /* re-ascension: merge another ascended lantern of the same type into this one. Tiers 1 (Ascended) to 3 (Ascended III). */
 const ASC_MAX=3,ASC_NAME=['','Ascended','Ascended II','Ascended III'],ASC_COL=['','#ffd75e','#dff1ff','#ff9af0'];
@@ -2799,9 +2850,14 @@ function prestigeMastery(t){
 const mastBadge=L=>L>=100?'Radiant':L>=75?'Gold':L>=50?'Silver':L>=25?'Bronze':'';
 
 /* auras: Beacons (and a few ascensions) boost lanterns around them */
+function sap(t){
+  const f=tFx(t),A=asc1(t),cap=20+(f.sCap||0)+(A?10:0),mu=mpMul('mint'),stage=Math.min(cap,(t.gs||0)+(f.sHead||0));
+  return{stage,cap,grow:(1+(f.sGrow||0))*(A?2:1)*(G.m.sgrow||1)*(1+.08*ml('lo_mint')),dmg:(.04+stage*(.012+(f.sDmg||0)))*mu,rate:stage*(.006+(f.sRate||0))*mu,range:stage*(f.sRange||0),crit:stage*(f.sCrit||0),R:1+(f.sR||0)};
+}
 function auraOf(b){
   const f=tFx(b);
   if(b.type==='beacon')return{R:1+(f.auraR||0)+(asc1(b)?1:0)+(G.m.auraR||0),dmg:(.15+(f.aura||0)+G.m.aura+ascBoost(b).aura+.01*ml('lo_beacon'))*mpMul('beacon'),rate:.08+(f.auraRate||0),range:f.auraRange||0,crit:f.auraCrit||0,mark:f.auraMark||0};
+  if(b.type==='mint'){const o=sap(b);return{R:o.R,dmg:o.dmg,rate:o.rate,range:o.range,crit:o.crit,mark:0}}
   if(f.auraRate)return{R:f.auraR||1,dmg:0,rate:f.auraRate,range:0,crit:0,mark:0};
   return null;
 }
@@ -2814,9 +2870,9 @@ function auraAt(t){
 function tStats(t){
   const d=TOWERS[t.type],m=G.m,f=tFx(t),A=asc1(t),mb=mastBonus((G.mastL&&G.mastL[t.type])||(G.mast&&G.mast[t.type])||1),ab=ascBoost(t),core=Math.pow(CORE_DMG,f.n),mp=mpMul(t.type);
   if(t.type==='beacon'){const o=auraOf(t);return{aura:Math.round(o.dmg*100),arate:Math.round(o.rate*100),radius:o.R,arange:o.range,acrit:o.crit,amark:o.mark}}
-  if(t.type==='mint')return{income:Math.round(8*f.income*m.income*(A?2:1)*(1+mb.dmg)*ab.dmg*(1+.08*ml('lo_mint'))*mp),interest:f.interest||0,interestCap:f.interestCap||0,bounty:f.bounty||0,goldAura:f.goldAura||0,goldAuraR:f.goldAuraR||1,jackpot:f.jackpot||0};
+  if(t.type==='mint'){const o=sap(t);return{stage:Math.floor(o.stage),cap:o.cap,dmg:Math.round(o.dmg*100),rate:Math.round(o.rate*100),range:+o.range.toFixed(2),crit:Math.round(o.crit*1000)/10,radius:o.R,grow:+o.grow.toFixed(2)}}
   const a=auraAt(t);
-  const perm=mp*(1+.05*ml('lo_'+t.type))*(G.lives<=5?1+.08*ml('lastlight'):1)*(t.p&&(t.p[0]>=5||t.p[1]>=5)?1+.05*ml('tempered'):1);
+  const perm=mp*(1+.05*ml('lo_'+t.type))*(G.lives<=5?1+.08*ml('lastlight'):1)*(t.p&&maxedPaths(t)>0?1+.05*ml('tempered'):1);
   const td=(m.tdmg&&m.tdmg[t.type])||1,phal=m.phal?Math.min(.2,.04*(G.towers.filter(x=>x.type===t.type).length-1)):0;
   let dmg=d.dmg*f.dmg*core*(1+.04*ml('whet'))*m.dmg*a.dmg*(1+mb.dmg)*ab.dmg*perm*td*(1+phal)*(isAsc(t)?(m.ascd||1):1);
   let rate=d.rate*f.rate*(1+.03*ml('bellows'))*m.rate*a.rate*(1+mb.rate)*ab.rate*((m.trate&&m.trate[t.type])||1);
@@ -3094,7 +3150,6 @@ function step(dt){
   for(const [k,at,n] of spawned)for(let i=0;i<n;i++){const m=spawn(k,at);m.hp=m.max=m.max*.6;m.gold=0;m.d=Math.max(0,at.d-.15*(i+1))}
   G.frostAsc=G.towers.some(t=>t.type==='frost'&&asc1(t));
   G.gAura=[];G.bounty=0;
-  for(const t of G.towers)if(t.type==='mint'){const ms=tStats(t);if(ms.goldAura)G.gAura.push({x:t.x+.5,y:t.y+.5,R:ms.goldAuraR,X:ms.goldAura});G.bounty+=ms.bounty}
   const onBoard=e=>e.x>-.2&&e.x<W+.2&&e.y>-.2;
   for(const t of G.towers){
     if(TOWERS[t.type].passive)continue;
@@ -3146,9 +3201,7 @@ function endWave(){
   G.gold+=clearBonus()-(G.midPaid?Math.floor(clearBonus()/2):0)+(G.m.clear||0);
   if(ml('compound'))G.gold+=Math.min(20*ml('compound'),Math.floor(G.gold*.01*ml('compound')));
   if(ml('regen')&&G.wave%5===0)G.lives+=ml('regen');
-  for(const t of G.towers)if(t.type==='mint'){const ms=tStats(t);let g=ms.income,jp=ms.jackpot&&Math.random()<ms.jackpot;if(jp)g*=3;
-    if(ms.interest)g+=Math.min(ms.interestCap,Math.floor(G.gold*ms.interest));
-    G.gold+=g;G.fx.push({k:'t',x:t.x+.5,y:t.y+.2,txt:(jp?'Jackpot +':'+')+g,life:1.2,max:1.2,col:TOWERS.mint.color})}
+  for(const t of G.towers)if(t.type==='mint'){const o=sap(t),before=Math.floor(o.stage);t.gs=(t.gs||0)+o.grow;const n=sap(t);if(Math.floor(n.stage)>before)G.fx.push({k:'t',x:t.x+.5,y:t.y+.2,txt:'Grew to '+Math.floor(n.stage),life:1.2,max:1.2,col:TOWERS.mint.color})}
   if(G.m.interest)G.gold+=Math.min(30*G.m.interest,Math.floor(G.gold*.08*G.m.interest));
   if(G.event){if(G.wave>(meta.bestEvent||0)){meta.bestEvent=G.wave;save()}}
   else if(G.endless){if(G.wave>(meta.bestEndless||0)){meta.bestEndless=G.wave;save()}}
@@ -3194,7 +3247,7 @@ function pathFrom(cells,pts){const cum=[0];for(let i=1;i<pts.length;i++)cum.push
 function snapRun(){
   if(!G||G.state!=='build')return;
   meta[saveKey(runMode())]={v:2,ev:G.event?EVENT.id:undefined,depth:G.depth,world:G.world,diff:G.diff,wave:G.wave,lives:G.lives,gold:G.gold,bossKills:G.bossKills,kills:G.kills||0,ward:G.ward||0,patron:G.patron||0,sw:G.sw||0,bxp:G.bxp||0,blv:G.blv||0,bpend:G.bpend||0,
-    gf:G.gf||0,towers:G.towers.map(t=>({type:t.type,x:t.x,y:t.y,p:(t.p||[0,0]).slice(),ak:t.ak==null?null:t.ak,at:t.at||0,spent:t.spent,kills:t.kills||0})),path:{cells:G.path.cells,pts:G.path.pts},ot:G.over40?{mk:G.mk40,b:G.boss40}:null,
+    gf:G.gf||0,towers:G.towers.map(t=>({type:t.type,x:t.x,y:t.y,p:padP(t.p),ak:t.ak==null?null:t.ak,at:t.at||0,spent:t.spent,kills:t.kills||0,gs:t.gs||0})),path:{cells:G.path.cells,pts:G.path.pts},ot:G.over40?{mk:G.mk40,b:G.boss40}:null,
     m:G.m,taken:G.taken,mk:G.mk,used:[...G.used],at:Date.now()};
   save();
 }
@@ -3204,7 +3257,7 @@ function resumeRun(mode){
   newRun(r.depth,mode!=='campaign');if(mode==='event'){G.event=true}applyTheme(r.world);
   Object.assign(G,{gf:r.gf||0,world:r.world,diff:r.diff,wave:r.wave,lives:r.lives,gold:r.gold,bossKills:r.bossKills,kills:r.kills,ward:r.ward,patron:r.patron||0,sw:r.sw||0,bxp:r.bxp||0,blv:r.blv||0,bpend:r.bpend||0,
     m:Object.assign(G.m,r.m),taken:r.taken||{},mk:r.mk||{},used:new Set(r.used||[])});
-  G.towers=(r.towers||[]).filter(t=>TOWERS[t.type]).map(t=>({type:t.type,x:t.x,y:t.y,p:(t.p||[0,0]).slice(),ak:t.ak==null?undefined:t.ak,at:t.at||undefined,spent:t.spent,kills:t.kills||0,cd:0}));
+  G.towers=(r.towers||[]).filter(t=>TOWERS[t.type]).map(t=>({type:t.type,x:t.x,y:t.y,p:padP(t.p),ak:t.ak==null?undefined:t.ak,at:t.at||undefined,spent:t.spent,kills:t.kills||0,gs:t.gs||0,cd:0}));
   if(r.ot){G.over40=true;G.mk40=r.ot.mk||{};G.boss40=r.ot.b||0}
   G.path=pathFrom(r.path.cells,r.path.pts);G.amb=makeAmb();drawBG();
   return true;
@@ -3214,7 +3267,7 @@ function toast(title,body){const el=$('#toast');el.innerHTML=`<b>${title}</b><sp
 
 /* ---------- boons ---------- */
 function offerCards(){
-  const onBoard=t=>G.towers.some(x=>x.type===t),canUp=()=>G.towers.some(t=>[0,1].some(i=>{const p=(t.p||[0,0])[i];return p<5&&G.mast[t.type]>=tierLockAt(i,p+1)}));
+  const onBoard=t=>G.towers.some(x=>x.type===t),canUp=()=>G.towers.some(t=>[0,1,2].some(i=>{const p=(t.p||[0,0,0])[i]||0;return p<5&&G.mast[t.type]>=tierLockAt(i,p+1)}));
   const pool=CARDS.filter(c=>(!c.need||onBoard(c.need))&&(!c.needUp||canUp())&&!(c.once&&G.taken[c.id]));
   const n=3+ml('fourth')+ml('fifth')+(G.wave&&G.wave%5===0?ml('trophyfan'):0),pick=[],lk=1+.15*ml('luck'),hr=1+.12*ml('highroll'),wt=c=>RW[c.rar]*(c.rar?lk:1)*(c.rar>=2?hr:1);
   while(pick.length<n&&pick.length<pool.length){
@@ -3265,7 +3318,7 @@ const TINFO={
   frost:{how:'Chills foes so they move slower for a short time. Its damage is low.',good:'Making every other lantern hit more often. Fast foes and bosses.',weak:'Foes that ignore slows, like Ice skaters and Ghosts.',tip:'Put it at the start of your best kill zone, not at the end.'},
   lance:{how:'Throws spears that pierce through a line of foes.',good:'Long straight stretches packed with foes.',weak:'Corners and lone targets.',tip:'Line it up with a straight run of trail so every spear passes through as many foes as possible.'},
   venom:{how:'Poisons foes. Poison ticks over time and ignores armor completely.',good:'Armored foes and bosses with lots of health.',weak:'Foes that shrug off poison, like the Prism and Rime wraith.',tip:'Mix it with fast hitters: Venom softens tough foes while the others finish them.'},
-  mint:{how:'Does not attack. It pays gold at the end of every wave.',good:'Building a bigger defense over a long run.',weak:'Gold you spend on it now is gold you are not spending on damage.',tip:'Build it early, while waves are easy, so it has time to pay for itself.'},
+  mint:{how:'Does not attack. It starts small and grows one stage every wave it survives. The bigger it grows, the more damage and fire rate the lanterns around it get.',good:'Long runs, where it becomes one of the strongest boosts.',weak:'It adds no damage on its own and starts weak.',tip:'Build it early. Every wave it stands counts, and it only grows while it is on the board.'},
   bolt:{how:'Strikes one foe with lightning that leaps to several more nearby.',good:'Packed groups and swarms of small foes.',weak:'Single targets, since the leaps are wasted.',tip:'Its chain grows with upgrades and Conductor at camp.'},
   beacon:{how:'Does not attack. It boosts the damage and fire rate of every lantern in the 8 tiles around it.',good:'Surrounded by your strongest lanterns.',weak:'Sitting on its own.',tip:'Plan a 3×3 block and put the Beacon in the middle.'},
   comet:{how:'Fires slow, huge impacts from very long range.',good:'Bosses, big groups and covering lots of trail at once.',weak:'Fast foes, which can dodge its slow shots.',tip:'Its range lets it sit far from the trail, so save the close tiles for short-range lanterns.'},
@@ -3273,11 +3326,11 @@ const TINFO={
   bell:{how:'Tolls to hit every foe nearby at once and freeze them in place for a moment.',good:'Clumps of foes and buying time for your damage lanterns.',weak:'Bosses, which are only frozen briefly.',tip:'Ring it next to your heavy hitters so frozen foes sit in their fire.'},
   eclipse:{how:'Strikes the healthiest foe in range for heavy damage plus a share of its max health.',good:'Bosses and the toughest foes in each wave.',weak:'Waves of many small foes.',tip:'Let other lanterns handle the crowd. The Eclipse is your boss killer.'}};
 function openTInfo(t){
-  const ty=t.type,T=TOWERS[ty],st=tStats(t),u=UPG[ty],p=t.p||[0,0],mL=G.mast[ty],rL=(G.mastL&&G.mastL[ty])||mL,mb=mastBonus(rL),mpN=mPrest(ty),I=TINFO[ty],AT=ascTier(t);
+  const ty=t.type,T=TOWERS[ty],st=tStats(t),u=UPG[ty],p=padP(t.p),mL=G.mast[ty],rL=(G.mastL&&G.mastL[ty])||mL,mb=mastBonus(rL),mpN=mPrest(ty),I=TINFO[ty],AT=ascTier(t);
   const row=(k,v,d)=>`<div class="tir"><span>${k}</span><b>${v}</b><small>${d}</small></div>`;
   let stats='';
   if(ty==='beacon')stats=row('Boost',`+${st.aura}% damage, +${st.arate}% fire rate`,`For lanterns within ${st.radius} tile${st.radius>1?'s':''}.`);
-  else if(ty==='mint')stats=row('Income',`+${st.income} gold`,'Paid at the end of every wave.')+(st.interest?row('Interest',`${Math.round(st.interest*100)}%`,`Of your gold each wave, up to ${st.interestCap}.`):'');
+  else if(ty==='mint')stats=row('Growth',`Stage ${st.stage} of ${st.cap}`,`Grows ${st.grow===1?'1 stage':st.grow+' stages'} each wave.`)+row('Boost',`+${st.dmg}% damage, +${st.rate}% rate`,`Lanterns within ${st.radius} tile${st.radius>1?'s':''}.`)+(st.range?row('Range',`+${st.range}`,'Added to nearby lanterns.'):'')+(st.crit?row('Crit chance',`+${st.crit}%`,'Added to nearby lanterns.'):'');
   else{const dps=ty==='moonwell'?st.dmg:st.dmg*st.rate*(1+(st.multi||0)*MULTI_F);
     stats=row(ty==='moonwell'?'Beam damage':'Damage',ty==='moonwell'?`${st.dmg.toFixed(1)}/s`:st.dmg.toFixed(1),ty==='moonwell'?'Rises the longer it holds one foe.':'Per hit, before armor.')+
       (ty==='moonwell'?'':row('Fire rate',`${st.rate.toFixed(2)}/s`,'Shots per second.'))+
@@ -3286,8 +3339,8 @@ function openTInfo(t){
       (st.splash?row('Burst',`${st.splash.toFixed(2)} tiles`,'Every foe in the blast is hit.'):'')+(st.slow?row('Slow',`${Math.round(st.slow*100)}%`,`For ${st.slowT.toFixed(1)}s.`):'')+
       (st.chain?row('Chain',`${st.chain} leaps`,'Jumps to nearby foes.'):'')+(st.pierce?row('Pierce',st.pierce>99?'All':st.pierce,'Foes each spear passes through.'):'')+
       (st.poison?row('Poison',`${st.poison.toFixed(1)}/s`,'Ignores armor.'):'')+(st.stun?row('Freeze',`${st.stun.toFixed(2)}s`,'Bosses are frozen for less time.'):'')+(st.ap?row('Armor piercing',st.ap,'Armor ignored per hit.'):'')}
-  const paths=[0,1].map(i=>`<div class="tip-p" style="--pc:${PCOL[i]}"><b>${u.p[i].name} · tier ${p[i]}/5</b><ol>${u.p[i].tiers.map((x,j)=>`<li class="${j<p[i]?'ok':''}"><span>${x[0]}</span> ${x[1]}</li>`).join('')}</ol></div>`).join('');
-  const asc=isAsc(t)?`<p><b>Ascended: ${ascInfo(ty,t.ak)[0]}.</b> ${ascInfo(ty,t.ak)[1]}${AT>1?` Merged to ${ASC_NAME[AT]}.`:''}</p>`:`<p>Max both paths to ascend. Choices: ${[0,1,2].map(k=>`<b>${ascInfo(ty,k)[0]}</b>${mL<ASC_MAST[k]?` (Mastery ${ASC_MAST[k]})`:''}`).join(', ')}.</p>`;
+  const paths=[0,1,2].map(i=>`<div class="tip-p" style="--pc:${PCOL[i]}"><b>${u.p[i].name} · tier ${p[i]}/5</b><ol>${u.p[i].tiers.map((x,j)=>`<li class="${j<p[i]?'ok':''}"><span>${x[0]}</span> ${x[1]}</li>`).join('')}</ol></div>`).join('');
+  const asc=isAsc(t)?`<p><b>Ascended: ${ascInfo(ty,t.ak)[0]}.</b> ${ascInfo(ty,t.ak)[1]}${AT>1?` Merged to ${ASC_NAME[AT]}.`:''}</p>`:`<p>Use two of its three paths and max both to ascend. Each ascension is linked to a path, and each can be on the board once at a time. Choices: ${[0,1,2].map(k=>`<b>${ascInfo(ty,k)[0]}</b>${mL<ASC_MAST[k]?` (Mastery ${ASC_MAST[k]})`:''}`).join(', ')}.</p>`;
   $('#tiBody').innerHTML=`<div class="tih"><canvas id="tiPrev" width="160" height="160" aria-hidden="true"></canvas><div><span class="sec" style="margin:0;color:${roleOf(ty).col}">${roleOf(ty).name} lantern</span>
       <h2 class="big" style="color:${T.color}">${T.name}</h2><p class="tid">${T.desc}</p></div></div>
     <div class="tis"><h4>How it works</h4><p>${I.how}</p><div class="tgw"><p><b class="g">Strong against</b> ${I.good}</p><p><b class="w">Weak against</b> ${I.weak}</p></div><p class="ttip"><b>Tip</b> ${I.tip}</p></div>
@@ -3436,7 +3489,7 @@ function renderPrestige(){
       <div class="r"><b>Starts over</b><ul><li>Level and XP (back to 1)</li><li>Embers</li><li>Camp upgrades</li><li>Worlds unlocked and beaten, best waves</li><li>Saved runs</li></ul></div></div>
       <button class="btn primary big prgo${prArm?' armed':''}" id="prGo" ${can?'':'disabled'}>${can?(prArm?`Tap again to prestige. Your level goes back to 1`:`Prestige to ${ROM[P+1]}`):`Prestige at level ${LV_MAX}`}</button>`:''}</div>`;
   const mpT=ORDER.filter(t=>mPrest(t)).map(t=>`${TOWERS[t].name} ${ROM[mPrest(t)]}`);
-  const mast=`<div class="pcard"><h3>Mastery prestige</h3><p class="hint" style="margin:0">Every lantern can prestige too. At Mastery 100, prestige it from its Mastery tab on the Lanterns page: it goes back to Mastery 1 for a permanent <b>+2%</b> boost, up to ${MP_MAX} times (+20%). Everything it has unlocked stays unlocked. ${mpT.length?`<br>Yours so far: <b>${mpT.join(', ')}</b>.`:''}</p></div>`;
+  const mast=`<div class="pcard"><h3>Mastery prestige</h3><p class="hint" style="margin:0">Every lantern can prestige too. At Mastery 100, prestige it from its Mastery tab on the Lanterns page: it goes back to Mastery 1 for a permanent <b>+2%</b> boost, up to ${MP_MAX} times (+20%). Each prestige also gives <b>+5% embers and +5% XP</b> from runs, and it stacks with your account prestige (now ×${mpBonus().toFixed(2)} from lanterns). Everything it has unlocked stays unlocked. ${mpT.length?`<br>Yours so far: <b>${mpT.join(', ')}</b>.`:''}</p></div>`;
   const diff=`<div class="pcard"><h3 style="color:${DIFF.oblivion.col}">Oblivion difficulty</h3><p class="hint" style="margin:0">${P?'Unlocked. ':'Unlocks at Prestige I. '}${DIFF.oblivion.desc} Foes have ×${DIFF.oblivion.hp} health and rewards are ×${DIFF.oblivion.rew}. Pick it on the Play page.</p></div>`;
   const grp=[];for(let p=1;p<=PMAX;p++){const items=PRSK.filter(x=>x[0]===p),open=P>=p;
     grp.push(`<div class="prgrp"><div class="prgh"><b>Prestige ${ROM[p]}</b><span class="${open?'ok':''}">${open?'Open':'Locked'}</span></div><div class="feat">${items.map(([pp,t])=>{const s=SKINS[t].find(x=>x.id==='pr'+pp),own=ownsSkin(t,s.id),pr=priceOf(s);
@@ -3464,6 +3517,13 @@ function drawPrestige(){const T=performance.now()/1000;document.querySelectorAll
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'1.2.0',d:'Oct 18, 2026',major:1,kick:'Version 1.2',title:'Crossroads',go:'Back to the lanterns',
+   hl:[['Crossing paths','Runs can now have paths that cross over themselves, so a lantern at a crossing hits the same foes twice.'],
+       ['Three paths, pick two','Every lantern has a third upgrade path, but only two can be active on a lantern. Choose your build.'],
+       ['Linked ascensions','Each ascension is linked to one of the three paths, and each ascension type can be on the board once at a time.'],
+       ['The Sapling','The Mint is now the Sapling, a support lantern that grows every wave and boosts the lanterns around it. All Mint skins carried over.'],
+       ['Prestige bonus','Each lantern prestige gives +5% embers and +5% XP from runs, stacking with account prestige.']],
+   notes:['Lanternfall 1.2: runs can have crossing paths, every lantern has three upgrade paths with two active at a time, and each ascension is linked to a path.','The Mint became the Sapling. Every skin you own, plus the ones still locked or in the shop, carried over to it.','Lantern prestige now gives +5% embers and +5% XP from runs.','Lanterns at the bottom of the board stay in view when their panel opens. In landscape the panel stays clear of the app buttons in the corners.','The lantern shooting sounds are gone. Foe, menu, building and upgrade sounds stay.']},
   {v:'1.1.1',d:'Oct 17, 2026',notes:['Fixed the lantern tray jumping back to the start every time you tapped or placed a lantern. It now stays where you scrolled it.']},
   {v:'1.1.0',d:'Oct 17, 2026',major:1,kick:'Version 1.1',title:'Your progress, anywhere',go:'Back to the lanterns',
    hl:[['Online backup','Turn it on in Settings and your progress saves online as you play. No account needed to start.'],
@@ -3571,9 +3631,21 @@ const NEWS_LOCAL=[
   {id:'hw26-end',date:'2026-10-15',tag:'Event',title:'Hollow Harvest and Season 1 end November 1',body:'The Halloween event, its pass and the Season 1 pass all run until November 1. Finish your tiers and claim your rewards before then.'},
   {id:'v1',date:'2026-10-15',tag:'Release',title:'Lanternfall 1.0 is out',body:'21 worlds with 21 bosses, 12 lanterns, a rank road to level 100 and Prestige. Thanks for playing.'},
   {id:'keep-safe',date:'2026-10-16',tag:'Tip',title:'Keep your progress safe',body:'Add Lanternfall to your home screen, and back up your save any time with Save as file in Settings. On iPhone: Share, then Add to Home Screen. On Android: the menu, then Install app.'},
-  {id:'cloud-saves',date:'2026-10-17',tag:'Update',title:'Your progress can follow you now',body:'Turn on Online backup in Settings and sign in with Google, and your progress follows you to any device. Prefer to carry it yourself? Save as file and Import from file move it in a tap.',art:'cloud'}
+  {id:'cloud-saves',date:'2026-10-17',tag:'Update',title:'Your progress can follow you now',body:'Turn on Online backup in Settings and sign in with Google, and your progress follows you to any device. Prefer to carry it yourself? Save as file and Import from file move it in a tap.',art:'cloud'},
+  {id:'v12',date:'2026-10-18',tag:'Release',title:'Lanternfall 1.2: Crossroads',body:'Paths can cross over themselves. Every lantern gets a third upgrade path, but only two can be active, and each ascension is linked to a path. The Mint is now the Sapling, a support lantern that grows every wave, and all Mint skins carried over. Lantern prestige also gives +5% embers and +5% XP.',art:'crossroads'}
 ];
 const NEWS_ART={
+  crossroads:`<svg viewBox="0 0 320 176" role="img" aria-label="Two paths crossing with a glowing lantern at the crossing and a green sapling beside it">
+  <g fill="#f1e8d4" opacity=".5"><circle cx="28" cy="16" r="1.2"/><circle cx="110" cy="10" r="1"/><circle cx="224" cy="14" r="1.2"/><circle cx="296" cy="24" r="1"/></g>
+  <path d="M0 112H320" stroke="#3a2a22" stroke-width="30" fill="none"/><path d="M160 0V176" stroke="#3a2a22" stroke-width="30" fill="none"/>
+  <path d="M0 112H320" stroke="#6b4a37" stroke-width="2" stroke-dasharray="6 7" fill="none"/><path d="M160 0V176" stroke="#6b4a37" stroke-width="2" stroke-dasharray="6 7" fill="none"/>
+  <circle class="na-glow" cx="160" cy="112" r="44" fill="#ffb547" opacity=".13"/><circle class="na-glow" cx="160" cy="112" r="26" fill="#ffb547" opacity=".13"/>
+  <circle cx="160" cy="112" r="15" fill="#0b1012" stroke="#ffb547" stroke-width="2.6"/><path d="M160 102l6 10-6 10-6-10z" fill="#ffb547"/>
+  <g transform="translate(236 48)"><circle class="na-glow" r="28" fill="#8fe08a" opacity=".14"/><circle r="17" fill="#0b1012" stroke="#8fe08a" stroke-width="2.6"/>
+  <path d="M0 11V-1" stroke="#8fe08a" stroke-width="2.6" stroke-linecap="round"/><path d="M0 1Q-2-9-12-8Q-11 2 0 1M0-1Q2-12 12-11Q11-1 0-1" fill="#8fe08a"/></g>
+  <g transform="translate(84 52)"><g fill="none" stroke-width="3" stroke-linecap="round"><path d="M-26 8h14" stroke="#ffd75e"/><path d="M-26 0h14" stroke="#9fd8ff"/><path d="M-26-8h14" stroke="#d6a3ff"/></g></g>
+  <text class="na-t" x="84" y="82">3 PATHS</text><text class="na-t" x="236" y="84">SAPLING</text><text class="na-t" x="160" y="158" style="fill:var(--ink)">CROSSING PATHS</text>
+</svg>`,
   cloud:`<svg viewBox="0 0 320 176" role="img" aria-label="A phone and a computer connected through a glowing lantern cloud, with a save file below">
   <g fill="#f1e8d4" opacity=".5"><circle cx="30" cy="16" r="1.2"/><circle cx="96" cy="10" r="1"/><circle cx="214" cy="14" r="1.2"/><circle cx="292" cy="22" r="1"/><circle cx="256" cy="8" r=".9"/></g>
   <circle class="na-glow" cx="160" cy="60" r="40" fill="#ffb547" opacity=".13"/>
@@ -3672,15 +3744,15 @@ function renderHow(){
   <div class="hc"><h3>The goal</h3><p>Foes walk the trail from the top of the board to the bottom. Every foe that gets through costs you lives. <b>Survive 40 waves</b> to win the run. Then end it there, or keep going until your lives run out (waves past 40 pay ×0.25).</p></div>
   <div class="hc"><h3>Building</h3><ol>
     <li><b>Drag a lantern</b> from the tray onto a grassy tile. Green means it fits, red means it doesn't. You can also tap a lantern, then tap tiles to place it.</li>
-    <li>Max <b>both paths</b> to <b>ascend</b> a lantern. Pick one of up to three ascension types, unlocked at Mastery 30, 50 and 70.</li>
+    <li>Pick <b>two of its three paths</b>, max both, and you can <b>ascend</b> it. Each ascension is linked to a path, so your paths decide your choices. The three ascensions unlock at Mastery 30, 50 and 70.</li>
     <li>Ascend a <b>second copy</b> of the same lantern, then tap the first and <b>Merge</b> to make an <b>Ascended II</b>. Two Ascended II lanterns of the same type merge into an <b>Ascended III</b>. Each merge gives ×1.75 damage, ×1.2 fire rate and ×1.12 range.</li>
-    <li><b>Tap a lantern</b> to open its upgrades: <b>two paths with 5 tiers each</b>. You can buy both paths all the way up. Sell it for 60% back.</li>
+    <li><b>Tap a lantern</b> to open its upgrades: <b>three paths with 5 tiers each</b>, but only <b>two can be active</b> on one lantern. Sell it for 60% back.</li>
     <li>Kills and cleared waves give you gold to spend.</li></ol></div>
   <div class="hc"><h3>Lantern roles</h3><ul>
     <li><b style="color:#ff8a7a">Damage</b> (Spark, Lance, Moonwell, Eclipse) hits one foe hard.</li>
     <li><b style="color:#ffb547">Area</b> (Cinder, Bolt, Comet) hits many foes at once.</li>
     <li><b style="color:#7fe3ff">Control</b> (Frost, Venom, Hollow Bell) slows, freezes or poisons.</li>
-    <li><b style="color:#9be3a9">Support</b> (Mint, Beacon) earns gold or boosts the lanterns around it.</li></ul></div>
+    <li><b style="color:#9be3a9">Support</b> (Sapling, Beacon) boosts the lanterns around it.</li></ul></div>
   <div class="hc"><h3>Waves</h3><ul>
     <li>Press <b>Send wave</b> when you're ready. You can keep building during a wave.</li>
     <li>Foes come in <b>clumps</b> with short pauses between them. Halfway through each wave you get half of the wave's gold bonus, and the rest when it's cleared.</li>
@@ -3704,7 +3776,7 @@ function renderHow(){
   <div class="hc full"><h3>Tips</h3><ul>
     <li>Armor cuts flat damage from every hit. Use <b>Cinder, Bolt, Comet</b> or <b>Venom</b> against beetles.</li>
     <li><b>Frost</b> next to splash lanterns keeps foes inside the blast.</li>
-    <li>Build a <b>Mint</b> early. It pays for itself after a few waves.</li>
+    <li>A <b>Sapling</b> grows every wave it stands. Build it early so it is big by the time the waves get hard.</li>
     <li>Place a <b>Beacon</b> in the middle of a cluster so it boosts up to 8 lanterns.</li></ul></div>`;
   const T=0,th=THEMES[0];
   document.querySelectorAll('#how canvas[data-foe]').forEach(cv=>{
@@ -3918,8 +3990,9 @@ function mastRoad(t){
   const u=UPG[t],a=k=>ascInfo(t,k)[0],tn=(i,j)=>u.p[i].tiers[j][0];
   return [[1,`${u.p[0].name} 1–3`,`${tn(0,0)}, ${tn(0,1)}, ${tn(0,2)}`],
     [10,`${u.p[1].name} 1–3`,`${tn(1,0)}, ${tn(1,1)}, ${tn(1,2)}`],
-    [20,'Tier 4, both paths',`${tn(0,3)}, ${tn(1,3)}`],
+    [20,'Tier 4, paths 1 and 2',`${tn(0,3)}, ${tn(1,3)}`],
     [30,`Tier 5 + ${a(0)}`,`${tn(0,4)}, ${tn(1,4)} · bronze badge at 25`],
+    [40,`${u.p[2].name} (path 3)`,`${tn(2,0)}, ${tn(2,1)}, ${tn(2,2)}, ${tn(2,3)}, ${tn(2,4)}`],
     [50,a(1),'Second ascension · silver badge'],
     [70,a(2),'Third ascension · gold badge at 75'],
     [100,'Radiant look','Radiant badge, color-shifting crown'],
@@ -3934,7 +4007,7 @@ function lanPanel(t,mi){
     const u=UPG[t],d=lanDet[t]||{k:'p',i:0,j:0};
     const col=i=>`<div class="pcol" style="--pc:${PCOL[i]}"><b class="pch">${u.p[i].name}</b>${u.p[i].tiers.map((x,j)=>{const need=tierLockAt(i,j+1),ok=mi.G>=need,sel=d.k==='p'&&d.i===i&&d.j===j;
       return `<button class="ptier${ok?' ok':''}${sel?' sel':''}" data-pdet="p:${i}:${j}" aria-pressed="${sel}"><span class="tn">${j+1}</span><span class="tnm">${x[0]}</span><span class="tl">${ok?'':'M'+need}</span></button>`}).join('')}</div>`;
-    return `<div class="pgrid">${col(0)}${col(1)}</div><div class="ascs"><b class="pch">Ascensions</b><div>${[0,1,2].map(k=>{const ok=mi.G>=ASC_MAST[k],sel=d.k==='a'&&d.i===k;
+    return `<div class="pgrid">${col(0)}${col(1)}${col(2)}</div><div class="ascs"><b class="pch">Ascensions</b><div>${[0,1,2].map(k=>{const ok=mi.G>=ASC_MAST[k],sel=d.k==='a'&&d.i===k;
       return `<button class="atag${ok?' ok':''}${sel?' sel':''}" data-pdet="a:${k}" aria-pressed="${sel}">${ascInfo(t,k)[0]}<span>${ok?'✓':'M'+ASC_MAST[k]}</span></button>`}).join('')}</div></div>`;
   }
   return '';
@@ -3943,7 +4016,7 @@ function slideHTML(t){
   const T=TOWERS[t],un=unlocked(t),u=UNLOCKS.find(x=>x.t===t),base=SKINS[t][0].color,role=roleOf(t),ri=role.t.indexOf(t),mi=Object.assign(mastInfo(t),{G:mastGate(t)}),mp=mPrest(t),mb=mastBonus(mi.L),bd=mastBadge(mi.L),nu=MAST_UNLOCKS.find(x=>x[0]>mi.L);
   let pid=lanPrev[t]||eqSkin(t);if(hideUn&&!ownsSkin(t,pid))pid=eqSkin(t);
   const sk=SKINS[t].find(s=>s.id===pid),shown=hideUn?SKINS[t].filter(s=>ownsSkin(t,s.id)):SKINS[t],nHid=SKINS[t].length-shown.length;
-  const rows=T.passive?(t==='mint'?[['Income','8 gold / wave']]:[['Boost','+15% damage'],['Fire rate','+8%'],['Area','8 tiles']]):
+  const rows=T.passive?(t==='mint'?[['Grows','1 stage / wave']]:[['Boost','+15% damage'],['Fire rate','+8%'],['Area','8 tiles']]):
     T.beam?[['Damage','10 → 40 /s'],['Range',T.range]]:[['Damage',T.dmg],['Fire rate',T.rate+'/s'],['Range',T.range]];
   if(T.stun)rows.push(['Freeze',T.stun+'s']);if(T.pct)rows.push(['Bonus','6% max health']);
   if(T.splash)rows.push(['Burst',T.splash]);if(T.slow)rows.push(['Slow',Math.round(T.slow*100)+'%']);if(T.chain)rows.push(['Chains',T.chain]);
@@ -3977,7 +4050,7 @@ function slideHTML(t){
     if(d.k==='p'){const x=UPG[t].p[d.i].tiers[d.j],need=tierLockAt(d.i,d.j+1);
       bar=`<p class="bbt"><b>${x[0]}</b> · ${UPG[t].p[d.i].name} tier ${d.j+1}. ${x[1]} <span class="${mi.G>=need?'okt':'lkt'}">${mi.G>=need?'Unlocked.':`Unlocks at Mastery ${need}.`}</span></p>`}
     else{const [nm,ds]=ascInfo(t,d.i),need=ASC_MAST[d.i];
-      bar=`<p class="bbt"><b>${nm}</b> · ascension. ${ds} <span class="${mi.G>=need?'okt':'lkt'}">${mi.G>=need?'Unlocked.':`Unlocks at Mastery ${need}.`}</span> Needs both paths at tier 5.</p>`}
+      bar=`<p class="bbt"><b>${nm}</b> · ascension. ${ds} <span class="${mi.G>=need?'okt':'lkt'}">${mi.G>=need?'Unlocked.':`Unlocks at Mastery ${need}.`}</span> Linked to ${UPG[t].p[d.i].name}. Needs both of the lantern's paths at tier 5, including this one.</p>`}
   }
   return `<article class="slide${un?'':' locked'}" data-t="${t}" style="--tc:${base};--rc:${role.col}" aria-label="${T.name}">
     <div class="stage"><canvas data-prev="${t}" width="360" height="360" aria-hidden="true"></canvas>${un?'':'<span class="lockt">Locked</span>'}</div>
@@ -4573,11 +4646,11 @@ function renderTray(){
   afford();renderSheet();
 }
 /* ---------- upgrade sheet: slides up over the bottom of the board when you tap a lantern ---------- */
-const PCOL=['var(--tc)','#bfe3ff'];
+const PCOL=['var(--tc)','#bfe3ff','#e0b8ff'];
 function statLine(t,st){
   const ty=t.type;
   if(ty==='beacon')return `boosts lanterns within ${st.radius} tile${st.radius>1?'s':''}: +${st.aura}% damage, +${st.arate}% fire rate${st.arange?`, +${st.arange.toFixed(1)} range`:''}${st.acrit?`, ${Math.round(st.acrit*100)}% crit`:''}`;
-  if(ty==='mint')return `+${st.income} gold after each wave${st.interest?` · ${Math.round(st.interest*100)}% interest (max ${st.interestCap})`:''}${st.bounty?` · +${st.bounty} per boss`:''}`;
+  if(ty==='mint')return `Stage ${st.stage}/${st.cap} · +${st.dmg}% damage, +${st.rate}% fire rate nearby${st.crit?` · +${st.crit}% crit`:''}`;
   const tg=st.multi?` · ${1+st.multi} targets`:'',cr=st.crit?` · crit ${Math.round(st.crit*100)}%`:'';
   if(ty==='moonwell')return `${st.dmg.toFixed(1)} dmg/s, up to ${(st.dmg*(1+(asc1(t)?5:3)+st.heatMax)).toFixed(1)} · range ${st.range.toFixed(1)}${tg} · ignores armor`;
   if(ty==='bell')return `dmg ${st.dmg.toFixed(1)} to all nearby · ${st.rate.toFixed(2)}/s · freeze ${st.stun.toFixed(2)}s · range ${st.range.toFixed(1)}`;
@@ -4588,27 +4661,24 @@ function statLine(t,st){
 const tpips=(n,c)=>`<span class="tpips" style="--pc:${c}">${[1,2,3,4,5].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')}</span>`;
 function renderSheet(){shLast='';
   const sh=$('#sheet'),s=G&&G.sel;
-  if(!s||s.kind!=='tower'||!G.towers.includes(s.t)||G.state==='over'||G.state==='camp'){sh.hidden=true;return}
-  const t=s.t,ty=t.type,st=tStats(t),u=UPG[ty],mL=G.mast[ty],refund=Math.round(t.spent*runSell()),AT=ascTier(t),p=t.p||[0,0],both5=p[0]>=5&&p[1]>=5;
-  let body;
-  if(!both5){
-    body=[0,1].map(i=>{const ps=pathState(t,i),pn=u.p[i].name,c=PCOL[i];
-      const btn=ps.max?`<button class="btn pbuy" disabled>Maxed</button>`:ps.lock?`<button class="btn pbuy" disabled data-lock="1">Mastery ${ps.lock}</button>`:`<button class="btn primary pbuy" data-act="p${i}" data-cost="${ps.cost}" aria-label="Upgrade ${pn} to tier ${ps.next}, ${ps.cost} gold">${ps.cost}</button>`;
-      const nx=ps.max?`<span class="pnx">Path complete.</span>`:`<span class="pnx"><b>${ps.info[0]}</b> ${ps.info[1]}${ps.lock?` <em>Unlocks at Mastery ${ps.lock}.</em>`:''}</span>`;
-      return `<div class="prow" style="--pc:${c}"><div class="pmain"><div class="ptop"><b class="pname">${pn}</b>${tpips(ps.tier,c)}</div>${nx}</div>${btn}</div>`}).join('')+
-      `<p class="anote">Max both paths to ascend.${mL<ASC_MAST[0]?` Ascension unlocks at Mastery ${ASC_MAST[0]}.`:''}</p>`;
-  }else{
-    const comp=`<div class="pdone">${[0,1].map(i=>`<span><b>${u.p[i].name}</b>${tpips(5,PCOL[i])}</span>`).join('')}</div>`;
-    if(!isAsc(t)){
+  if(!s||s.kind!=='tower'||!G.towers.includes(s.t)||G.state==='over'||G.state==='camp'){sh.hidden=true;revealSel();return}
+  const t=s.t,ty=t.type,st=tStats(t),u=UPG[ty],mL=G.mast[ty],refund=Math.round(t.spent*runSell()),AT=ascTier(t),mx=maxedPaths(t);
+  const rows=[0,1,2].map(i=>{const ps=pathState(t,i),pn=u.p[i].name,c=PCOL[i];
+    const btn=ps.max?`<button class="btn pbuy" disabled>Maxed</button>`:ps.blocked?`<button class="btn pbuy" disabled data-lock="1">Locked</button>`:ps.lock?`<button class="btn pbuy" disabled data-lock="1">Mastery ${ps.lock}</button>`:`<button class="btn primary pbuy" data-act="p${i}" data-cost="${ps.cost}" aria-label="Upgrade ${pn} to tier ${ps.next}, ${ps.cost} gold">${ps.cost}</button>`;
+    const nx=ps.max?`<span class="pnx">Path complete.</span>`:ps.blocked?`<span class="pnx">Only two paths can be active on one lantern.</span>`:`<span class="pnx"><b>${ps.info[0]}</b> ${ps.info[1]}${ps.lock?` <em>Unlocks at Mastery ${ps.lock}.</em>`:''}</span>`;
+    return `<div class="prow${ps.max?' pmax':''}${ps.blocked?' pblk':''}" style="--pc:${c}"><div class="pmain"><div class="ptop"><b class="pname">${pn}</b>${tpips(ps.tier,c)}</div>${nx}</div>${btn}</div>`}).join('');
+  let body=rows;
+  if(!isAsc(t)){
+    if(mx>=2){
       const c=ascCost(ty);
-      body=comp+`<div class="sec" style="margin:2px 0 0">Choose an ascension</div><div class="aopts">${[0,1,2].map(k=>{const [nm,ds]=ascInfo(ty,k),lk=mL<ASC_MAST[k];
-        return `<div class="aopt${lk?' lk':''}"><div><b>${nm}</b><span>${ds}</span></div>${lk?`<button class="btn" disabled data-lock="1">Mastery ${ASC_MAST[k]}</button>`:`<button class="btn primary" data-act="asc${k}" data-cost="${c}">${c}</button>`}</div>`}).join('')}</div>`;
-    }else{
-      const [nm,ds]=ascInfo(ty,t.ak),pt=ascPartner(t);
-      body=comp+`<div class="aopt on"><div><b>${nm}</b><span>${ds}</span></div></div>`+
-        (AT>=ASC_MAX?`<p class="anote on">Fully ascended: ×${ascBoost(t).dmg.toFixed(2)} damage, ×${ascBoost(t).rate.toFixed(2)} fire rate, ×${ascBoost(t).range.toFixed(2)} range.</p>`:
-        `<div class="mrow"><p class="anote">${pt?`Merge another ${ASC_NAME[AT]} ${TOWERS[ty].name} into this one for ${ASC_NAME[AT+1]}: ×1.75 damage, ×1.2 fire rate, ×1.12 range.`:`For ${ASC_NAME[AT+1]}, ascend another ${TOWERS[ty].name}${AT>=2?' to Ascended II':''} and merge it into this one.`}</p><button class="btn primary ascgo" data-act="merge" ${pt?'':'disabled'}>Merge</button></div>`);
-    }
+      body+=`<div class="sec" style="margin:2px 0 0">Choose an ascension</div><div class="aopts">${[0,1,2].map(k=>{const [nm,ds]=ascInfo(ty,k),lk=mL<ASC_MAST[k],pl=(t.p||[])[k]<5,tk=!lk&&!pl&&ascTaken(ty,k,t);
+        return `<div class="aopt${lk||tk||pl?' lk':''}"><div><b>${nm}</b><span>${pl?`Linked to ${u.p[k].name}, which you did not max.`:tk?`Already on another ${TOWERS[ty].name}.`:ds}</span></div>${pl?`<button class="btn" disabled data-lock="1">${u.p[k].name}</button>`:lk?`<button class="btn" disabled data-lock="1">Mastery ${ASC_MAST[k]}</button>`:tk?`<button class="btn" disabled data-lock="1">In use</button>`:`<button class="btn primary" data-act="asc${k}" data-cost="${c}">${c}</button>`}</div>`}).join('')}</div>`;
+    }else body+=`<p class="anote">Max your two active paths to ascend. Each ascension is linked to a path, and each can be on the board once at a time.${mL<ASC_MAST[0]?` Ascension unlocks at Mastery ${ASC_MAST[0]}.`:''}</p>`;
+  }else{
+    const [nm,ds]=ascInfo(ty,t.ak),pt=ascPartner(t);
+    body+=`<div class="aopt on"><div><b>${nm}</b><span>${ds}</span></div></div>`+
+      (AT>=ASC_MAX?`<p class="anote on">Fully ascended: ×${ascBoost(t).dmg.toFixed(2)} damage, ×${ascBoost(t).rate.toFixed(2)} fire rate, ×${ascBoost(t).range.toFixed(2)} range.</p>`:
+      `<div class="mrow"><p class="anote">${pt?`Merge another ${ASC_NAME[AT]} ${TOWERS[ty].name} into this one for ${ASC_NAME[AT+1]}: ×1.75 damage, ×1.2 fire rate, ×1.12 range.`:`For ${ASC_NAME[AT+1]}, ascend another ${TOWERS[ty].name}${AT>=2?' to Ascended II':''} and merge it into this one.`}</p><button class="btn primary ascgo" data-act="merge" ${pt?'':'disabled'}>Merge</button></div>`);
   }
   const mb=mastBadge(mL),nu=MAST_UNLOCKS.find(x=>x[0]>mL);
   sh.style.setProperty('--tc',TOWERS[ty].color);
@@ -4618,11 +4688,24 @@ function renderSheet(){shLast='';
     <div class="tkl"><span>Snuffs this run</span><b id="shK">${t.kills||0}</b></div>
     <div class="mbr" style="--c:${TOWERS[ty].color}"><div class="mbh"><span>Mastery <b id="shML">${mL}</b><em id="shMU"></em></span><span id="shMX"></span></div><span class="mtr"><i id="shMF"></i></span></div>
     <div class="mst">${[mPrest(ty)?`Prestige ${ROM[mPrest(ty)]}`:'',mb||'',nu?`next: ${nu[1]} at ${nu[0]}`:''].filter(Boolean).join(' · ')}</div>`;
-  sh.hidden=false;afford();
+  sh.hidden=false;afford();revealSel();
+}
+let boardShift=0;
+/* 1.2: lift the board so the selected lantern is never hidden behind the upgrade panel */
+function revealSel(again){
+  const sh=$('#sheet'),apply=v=>{v=Math.round(v);if(v===boardShift)return;boardShift=v;cv.style.transform=v?`translateY(${-v}px)`:'';$('#board').classList.toggle('shifted',!!v)};
+  const s=G&&G.sel;
+  if(!s||s.kind!=='tower'||sh.hidden||ROT||document.documentElement.classList.contains('lside')){apply(0);return}
+  const r=cv.getBoundingClientRect(),base=r.top+boardShift,bt=$('#board').getBoundingClientRect().top;
+  const op=sh.offsetParent,sTop=(op?op.getBoundingClientRect().top:0)+sh.offsetTop;   /* layout position, ignores the slide-in animation */
+  const cy=base+(s.t.y+.5)*S,towerTop=base+s.t.y*S,mid=Math.min(bt+(sTop-bt)*.62,sTop-S*1.7);
+  /* keep the tower and its range ring in the open part of the board: centre it above the panel when it sits low */
+  apply(cy>mid?Math.max(0,Math.min(cy-mid,towerTop-bt-4)):0);
+  if(!again){clearTimeout(revealSel.t);revealSel.t=setTimeout(()=>revealSel(true),300)}
 }
 function buildAt(type,x,y){
   const c=buildCost(type);if(G.gold<c||!canPlace(x,y))return false;G.gold-=c;if(G.patron>0)G.patron--;
-  G.towers.push({type,x,y,p:[ml('veteran')?1:0,0],cd:0,spent:c});G.used.add(type);gainBXP(2);sfx('place');
+  G.towers.push({type,x,y,p:[ml('veteran')?1:0,0,0],cd:0,spent:c});G.used.add(type);gainBXP(2);sfx('place');
   puff(x+.5,y+.5,TOWERS[type].color,10);G.fx.push({k:'r',x:x+.5,y:y+.5,r:.6,life:.3,max:.3,col:TOWERS[type].color});
   hud();return true;
 }
@@ -4634,14 +4717,14 @@ $('#sheet').onclick=e=>{
   if(a==='info'){openTInfo(t);return}
   if(a==='close'){G.sel=null}
   else if(a==='sell'){sfx('sell');G.gold+=Math.round(t.spent*runSell());G.towers=G.towers.filter(x=>x!==t);G.sel=null}
-  else if(a==='p0'||a==='p1'){
-    const i=+a[1],ps=pathState(t,i);if(ps.max||ps.lock||G.gold<ps.cost)return;
-    G.gold-=ps.cost;t.spent+=ps.cost;(t.p||(t.p=[0,0]))[i]++;t._fk=null;gainBXP(3+t.p[i]);sfx('upgrade');
-    G.fx.push({k:'r',x:t.x+.5,y:t.y+.5,r:t.p[i]>=5?1.1:.7,life:.35,max:.35,col:i?'#bfe3ff':TOWERS[t.type].color});
-    if(t.p[0]>=5&&t.p[1]>=5)toast(`${TOWERS[t.type].name} is ready to ascend`,G.mast[t.type]>=ASC_MAST[0]?'Choose an ascension type in its panel.':`Ascension unlocks at Mastery ${ASC_MAST[0]}.`);
+  else if(a==='p0'||a==='p1'||a==='p2'){
+    const i=+a[1],ps=pathState(t,i);if(ps.max||ps.blocked||ps.lock||G.gold<ps.cost)return;
+    G.gold-=ps.cost;t.spent+=ps.cost;(t.p=padP(t.p))[i]++;t._fk=null;gainBXP(3+t.p[i]);sfx('upgrade');
+    G.fx.push({k:'r',x:t.x+.5,y:t.y+.5,r:t.p[i]>=5?1.1:.7,life:.35,max:.35,col:i?PCOL[i]:TOWERS[t.type].color});
+    if(!isAsc(t)&&t.p[i]>=5&&maxedPaths(t)===2)toast(`${TOWERS[t.type].name} is ready to ascend`,G.mast[t.type]>=ASC_MAST[0]?'Choose an ascension for one of its paths in its panel.':`Ascension unlocks at Mastery ${ASC_MAST[0]}.`);
   }else if(a.startsWith('asc')){
     const k=+a.slice(3),c=ascCost(t.type);
-    if(isAsc(t)||!(t.p&&t.p[0]>=5&&t.p[1]>=5)||G.mast[t.type]<ASC_MAST[k]||G.gold<c)return;
+    if(isAsc(t)||maxedPaths(t)<2||t.p[k]<5||ascTaken(t.type,k,t)||G.mast[t.type]<ASC_MAST[k]||G.gold<c)return;
     G.gold-=c;t.spent+=c;t.ak=k;t.at=1;t._fk=null;gainBXP(15);sfx('ascend');
     const [nm,ds]=ascInfo(t.type,k);
     G.fx.push({k:'r',x:t.x+.5,y:t.y+.5,r:1.4,life:.6,max:.6,col:'#ffd75e'});puff(t.x+.5,t.y+.5,'#ffd75e',20);
@@ -4824,7 +4907,7 @@ function lantern(t,cx,cy,col,c2,S2){
   else if(t==='bolt'){ctx.moveTo(cx,cy-r*1.3);ctx.lineTo(cx+r*1.2,cy+r);ctx.lineTo(cx-r*1.2,cy+r)}
   else if(t==='lance'){ctx.moveTo(cx,cy-r*1.6);ctx.lineTo(cx+r*.6,cy-r*.5);ctx.lineTo(cx+r*.25,cy-r*.5);ctx.lineTo(cx+r*.25,cy+r*1.3);ctx.lineTo(cx-r*.25,cy+r*1.3);ctx.lineTo(cx-r*.25,cy-r*.5);ctx.lineTo(cx-r*.6,cy-r*.5)}
   else if(t==='venom'){ctx.moveTo(cx,cy-r*1.5);ctx.quadraticCurveTo(cx+r*1.2,cy+r*.1,cx,cy+r*1.1);ctx.quadraticCurveTo(cx-r*1.2,cy+r*.1,cx,cy-r*1.5)}
-  else if(t==='mint'){ctx.arc(cx,cy,r*1.15,0,7);ctx.fill();ctx.fillStyle='#090d0e';ctx.beginPath();ctx.rect(cx-r*.35,cy-r*.35,r*.7,r*.7)}
+  else if(t==='mint'){ctx.moveTo(cx,cy+r*.1);ctx.quadraticCurveTo(cx-r*.2,cy-r*1.1,cx-r*1.35,cy-r*1.0);ctx.quadraticCurveTo(cx-r*1.2,cy+r*.1,cx,cy+r*.1);ctx.moveTo(cx,cy-r*.15);ctx.quadraticCurveTo(cx+r*.2,cy-r*1.5,cx+r*1.35,cy-r*1.3);ctx.quadraticCurveTo(cx+r*1.2,cy-r*.15,cx,cy-r*.15);ctx.fill();ctx.lineWidth=Math.max(1.5,r*.32);ctx.beginPath();ctx.moveTo(cx,cy+r*1.35);ctx.lineTo(cx,cy-r*.2);ctx.stroke();return}
   else if(t==='beacon'){for(let i=0;i<8;i++){const a=i*Math.PI/4-Math.PI/2,rr=i%2?r*.45:r*1.5;ctx.lineTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr)}}
   else if(t==='comet'){ctx.arc(cx+r*.3,cy-r*.3,r*.8,0,7);ctx.fill();ctx.lineWidth=Math.max(1.5,S*.04);ctx.beginPath();ctx.moveTo(cx-r*.3,cy+r*.3);ctx.lineTo(cx-r*1.3,cy+r*1.3);ctx.stroke();return}
   else if(t==='moonwell'){ctx.arc(cx,cy,r*1.3,0,7);ctx.fill();ctx.fillStyle='#090d0e';ctx.beginPath();ctx.arc(cx+r*.6,cy-r*.35,r*1.05,0,7);ctx.fill();return}
@@ -4848,7 +4931,7 @@ function draw(){
       else if(!TOWERS[s.t.type].passive){const r=tStats(s.t).range*S;ctx.beginPath();ctx.arc((x+.5)*S,(y+.5)*S,r,0,7);ctx.fillStyle=hexA(TH.acc,.07);ctx.fill();ctx.strokeStyle=hexA(TH.acc,.4);ctx.lineWidth=1;ctx.stroke()}
     }}
   ctx.globalCompositeOperation='lighter';
-  for(const t of G.towers){const cx=(t.x+.5)*S,cy=(t.y+.5)*S,col=skinColor(curSkin(t.type),T),R=S*(1+.04*((t.p?t.p[0]+t.p[1]:0)+(isAsc(t)?2:0)))*(1+(t.flash?.15:0)+.04*Math.sin(T*3+t.x));
+  for(const t of G.towers){const cx=(t.x+.5)*S,cy=(t.y+.5)*S,col=skinColor(curSkin(t.type),T),R=S*(1+.04*((t.p?t.p.reduce((x,y)=>x+(y||0),0)*.8:0)+(isAsc(t)?2:0)))*(1+(t.flash?.15:0)+.04*Math.sin(T*3+t.x));
     const g=ctx.createRadialGradient(cx,cy,0,cx,cy,R);g.addColorStop(0,hexA(col,.3));g.addColorStop(1,hexA(col,0));ctx.fillStyle=g;ctx.fillRect(cx-R,cy-R,R*2,R*2)}
   ctx.globalCompositeOperation='source-over';
   for(const t of G.towers){const cx=(t.x+.5)*S,cy=(t.y+.5)*S,sk=curSkin(t.type),col=skinColor(sk,T),so={pz:t._pz!=null?T-t._pz:null,tilt:.3+.12*Math.sin(T*.4+t.x)};upright(ctx,cx,cy,()=>{
@@ -4868,15 +4951,16 @@ function draw(){
       ctx.restore();
       if(AT>=2){ctx.fillStyle=ac;for(let i=0;i<AT;i++){const px=cx+(i-(AT-1)/2)*S*.12;ctx.beginPath();ctx.arc(px,cy+S*.52,S*.035,0,7);ctx.fill()}}
       ctx.fillStyle=ac;ctx.beginPath();const kx=cx,ky=cy-S*.5,k=S*.09;ctx.moveTo(kx-k*1.4,ky+k*.6);ctx.lineTo(kx-k*1.4,ky-k*.4);ctx.lineTo(kx-k*.6,ky+k*.1);ctx.lineTo(kx,ky-k*.8);ctx.lineTo(kx+k*.6,ky+k*.1);ctx.lineTo(kx+k*1.4,ky-k*.4);ctx.lineTo(kx+k*1.4,ky+k*.6);ctx.closePath();ctx.fill()}
-    else{const pp=t.p||[0,0];   /* path pips: path 1 fans out to the lower left, path 2 to the lower right */
+    else{const pp=padP(t.p);   /* path pips: path 1 fans out to the lower left, path 2 to the lower right, path 3 across the top */
       for(let i=0;i<pp[0];i++){const a=Math.PI*(.6+i*.085);ctx.fillStyle=col;ctx.beginPath();ctx.arc(cx+Math.cos(a)*S*.44,cy+Math.sin(a)*S*.44,S*.04,0,7);ctx.fill()}
-      for(let i=0;i<pp[1];i++){const a=Math.PI*(.4-i*.085);ctx.fillStyle='#bfe3ff';ctx.beginPath();ctx.arc(cx+Math.cos(a)*S*.44,cy+Math.sin(a)*S*.44,S*.04,0,7);ctx.fill()}}})}
+      for(let i=0;i<pp[1];i++){const a=Math.PI*(.4-i*.085);ctx.fillStyle='#bfe3ff';ctx.beginPath();ctx.arc(cx+Math.cos(a)*S*.44,cy+Math.sin(a)*S*.44,S*.04,0,7);ctx.fill()}
+      for(let i=0;i<pp[2];i++){const a=Math.PI*(1.42+i*.04);ctx.fillStyle='#e0b8ff';ctx.beginPath();ctx.arc(cx+Math.cos(a)*S*.44,cy+Math.sin(a)*S*.44,S*.04,0,7);ctx.fill()}}})}
   /* drag ghost: green tile = valid, red = blocked, dashed circle = range */
   if(drag&&drag.on){const p=dragPos(),c=cellAt(p.x,p.y);
     if(c){const ok=canPlace(c.x,c.y),gx=(c.x+.5)*S,gy=(c.y+.5)*S,col=TOWERS[drag.t].color;
       ctx.fillStyle=ok?'rgba(155,227,169,.22)':'rgba(255,96,96,.28)';ctx.fillRect(c.x*S,c.y*S,S,S);
       ctx.strokeStyle=ok?'rgba(155,227,169,.9)':'rgba(255,96,96,.9)';ctx.lineWidth=2;ctx.strokeRect(c.x*S+1,c.y*S+1,S-2,S-2);
-      if(ok){const tw={type:drag.t,x:c.x,y:c.y,p:[0,0]},st=tStats(tw);
+      if(ok){const tw={type:drag.t,x:c.x,y:c.y,p:[0,0,0]},st=tStats(tw);
         if(drag.t==='beacon'){ctx.strokeStyle=hexA(col,.6);ctx.setLineDash([4,4]);ctx.strokeRect((c.x-1)*S,(c.y-1)*S,S*3,S*3);ctx.setLineDash([])}
         else if(st.range){ctx.strokeStyle=hexA(col,.7);ctx.setLineDash([5,5]);ctx.beginPath();ctx.arc(gx,gy,st.range*S,0,7);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=hexA(col,.06);ctx.fill()}}
       ctx.globalAlpha=ok?.95:.5;ctx.fillStyle='#090d0e';ctx.beginPath();ctx.arc(gx,gy,S*.33,0,7);ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=Math.max(1.5,S*.05);ctx.stroke();
@@ -4943,13 +5027,13 @@ cv.addEventListener('pointerdown',e=>{if(e.button===2)return;
 
 /* ---------- 0.21.0: first-run tutorial ---------- */
 let tutI=-1,tutHL=null,tutBase=0,tutPing=0;
-const tSum=()=>G.towers.reduce((a,t)=>a+(t.p?t.p[0]+t.p[1]:0),0);
+const tSum=()=>G.towers.reduce((a,t)=>a+(t.p?t.p.reduce((x,y)=>x+(y||0),0):0),0);
 const TUT=[
   {t:'Hang your first lanterns',b:'Drag a <b>Spark</b> from the tray onto the grass where it can reach a lot of trail, like the inside of a bend. The pulsing tile is a good spot. Hang two of them.',el:()=>$('#tray [data-drag="spark"]'),best:'spark',done:()=>G.towers.length>=2},
   {t:'Send the first wave',b:'Lanterns fire at anything inside their ring. When you’re ready, press <b>Send wave</b>.',el:()=>$('#send'),done:()=>G.state==='wave'||G.wave>=1},
   {t:'Hold the trail',b:'Foes walk the trail toward your camp. Each one that gets through costs lives, and each one you snuff pays gold.',done:()=>G.wave>=1&&G.state!=='wave'},
   {t:'Open your lantern',b:'Tap one of your <b>Sparks</b> on the board to see its upgrades.',ring:1,done:()=>!$('#sheet').hidden},
-  {t:'Pick an upgrade path',b:'Every lantern has two paths of five tiers. Buy a tier as soon as you have the gold. Each one costs more than the last.',el:()=>$('#sheet'),enter:()=>{tutBase=tSum()},done:()=>tSum()>tutBase},
+  {t:'Pick an upgrade path',b:'Every lantern has three paths of five tiers, and you can use two of them. Buy a tier as soon as you have the gold. Each one costs more than the last.',el:()=>$('#sheet'),enter:()=>{tutBase=tSum()},done:()=>tSum()>tutBase},
   {t:'Mix your lanterns',b:'Close the upgrades and build a <b>Cinder</b>. Its fire burns every foe in a ring around it, which is great against crowds.',el:()=>$('#sheet').hidden?$('#tray [data-drag="cinder"]'):$('#sheet [data-act="close"]'),done:()=>G.towers.some(t=>t.type==='cinder')},
   {t:'You’re ready',b:'Every 5th wave brings this world’s <b>boss</b>, and each one has its own tricks. Fill the <b>Boons</b> bar to pick power-ups for this run. Embers you bring home buy camp upgrades. Turn on <b>Auto</b> when you want waves to roll on their own.',el:()=>$('#boonBtn'),ok:1}
 ];
@@ -5013,7 +5097,8 @@ function loop(now){
 meta.depth=Math.min(meta.depth,meta.maxDepth);
 applySkins();campPreview();
 new ResizeObserver(resize).observe($('#board'));applyLayout();resize();
-addEventListener('resize',applyLayout);
+try{if(self!==top)document.documentElement.classList.add('inframe')}catch(e){document.documentElement.classList.add('inframe')}
+addEventListener('resize',applyLayout);addEventListener('resize',()=>revealSel(true));
 go('home');renderTray();hud(true);
 storageInit().then(()=>{maybeMajor();cloudInit();sbInit()});
 checkVersion(false);loadNews();

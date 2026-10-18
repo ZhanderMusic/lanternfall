@@ -99,7 +99,7 @@ In the tables, **Per level** is what each level adds, **At max** is the total at
 | **Frost lore** | Frost deals +2.5% damage. | 12 | +30% | 22 | 1,786 |
 | **Lance lore** | Lance deals +2.5% damage. | 12 | +30% | 22 | 1,786 |
 | **Venom lore** | Venom deals +2.5% damage. | 12 | +30% | 22 | 1,786 |
-| **Mint lore** | Mints earn 4% more gold. | 12 | +48% | 22 | 1,786 |
+| **Sapling lore** | Saplings grow 4% faster. | 12 | +48% | 22 | 1,786 |
 | **Bolt lore** | Bolt deals +2.5% damage. | 12 | +30% | 22 | 1,786 |
 | **Beacon lore** | Beacon boosts are half a point stronger. | 12 | +6 | 22 | 1,786 |
 | **Comet lore** | Comet deals +2.5% damage. | 12 | +30% | 22 | 1,786 |

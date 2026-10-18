@@ -28,6 +28,14 @@
       "title": "Your progress can follow you now",
       "body": "Turn on Online backup in Settings and sign in with Google, and your progress follows you to any device. Prefer to carry it yourself? Save as file and Import from file move it in a tap.",
       "art": "cloud"
+    },
+    {
+      "id": "v12",
+      "date": "2026-10-18",
+      "tag": "Release",
+      "title": "Lanternfall 1.2: Crossroads",
+      "body": "Paths can cross over themselves. Every lantern gets a third upgrade path, but only two can be active, and each ascension is linked to a path. The Mint is now the Sapling, a support lantern that grows every wave, and all Mint skins carried over. Lantern prestige also gives +5% embers and +5% XP.",
+      "art": "crossroads"
     }
   ]
 }

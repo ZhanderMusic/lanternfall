@@ -2,7 +2,7 @@
 
 [← Docs home](README.md) · [Play Lanternfall](https://zhandermusic.github.io/lanternfall/)
 
-Twelve lanterns, each with two upgrade paths, three ascension types and up to two merges.
+Twelve lanterns, each with three upgrade paths, three ascension types and up to two merges.
 
 ## Contents
 
@@ -14,7 +14,7 @@ Twelve lanterns, each with two upgrade paths, three ascension types and up to tw
 - [Frost](#frost)
 - [Lance](#lance)
 - [Venom](#venom)
-- [Mint](#mint)
+- [Sapling](#sapling)
 - [Bolt](#bolt)
 - [Beacon](#beacon)
 - [Comet](#comet)
@@ -31,7 +31,7 @@ Twelve lanterns, each with two upgrade paths, three ascension types and up to tw
 | **Frost** | Control | 45 | 3 | 1.2 | 2 | slows 40% | Lanterns page, 8 embers |
 | **Lance** | Damage | 50 | 11 | 0.9 | 2.7 | pierces 4 | Lanterns page, 12 embers |
 | **Venom** | Control | 50 | 2 | 1 | 2.2 | poison 7/s | Lanterns page, 15 embers |
-| **Mint** | Support | 60 | – | – | – | passive | Lanterns page, 20 embers |
+| **Sapling** | Support | 60 | – | – | – | passive | Lanterns page, 20 embers |
 | **Bolt** | Area | 80 | 16 | 0.7 | 2.6 | chains 3 | Lanterns page, 25 embers |
 | **Beacon** | Support | 70 | – | – | – | passive | Lanterns page, 30 embers |
 | **Comet** | Area | 110 | 75 | 0.28 | 4.2 | splash 0.7 | Lanterns page, 40 embers |
@@ -43,7 +43,7 @@ Damage is per hit, fire rate is shots per second and range is in tiles. These ar
 
 ## How upgrades work
 
-- Every lantern has **two paths of five tiers**. You can buy both paths all the way to tier 5.
+- Every lantern has **three paths of five tiers**. A lantern can only use **two of its three paths**: once two have upgrades, the third is locked. Max both to ascend. Each ascension is **linked to a path** (the first ascension to path 1, and so on), so the paths you pick decide which ascensions you can choose. Each ascension type can be on the board once at a time. The third path unlocks at mastery 40.
 - Every tier also gives a **core boost** on top of its listed effect: about +17% damage and +0.05 range.
 - Damage and fire-rate boosts from tiers are softened a little as they stack, and extra targets from multi-shot upgrades deal half damage.
 - **Tier prices** are a multiple of the lantern's build cost: ×1.3, ×1.95, ×3, ×4.7 and ×7.4 for tiers 1 to 5, and then 15% more on top of that. Camp upgrades like Thrift and Appraiser lower them.
@@ -275,46 +275,24 @@ Each mastery level also adds **+0.5% damage**, and every 10 levels add **+2% fir
 | 50 | **Blight:** Deals double damage to bosses, poison included. |
 | 70 | **Miasma:** Every shot leaves a wide toxic cloud for 3 seconds. |
 
-## Mint
+## Sapling
 
-*Earns gold after each wave.*
+*Grows stronger every wave and boosts nearby lanterns.*
 
 **Role:** Support · **Cost:** 60 gold · **Get it:** Lanterns page, 20 embers
 
-Passive: doesn't attack.
+Passive: doesn't attack. It replaces the old Mint, and every Mint skin carried over to it.
 
-- **How it works:** Does not attack. It pays gold at the end of every wave.
-- **Strong against:** Building a bigger defense over a long run.
-- **Weak against:** Gold you spend on it now is gold you are not spending on damage.
-- **Tip:** Build it early, while waves are easy, so it has time to pay for itself.
+- **How it works:** Starts small and grows one stage every wave it stands on the board, up to stage 20. Each stage gives lanterns within 1 tile more damage and fire rate.
+- **Strong against:** Long runs, where it becomes one of the strongest boosts.
+- **Weak against:** It adds no damage on its own and starts weak.
+- **Tip:** Build it early. It only grows while it is on the board.
 
-**Path 1: Coinage**
+**Roots:** grows faster and can grow higher.
+**Bloom:** each stage gives more damage and fire rate.
+**Canopy:** starts with stages already grown, adds range to nearby lanterns, and reaches 1 tile farther.
 
-| Tier | Upgrade | Effect | Cost | Mastery |
-|---:|---|---|---:|---:|
-| 1 | Fresh press | +25% gold. | 90 | 1 |
-| 2 | Silver dies | +25% gold. | 135 | 1 |
-| 3 | Lucky coin | Foes defeated within 1 tile give 15% more gold. | 207 | 1 |
-| 4 | Gold dies | +40% gold. | 324 | 20 |
-| 5 | Royal mint | +50% gold. | 511 | 30 |
-
-**Path 2: Bank**
-
-| Tier | Upgrade | Effect | Cost | Mastery |
-|---:|---|---|---:|---:|
-| 1 | Savings | After each wave, earn 2% interest on your gold (up to 10). | 90 | 10 |
-| 2 | Deposits | +1% interest, up to 10 more. | 135 | 10 |
-| 3 | Bounty board | Each boss defeated pays 15 extra gold. | 207 | 10 |
-| 4 | Compound | +1% interest, up to 15 more. | 324 | 20 |
-| 5 | Vault | +50% gold. Interest up to 15 more. | 511 | 30 |
-
-**Ascensions** (360 gold)
-
-| Mastery | Ascension |
-|---:|---|
-| 30 | **Treasury:** Earns double gold after each wave. |
-| 50 | **Midas:** Foes defeated within 2 tiles give 30% more gold. |
-| 70 | **Jackpot:** After each wave, a 20% chance to pay out triple. |
+Ascensions: **Evergreen** (grows twice as fast, 10 stages higher), **Wild seed** (nearby lanterns gain crit chance per stage), **World tree** (reaches farther, grows higher, more damage per stage).
 
 ## Bolt
 

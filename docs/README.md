@@ -29,7 +29,7 @@ New to the game? Read **[How to play](how-to-play.md)** first, then the **[Strat
 |---|---|
 | Waves to win a campaign | 40 (then end the run or keep going) |
 | Lanterns | 12 (9 from camp, 3 from the Season 1 Pass) |
-| Upgrades per lantern | 2 paths × 5 tiers, then 3 ascension types and 2 merges |
+| Upgrades per lantern | 3 paths × 5 tiers (2 active), then 3 ascension types and 2 merges |
 | Worlds | 21 (the Surface level plus depths 1–20) |
 | Foes | 25, plus 4 event foes |
 | Boons | 53 across 5 rarities |
@@ -48,7 +48,7 @@ New to the game? Read **[How to play](how-to-play.md)** first, then the **[Strat
 | **Moonstones** | Premium currency from level ups, first world clears and the pass, spent in the Shop. |
 | **Candy** | Event currency, earned only in the event world. |
 | **Boon** | A run-long bonus you pick from a hand of cards when your boon XP levels up. |
-| **Path / tier** | Each lantern has two upgrade paths with five tiers each. |
+| **Path / tier** | Each lantern has three upgrade paths with five tiers each. |
 | **Ascend** | Once both paths are maxed, a lantern can ascend for a big new power. |
 | **Merge** | Combine two ascended lanterns of the same type into Ascended II, then III. |
 | **Mastery** | A permanent 1–100 level for each lantern that unlocks its later upgrades. |

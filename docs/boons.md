@@ -115,7 +115,7 @@ These odds assume every lantern is unlocked and nothing is excluded. **Lucky dra
 | **Louder toll** | The Hollow Bell reaches 20% farther. | Hollow Bell on the board |
 | **Barbed tips** | Lance spears pierce 2 more foes and hit 20% harder. | Lance on the board |
 | **Long throw** | Lances reach 25% farther. | Lance on the board |
-| **Struck coin** | Mints earn 50% more gold. | Mint on the board |
+| **Fertile ground** | Saplings grow 50% faster. | Sapling on the board |
 | **Brighter moon** | Moonwell beams burn 25% hotter. | Moonwell on the board |
 | **Lucky sparks** | Spark darts gain 12% chance to deal triple damage. | Spark on the board |
 | **Spark storm** | Sparks fire 20% faster. | Spark on the board |
