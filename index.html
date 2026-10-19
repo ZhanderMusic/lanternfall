@@ -2457,6 +2457,8 @@ const PRSK=[
 const prPrice=p=>350+70*(p-1);
 PRSK.forEach(([p,t,name,cy,sig])=>SKINS[t].push({id:'pr'+p,name,rar:'prestige',color:cy[0],col2:cy[1],cycle:cy,pr:p,sig,moon:prPrice(p)}));
 ORDER.forEach(t=>SKINS[t].forEach(s=>{s.tw=t}));
+/* moonstone skins cost twice as much as they used to (event shop and prestige prices are separate) */
+ORDER.forEach(t=>SKINS[t].forEach(s=>{if(s.moon&&!s.pr&&!s.evShop)s.moon*=2}));
 const SEASON={n:1,name:'The Hollow Moon',end:new Date(2026,10,1,0,0,0)};
 /* limited-time events: their own world, currency and 25-tier pass */
 const EVENT={id:'hw26',name:'Hollow Harvest',kind:'Halloween event',start:new Date(2026,9,14,0,0,0),end:new Date(2026,10,1,0,0,0)};   /* 1.0.0: ends with Season 1 on November 1 */
@@ -3894,7 +3896,7 @@ function renderHow(){
     <li>Press <b>Send wave</b> when you're ready. You can keep building during a wave.</li>
     <li>Foes come in <b>clumps</b> with short pauses between them. Halfway through each wave you get half of the wave's gold bonus, and the rest when it's cleared.</li>
     <li><b>1×/2×/3×</b> changes game speed. <b>Auto</b> sends the next wave for you.</li>
-    <li>On a computer: <b>Space</b> sends the next wave, <b>1–9</b> pick a lantern to place, <b>U</b> and <b>I</b> upgrade the selected lantern's two paths, <b>M</b> merges, <b>F</b> changes speed, <b>P</b> pauses and <b>Esc</b> or right-click cancels.</li></ul></div>
+    <li>On a computer: <b>Space</b> sends the next wave, <b>1–9</b> pick a lantern to place, <b>U</b>, <b>I</b> and <b>O</b> upgrade the selected lantern's first, second and third paths, <b>M</b> merges, <b>F</b> changes speed, <b>P</b> pauses and <b>Esc</b> or right-click cancels.</li></ul></div>
   <div class="hc"><h3>Boons</h3><p>Every foe you snuff and every lantern upgrade you buy earns <b>boon XP</b>. Each time it levels up, <b>pick one boon</b> from a hand of cards (between waves if a wave is running). Each level needs a little more XP than the last. Tap <b>Boons</b> during a run to see the ones you have. Boons come in five rarities: Common, Rare, Legendary, Mythic and Exotic. Rarer ones are stronger but show up less often.</p></div>
   <div class="hc full"><h3>Foes</h3><div class="foes">${FOEINFO.map(([k,n,d])=>`<div class="foe"><canvas data-foe="${k}" width="88" height="88" aria-hidden="true"></canvas><b>${n}</b><span>${d}</span></div>`).join('')}</div></div>
   <div class="hc"><h3>Embers &amp; camp</h3><p>Every run pays out <b>embers</b>, win or lose. Spend them on new lanterns, skins and camp upgrades that make every future run stronger.</p></div>
@@ -4731,6 +4733,7 @@ addEventListener('keydown',e=>{
   if(i>=0&&own[i]){armT=armT===own[i]?null:own[i];G.sel=null;renderTray();return}
   if(k==='u'&&G.sel){const b=document.querySelector('#sheet [data-act=p0]');if(b&&!b.disabled)b.click();return}
   if(k==='i'&&G.sel){const b=document.querySelector('#sheet [data-act=p1]');if(b&&!b.disabled)b.click();return}
+  if(k==='o'&&G.sel){const b=document.querySelector('#sheet [data-act=p2]');if(b&&!b.disabled)b.click();return}
   if(k==='m'&&G.sel){const b=document.querySelector('#sheet [data-act=merge]');if(b&&!b.disabled)b.click();return}
   if(k==='f'){$('#spd').click();return}
   if(k==='p'){$('#menuBtn').click();return}
