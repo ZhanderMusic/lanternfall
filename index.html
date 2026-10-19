@@ -4926,7 +4926,7 @@ function draw(){
   if(s){const x=s.kind==='cell'?s.x:s.t.x,y=s.kind==='cell'?s.y:s.t.y;
     ctx.strokeStyle=hexA(TH.acc,.85);ctx.lineWidth=2;ctx.strokeRect(x*S+2,y*S+2,S-4,S-4);
     if(s.kind==='tower'){
-      if(s.t.type==='beacon'){const R=tStats(s.t).radius,n=R*2+1;ctx.fillStyle=hexA(TOWERS.beacon.color,.08);ctx.fillRect((x-R)*S,(y-R)*S,S*n,S*n);ctx.strokeStyle=hexA(TOWERS.beacon.color,.45);ctx.lineWidth=1;ctx.strokeRect((x-R)*S+.5,(y-R)*S+.5,S*n-1,S*n-1)}
+      if(s.t.type==='beacon'||s.t.type==='mint'){const R=tStats(s.t).radius,n=R*2+1,bc=TOWERS[s.t.type].color;ctx.fillStyle=hexA(bc,.08);ctx.fillRect((x-R)*S,(y-R)*S,S*n,S*n);ctx.strokeStyle=hexA(bc,.45);ctx.lineWidth=1;ctx.strokeRect((x-R)*S+.5,(y-R)*S+.5,S*n-1,S*n-1)}
       else if(!TOWERS[s.t.type].passive){const r=tStats(s.t).range*S;ctx.beginPath();ctx.arc((x+.5)*S,(y+.5)*S,r,0,7);ctx.fillStyle=hexA(TH.acc,.07);ctx.fill();ctx.strokeStyle=hexA(TH.acc,.4);ctx.lineWidth=1;ctx.stroke()}
     }}
   ctx.globalCompositeOperation='lighter';
@@ -4960,7 +4960,7 @@ function draw(){
       ctx.fillStyle=ok?'rgba(155,227,169,.22)':'rgba(255,96,96,.28)';ctx.fillRect(c.x*S,c.y*S,S,S);
       ctx.strokeStyle=ok?'rgba(155,227,169,.9)':'rgba(255,96,96,.9)';ctx.lineWidth=2;ctx.strokeRect(c.x*S+1,c.y*S+1,S-2,S-2);
       if(ok){const tw={type:drag.t,x:c.x,y:c.y,p:[0,0,0]},st=tStats(tw);
-        if(drag.t==='beacon'){ctx.strokeStyle=hexA(col,.6);ctx.setLineDash([4,4]);ctx.strokeRect((c.x-1)*S,(c.y-1)*S,S*3,S*3);ctx.setLineDash([])}
+        if(drag.t==='beacon'||drag.t==='mint'){const R=st.radius||1;ctx.strokeStyle=hexA(col,.6);ctx.setLineDash([4,4]);ctx.strokeRect((c.x-R)*S,(c.y-R)*S,S*(R*2+1),S*(R*2+1));ctx.setLineDash([])}
         else if(st.range){ctx.strokeStyle=hexA(col,.7);ctx.setLineDash([5,5]);ctx.beginPath();ctx.arc(gx,gy,st.range*S,0,7);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=hexA(col,.06);ctx.fill()}}
       ctx.globalAlpha=ok?.95:.5;ctx.fillStyle='#090d0e';ctx.beginPath();ctx.arc(gx,gy,S*.33,0,7);ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=Math.max(1.5,S*.05);ctx.stroke();
       upright(ctx,gx,gy,()=>lantern(drag.t,gx,gy,col,ctx,S));ctx.globalAlpha=1}}
