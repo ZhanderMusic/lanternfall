@@ -1691,7 +1691,7 @@ const META=[
   {id:'frostbite',cat:'lan',name:'Frostbite',max:5,base:6,g:1.55,text:l=>`Frost slows 3% more. Now +${l*3}%.`},
   {id:'toxin',cat:'lan',name:'Toxicology',max:8,base:6,g:1.5,text:l=>`Venom and burn damage +8%. Now +${l*8}%.`},
   {id:'conductor',cat:'lan',name:'Conductor',max:3,base:12,g:1.9,text:l=>`Bolt chains to 1 more foe. Now +${l}.`},
-  {id:'veteran',cat:'lan',name:'Veteran lanterns',max:1,base:80,g:1,text:()=>'New lanterns come with their first path 1 upgrade for free.'},
+  {id:'veteran',cat:'lan',name:'Veteran lanterns',max:1,base:80,g:1,text:()=>'Every new lantern gets one free first-tier upgrade on any path you choose.'},
   {id:'forge',cat:'lan',name:'Forgemaster',max:5,base:10,g:1.6,text:l=>`Ascensions cost 6% less. Now −${l*6}%.`},
   /* Lantern lore: one per lantern, unlocks with the lantern */
   {id:'lo_spark',cat:'lore',tw:'spark',name:'Spark lore',max:6,base:9,g:1.55,text:l=>`Spark deals +5% damage. Now +${l*5}%.`},
@@ -2814,7 +2814,7 @@ function pathState(t,i){
   const tier=(t.p||[0,0,0])[i]||0;if(tier>=5)return{tier,max:true};
   if(pathBlocked(t,i))return{tier,blocked:true,next:1,info:UPG[t.type].p[i].tiers[0]};
   const next=tier+1,need=tierLockAt(i,next);
-  return{tier,next,cost:upTierCost(t.type,next),lock:G.mast[t.type]<need?need:0,info:UPG[t.type].p[i].tiers[next-1]};
+  return{tier,next,cost:t.fv&&next===1?0:upTierCost(t.type,next),free:!!(t.fv&&next===1),lock:G.mast[t.type]<need?need:0,info:UPG[t.type].p[i].tiers[next-1]};
 }
 function freeUpgrade(t){const p=t.p=padP(t.p);let best=-1;for(let i=0;i<3;i++){if(p[i]>=5||pathBlocked(t,i)||G.mast[t.type]<tierLockAt(i,p[i]+1))continue;if(best<0||p[i]<p[best])best=i}if(best>=0){p[best]++;t._fk=null}}
 
@@ -3246,7 +3246,7 @@ function pathFrom(cells,pts){const cum=[0];for(let i=1;i<pts.length;i++)cum.push
 function snapRun(){
   if(!G||G.state!=='build')return;
   meta[saveKey(runMode())]={v:2,ev:G.event?EVENT.id:undefined,depth:G.depth,world:G.world,diff:G.diff,wave:G.wave,lives:G.lives,gold:G.gold,bossKills:G.bossKills,kills:G.kills||0,ward:G.ward||0,patron:G.patron||0,sw:G.sw||0,bxp:G.bxp||0,blv:G.blv||0,bpend:G.bpend||0,
-    gf:G.gf||0,towers:G.towers.map(t=>({type:t.type,x:t.x,y:t.y,p:padP(t.p),ak:t.ak==null?null:t.ak,at:t.at||0,spent:t.spent,kills:t.kills||0,gs:t.gs||0})),path:{cells:G.path.cells,pts:G.path.pts},ot:G.over40?{mk:G.mk40,b:G.boss40}:null,
+    gf:G.gf||0,towers:G.towers.map(t=>({type:t.type,x:t.x,y:t.y,p:padP(t.p),ak:t.ak==null?null:t.ak,at:t.at||0,spent:t.spent,kills:t.kills||0,gs:t.gs||0,fv:t.fv||0})),path:{cells:G.path.cells,pts:G.path.pts},ot:G.over40?{mk:G.mk40,b:G.boss40}:null,
     m:G.m,taken:G.taken,mk:G.mk,used:[...G.used],at:Date.now()};
   save();
 }
@@ -3256,7 +3256,7 @@ function resumeRun(mode){
   newRun(r.depth,mode!=='campaign');if(mode==='event'){G.event=true}applyTheme(r.world);
   Object.assign(G,{gf:r.gf||0,world:r.world,diff:r.diff,wave:r.wave,lives:r.lives,gold:r.gold,bossKills:r.bossKills,kills:r.kills,ward:r.ward,patron:r.patron||0,sw:r.sw||0,bxp:r.bxp||0,blv:r.blv||0,bpend:r.bpend||0,
     m:Object.assign(G.m,r.m),taken:r.taken||{},mk:r.mk||{},used:new Set(r.used||[])});
-  G.towers=(r.towers||[]).filter(t=>TOWERS[t.type]).map(t=>({type:t.type,x:t.x,y:t.y,p:padP(t.p),ak:t.ak==null?undefined:t.ak,at:t.at||undefined,spent:t.spent,kills:t.kills||0,gs:t.gs||0,cd:0}));
+  G.towers=(r.towers||[]).filter(t=>TOWERS[t.type]).map(t=>({type:t.type,x:t.x,y:t.y,p:padP(t.p),ak:t.ak==null?undefined:t.ak,at:t.at||undefined,spent:t.spent,kills:t.kills||0,gs:t.gs||0,fv:t.fv||0,cd:0}));
   if(r.ot){G.over40=true;G.mk40=r.ot.mk||{};G.boss40=r.ot.b||0}
   G.path=pathFrom(r.path.cells,r.path.pts);G.amb=makeAmb();drawBG();
   return true;
@@ -4663,7 +4663,7 @@ function renderSheet(){shLast='';
   if(!s||s.kind!=='tower'||!G.towers.includes(s.t)||G.state==='over'||G.state==='camp'){sh.hidden=true;revealSel();return}
   const t=s.t,ty=t.type,st=tStats(t),u=UPG[ty],mL=G.mast[ty],refund=Math.round(t.spent*runSell()),AT=ascTier(t),mx=maxedPaths(t);
   const rows=[0,1,2].map(i=>{const ps=pathState(t,i),pn=u.p[i].name,c=PCOL[i];
-    const btn=ps.max?`<button class="btn pbuy" disabled>Maxed</button>`:ps.blocked?`<button class="btn pbuy" disabled data-lock="1">Locked</button>`:ps.lock?`<button class="btn pbuy" disabled data-lock="1">Mastery ${ps.lock}</button>`:`<button class="btn primary pbuy" data-act="p${i}" data-cost="${ps.cost}" aria-label="Upgrade ${pn} to tier ${ps.next}, ${ps.cost} gold">${ps.cost}</button>`;
+    const btn=ps.max?`<button class="btn pbuy" disabled>Maxed</button>`:ps.blocked?`<button class="btn pbuy" disabled data-lock="1">Locked</button>`:ps.lock?`<button class="btn pbuy" disabled data-lock="1">Mastery ${ps.lock}</button>`:`<button class="btn primary pbuy" data-act="p${i}" data-cost="${ps.cost}" aria-label="Upgrade ${pn} to tier ${ps.next}, ${ps.free?'free':ps.cost+' gold'}">${ps.free?'Free':ps.cost}</button>`;
     const nx=ps.max?`<span class="pnx">Path complete.</span>`:ps.blocked?`<span class="pnx">Only two paths can be active on one lantern.</span>`:`<span class="pnx"><b>${ps.info[0]}</b> ${ps.info[1]}${ps.lock?` <em>Unlocks at Mastery ${ps.lock}.</em>`:''}</span>`;
     return `<div class="prow${ps.max?' pmax':''}${ps.blocked?' pblk':''}" style="--pc:${c}"><div class="pmain"><div class="ptop"><b class="pname">${pn}</b>${tpips(ps.tier,c)}</div>${nx}</div>${btn}</div>`}).join('');
   let body=rows;
@@ -4704,7 +4704,7 @@ function revealSel(again){
 }
 function buildAt(type,x,y){
   const c=buildCost(type);if(G.gold<c||!canPlace(x,y))return false;G.gold-=c;if(G.patron>0)G.patron--;
-  G.towers.push({type,x,y,p:[ml('veteran')?1:0,0,0],cd:0,spent:c});G.used.add(type);gainBXP(2);sfx('place');
+  G.towers.push({type,x,y,p:[0,0,0],fv:ml('veteran')?1:0,cd:0,spent:c});G.used.add(type);gainBXP(2);sfx('place');
   puff(x+.5,y+.5,TOWERS[type].color,10);G.fx.push({k:'r',x:x+.5,y:y+.5,r:.6,life:.3,max:.3,col:TOWERS[type].color});
   hud();return true;
 }
@@ -4718,7 +4718,7 @@ $('#sheet').onclick=e=>{
   else if(a==='sell'){sfx('sell');G.gold+=Math.round(t.spent*runSell());G.towers=G.towers.filter(x=>x!==t);G.sel=null}
   else if(a==='p0'||a==='p1'||a==='p2'){
     const i=+a[1],ps=pathState(t,i);if(ps.max||ps.blocked||ps.lock||G.gold<ps.cost)return;
-    G.gold-=ps.cost;t.spent+=ps.cost;(t.p=padP(t.p))[i]++;t._fk=null;gainBXP(3+t.p[i]);sfx('upgrade');
+    G.gold-=ps.cost;t.spent+=ps.cost;if(ps.free)t.fv=0;(t.p=padP(t.p))[i]++;t._fk=null;gainBXP(3+t.p[i]);sfx('upgrade');
     G.fx.push({k:'r',x:t.x+.5,y:t.y+.5,r:t.p[i]>=5?1.1:.7,life:.35,max:.35,col:i?PCOL[i]:TOWERS[t.type].color});
     if(!isAsc(t)&&t.p[i]>=5&&maxedPaths(t)===2)toast(`${TOWERS[t.type].name} is ready to ascend`,G.mast[t.type]>=ASC_MAST[0]?'Choose an ascension for one of its paths in its panel.':`Ascension unlocks at Mastery ${ASC_MAST[0]}.`);
   }else if(a.startsWith('asc')){

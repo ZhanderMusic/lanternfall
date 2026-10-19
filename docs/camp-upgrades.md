@@ -87,7 +87,7 @@ In the tables, **Per level** is what each level adds, **At max** is the total at
 | **Frostbite** | Frost slows 1.5% more. | 10 | +15% | 14 | 669 |
 | **Toxicology** | Venom and burn damage +4%. | 16 | +64% | 14 | 2,978 |
 | **Conductor** | Bolt chains to 1 more foe. | 3 | +3 | 38 | 283 |
-| **Veteran lanterns** | New lanterns come with their first path 1 upgrade for free. | 1 | – | 256 | 256 |
+| **Veteran lanterns** | Every new lantern gets one free first-tier upgrade on any path you choose. | 1 | – | 256 | 256 |
 | **Forgemaster** | Ascensions cost 3% less. | 10 | −30% | 24 | 1,239 |
 
 ## Lore
