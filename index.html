@@ -5044,9 +5044,9 @@ function drawBG(){
 }
 /* the Sapling grows on the board: g runs 0..1 from sprout to full tree (more leaves, a taller stem) */
 function sapGlyph(ctx,cx,cy,r,g){
-  const n=1+Math.floor(g*4+.001),top=cy+r*1.2-r*(1.1+1.5*g),base=cy+r*1.2,k=.62+.38*g;
+  const n=1+Math.floor(g*4+.001),top=cy+r*1.05-r*(.9+.85*g),base=cy+r*1.05,k=.6+.3*g;   /* stays inside the lantern ring at full growth */
   ctx.lineWidth=Math.max(1.5,r*.32);ctx.beginPath();ctx.moveTo(cx,base);ctx.lineTo(cx,top);ctx.stroke();
-  for(let i=0;i<n;i++){const f=n===1?1:1-i/(n)*.78,y=base+(top-base)*f,d=(i%2?1:-1),L=r*1.25*k*(1-.12*i/Math.max(1,n));
+  for(let i=0;i<n;i++){const f=n===1?1:1-i/(n)*.78,y=base+(top-base)*f,d=(i%2?1:-1),L=r*1.1*k*(1-.12*i/Math.max(1,n));
     ctx.beginPath();ctx.moveTo(cx,y);ctx.quadraticCurveTo(cx+d*L*.2,y-L*.95,cx+d*L,y-L*.8);ctx.quadraticCurveTo(cx+d*L*.9,y+L*.05,cx,y);ctx.fill()}
   if(g>=.99){ctx.beginPath();ctx.arc(cx,top-r*.2,r*.45,0,7);ctx.fill()}
 }
