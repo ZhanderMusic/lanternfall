@@ -3475,7 +3475,7 @@ function doPrestige(){
   nm.prestige=prLv()+1;nm.prAt=(meta.prAt||[]).concat(Date.now());  meta=nm;save();applySkins();campPreview();return true;
 }
 let prArm=false;
-const PR_REWARD=p=>p===1?'Unlocks the Oblivion difficulty and the Prestige shop with 2 Prestige skins.':`Unlocks 2 more Prestige skins in the Prestige shop.`;
+const PR_REWARD=p=>(p===1?'Unlocks the Oblivion difficulty and the Prestige shop with 2 Prestige skins.':`Unlocks 2 more Prestige skins in the Prestige shop.`)+` Embers and XP from runs go up by +20% (to +${p*20}% in all).`;
 function renderPrestige(){
   const li=levelInfo(meta.xp),P=prLv(),can=li.max&&P<PMAX,pct=li.into/li.need;
   const pips=Array.from({length:PMAX},(_,i)=>`<i class="${i<P?'on':''}"></i>`).join('');
@@ -3487,6 +3487,7 @@ function renderPrestige(){
     ${P<PMAX?`<div class="prcols"><div class="k"><b>You keep</b><ul><li>Moonstones</li><li>Both passes and their rewards</li><li>Every skin and menu theme</li><li>Lanterns you unlocked, their mastery and mastery prestige</li><li>Codes, lifetime stats and settings</li></ul></div>
       <div class="r"><b>Starts over</b><ul><li>Level and XP (back to 1)</li><li>Embers</li><li>Camp upgrades</li><li>Worlds unlocked and beaten, best waves</li><li>Saved runs</li></ul></div></div>
       <button class="btn primary big prgo${prArm?' armed':''}" id="prGo" ${can?'':'disabled'}>${can?(prArm?`Tap again to prestige. Your level goes back to 1`:`Prestige to ${ROM[P+1]}`):`Prestige at level ${LV_MAX}`}</button>`:''}</div>`;
+  const bon=`<div class="pcard"><h3>Prestige bonus</h3><p class="hint" style="margin:0">Every prestige adds <b>+20% embers and XP</b> from runs, forever. ${P?`Right now you earn <b>+${P*20}%</b>.`:'You have no bonus yet.'} ${P<PMAX?`Prestige ${ROM[P+1]} raises it to <b>+${(P+1)*20}%</b>.`:'You have the maximum, +200%.'}</p></div>`;
   const mpT=ORDER.filter(t=>mPrest(t)).map(t=>`${TOWERS[t].name} ${ROM[mPrest(t)]}`);
   const mast=`<div class="pcard"><h3>Mastery prestige</h3><p class="hint" style="margin:0">Every lantern can prestige too. At Mastery 100, prestige it from its Mastery tab on the Lanterns page: it goes back to Mastery 1 for a permanent <b>+2%</b> boost, up to ${MP_MAX} times (+20%). Everything it has unlocked stays unlocked. ${mpT.length?`<br>Yours so far: <b>${mpT.join(', ')}</b>.`:''}</p></div>`;
   const diff=`<div class="pcard"><h3 style="color:${DIFF.oblivion.col}">Oblivion difficulty</h3><p class="hint" style="margin:0">${P?'Unlocked. ':'Unlocks at Prestige I. '}${DIFF.oblivion.desc} Foes have ×${DIFF.oblivion.hp} health and rewards are ×${DIFF.oblivion.rew}. Pick it on the Play page.</p></div>`;
@@ -3495,7 +3496,7 @@ function renderPrestige(){
       return `<div class="fc r-prestige${open?'':' lk'}"><canvas data-t="${t}" data-s="${s.id}" width="240" height="240" aria-label="${s.name} preview. Tap it."></canvas><span class="rt r-prestige">Prestige ${ROM[pp]}</span><b class="fn">${s.name}</b>
         <span class="ft">${TOWERS[t].name} skin${unlocked(t)?'':' · lantern not unlocked yet'}</span><div class="fp"><span>${MS} ${pr}</span></div>
         <button class="btn primary" data-prbuy="${t}:${s.id}" ${own||!open||meta.moon<pr?'disabled':''}>${own?'Owned':open?'Buy':`Prestige ${ROM[pp]}`}</button></div>`}).join('')}</div></div>`)}
-  $('#prs').innerHTML=hero+`<div class="sec">Prestige shop · tap a skin to see it react</div>`+grp.join('')+diff+mast;
+  $('#prs').innerHTML=hero+bon+`<div class="sec">Prestige shop · tap a skin to see it react</div>`+grp.join('')+diff+mast;
 }
 document.querySelector('[data-view=prestige]').addEventListener('click',e=>{
   let b;
