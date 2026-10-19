@@ -4897,9 +4897,18 @@ function drawBG(){
   trace();c.setLineDash([S*.06,S*.22]);c.strokeStyle='rgba(241,232,212,.08)';c.lineWidth=S*.05;c.stroke();c.setLineDash([]);
   const e=P[P.length-2];c.fillStyle='rgba(255,96,96,.18)';c.fillRect((e[0]-.5)*S,(H-1)*S,S,S);
 }
-function lantern(t,cx,cy,col,c2,S2){
+/* the Sapling grows on the board: g runs 0..1 from sprout to full tree (more leaves, a taller stem) */
+function sapGlyph(ctx,cx,cy,r,g){
+  const n=1+Math.floor(g*4+.001),top=cy+r*1.2-r*(1.1+1.5*g),base=cy+r*1.2,k=.62+.38*g;
+  ctx.lineWidth=Math.max(1.5,r*.32);ctx.beginPath();ctx.moveTo(cx,base);ctx.lineTo(cx,top);ctx.stroke();
+  for(let i=0;i<n;i++){const f=n===1?1:1-i/(n)*.78,y=base+(top-base)*f,d=(i%2?1:-1),L=r*1.25*k*(1-.12*i/Math.max(1,n));
+    ctx.beginPath();ctx.moveTo(cx,y);ctx.quadraticCurveTo(cx+d*L*.2,y-L*.95,cx+d*L,y-L*.8);ctx.quadraticCurveTo(cx+d*L*.9,y+L*.05,cx,y);ctx.fill()}
+  if(g>=.99){ctx.beginPath();ctx.arc(cx,top-r*.2,r*.45,0,7);ctx.fill()}
+}
+function lantern(t,cx,cy,col,c2,S2,g){
   const ctx=c2,S=S2;
   ctx.fillStyle=col;ctx.strokeStyle=col;const r=S*.13;ctx.beginPath();
+  if(t==='mint'&&g!=null){sapGlyph(ctx,cx,cy-r*.2,r,g);return}
   if(t==='spark'){ctx.moveTo(cx,cy-r*1.4);ctx.lineTo(cx+r,cy);ctx.lineTo(cx,cy+r*1.4);ctx.lineTo(cx-r,cy)}
   else if(t==='cinder'){ctx.rect(cx-r,cy-r,r*2,r*2)}
   else if(t==='frost'){for(let i=0;i<6;i++){const a=i*Math.PI/3;ctx.lineTo(cx+Math.cos(a)*r*1.2,cy+Math.sin(a)*r*1.2)}}
@@ -4937,7 +4946,7 @@ function draw(){
     skinFxBack(ctx,sk,cx,cy,S,T,so);
     ctx.fillStyle='#090d0e';ctx.beginPath();ctx.arc(cx,cy,S*.33,0,7);ctx.fill();
     ctx.strokeStyle=col;ctx.lineWidth=Math.max(1.5,S*.05);ctx.stroke();
-    lantern(t.type,cx,cy,t.flash?'#fff':col,ctx,S);skinFx(ctx,sk,cx,cy,S,T,so);
+    lantern(t.type,cx,cy,t.flash?'#fff':col,ctx,S,t.type==='mint'?(o=>Math.min(1,o.stage/o.cap))(sap(t)):undefined);skinFx(ctx,sk,cx,cy,S,T,so);
     if(t.silT>0){ctx.fillStyle='rgba(20,10,30,.6)';ctx.beginPath();ctx.arc(cx,cy,S*.36,0,7);ctx.fill();ctx.save();ctx.setLineDash([S*.06,S*.05]);ctx.lineDashOffset=T*S*.3;
       ctx.strokeStyle='#c08bff';ctx.lineWidth=Math.max(1.5,S*.05);ctx.beginPath();ctx.arc(cx,cy,S*.42,0,7);ctx.stroke();ctx.restore()}
     const asc=isAsc(t),rad=asc&&G.mast[t.type]>=100;
