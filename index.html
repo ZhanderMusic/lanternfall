@@ -1936,10 +1936,10 @@ const MUSIC=(()=>{
     rev=ac.createConvolver();const len=ac.sampleRate*3,ir=ac.createBuffer(2,len,ac.sampleRate);for(let c=0;c<2;c++){const d=ir.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.6)}
     rev.buffer=ir;const rg=ac.createGain();rg.gain.value=.55;rev.connect(rg);rg.connect(bus);return true}
   function noiseSrc(){const b=ac.createBuffer(1,ac.sampleRate*2,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const n=ac.createBufferSource();n.buffer=b;n.loop=true;return n}
-  function makeTrack(key){
+  function makeTrack(key,lvl){lvl=lvl||0;
     const T=TRACKS[key]||TRACKS['menu:default'],sc=SC[T.s],out=ac.createGain(),send=ac.createGain(),dl=ac.createDelay(2),fb=ac.createGain(),dlg=ac.createGain();
-    out.gain.value=0;out.connect(bus);send.gain.value=.5;out.connect(send);send.connect(rev);
-    const beat=60/T.b;dl.delayTime.value=beat*.75;fb.gain.value=.32;dlg.gain.value=.35;dl.connect(fb);fb.connect(dl);dl.connect(dlg);dlg.connect(out);
+    out.gain.value=0;out.connect(bus);send.gain.value=.5+.1*lvl;out.connect(send);send.connect(rev);
+    const beat=60/(T.b*(1-.05*lvl));dl.delayTime.value=beat*.75;fb.gain.value=.32+.07*lvl;dlg.gain.value=.35;dl.connect(fb);fb.connect(dl);dl.connect(dlg);dlg.connect(out);
     const nodes=[];const note=d=>T.r+sc[((d%sc.length)+sc.length)%sc.length]+12*Math.floor(d/sc.length);
     /* ambience beds */
     for(const [k,v] of T.amb||[]){
@@ -1950,12 +1950,25 @@ const MUSIC=(()=>{
       if(k==='hum'){for(const m of [T.r-24,T.r-17]){const o=ac.createOscillator(),g=ac.createGain(),l=ac.createOscillator(),lg=ac.createGain();o.type='sine';o.frequency.value=mf(m);g.gain.value=v;l.frequency.value=.2;lg.gain.value=v*.5;l.connect(lg);lg.connect(g.gain);
         o.connect(g);g.connect(out);o.start();l.start();nodes.push(o,l)}}
     }
-    function pluck(t,f,w,v,dec,toDelay){const o=ac.createOscillator(),g=ac.createGain();o.type=w;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+dec);
+    /* harder difficulties turn the music eerie: a thin ghost tone a semitone off the key, a dissonant low drone, wider pad beating, drifting pitch, a heartbeat and cold breaths (lvl 1 hard, 2 nightmare, 3 oblivion) */
+    if(lvl>=1){const o=ac.createOscillator(),g=ac.createGain(),l=ac.createOscillator(),lg=ac.createGain();o.type='sine';o.frequency.value=mf(T.r+25);g.gain.value=.004+.002*lvl;l.frequency.value=.09+.03*lvl;lg.gain.value=g.gain.value*.9;l.connect(lg);lg.connect(g.gain);o.connect(g);g.connect(out);g.connect(dl);o.start();l.start();nodes.push(o,l)}
+    if(lvl>=2){for(const m of [T.r-24,T.r-18]){const o=ac.createOscillator(),g=ac.createGain(),l=ac.createOscillator(),lg=ac.createGain();o.type='sine';o.frequency.value=mf(m);g.gain.value=.006*lvl;l.frequency.value=.13;lg.gain.value=g.gain.value*.8;l.connect(lg);lg.connect(g.gain);o.connect(g);g.connect(out);o.start();l.start();nodes.push(o,l)}}
+    function pluck(t,f,w,v,dec,toDelay,ee){const o=ac.createOscillator(),g=ac.createGain();o.type=w;o.frequency.value=f;
+      if(ee&&lvl){o.detune.value=(Math.random()-.5)*10*lvl;if(Math.random()<.07*lvl){o.frequency.setValueAtTime(f,t+dec*.1);o.frequency.exponentialRampToValueAtTime(f*.9439,t+dec*.8)}}g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+dec);
       o.connect(g);g.connect(out);if(toDelay)g.connect(dl);o.start(t);o.stop(t+dec+.05)}
-    function pad(t,ds,dur){const [w,cut,v,sw]=T.pad,f=ac.createBiquadFilter(),g=ac.createGain();f.type='lowpass';f.frequency.value=cut;f.Q.value=.5;
+    function pad(t,ds,dur){const [w,cut0,v,sw]=T.pad,cut=cut0*(1-.15*lvl),f=ac.createBiquadFilter(),g=ac.createGain();f.type='lowpass';f.frequency.value=cut;f.Q.value=.5;
       if(sw){f.frequency.setValueAtTime(cut*.6,t);f.frequency.linearRampToValueAtTime(cut*1.6,t+dur*.5);f.frequency.linearRampToValueAtTime(cut*.6,t+dur)}
       g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+Math.min(2,dur*.35));g.gain.setValueAtTime(v,t+dur*.7);g.gain.linearRampToValueAtTime(0,t+dur+1.2);f.connect(g);g.connect(out);
-      for(const d of ds)for(const det of [-7,7]){const o=ac.createOscillator();o.type=w;o.frequency.value=mf(note(d));o.detune.value=det;o.connect(f);o.start(t);o.stop(t+dur+1.3)}}
+      for(const d of ds)for(const det of [-7-5*lvl,7+5*lvl]){const o=ac.createOscillator();o.type=w;o.frequency.value=mf(note(d));o.detune.value=det;o.connect(f);o.start(t);o.stop(t+dur+1.3)}}
+    /* each depth gets its own little melody and lead voice, built from its name so it never changes */
+    let hs=0;for(const ch of key)hs=(hs*31+ch.charCodeAt(0))>>>0;const rnd=()=>{hs=(hs+0x6D2B79F5)>>>0;let t=hs;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};
+    const isW=/^w\d+$/.test(key),LV=Math.floor(rnd()*5),mot=Array.from({length:8},()=>Math.floor(rnd()*6)-1),rh=Array.from({length:16},(_,i)=>i%4===0?rnd()<.8:rnd()<.22),lph=Math.floor(rnd()*2);
+    function lead(t,f){const bell=LV===0,flute=LV===1,harp=LV===2,glass=LV===3,vv=.03;
+      const o=ac.createOscillator(),g=ac.createGain();o.type=bell||glass?'sine':'triangle';o.frequency.value=f*(glass?2:1);
+      const a=flute?.18:.01,dec=bell?3:flute?1.6:glass?2.2:harp?1.3:.7;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vv,t+a);g.gain.exponentialRampToValueAtTime(.0001,t+dec);
+      if(flute){const l=ac.createOscillator(),lg=ac.createGain();l.frequency.value=5;lg.gain.value=f*.006;l.connect(lg);lg.connect(o.frequency);l.start(t);l.stop(t+dec)}
+      o.connect(g);g.connect(out);g.connect(dl);o.start(t);o.stop(t+dec+.05);
+      if(bell){const o2=ac.createOscillator(),g2=ac.createGain();o2.type='sine';o2.frequency.value=f*2.76;g2.gain.setValueAtTime(vv*.3,t);g2.gain.exponentialRampToValueAtTime(.0001,t+1.2);o2.connect(g2);g2.connect(out);o2.start(t);o2.stop(t+1.3)}}
     let step=0,next=ac.currentTime+.1,arpI=0;const sd=beat/4;
     function sched(){
       while(next<ac.currentTime+.4){
@@ -1963,11 +1976,15 @@ const MUSIC=(()=>{
         if(step%(16*T.c)===0)pad(next,chord,16*T.c*sd);
         if(T.bass&&(inBar===0||(inBar===8&&Math.random()<.5)))pluck(next,mf(note(deg)-12),'sine',T.bass,sd*7,false);
         if(T.bell&&inBar===0&&bar%T.bell[0]===0){pluck(next,mf(note(deg)-12),'sine',T.bell[1],4,true);pluck(next,mf(note(deg)+7-12),'sine',T.bell[1]*.4,3,false)}
+        if(isW&&bar%2===lph&&rh[inBar]){const q=bar*4+Math.floor(inBar/4)+inBar;lead(next,mf(note(chord[0]+mot[(q+inBar)%8]+7)))}
+        if(lvl>=3&&inBar===0&&bar%2===0){pluck(next,55,'sine',.09,.35,false);pluck(next+.22,55,'sine',.06,.3,false)}
+        if(lvl>=2&&inBar===0&&bar%4===2&&Math.random()<.5){const n=noiseSrc(),f=ac.createBiquadFilter(),g=ac.createGain();f.type='bandpass';f.frequency.value=700+Math.random()*900;f.Q.value=2;
+          g.gain.setValueAtTime(0,next);g.gain.linearRampToValueAtTime(.012*lvl,next+1.6);g.gain.linearRampToValueAtTime(0,next+3.4);n.connect(f);f.connect(g);g.connect(out);n.start(next);n.stop(next+3.5)}
         const [aw,av,ao,pat,dens]=T.arp;
         if(inBar%2===0&&Math.random()<dens){let d;
           if(pat==='up')d=chord[arpI%3]+7*Math.floor((arpI%6)/3);else if(pat==='down')d=chord[2-arpI%3]+7;else if(pat==='updown'){const q=[0,1,2,1][arpI%4];d=chord[q]}
           else if(pat==='waltz'){const q=[0,2,1,2,1,2][arpI%6];d=chord[q]+(q?7:0)}else d=chord[Math.floor(Math.random()*3)]+(Math.random()<.4?7:0);
-          arpI++;pluck(next,mf(note(d)+12*(ao-1)),aw,av,sd*6,true)}
+          arpI++;pluck(next,mf(note(d)+12*(ao-1)),aw,av,sd*6,true,1)}
         for(const [k,v] of T.amb||[]){
           if(k==='crackle'&&Math.random()<.35){const n=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();n.buffer=SFXNB();f.type='bandpass';f.frequency.value=2000+Math.random()*3000;f.Q.value=2;
             const t=next+Math.random()*sd;g.gain.setValueAtTime(v*(.5+Math.random()),t);g.gain.exponentialRampToValueAtTime(.0001,t+.03);n.connect(f);f.connect(g);g.connect(out);n.start(t);n.stop(t+.05)}
@@ -1987,8 +2004,8 @@ const MUSIC=(()=>{
     return G.event?'ev':'w'+G.world}
   function tick(){if(!ac||ac.state!=='running'){if(bus&&ac)bus.gain.value=mvol()*.8;return}
     bus.gain.setTargetAtTime(mvol()*.8,ac.currentTime,.2);
-    const k=mvol()?want():'';
-    if(k!==curKey){if(cur)cur.stop();cur=null;curKey=k;if(k){cur=makeTrack(k);cur.start()}}
+    const w0=mvol()?want():'',L=w0&&w0.slice(0,5)!=='menu:'?({hard:1,nightmare:2,oblivion:3}[G&&G.diff]||0):0,k=w0?w0+'|'+L:'';
+    if(k!==curKey){if(cur)cur.stop();cur=null;curKey=k;if(k){cur=makeTrack(w0,L);cur.start()}}
     if(cur)cur.sched()}
   return{start(){if(timer)return;if(!setup())return;timer=setInterval(tick,100);tick()},now:()=>curKey};
 })();
