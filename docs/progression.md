@@ -121,7 +121,7 @@ Spend them in the **Shop** on skins, Season lanterns, ember packs and the premiu
 | 88 | 125 embers | Cathedral (Hollow Bell skin) |
 | 90 | 30 moonstones | Lighthouse of Ash (Beacon skin) |
 | 95 | 5 moonstones | Hollow Eclipse (menu theme) |
-| 100 | Moon Coin (Mint skin) | Eclipse (lantern) |
+| 100 | Moon Coin (Sapling skin) | Eclipse (lantern) |
 
 Tiers not listed pay embers (or 5 and 12 moonstones on every 5th tier).
 
@@ -143,7 +143,7 @@ Each event has a **free 25-tier pass** paid for with **candy**, which you only e
 | 8 | Haunted Storm (Bolt skin) |
 | 9 | 15 moonstones |
 | 10 | Will-o’-the-Wisp (Spark skin) |
-| 11 | Trick or Treat (Mint skin) |
+| 11 | Trick or Treat (Sapling skin) |
 | 12 | 15 moonstones |
 | 13 | Graveyard Glow (Beacon skin) |
 | 14 | Blood Moon (Comet skin) |
@@ -191,7 +191,7 @@ Higher rarities look louder: Legendaries get a golden halo, then rune rings, lig
 | I | Gilded Oath (Spark), Ember Throne (Cinder) |
 | II | Winter Crown (Frost), Sunlance Regalia (Lance) |
 | III | Verdant Sovereign (Venom), Storm Sovereign (Bolt) |
-| IV | Imperial Treasury (Mint), Seraph Light (Beacon) |
+| IV | Imperial Treasury (Sapling), Seraph Light (Beacon) |
 | V | Celestial Herald (Comet), Lunar Throne (Moonwell) |
 | VI | Choir of Dawn (Hollow Bell), Sunless Crown (Eclipse) |
 | VII | Starforged (Spark), Frozen Eternity (Frost) |
@@ -310,7 +310,7 @@ Higher rarities look louder: Legendaries get a golden halo, then rune rings, lig
 
 </details>
 
-<details><summary><b>Mint</b> (14 skins)</summary>
+<details><summary><b>Sapling</b> (14 skins)</summary>
 
 | Skin | Rarity | Where |
 |---|---|---|

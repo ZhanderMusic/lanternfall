@@ -128,7 +128,7 @@ Unlock lanterns on the **Lanterns** page with embers.
 | Frost | 8 embers |
 | Lance | 12 embers |
 | Venom | 15 embers |
-| Mint | 20 embers |
+| Sapling | 20 embers |
 | Bolt | 25 embers |
 | Beacon | 30 embers |
 | Comet | 40 embers |

@@ -68,7 +68,7 @@ Every lantern has a permanent **mastery level from 1 to 100**. It goes up at the
 
 Each mastery level also adds **+0.5% damage**, and every 10 levels add **+2% fire rate**. Check a lantern's mastery road on the Lanterns page.
 
-**Mastery prestige.** At mastery 100, prestige a lantern from its Mastery tab. It goes back to mastery 1 and gains a permanent **+2% boost** (damage, Mint gold or Beacon boost), up to **10 times** for +20%. Everything its mastery unlocked (path 2, tiers 4 and 5, every ascension and the Radiant look) stays unlocked, and account prestige never resets it.
+**Mastery prestige.** At mastery 100, prestige a lantern from its Mastery tab. It goes back to mastery 1 and gains a permanent **+2% boost** (damage, Sapling boost or Beacon boost), up to **10 times** for +20%. Everything its mastery unlocked (path 2, tiers 4 and 5, every ascension and the Radiant look) stays unlocked, and account prestige never resets it.
 
 ## Spark
 
