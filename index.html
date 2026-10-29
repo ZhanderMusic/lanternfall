@@ -70,6 +70,13 @@ html:root{padding:0;background:#0b1012}   /* 1.0.5: the game fills the whole scr
 .btn:disabled{opacity:.4;cursor:default}
 .btn.primary{background:var(--flame);color:#140e06;border-color:var(--flame)}
 .btn.danger{color:var(--danger)}
+/* performance modes: Auto steps down on its own; lowfx drops the costliest effects (blur over the moving sky, shimmering borders, glows) */
+html.lowfx *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html.lowfx :is(.skt,.rt,.bn,.es,.ps,.fc,.bxb,.bsig,.bn .nm,.bfx i,.hw-clouds i,.mode,.ptab,.mjtitle,.mj-title){animation:none!important}
+html.lowfx .bfx{display:none}
+html.lowfx #pick::before{animation:none;opacity:.25}
+html.lowfx #send.ready{animation:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--flame) 40%,transparent)}
+html.lowfx :is(.bsig svg,.ico svg,.phd .orn svg,.ring .rf,.cdy){filter:none!important}
 #send.ready{animation:pulse 1.6s ease-in-out infinite}
 @keyframes pulse{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--flame) 22%,transparent)}}
 #board{position:relative;min-height:0;display:flex;align-items:center;justify-content:center}
@@ -1369,6 +1376,10 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
       <div class="seg" id="laySeg" role="radiogroup" aria-label="Screen layout">
         <button data-lay="auto" role="radio">Auto</button><button data-lay="portrait" role="radio">Portrait</button><button data-lay="landscape" role="radio">Landscape</button></div>
       <p class="hint" style="margin:0">Auto uses landscape when your screen is wider than it is tall, like a computer, a tablet or a phone turned sideways. In landscape the trail runs left to right.</p>
+      <hr class="sep">
+      <div class="sr"><span>Performance</span><b id="perfNow"></b></div>
+      <div class="seg" id="perfSeg" role="radiogroup" aria-label="Performance"><button data-perf="auto" role="radio">Auto</button><button data-perf="low" role="radio">Smooth</button><button data-perf="full" role="radio">Full effects</button></div>
+      <p class="hint" style="margin:0">Auto turns effects down by itself if your phone struggles. Smooth always runs lighter: sharper-than-needed pixels, blur and shimmer are reduced. Full effects always draws everything.</p>
       <div id="fedSet" hidden>
         <hr class="sep">
         <div class="sr"><span>Founders Edition</span><button class="btn tog" id="fedTog" aria-pressed="true"><span class="sw2"></span><span id="fedTogT">Shown</span></button></div>
@@ -1483,7 +1494,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
 <script>
 (()=>{
 const $=s=>document.querySelector(s);
-const W=9,H=13,MAXW=40,MAXL=6,KEY='lanternfall.save.v1';
+var perfLv=0;const W=9,H=13,MAXW=40,MAXL=6,KEY='lanternfall.save.v1';
 
 /* ---------- towers ---------- */
 const TOWERS={
@@ -4527,7 +4538,7 @@ const sky=$('#sky'),sc=sky.getContext('2d');let skyW=0,skyH=0,skyD=1,skyT=0;
 const stars=Array.from({length:110},()=>({x:Math.random(),y:Math.random()*.62,r:Math.random()*1.3+.3,ph:Math.random()*6.3}));
 const fallers=Array.from({length:18},()=>({x:Math.random(),y:Math.random(),s:.5+Math.random()*1.1,ph:Math.random()*6.3}));
 const flies=Array.from({length:22},()=>({x:Math.random(),y:.8+Math.random()*.18,ph:Math.random()*6.3}));
-function skyResize(){skyD=Math.min(2,devicePixelRatio||1);skyW=innerWidth;skyH=innerHeight;sky.width=Math.round(skyW*skyD);sky.height=Math.round(skyH*skyD)}
+function skyResize(){skyD=Math.min(perfLv>=1?1:2,devicePixelRatio||1);skyW=innerWidth;skyH=innerHeight;sky.width=Math.round(skyW*skyD);sky.height=Math.round(skyH*skyD)}
 addEventListener('resize',skyResize);skyResize();
 const ridge=(x,i,T)=>{const o=T*(3+i*5)+i*200;return Math.sin((x+o)*.006+i)*24+Math.sin((x+o)*.017+i*2)*12+Math.sin((x+o)*.041)*5};
 function skyLantern(f,T,th){
@@ -5025,7 +5036,7 @@ function hexA(h,a){const n=parseInt(h.slice(1),16);return`rgba(${n>>16},${n>>8&2
 function resize(){
   const b=$('#board'),w=b.clientWidth,h=b.clientHeight;
   const LW=ROT?H:W,LH=ROT?W:H;
-  S=Math.max(16,Math.floor(Math.min(w/LW,h/LH)));dpr=Math.min(2,devicePixelRatio||1);
+  S=Math.max(16,Math.floor(Math.min(w/LW,h/LH)));dpr=Math.min([2,1.5,1][perfLv],devicePixelRatio||1);
   cv.style.width=LW*S+'px';cv.style.height=LH*S+'px';cv.width=LW*S*dpr;cv.height=LH*S*dpr;
   drawBG();
 }
@@ -5091,7 +5102,7 @@ function draw(){
   ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,cv.width,cv.height);
   if(ROT)ctx.setTransform(0,-dpr,dpr,0,0,W*S*dpr);else ctx.setTransform(dpr,0,0,dpr,0,0);
   ctx.drawImage(bg,0,0,W*S,H*S);
-  ctx.setTransform(dpr,0,0,dpr,0,0);drawAmb();   /* ambient drift is drawn in screen space so snow still falls down */
+  ctx.setTransform(dpr,0,0,dpr,0,0);if(perfLv<2)drawAmb();   /* ambient drift is drawn in screen space so snow still falls down */
   if(ROT)ctx.setTransform(0,-dpr,dpr,0,0,W*S*dpr);
   const s=G.sel,T=G.time;
   if(s){const x=s.kind==='cell'?s.x:s.t.x,y=s.kind==='cell'?s.y:s.t.y;
@@ -5253,14 +5264,41 @@ $('#tutReplay2').onclick=()=>{tutRe();$('#tutReplay2').textContent='Starts next 
 
 /* ---------- loop ---------- */
 let prev=performance.now();const campEl=$('#camp');
+/* PERFORMANCE GOVERNOR: measures real frame times; on slow phones it lowers canvas resolution, halves the menu sky and preview redraws, and drops blur and shimmer */
+let perfMode='auto',fEma=16.7,fN=0,rawPrev=0,skipF=0,campAcc=0;
+try{perfMode=localStorage.getItem('lf.perfmode')||'auto'}catch(e){}
+const coarse=(()=>{try{return matchMedia('(pointer:coarse)').matches}catch(e){return false}})();
+function setPerf(l,keep){
+  if(l===perfLv&&keep)return;perfLv=l;
+  const h=document.documentElement;h.classList.toggle('lowfx',l>=1);h.classList.toggle('lowfx2',l>=2);
+  try{skyResize()}catch(e){}try{resize()}catch(e){}
+  if(!keep){try{localStorage.setItem('lf.perflv',String(l))}catch(e){}}
+  perfUI()}
+function perfUI(){
+  document.querySelectorAll('#perfSeg [data-perf]').forEach(b=>{const on=b.dataset.perf===perfMode;b.classList.toggle('on',on);b.setAttribute('aria-checked',on)});
+  const n=document.getElementById('perfNow');if(n)n.textContent=perfMode==='auto'?['Auto · full','Auto · lighter','Auto · lightest'][perfLv]:perfMode==='low'?'Smooth':'Full effects'}
+function perfInit(){
+  let l=0;
+  if(perfMode==='low')l=2;else if(perfMode==='full')l=0;
+  else{let sv=NaN;try{sv=parseInt(localStorage.getItem('lf.perflv'),10)}catch(e){}l=isNaN(sv)?(coarse?1:0):Math.min(2,Math.max(0,sv))}
+  setPerf(l,true)}
+function perfTick(now){
+  const raw=now-rawPrev;rawPrev=now;
+  if(perfMode!=='auto'||raw>250||raw<=0||document.hidden)return;
+  fEma+=(raw-fEma)*.06;fN++;
+  if(fN>=150&&perfLv<2&&fEma>(perfLv?30:24)){fN=0;fEma=16.7;setPerf(perfLv+1)}}
+(()=>{const sg=document.getElementById('perfSeg');if(sg)sg.onclick=e=>{const b=e.target.closest('[data-perf]');if(!b)return;perfMode=b.dataset.perf;
+  try{localStorage.setItem('lf.perfmode',perfMode);localStorage.removeItem('lf.perflv')}catch(e){}
+  fN=0;fEma=16.7;perfInit()}})();
 function loop(now){
+  perfTick(now);
   let dt=Math.min(.05,(now-prev)/1000);prev=now;
-  if(!paused&&!RM)stepAmb(dt);
+  if(!paused&&!RM&&perfLv<2)stepAmb(dt);
   if(G.state==='camp'){G.time+=dt}
   else if(!paused&&(G.state==='wave'||G.state==='build')){
     let tot=dt*speed;while(tot>0){const d=Math.min(.03,tot);step(d);tot-=d;if(G.state==='over'||G.state==='cards')break}
   }
-  if(campEl.hidden)draw();else{drawSky(dt);if(view==='lanterns')drawPreviews();else if(view==='shop')drawShop();else if(view==='pass')drawPassPrev();else if(view==='prestige')drawPrestige()}
+  if(campEl.hidden)draw();else if(perfLv>=1&&(skipF^=1)){campAcc+=dt}else{drawSky(dt+campAcc);campAcc=0;if(view==='lanterns')drawPreviews();else if(view==='shop')drawShop();else if(view==='pass')drawPassPrev();else if(view==='prestige')drawPrestige()}
   hud();
   requestAnimationFrame(loop);
 }
@@ -5269,7 +5307,7 @@ applySkins();campPreview();
 new ResizeObserver(resize).observe($('#board'));applyLayout();resize();
 try{if(self!==top)document.documentElement.classList.add('inframe')}catch(e){document.documentElement.classList.add('inframe')}
 addEventListener('resize',applyLayout);addEventListener('resize',()=>revealSel(true));
-go('home');renderTray();hud(true);
+perfInit();go('home');renderTray();hud(true);
 storageInit().then(()=>{maybeMajor();cloudInit();sbInit()});
 checkVersion(false);loadNews();
 requestAnimationFrame(loop);
