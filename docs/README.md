@@ -14,9 +14,10 @@ New to the game? Read **[How to play](how-to-play.md)** first, then the **[Strat
 |---|---|
 | **[How to play](how-to-play.md)** | The basics: building, waves, upgrades, controls and your first runs. |
 | **[Strategy guide](strategy.md)** | Placement, builds, economy and how to push deeper. |
-| **[Lanterns](lanterns.md)** | All 12 lanterns: stats, both upgrade paths, ascensions, merges and mastery. |
+| **[Lanterns](lanterns.md)** | All 15 lanterns: stats, both upgrade paths, ascensions, merges and mastery. |
+| **[Season 2](season-2.md)** | The Simmering Moon: the 150-tier pass, the cauldron and the Far Hollow worlds. |
 | **[Foes](foes.md)** | Every foe, what it does and how to beat it, including bosses and event foes. |
-| **[Worlds and modes](worlds.md)** | All 21 worlds and their twists, Campaign, Endless, events and difficulty. |
+| **[Worlds and modes](worlds.md)** | All 32 worlds and their twists, Campaign, Endless, events and difficulty. |
 | **[How foes get tougher](enemy-scaling.md)** | Health, foe counts, bosses, speed and gold, wave by wave. |
 | **[Boons](boons.md)** | All 53 boons, boon XP, rarity odds and the rules for what gets offered. |
 | **[Camp upgrades](camp-upgrades.md)** | All 67 permanent upgrades with their effects and costs. |

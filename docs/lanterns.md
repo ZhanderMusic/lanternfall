@@ -21,6 +21,9 @@ Twelve lanterns, each with three upgrade paths, three ascension types and up to 
 - [Moonwell](#moonwell)
 - [Hollow Bell](#hollow-bell)
 - [Eclipse](#eclipse)
+- [Simmer](#simmer)
+- [Alembic](#alembic)
+- [Philter](#philter)
 
 ## At a glance
 
@@ -38,6 +41,9 @@ Twelve lanterns, each with three upgrade paths, three ascension types and up to 
 | **Moonwell** | Damage | 70 | 10 | 1 | 2.4 | beam heats up | Season 1 Pass (or the Shop for 200 moonstones) |
 | **Hollow Bell** | Control | 90 | 12 | 0.55 | 1.9 | freezes 0.5s | Season 1 Pass (or the Shop for 300 moonstones) |
 | **Eclipse** | Damage | 150 | 40 | 0.3 | 5 | +6% max HP | Season 1 Pass (or the Shop for 450 moonstones) |
+| **Simmer** | Area | 85 | 9 | 0.5 | 1.7 | boils over, slows | Season 2 Pass |
+| **Alembic** | Support | 90 | – | – | – | passive, pays gold | Season 2 Pass |
+| **Philter** | Support | 110 | – | – | – | passive, random buffs | Season 2 Pass |
 
 Damage is per hit, fire rate is shots per second and range is in tiles. These are base numbers before upgrades, mastery, boons and camp upgrades.
 
@@ -544,3 +550,44 @@ Passive: doesn't attack.
 ---
 
 ← [Strategy guide](strategy.md) · [Foes](foes.md) →
+
+## Simmer
+
+*An idle pot that boils over, scalding every foe nearby and slowing them with steam.* A pot left on the fire all night. Nobody remembers who lit it, but it never goes cold.
+
+**Role:** Area · **Cost:** 85 gold · **Get it:** Season 2 Pass, tier 1
+
+**Damage** 9 · **Fire rate** 0.5/s · **Range** 1.7 tiles
+
+- **How it works:** Sits and simmers, then boils over to scald every foe in range and slow them with steam. Each boil-over in a wave burns a little hotter.
+- **Strong against:** Packed lanes and long waves, where the streak builds up.
+- **Weak against:** Lone fast foes and anything far outside its small range.
+- **Tip:** Put it where the trail loops back through its range twice. Steam keeps foes in the pot longer.
+
+Upgrades include hotter coals, a faster boil, a higher boil-over streak and boil-overs that set foes ablaze. Its mastery ascension, Rolling boil, lets the streak build three stages higher, up to +60% damage. See the Lanterns page in the game for every tier and its cost.
+
+## Alembic
+
+*Distills the foes that fall near it. Every full vial pays gold when the wave ends.* Glass and gold, still warm. What falls in the dark is boiled down into something useful.
+
+**Role:** Support · **Cost:** 90 gold · **Get it:** Season 2 Pass, tier 50
+
+- **How it works:** Does not attack. Foes that fall nearby fill its vials, and every full vial pays gold when the wave ends.
+- **Strong against:** Waves of many small foes right next to your kill zone.
+- **Weak against:** It adds no damage on its own and pays nothing if nothing dies near it.
+- **Tip:** Build it where your other lanterns do their killing, not at the start of the trail.
+
+Upgrades make vials fill sooner, pay more gold and hold more per wave. Its ascension, Grand distillation, makes every vial pay double.
+
+## Philter
+
+*Each wave it brews a random buff for every lantern around it.* Three moons in one bottle. Nobody knows what it will do tonight, only that it will help.
+
+**Role:** Support · **Cost:** 110 gold · **Get it:** Season 2 Pass, tier 100
+
+- **How it works:** Does not attack. Each wave it brews random buffs (damage, fire rate, range or crit) for every lantern around it.
+- **Strong against:** Clusters of lanterns packed close around it.
+- **Weak against:** It is random: some waves give a buff you do not need.
+- **Tip:** Ring it with lanterns. Upgrade Variety for more buffs at once.
+
+Upgrades make the buffs stronger and brew more of them at once. Its ascension, Panacea, brews one extra buff every wave.

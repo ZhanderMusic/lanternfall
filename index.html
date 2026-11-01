@@ -1157,6 +1157,24 @@ textarea:focus,input:focus{outline:2px solid var(--flame);outline-offset:1px}
 @keyframes tutPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,181,71,.55)}50%{box-shadow:0 0 0 9px rgba(255,181,71,0)}}
 @keyframes coachIn{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
 @media (prefers-reduced-motion:reduce){.coach,.tuthl{animation:none}}
+/* Season 2: cauldron and recipe book */
+.cqs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.cq{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;border:2px solid var(--line);background:var(--moss2);border-radius:12px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.cq i{width:26px;height:26px;border-radius:50%;background:var(--c);box-shadow:0 0 12px -2px var(--c)}
+.cq b{font-family:var(--mono);font-size:18px;font-weight:500}.cq small{font-size:11px;color:var(--dim);line-height:1.1}
+.cq:disabled,.cq[aria-disabled=true]{opacity:.35;cursor:default}
+.cq:focus-visible{outline:2px solid var(--flame);outline-offset:2px}
+.cslots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.cslot{all:unset;box-sizing:border-box;cursor:pointer;height:64px;border-radius:12px;border:2px dashed var(--line);display:grid;place-items:center;font-size:12px;color:var(--dim)}
+.cslot.on{border-style:solid;border-color:var(--c);color:var(--ink);box-shadow:inset 0 0 18px -8px var(--c)}
+.cslot:focus-visible{outline:2px solid var(--flame);outline-offset:2px}
+.cpre{background:var(--moss);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;min-height:44px}
+.cpre b{color:#d8e860}.cpre em{font-style:normal;color:var(--dim)}
+.crec{display:grid;grid-template-columns:auto 1fr auto;gap:2px 10px;align-items:center;background:var(--moss);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px}
+.crec .dots{display:flex;gap:3px;grid-row:span 2}.crec .dots i{width:12px;height:12px;border-radius:50%;background:var(--c)}
+.crec small{grid-column:2/4;color:var(--dim)}.crec.lk{opacity:.45}.crec .rare{color:#d8e860;font:700 10px var(--body);letter-spacing:.1em;text-transform:uppercase}
+.crecs{display:flex;flex-direction:column;gap:6px;max-height:46vh;overflow:auto;overscroll-behavior:contain}
+.pipn{font-size:10px;color:var(--dim)}
 </style>
 
 <script>
@@ -1173,6 +1191,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
     <button class="btn" id="auto" title="Send waves automatically">Auto: off</button>
     <button class="btn primary" id="send">Send wave 1</button>
     <button class="btn" id="menuBtn" aria-label="Menu">Menu</button>
+    <button class="btn" id="brewBtn" aria-label="Cauldron" hidden>Brew</button>
     <button class="btn bxb" id="boonBtn" aria-label="Boons"><i id="bxFill"></i><span>Boons <b id="bxLv">0</b></span></button>
   </div>
   <div id="board"><canvas id="cv"></canvas><div class="toast" id="toast" role="status" hidden></div>
@@ -1253,6 +1272,7 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
         <button class="btn mi" data-go="upgrades"><span>Camp upgrades</span><small id="miU"></small></button>
         <button class="btn mi" data-go="pass"><span>Pass</span><small id="miP"></small></button>
       </div>
+      <button class="btn mi" id="miRec"><span>Recipe book</span><small id="miRc">Season 2 · Cauldron</small></button>
       <button class="btn mi prs" id="miPrB" data-go="prestige"><span>Prestige</span><small id="miPr"></small></button>
       <div class="menu2">
         <button class="btn mi" data-go="howto"><span>How to play</span><small>Rules &amp; tips</small></button>
@@ -1473,6 +1493,22 @@ if('serviceWorker' in navigator)addEventListener('load',()=>{navigator.serviceWo
   </div>
 </div>
 
+<div class="ov" id="cauldron" hidden role="dialog" aria-labelledby="cdT">
+  <div class="panel" style="max-width:460px">
+    <div class="row" style="justify-content:space-between"><div><span class="sec" style="margin:0" id="cdSub">The Cauldron</span><h2 class="big" id="cdT" style="font-size:40px">Brew</h2></div><button class="btn" id="cdClose">Close</button></div>
+    <div class="seg" style="grid-template-columns:1fr 1fr"><button id="cdTabB" class="on">Brew</button><button id="cdTabR">Recipe book</button></div>
+    <div id="cdBrew" style="display:flex;flex-direction:column;gap:12px">
+      <p class="hint" style="margin:0">Foes sometimes drop ingredients. Tap them on the board, or let a Simmer pull them in. Mix up to three, brew during the build phase, and the potion is ready after the next wave.</p>
+      <div class="cqs" id="cdPantry"></div>
+      <div class="cslots" id="cdSlots"></div>
+      <div class="cpre" id="cdPre"></div>
+      <button class="btn primary" id="cdGo">Brew</button>
+      <p class="hint" style="margin:0" id="cdSt"></p>
+    </div>
+    <div id="cdBook" hidden style="display:flex;flex-direction:column;gap:10px"><p class="hint" style="margin:0" id="cdBkN"></p><div class="crecs" id="cdRecs"></div></div>
+  </div>
+</div>
+
 <div class="ov" id="dawn" hidden role="dialog" aria-labelledby="dawnT">
   <div class="panel" style="max-width:420px">
     <h2 class="big" id="dawnT">Dawn breaks</h2>
@@ -1513,15 +1549,22 @@ const TOWERS={
   bell:{name:'Hollow Bell',color:'#e3c2ff',cost:90,dmg:12,rate:.55,range:1.9,stun:.5,pass:1,desc:'Tolls to hit every foe nearby and freeze them in place.',
     lore:'The bell from the moon’s empty heart. When it tolls, the swarm forgets how to move.'},
   eclipse:{name:'Eclipse',color:'#ffb36b',cost:150,dmg:40,rate:.3,range:5,pct:.06,pass:1,desc:'Strikes the healthiest foe in range for heavy damage plus 6% of its max health.',
-    lore:'The one thing the Moth Queen fears: the moon’s shadow, turned against her.'}
+    lore:'The one thing the Moth Queen fears: the moon’s shadow, turned against her.'},
+  /* Season 2 pass towers */
+  simmer:{name:'Simmer',color:'#d8e860',cost:85,dmg:9,rate:.5,range:1.7,boil:1,pass:2,desc:'An idle pot that boils over, scalding every foe nearby and slowing them with steam. Each boil-over burns hotter.',
+    lore:'A pot left on the fire all night. Nobody remembers who lit it, but it never goes cold.'},
+  alembic:{name:'Alembic',color:'#e8c25a',cost:90,passive:1,pass:2,desc:'Distills the foes that fall near it. Every full vial pays gold when the wave ends.',
+    lore:'Glass and gold, still warm. What falls in the dark is boiled down into something useful.'},
+  philter:{name:'Philter',color:'#7f9bff',cost:110,passive:1,pass:2,desc:'Each wave it brews a random buff for every lantern around it.',
+    lore:'Three moons in one bottle. Nobody knows what it will do tonight, only that it will help.'}
 };
-const ORDER=['spark','cinder','frost','lance','venom','mint','bolt','beacon','comet','moonwell','bell','eclipse'];
+const ORDER=['spark','cinder','frost','lance','venom','mint','bolt','beacon','comet','moonwell','bell','eclipse','simmer','alembic','philter'];
 /* lantern roles: how the build tray groups them */
 const ROLES=[
   {id:'dmg',name:'Damage',col:'#ff8a7a',desc:'Hits one foe hard.',t:['spark','lance','moonwell','eclipse']},
-  {id:'area',name:'Area',col:'#ffb547',desc:'Hits many foes at once.',t:['cinder','bolt','comet']},
+  {id:'area',name:'Area',col:'#ffb547',desc:'Hits many foes at once.',t:['cinder','bolt','comet','simmer']},
   {id:'ctrl',name:'Control',col:'#7fe3ff',desc:'Slows, freezes or poisons.',t:['frost','venom','bell']},
-  {id:'sup',name:'Support',col:'#9be3a9',desc:'Boosts the lanterns around it.',t:['mint','beacon']}
+  {id:'sup',name:'Support',col:'#9be3a9',desc:'Boosts the lanterns around it.',t:['mint','beacon','alembic','philter']}
 ];
 const roleOf=t=>ROLES.find(r=>r.t.includes(t));
 /* the order lanterns appear in the tray (and the 1-9 hotkeys) */
@@ -1555,6 +1598,16 @@ const FOES={
   rime:{intro:18,name:'Rime wraith',hp:55,speed:1,gold:6,r:.29,armor:0,col:'#dff4ff',sh:'star',cleanse:2,tip:'Shakes off slows, stuns and poison every 2 seconds.'},
   shade:{intro:19,name:'Eclipse shade',hp:70,speed:.8,gold:7,r:.31,armor:1,col:'#9a75d8',sh:'crescent',summon:[4,'moth'],minW:3,tip:'Calls a moth out of the dark every few seconds.'},
   titan:{intro:20,name:'Moon titan',hp:260,speed:.5,gold:18,r:.42,armor:6,col:'#e8ecff',sh:'moon',shield:.4,noSlow:1,lives:5,minW:6,wt:.25,tip:'Huge, shielded, armored and can’t be slowed. Costs 5 lives.'},
+  peddler:{intro:22,name:'Night peddler',hp:48,speed:1,gold:7,r:.3,armor:1,col:'#ffc36b',sh:'tri',evade:.2,carry:2,tip:'Dodges one shot in five and drops two wisps when snuffed.'},
+  wrack:{intro:23,name:'Tide wrack',hp:56,speed:.95,gold:6,r:.29,armor:0,col:'#7fe0ff',sh:'shell',regen:.03,noSlow:1,tip:'Slows slide right off it, and it heals steadily on the way.'},
+  slagger:{intro:24,name:'Slag brute',hp:105,speed:.65,gold:9,r:.34,armor:6,col:'#ff6a3a',sh:'rock',noStun:1,enrage:1,lives:2,minW:4,tip:'Heavy plating, can’t be stunned and speeds up as it cracks. Costs 2 lives.'},
+  mirror:{intro:25,name:'Mirror shade',hp:36,speed:1.2,gold:6,r:.25,armor:0,col:'#bfe0ff',sh:'ring',phase:[3,.8],evade:.2,tip:'Fades out now and then and dodges one shot in five.'},
+  bramble:{intro:26,name:'Bramble imp',hp:18,speed:1.4,gold:2,r:.17,armor:0,col:'#9be36a',sh:'star',group:3,noPoison:1,tip:'Fast, shrugs off poison and arrives in threes.'},
+  ossuary:{intro:27,name:'Ossuary knight',hp:85,speed:.75,gold:8,r:.31,armor:4,col:'#e6dcc0',sh:'skull',revive:.5,minW:4,tip:'Pulls itself back together once after being snuffed.'},
+  stormcaller:{intro:28,name:'Stormcaller',hp:42,speed:1.25,gold:6,r:.25,armor:0,col:'#b49cff',sh:'bolt',dash:[3,.5,2.5],cleanse:3,tip:'Dashes ahead and shakes off slows, stuns and poison every few seconds.'},
+  rotfruit:{intro:29,name:'Rotfruit',hp:72,speed:.85,gold:7,r:.3,armor:0,col:'#ffb8d8',sh:'pumpkin',heal:[1.6,.05],shield:.3,tip:'Shielded, and it heals foes around it. Snuff it first.'},
+  cindercrab:{intro:30,name:'Cinder crab',hp:70,speed:.9,gold:8,r:.3,armor:3,col:'#ff9a4a',sh:'shell',ward:[1.2,3],enrage:1,minW:3,tip:'Gives nearby foes +3 armor and speeds up as it takes damage.'},
+  hollow:{intro:31,name:'Unlit one',hp:95,speed:1,gold:12,r:.34,armor:3,col:'#e8e8ff',sh:'moon',phase:[4,.9],summon:[5,'wisp'],regen:.02,lives:3,minW:5,wt:.5,tip:'Fades out, calls wisps out of the dark and heals itself. Costs 3 lives.'},
   /* Halloween event foes */
   bat:{ev:1,name:'Vampire bat',hp:14,speed:2.1,gold:2,r:.18,armor:0,col:'#3a2448',sh:'bat',group:3,tip:'Fast and arrives in flocks of three.'},
   pumpkin:{ev:1,name:'Jack',hp:48,speed:.85,gold:5,r:.3,armor:0,col:'#ff7a1a',sh:'pumpkin',split:3,tip:'Bursts into three seeds when snuffed.'},
@@ -1589,7 +1642,22 @@ const BOSSES=[
   {name:'Shade Sovereign',title:'Crown of Night',sh:'crescent',col:'#9a75d8',col2:'#ffe96b',pas:{phase:[5,1.2]},sum:[4,'shade',1],toll:[8,2,1.4],tip:'Fades in and out, calls eclipse shades and silences lanterns near it.'},
   {name:'The Moth Queen',title:'She Who Woke Hungry',sh:'queen',col:'#f0e0ff',col2:'#ff4d6b',hp:1,r:.56,lives:8,pas:{noStun:1,shield:.15},sum:[4.5,'moth',2],
    ph:[[.66,'summon',['moth',6]],[.66,'blink',2.5],[.33,'rage',1.45],[.33,'toll',[2.8,2.5]],[.33,'shield',.15]],
-   tip:'The Queen herself. Shielded and always calling her swarm. At two thirds she summons a cloud of moths, and at one third she rages, silences lanterns around her and shields again. Costs up to 8 lives if she gets through.'}
+   tip:'The Queen herself. Shielded and always calling her swarm. At two thirds she summons a cloud of moths, and at one third she rages, silences lanterns around her and shields again. Costs up to 8 lives if she gets through.'},
+  {name:'The Brewmother',title:'Keeper of the Pot',sh:'blob',col:'#8fe04d',col2:'#e8c25a',hp:1.15,r:.5,lives:6,pas:{regen:.01,shield:.2},sum:[5,'wisp',3],
+   ph:[[.66,'summon',['wisp',5]],[.66,'shield',.2],[.5,'steam',.15],[.33,'rage',1.35],[.33,'summon',['brood',3]]],
+   tip:'She stirs the pot at the bottom of the night. Shielded and slowly healing, she calls wisps out of the steam, and at half health a wave of steam heals every foe nearby. At one third she rages and calls a brood. Costs up to 6 lives if she gets through.'},
+  {name:'The Night Broker',title:'Merchant of Embers',sh:'hex',col:'#ffc36b',col2:'#ff6b4a',ar:2,pas:{evade:.25},sum:[5,'peddler',1],die:['peddler',3],tip:'Dodges a quarter of all shots, keeps calling peddlers and drops three more when it falls.'},
+  {name:'The Tidemother',title:'The Drowning Song',sh:'shell',col:'#7fe0ff',col2:'#ff7a8a',pas:{noSlow:1,regen:.012},ph:[[.5,'summon',['wisp',6]],[.5,'shield',.25]],tip:'Slows slide off her and she heals as she walks. At half health she calls wisps and shields up again.'},
+  {name:'Slagheart',title:'The Forge That Walks',sh:'rock',col:'#ff6a3a',col2:'#ffea6b',ar:7,pas:{noStun:1,enrage:1},die:['slagger',2],tip:'Heavy armor, can’t be stunned and speeds up as it cracks. Two slag brutes crawl out of it when it falls.'},
+  {name:'The Lake Twin',title:'Mirror of the Drowned',sh:'ring',col:'#bfe0ff',col2:'#ff5a8a',pas:{phase:[4,1],evade:.2},blk:[4,1.6],sum:[6,'mirror',2],tip:'Fades out, flickers down the trail and calls mirror shades. Hit it while it is solid.'},
+  {name:'The Thorn Regent',title:'Crown of Brambles',sh:'star',col:'#9be36a',col2:'#ff6a6a',pas:{noPoison:1,regen:.01},sum:[3,'bramble',3],ph:[[.5,'summon',['bramble',12]]],tip:'Shrugs off poison, heals and keeps spawning bramble imps. At half health a huge thicket of them arrives.'},
+  {name:'The Bonewarden',title:'Keeper of the Ossuary',sh:'skull',col:'#e6dcc0',col2:'#ff6b4a',ar:5,pas:{regen:.01,ward:[1.6,5]},die:['ossuary',2],ph:[[.5,'summon',['ossuary',2]]],tip:'Plates every foe near it with +5 armor and heals. Two ossuary knights join it at half health.'},
+  {name:'The Stormglass Roc',title:'Wrath of the Reach',sh:'bolt',col:'#b49cff',col2:'#ffe14a',pas:{dash:[3.5,.8,3.2]},cln:2.5,toll:[7,2,1.6],tip:'Dashes at triple speed, shakes off slows and poison, and its thunder silences lanterns near it.'},
+  {name:'The Pale Gardener',title:'Tender of Nothing',sh:'cross',col:'#ffb8d8',col2:'#ffe96b',pas:{heal:[2.4,.035]},sum:[5,'rotfruit',1],ph:[[.5,'shield',.3]],tip:'Heals every foe around it and grows rotfruit. Shields itself at half health.'},
+  {name:'The Cinderglass Leviathan',title:'The Molten Tide',sh:'flame',col:'#ff9a4a',col2:'#6bf0ff',hp:1.15,r:.5,lives:6,pas:{enrage:1,shield:.25},ph:[[.66,'summon',['cindercrab',3]],[.33,'rage',1.4],[.33,'shield',.2]],tip:'Speeds up as it cracks. At two thirds it calls cinder crabs, and at one third it rages and shields again. Costs up to 6 lives.'},
+  {name:'The Unlit One',title:'Absence at the Lantern’s Edge',sh:'queen',col:'#e8e8ff',col2:'#ff4d6b',hp:1.3,r:.58,lives:10,pas:{noStun:1,shield:.2,regen:.008,phase:[7,1]},sum:[4,'hollow',1],
+   ph:[[.75,'summon',['hollow',3]],[.5,'toll',[2.8,2.5]],[.5,'shield',.2],[.33,'rage',1.5],[.25,'summon',['wisp',12]]],
+   tip:'The last dark. Shielded, healing and fading in and out, it keeps calling unlit ones. At half health it silences lanterns around it, and at one third it rages. Costs up to 10 lives if it gets through.'}
 ];
 const bossOf=w=>typeof w==='number'?BOSSES[w]:null;
 const FD=e=>e.F||FOES[e.t];
@@ -1641,7 +1709,29 @@ const THEMES=[
   {name:'Eclipse Spire',twist:'Shadow tide. Rifts open, foes heal and wear +3 armor.',bg:'#080306',acc:'#ffb36b',tiles:['#140a0e','#180c11'],path:['#221218','#2e1820'],decor:'bone',dc:'#5a2a2a',amb:'star',ac:'#ffb36b',
    foes:{moth:'#f2d8c8',wisp:'#ffb36b',beetle:'#4a1a22',brood:'#c9604a',boss:'#ffe96b'},mods:{rift:1,regen:.008,armor:3}},
   {name:'The Hollow Moon',twist:'The last night. Fog, ice, plating, swarms, healing and tougher foes, all at once.',bg:'#06070d',acc:'#dfe7ff',tiles:['#0e1018','#11131d'],path:['#1a1d2a','#252a3a'],decor:'crystal',dc:'#7a86b8',amb:'star',ac:'#ffffff',
-   foes:{moth:'#ffffff',wisp:'#dfe7ff',beetle:'#2a3050',brood:'#a8b4ff',boss:'#ff4d6b'},mods:{range:.9,speed:1.12,armor:4,swarm:1.25,regen:.008,hp:1.15}}
+   foes:{moth:'#ffffff',wisp:'#dfe7ff',beetle:'#2a3050',brood:'#a8b4ff',boss:'#ff4d6b'},mods:{range:.9,speed:1.12,armor:4,swarm:1.25,regen:.008,hp:1.15}},
+  {name:'The Simmering Hollow',twist:'The Brewmother’s kitchen. Thick steam: foes are 10% faster and heal slowly, and ingredients drop twice as often.',bg:'#07100a',acc:'#d8e860',tiles:['#101c12','#13221a'],path:['#1c2a1a','#283a22'],decor:'shroom',dc:'#8fb84a',amb:'spore',ac:'#d8e860',
+   foes:{moth:'#e8ffd0',wisp:'#d8e860',beetle:'#3a5a2a',brood:'#a8d86a',boss:'#e8c25a'},mods:{speed:1.1,regen:.004,hp:1.1,pip:2}},
+  {name:'Lantern Market',twist:'Haggling. Kills give 20% less gold and foes are 8% faster.',bg:'#120a0a',acc:'#ffc36b',tiles:['#1d1210','#221612'],path:['#33201a','#47301f'],decor:'pillar',dc:'#a86a3a',amb:'dust',ac:'#ffd9a0',
+   foes:{moth:'#fff0d8',wisp:'#ffc36b',beetle:'#6a3a22',brood:'#ff9a6b',boss:'#ffe14a'},mods:{gold:.8,speed:1.08}},
+  {name:'Tidewrack Shore',twist:'Undertow. Slows are 40% weaker and foes are 6% faster.',bg:'#05101a',acc:'#7fe0ff',tiles:['#0c1c28','#0f2230'],path:['#16303f','#1f4254'],decor:'reed',dc:'#3a7a8a',amb:'rain',ac:'#bfefff',
+   foes:{moth:'#e8fbff',wisp:'#7fe0ff',beetle:'#1f5a6a',brood:'#6ac8d8',boss:'#ff6b8a'},mods:{slow:.6,speed:1.06}},
+  {name:'Obsidian Forge',twist:'Slag plating. Every foe wears +5 armor and is 5% tougher.',bg:'#0b0606',acc:'#ff6a3a',tiles:['#170c0a','#1c0f0c'],path:['#2a1612','#3a1e17'],decor:'rock',dc:'#6a3a30',amb:'ash',ac:'#ff9a6b',
+   foes:{moth:'#ffd8c0',wisp:'#ff6a3a',beetle:'#3a1a16',brood:'#ff8a4a',boss:'#ffe96b'},mods:{armor:5,hp:1.05}},
+  {name:'Mirror Lake',twist:'Reflections. Wisps come in pairs and foes are 10% faster.',bg:'#060a14',acc:'#bfe0ff',tiles:['#0c1424','#0f192c'],path:['#18243c','#223250'],decor:'crystal',dc:'#7aa0d0',amb:'star',ac:'#ffffff',
+   foes:{moth:'#ffffff',wisp:'#bfe0ff',beetle:'#2a4a7a',brood:'#a0c0ff',boss:'#ff5a8a'},mods:{wisp2:1,speed:1.1}},
+  {name:'Thornveil',twist:'Brambles. Broods split into six and swarms are 25% larger.',bg:'#070d08',acc:'#9be36a',tiles:['#101a12','#131f15'],path:['#1c2a1a','#273a22'],decor:'tuft',dc:'#4a7a3a',amb:'fly',ac:'#d8f59a',
+   foes:{moth:'#e8ffd0',wisp:'#9be36a',beetle:'#3a5a2a',brood:'#c8e86a',boss:'#ff6a6a'},mods:{brood:6,swarm:1.25}},
+  {name:'Ossuary Deep',twist:'Grave chill. Foes heal 1% each second and wear +3 armor.',bg:'#0a0908',acc:'#e6dcc0',tiles:['#15130f','#191611'],path:['#26221a','#332d22'],decor:'bone',dc:'#8a8068',amb:'mist',ac:'#d8d0b8',
+   foes:{moth:'#f0e8d0',wisp:'#e6dcc0',beetle:'#4a4234',brood:'#c8bc9a',boss:'#ff6b4a'},mods:{regen:.01,armor:3}},
+  {name:'Stormglass Reach',twist:'Lightning. Bolt lanterns hit 30% harder and foes are 12% faster.',bg:'#070614',acc:'#b49cff',tiles:['#100e24','#141230'],path:['#1f1c40','#2a2656'],decor:'crystal',dc:'#6a5ad0',amb:'rain',ac:'#d0c4ff',
+   foes:{moth:'#f0ecff',wisp:'#b49cff',beetle:'#2a2a6a',brood:'#8a8aff',boss:'#ffe14a'},mods:{bolt:1.3,speed:1.12}},
+  {name:'Pale Orchard',twist:'Blight. Foes have 15% more health and swarms are 15% larger.',bg:'#0e0a0e',acc:'#ffb8d8',tiles:['#1a121a','#1e151e'],path:['#2c1e2c','#3a2a3a'],decor:'shroom',dc:'#c07aa0',amb:'spore',ac:'#ffd8ec',
+   foes:{moth:'#fff0f8',wisp:'#ffb8d8',beetle:'#5a2a4a',brood:'#e88ac0',boss:'#ffe96b'},mods:{hp:1.15,swarm:1.15}},
+  {name:'Cinderglass Sea',twist:'Heat haze. Towers reach 10% less and rifts open in the glass.',bg:'#0a0608',acc:'#ff9a4a',tiles:['#180e10','#1d1114'],path:['#2e1a1c','#402528'],decor:'rock',dc:'#7a4a4a',amb:'bubble',ac:'#ffc08a',
+   foes:{moth:'#ffe0c8',wisp:'#ff9a4a',beetle:'#4a2018',brood:'#ff7a5a',boss:'#6bf0ff'},mods:{range:.9,rift:1}},
+  {name:'The Unlit Hollow',twist:'The dark between lanterns. Rifts, plating, healing, swarms and speed, all at once.',bg:'#030306',acc:'#e8e8ff',tiles:['#0a0a10','#0d0d14'],path:['#14141e','#1c1c2a'],decor:'pillar',dc:'#4a4a6a',amb:'star',ac:'#ffffff',
+   foes:{moth:'#ffffff',wisp:'#e8e8ff',beetle:'#1a1a2e',brood:'#9a9ac8',boss:'#ff4d6b'},mods:{rift:1,armor:4,regen:.008,speed:1.12,swarm:1.2,hp:1.2,range:.9}}
 ];
 const MAXD=THEMES.length-1;
 /* difficulty: harder nights pay more embers and XP */
@@ -1820,7 +1910,7 @@ const BIC={flame:'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6
 const bIcon=(c,cls='')=>`<svg viewBox="0 0 24 24" aria-hidden="true"${cls}><path d="${BIC[c.ic]||BIC.star}"/></svg>`;
 
 /* ---------- save ---------- */
-const VERSION='1.2.0';
+const VERSION='2.0.0';
 const fresh=()=>({embers:0,best:0,runs:0,maxDepth:0,depth:0,up:{},owned:{},eq:{},redeemed:[],savedAt:0,
   xp:0,moon:0,passXp:0,passPremium:false,cleared:[],stats:{},history:[],
   claimed:{f:{},p:{}},ptow:{},themes:{},menuTheme:'default',mastery:{},mode:'campaign',bestEndless:0,diff:'normal'});
@@ -1835,8 +1925,8 @@ const lvReward=L=>L%5===0?25:10;
 const PASS_COST=150;
 const tierCost=n=>120+8*(n-1);               /* 1.0.1: XP from tier n-1 to tier n: 120, 128, 136 ... 912 (was 100 ... 199) */
 const tierStart=n=>120*n+4*n*(n-1);          /* total XP needed to reach tier n */
-const PASS_MAX_XP=tierStart(100);            /* 51,600 (was 14,950) */
-const passTier=()=>{let k=0;while(k<100&&meta.passXp>=tierStart(k+1))k++;return k};
+const passTop=()=>S2_ON?150:100;                /* Season 2 adds bonus tiers 105, 110, 125 and 150 */
+const passTier=()=>{let k=0;const top=passTop();while(k<top&&meta.passXp>=tierStart(k+1))k++;return k};
 const RANKS=[[1,'Wanderer'],[5,'Lamplighter'],[10,'Wickwarden'],[20,'Keeper of Flames'],[35,'Nightwatch'],[50,'Dawnbringer'],[60,'Starwarden'],[70,'Moonkeeper'],[80,'Lightbearer'],[90,'Ember Sovereign'],[100,'Eternal Flame']];
 const rankOf=L=>RANKS.filter(r=>L>=r[0]).pop()[1];
 const EM='<span class="em"></span>',MS='<span class="msi"></span>';
@@ -1892,12 +1982,13 @@ const SFX=(()=>{
     moonwell:()=>tone(440*r(.02),.3,{type:'sine',v:.03,a:.08}),
     bell:()=>{tone(392*r(.01),.9,{type:'sine',v:.07});tone(784*r(.01),.6,{type:'sine',v:.03});tone(1176,.4,{type:'sine',v:.015})},
     eclipse:()=>{tone(98,.4,{type:'sine',v:.12,slide:.7});noise(.2,{v:.05,f:400,fslide:.5})},
+    simmer:()=>{noise(.3,{v:.06,f:1800,fslide:.4,type:'highpass'});tone(180*r(.05),.25,{type:'sine',v:.05,slide:1.6})},
     boom:()=>{tone(90*r(),.3,{type:'sine',v:.14,slide:.5});noise(.18,{v:.05,f:600,fslide:.4})},
     burst:()=>noise(.14,{v:.13,f:900*r(.2),fslide:.5})
   };
-  const GAP={spark:.07,cinder:.09,frost:.12,lance:.1,venom:.12,bolt:.1,comet:.15,moonwell:.6,bell:.2,eclipse:.2,boom:.12,burst:.08,pop:.05,tap:.03,leak:.15,coin:.06};
+  const GAP={spark:.07,cinder:.09,frost:.12,lance:.1,venom:.12,bolt:.1,comet:.15,moonwell:.6,bell:.2,eclipse:.2,simmer:.3,boom:.12,burst:.08,pop:.05,tap:.03,leak:.15,coin:.06};
   /* lantern shooting and impact sounds are off. Foe deaths, menus, buying, placing, upgrades, ascending, selling and waves keep their sounds. */
-  const QUIET=new Set(['spark','cinder','frost','lance','venom','bolt','comet','moonwell','bell','eclipse','boom','burst']);
+  const QUIET=new Set(['spark','cinder','frost','lance','venom','bolt','comet','moonwell','bell','eclipse','simmer','boom','burst']);
   function play(k,arg){if(QUIET.has(k)||!vol())return;if(!init())return;if(ac.state==='suspended')ac.resume();
     const now=ac.currentTime,g=(GAP[k]||0)*(typeof speed!=='undefined'&&speed>1?1.6:1);if(last[k]&&now-last[k]<g)return;last[k]=now;try{S[k]&&S[k](arg)}catch(e){}}
   document.addEventListener('visibilitychange',()=>{if(!ac)return;document.hidden?ac.suspend():ac.resume()});
@@ -1937,6 +2028,17 @@ const TRACKS={
   w18:{r:54,s:'aeo',b:54,p:[0,5,3,0],c:2,pad:['sine',1400,.05],arp:['sine',.035,3,'random',.25],bass:.03,amb:[['wind',.05]]},
   w19:{r:48,s:'who',b:60,p:[0,1,0,2],c:2,pad:['sawtooth',500,.035],arp:['triangle',.035,1,'random',.3],bass:.06,amb:[['hum',.045]]},
   w20:{r:50,s:'aeo',b:68,p:[0,5,6,4,0,3],c:2,pad:['sawtooth',800,.035,1],arp:['sine',.04,2,'updown',.5],bass:.05,bell:[4,.06],amb:[['wind',.035],['chime',.015]]},
+  w21:{r:47,s:'dor',b:66,p:[0,5,3,4],c:2,pad:['triangle',800,.04],arp:['sine',.04,2,'random',.4],bass:.05,amb:[['bubble',.04],['drip',.02]]},
+  w22:{r:53,s:'pma',b:90,p:[0,3,4,3],c:1,pad:['triangle',1100,.04],arp:['triangle',.05,2,'waltz',.7],bass:.05,amb:[['chime',.03],['wind',.015]]},
+  w23:{r:51,s:'dor',b:60,p:[0,3,1,4],c:2,pad:['sine',1000,.05],arp:['sine',.04,2,'random',.4],bass:.04,amb:[['rain',.03],['bubble',.025]]},
+  w24:{r:45,s:'phr',b:74,p:[0,1,0,6],c:2,pad:['sawtooth',500,.03],arp:['square',.025,1,'down',.45],bass:.07,amb:[['crackle',.05],['hum',.025]]},
+  w25:{r:56,s:'lyd',b:54,p:[0,1,4,5],c:2,pad:['sine',1500,.055],arp:['sine',.035,3,'random',.5],bass:.03,amb:[['chime',.035]]},
+  w26:{r:50,s:'mix',b:82,p:[0,6,3,0],c:2,pad:['triangle',900,.04],arp:['triangle',.05,2,'updown',.6],bass:.04,amb:[['wind',.03],['crackle',.015]]},
+  w27:{r:46,s:'aeo',b:52,p:[0,5,6,4],c:2,pad:['sawtooth',480,.035],arp:['triangle',.035,1,'random',.25],bass:.06,bell:[4,.07],amb:[['wind',.035],['drip',.03]]},
+  w28:{r:55,s:'hmi',b:98,p:[0,5,4,0],c:1,pad:['sawtooth',800,.03],arp:['square',.025,2,'up',.7],bass:.06,amb:[['rain',.045],['hum',.02]]},
+  w29:{r:58,s:'pmi',b:62,p:[0,3,4,0],c:2,pad:['sine',1300,.05],arp:['sine',.04,3,'random',.45],bass:.03,amb:[['wind',.025],['chime',.025]]},
+  w30:{r:49,s:'dor',b:78,p:[0,3,6,4],c:2,pad:['sawtooth',700,.035,1],arp:['triangle',.045,2,'updown',.5],bass:.06,amb:[['crackle',.04],['bubble',.025]]},
+  w31:{r:43,s:'who',b:48,p:[0,2,1,3,0,4],c:2,pad:['sawtooth',420,.04,1],arp:['sine',.035,1,'random',.3],bass:.07,bell:[2,.07],amb:[['hum',.05],['wind',.025]]},
   ev:{r:50,s:'hmi',b:88,p:[0,5,3,4],c:1,pad:['triangle',900,.035],arp:['triangle',.05,2,'waltz',.8],bass:.06,amb:[['wind',.02],['crackle',.035]]}
 };
 const MUSIC=(()=>{
@@ -2079,7 +2181,8 @@ function fixMeta(){
   meta.redeemed.forEach(markCode);
   /* 0.20.0: players who redeemed the founders code before it became the Founders Edition get the full edition */
   if(meta.redeemed.includes('1u13o01pler')&&!meta.founder){meta.founder=1;if(Date.now()<new Date(2026,10,1).getTime())meta.passPremium=true}}
-let meta=load();fixMeta();if(meta.tut==null&&(meta.runs||0)>0)meta.tut=1;
+let meta=load();fixMeta();
+if(meta.tut==null&&(meta.runs||0)>0)meta.tut=1;
 const ml=id=>(meta.up[id]||0)/((typeof UPSC!=='undefined'&&UPSC[id])||1);   /* effective level */
 const mlr=id=>meta.up[id]||0;   /* levels bought */
 const unlocked=t=>TOWERS[t].pass?!!(meta.ptow&&meta.ptow[t]):(!TOWERS[t].unlock||ml('u_'+t)>0);
@@ -2394,7 +2497,10 @@ const ALT={
   comet:[['solar','Solar','#ffcf4a'],['neb','Nebula','#ff6bd6']],
   moonwell:[['dusk','Duskwell','#ffb3d9'],['tide','Tidewell','#6bd6ff']],
   bell:[['brass','Brass','#ffcf6b'],['grave','Gravebell','#a9c4b0']],
-  eclipse:[['blood','Blood Moon','#ff4d4d'],['pale','Pale Sun','#fff1c4']]
+  eclipse:[['blood','Blood Moon','#ff4d4d'],['pale','Pale Sun','#fff1c4']],
+  simmer:[['ember','Emberpot','#ff9a4a'],['mist','Mistpot','#9fe8ff']],
+  alembic:[['rose','Rose Glass','#ff9ab8'],['ice','Ice Glass','#bfe8ff']],
+  philter:[['dusk','Dusk Draught','#ffb3d9'],['sage','Sage Draught','#a8e0a8']]
 };
 const RAR={common:'Common',rare:'Rare',legendary:'Legendary',mythic:'Mythic',celestial:'Celestial',exotic:'Exotic',event:'Event',prestige:'Prestige'};
 const SKINS={};
@@ -2412,9 +2518,12 @@ const TSK={
   comet:   [['Goldtail','#ffcf4a','#fff4c4'],['Black Hole','#3a2b7a','#b08cff'],['Starfall','#d8e8ff','#ffffff'],['Supernova',['#ff6b3d','#ffe93d','#ffffff']]],
   moonwell:[['Harvest Well','#ffb84d','#ffe9a8'],['Abyss Pool','#1f3aff','#6fc0ff'],['Full Moon','#f4f0e0','#ffffff'],['Lunar Prism',['#a88cff','#8fd8ff','#ffffff']]],
   bell:    [['Cathedral','#e6b84d','#fff4d6'],['Requiem','#5a2bb8','#c9a8ff'],['Angelus','#fff4e0','#ffffff'],['Chorus',['#ff8ad6','#8ad6ff','#fff1a8']]],
-  eclipse: [['Corona','#ffcf3d','#ffffff'],['Blood Eclipse','#c41f1f','#ff8a5a'],['Diamond Ring','#ffffff','#cfe6ff'],['Event Horizon',['#ff5a3d','#9b5cff','#ffffff']]]
+  eclipse: [['Corona','#ffcf3d','#ffffff'],['Blood Eclipse','#c41f1f','#ff8a5a'],['Diamond Ring','#ffffff','#cfe6ff'],['Event Horizon',['#ff5a3d','#9b5cff','#ffffff']]],
+  simmer:  [['Gilded Pot','#e8c25a','#fff0b0'],['Midnight Brew','#2f4dd8','#8fb4ff'],['Starsteam','#e8ffd0','#ffffff'],['Witchfire',['#d8e860','#7f9bff','#ffffff']]],
+  alembic: [['Gilded Glass','#e8c25a','#fff3c4'],['Deep Blue','#2b3fd0','#8fa8ff'],['Moonflask','#f4f0ff','#ffffff'],['Spectrum',['#e8c25a','#7f9bff','#d8e860']]],
+  philter: [['Triple Moon','#f2d27a','#fff6d0'],['Midnight Draught','#2a3ac8','#7f9bff'],['Starlit Draught','#e8e8ff','#ffffff'],['Three Moons',['#7f9bff','#e8c25a','#d8ff90']]]
 };
-const MOTIF={spark:'diamond',cinder:'flame',frost:'flake',lance:'shard',venom:'bubble',mint:'coin',bolt:'zap',beacon:'ring',comet:'tail',moonwell:'crescent',bell:'note',eclipse:'sun'};
+const MOTIF={spark:'diamond',cinder:'flame',frost:'flake',lance:'shard',venom:'bubble',mint:'coin',bolt:'zap',beacon:'ring',comet:'tail',moonwell:'crescent',bell:'note',eclipse:'sun',simmer:'bubble',alembic:'ring',philter:'crescent'};
 ORDER.forEach(t=>{const a=ALT[t],[L,M,C,X]=TSK[t];SKINS[t]=[
   {id:'base',name:'Classic',rar:'common',color:TOWERS[t].color},
   {id:a[0][0],name:a[0][1],rar:'common',color:a[0][2],cost:10},
@@ -2437,6 +2546,22 @@ ORDER.forEach(t=>{const a=ALT[t],[L,M,C,X]=TSK[t];SKINS[t]=[
  ['beacon',{id:'s1_light',name:'Lighthouse of Ash',rar:'exotic',color:'#ff9a4a',cycle:['#ff8a3d','#ffe9a8','#ffffff'],fx:'prism'}],
  ['mint',{id:'s1_coin',name:'Moon Coin',rar:'exotic',color:'#9fb4ff',cycle:['#8fa8ff','#e8ecff','#ffffff'],fx:'sparkle'}]
 ].forEach(([t,s])=>{s.pass=1;s.moon=s.rar==='exotic'?220:90;SKINS[t].push(s)});
+/* Season 2 exclusive skins: pass rewards now, shop rotation after the season ends */
+[['spark',{id:'s2_steam',name:'Steamspark',rar:'mythic',color:'#e8ffd0',col2:'#d8e860'}],
+ ['cinder',{id:'s2_hearth',name:'Hearthfire',rar:'mythic',color:'#ff9a3d',col2:'#e8c25a'}],
+ ['frost',{id:'s2_dew',name:'Moondew',rar:'mythic',color:'#cfe0ff',col2:'#7f9bff'}],
+ ['venom',{id:'s2_cauldron',name:'Cauldron Venom',rar:'mythic',color:'#b8ff4d',col2:'#2f4dd8'}],
+ ['bolt',{id:'s2_arc',name:'Alchemist Arc',rar:'mythic',color:'#7f9bff',col2:'#e8c25a'}],
+ ['lance',{id:'s2_wand',name:'Stirring Spoon',rar:'mythic',color:'#e8c25a',col2:'#fff3c4'}],
+ ['simmer',{id:'s2_witch',name:'Witch’s Brew',rar:'mythic',color:'#8fe04d',col2:'#7f9bff'}],
+ ['alembic',{id:'s2_gilt',name:'Gilt Still',rar:'mythic',color:'#e8c25a',col2:'#ffffff'}],
+ ['comet',{id:'s2_brewstar',name:'Brewstar',rar:'exotic',color:'#e8c25a',cycle:['#e8c25a','#7f9bff','#ffffff'],fx:'prism'}],
+ ['philter',{id:'s2_moons',name:'Moons Aligned',rar:'exotic',color:'#7f9bff',cycle:['#7f9bff','#e8c25a','#d8ff90'],fx:'sparkle'}]
+ ,['cinder',{id:'s2_cheart',name:'Cauldron Heart',rar:'exotic',color:'#8fe04d',cycle:['#8fe04d','#e8c25a','#fff3c4'],bx:'cauldron'}],
+ ['alembic',{id:'s2_distill',name:'Distilled Moon',rar:'exotic',color:'#dfe8ff',cycle:['#dfe8ff','#e8a860','#7f9bff'],bx:'distill'}],
+ ['philter',{id:'s2_moons3',name:'Three Moons Rising',rar:'exotic',color:'#f2d27a',cycle:['#f2d27a','#7f9bff','#ff8a5a'],bx:'moons3'}],
+ ['eclipse',{id:'s2_crownb',name:'Brewmother’s Crown',rar:'exotic',color:'#8fe04d',cycle:['#8fe04d','#e8c25a','#ffffff'],bx:'brewcrown'}]
+].forEach(([t,s])=>{s.pass=2;s.moon=s.rar==='exotic'?220:90;SKINS[t].push(s)});
 /* Halloween event skins: only from the event pass */
 const EVSK=[['spark','ev_wick','Candle Wick','#ffb347','#fff3c4'],['cinder','ev_jack','Jack-o’-Lantern','#ff7a1a','#5a2200'],['frost','ev_chill','Ghostly Chill','#e8f0ff','#8fa8ff'],
   ['lance','ev_bone','Bone Spear','#efe6d0','#b0182a'],['venom','ev_brew','Witch’s Brew','#7dff3a','#8a3be8'],['bolt','ev_haunt','Haunted Storm','#a07dff','#e0ffd8'],
@@ -2467,7 +2592,10 @@ const SHSK={spark:[['Ember Sprite','#ffb04d','#fff0c0'],['Glacier Spark','#5ad0f
   comet:[['Meteorite','#ffb04d','#ffe8b0'],['Dark Matter','#6a4fd0','#c09aff'],['Polar Light','#d0e8ff','#ffffff']],
   moonwell:[['Silver Spring','#e8e0c8','#ffffff'],['Tidepool','#1fa8c8','#8af0ff'],['Moonbeam','#f8f4ff','#ffffff']],
   bell:[['Brass Bell','#e0a83d','#fff0c0'],['Funeral Toll','#7a5aa0','#c8a8ff'],['Choirlight','#fff8e8','#ffffff']],
-  eclipse:[['Solar Flare','#ffb03d','#fff0a8'],['Umbra','#9a3ad8','#ff5a8a'],['Halo Ring','#ffffff','#ffe8c0']]};
+  eclipse:[['Solar Flare','#ffb03d','#fff0a8'],['Umbra','#9a3ad8','#ff5a8a'],['Halo Ring','#ffffff','#ffe8c0']],
+  simmer:[['Copper Kettle','#d08a4a','#ffe0b0'],['Bog Brew','#4a8a3a','#c8f080'],['Silver Cauldron','#e8f0ff','#ffffff']],
+  alembic:[['Amber Still','#e8a83d','#fff0c0'],['Violet Vial','#8a5ad8','#d8b8ff'],['Crystal Flask','#e8fbff','#ffffff']],
+  philter:[['Gold Draught','#f0c850','#fff4c8'],['Ink Draught','#3a3a8a','#9a9aff'],['Pearl Draught','#fff8f0','#ffffff']]};
 ORDER.forEach(t=>SHSK[t].forEach(([name,color,col2],i)=>SKINS[t].push({id:['sh_l','sh_m','sh_c'][i],name,rar:['legendary','mythic','celestial'][i],color,col2,moon:[45,80,130][i],shopOnly:1})));
 /* Prestige skins: only in the Prestige shop (and the Lanterns page), each one needs a prestige level to buy.
    Two per prestige level, 20 in all. Every level up adds more layers to their effects. */
@@ -2487,10 +2615,13 @@ PRSK.forEach(([p,t,name,cy,sig])=>SKINS[t].push({id:'pr'+p,name,rar:'prestige',c
 ORDER.forEach(t=>SKINS[t].forEach(s=>{s.tw=t}));
 /* moonstone skins cost twice as much as they used to (event shop and prestige prices are separate) */
 ORDER.forEach(t=>SKINS[t].forEach(s=>{if(s.moon&&!s.pr&&!s.evShop)s.moon*=2}));
-const SEASON={n:1,name:'The Hollow Moon',end:new Date(2026,10,1,0,0,0)};
+const S1_END=new Date(2026,10,1,0,0,0);
+const S2_ON=!!window.__S2||Date.now()>=S1_END.getTime();   /* Season 2 starts when Season 1 ends (the beta turns it on early) */
+const SEASON=S2_ON?{n:2,name:'The Simmering Moon',end:new Date(2027,0,31,0,0,0)}:{n:1,name:'The Hollow Moon',end:S1_END};
+const s1Over=()=>S2_ON||Date.now()>=S1_END.getTime();
 /* limited-time events: their own world, currency and 25-tier pass */
 const EVENT={id:'hw26',name:'Hollow Harvest',kind:'Halloween event',start:new Date(2026,9,14,0,0,0),end:new Date(2026,10,1,0,0,0)};   /* 1.0.0: ends with Season 1 on November 1 */
-const evLive=()=>{const n=Date.now();return n>=EVENT.start.getTime()&&n<EVENT.end.getTime()};
+const evLive=()=>{if(S2_ON)return false;const n=Date.now();return n>=EVENT.start.getTime()&&n<EVENT.end.getTime()};
 const CANDY='<svg class="cdy" viewBox="0 0 24 14" aria-hidden="true"><path d="M7.5 4.5 1 1l1.2 6L1 13l6.5-3.5zM16.5 4.5 23 1l-1.2 6L23 13l-6.5-3.5z" fill="#ffd36b"/><ellipse cx="12" cy="7" rx="6" ry="5.2" fill="#ff7a1a"/><path d="M9.5 2.6 11.3 11.6M13.2 2.4 15 11.2" stroke="#fff3c4" stroke-width="1.3" opacity=".75"/></svg>';
 const EVR=(()=>{const sk=EVSK.map(([t,id])=>({k:'skin',t,id})),out=[null],mo=[10,10,15,15,15,20,20,20,25];let a=0,b=0;
   const fill=new Set([3,6,9,12,15,18,21,23,24]);for(let i=1;i<=25;i++)out[i]=fill.has(i)?{k:'moon',n:mo[b++]}:sk[a++];return out})();
@@ -2612,7 +2743,7 @@ function prestigeFront(c,s,cx,cy,SS,T,o){
 /* ---------- signature styles ----------
    Every Rare-and-up skin gets its own mix of patterns. They are dealt out per lantern so no two skins of one lantern share a pattern,
    and the higher the rarity, the more layers: Legendary 1 · Mythic 2 · Celestial 3 · Exotic 4. Hardware on the lantern body grows with rarity too
-   (studs, then an inner ring, a gem and pearls, then a crown). */
+   (studs, then an inner ring, a gem and pearls, then a crown). Season pass exotics have a hand-built look of their own (SXBX). */
 const sxH=str=>{let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0};
 const TAU=6.283185;
 /* back patterns: drawn behind the lantern. args: ctx, cell size, centre, time, main colour, second colour, per-skin seed 0..1 */
@@ -2648,6 +2779,69 @@ const SXF=[
  /*13 pendants*/(c,S,x,y,T,a,b,k)=>{for(let i=-1;i<=1;i+=2){const sw=Math.sin(T*1.6+i*1.2+k*5)*.45,ax=x+i*S*.3,ay=y-S*.38,L=S*.28,px=ax+Math.sin(sw)*L,py=ay+Math.cos(sw)*L;c.strokeStyle=hexA(a,.55);c.lineWidth=Math.max(1,S*.014);c.beginPath();c.moveTo(ax,ay);c.lineTo(px,py);c.stroke();c.fillStyle=hexA(i>0?b:a,.95);c.beginPath();c.moveTo(px,py-S*.04);c.lineTo(px+S*.03,py);c.lineTo(px,py+S*.05);c.lineTo(px-S*.03,py);c.closePath();c.fill()}},
  /*14 wings*/(c,S,x,y,T,a,b,k)=>{const fl=Math.sin(T*3+k*5)*.18;for(const sd of [-1,1])for(let j=0;j<4;j++){const aa=-.5+j*.28+fl,L=S*(.42-.04*j);c.strokeStyle=hexA(j%2?b:a,.6);c.lineWidth=Math.max(1,S*.02);c.beginPath();c.moveTo(x+sd*S*.34,y-S*.04);c.quadraticCurveTo(x+sd*(S*.34+Math.cos(aa)*L*.7),y+Math.sin(aa)*L*.5-S*.2,x+sd*(S*.34+Math.cos(aa)*L),y+Math.sin(aa)*L*.55);c.stroke()}}
 ];
+/* moon phase disc: i = 0 new .. 4 full .. 7 waning crescent */
+function moonPhase(c,px,py,m,i,col,dim){
+  c.fillStyle=hexA(col,dim==null?.2:dim);c.beginPath();c.arc(px,py,m,0,7);c.fill();if(i%8===0)return;
+  const u=Math.cos(i/8*TAU),wan=i>4;c.save();c.translate(px,py);if(wan)c.scale(-1,1);c.fillStyle=hexA(col,.95);
+  c.beginPath();c.arc(0,0,m,-Math.PI/2,Math.PI/2,false);c.ellipse(0,0,Math.max(.1,m*Math.abs(u)),m,0,Math.PI/2,-Math.PI/2,u>0);c.fill();c.restore();
+}
+/* hand-built looks of the Season 2 pass exotics: [back, front] */
+const SXBX={
+ cauldron:[(c,s,x,y,S,T)=>{
+   c.fillStyle='#101a14';c.strokeStyle=hexA('#8fe04d',.75);c.lineWidth=Math.max(1,S*.025);c.beginPath();c.moveTo(x-S*.5,y+S*.3);c.quadraticCurveTo(x-S*.46,y+S*.62,x,y+S*.64);c.quadraticCurveTo(x+S*.46,y+S*.62,x+S*.5,y+S*.3);c.closePath();c.fill();c.stroke();
+   c.fillStyle='#101a14';c.fillRect(x-S*.3,y+S*.62,S*.08,S*.07);c.fillRect(x+S*.22,y+S*.62,S*.08,S*.07);
+   c.save();c.globalCompositeOperation='lighter';
+   for(let i=0;i<7;i++){const fx=x+(i-3)*S*.12,h=S*(.14+.07*Math.sin(T*6+i*1.9)),by=y+S*.72;c.fillStyle=hexA(i%2?'#e8c25a':'#8fe04d',.7);c.beginPath();c.moveTo(fx-S*.05,by);c.quadraticCurveTo(fx-S*.02,by-h*.6,fx+Math.sin(T*4+i)*S*.025,by-h);c.quadraticCurveTo(fx+S*.02,by-h*.5,fx+S*.05,by);c.fill()}
+   const g=c.createRadialGradient(x,y+S*.3,0,x,y+S*.3,S*.7);g.addColorStop(0,hexA('#8fe04d',.3));g.addColorStop(1,hexA('#8fe04d',0));c.fillStyle=g;c.fillRect(x-S*.7,y-S*.4,S*1.4,S*1.4);c.restore()},
+  (c,s,x,y,S,T)=>{
+   c.save();c.lineCap='round';c.fillStyle=hexA('#8fe04d',.38);c.beginPath();c.ellipse(x,y+S*.3,S*.5,S*.11,0,0,7);c.fill();
+   c.strokeStyle='#2a3a30';c.lineWidth=Math.max(2,S*.05);c.beginPath();c.ellipse(x,y+S*.3,S*.5,S*.11,0,0,Math.PI);c.stroke();
+   c.strokeStyle=hexA('#e8c25a',.9);c.lineWidth=Math.max(1,S*.016);c.beginPath();c.ellipse(x,y+S*.3,S*.5,S*.11,0,.1,Math.PI-.1);c.stroke();
+   c.strokeStyle='#2a3a30';c.lineWidth=Math.max(1.5,S*.04);c.beginPath();c.arc(x-S*.5,y+S*.3,S*.07,Math.PI/2,Math.PI*1.5);c.stroke();c.beginPath();c.arc(x+S*.5,y+S*.3,S*.07,-Math.PI/2,Math.PI/2);c.stroke();
+   for(let i=0;i<4;i++){const p=(T*.5+i/4)%1,bx=x+(i-1.5)*S*.2,by=y+S*.3-p*S*.3,r=S*.035*(1+p);
+     if(p<.8){c.strokeStyle=hexA(i%2?'#e8c25a':'#c8ff8a',.9);c.lineWidth=Math.max(1,S*.014);c.beginPath();c.arc(bx,by,r,0,7);c.stroke();c.fillStyle='rgba(255,255,255,.7)';c.beginPath();c.arc(bx-r*.3,by-r*.3,r*.2,0,7);c.fill()}
+     else{const q=(p-.8)*5;c.strokeStyle=hexA('#c8ff8a',1-q);c.lineWidth=1;c.beginPath();c.arc(bx,by,r*(1+q*1.2),0,7);c.stroke()}}
+   c.globalCompositeOperation='lighter';
+   for(let i=0;i<2;i++){const p=(T*.22+i*.5)%1,px=x+Math.sin(T+i*3)*S*.18,py=y-S*.35-p*S*.4,R=S*(.1+.14*p),g=c.createRadialGradient(px,py,0,px,py,R);g.addColorStop(0,hexA('#8fe04d',.3*(1-p)));g.addColorStop(1,hexA('#8fe04d',0));c.fillStyle=g;c.fillRect(px-R,py-R,R*2,R*2)}
+   c.restore()}],
+ distill:[(c,s,x,y,S,T)=>{
+   c.save();for(let i=0;i<8;i++){const t=T*.18+i*TAU/8,m=S*.07;moonPhase(c,x+Math.cos(t)*S*.6,y+Math.sin(t)*S*.6*.9,m,i,i%2?'#e8a860':'#dfe8ff',.16)}
+   c.globalCompositeOperation='lighter';const g=c.createRadialGradient(x,y,S*.2,x,y,S*.7);g.addColorStop(0,hexA('#7f9bff',.0));g.addColorStop(.7,hexA('#7f9bff',.14));g.addColorStop(1,hexA('#7f9bff',0));c.fillStyle=g;c.fillRect(x-S*.7,y-S*.7,S*1.4,S*1.4);c.restore()},
+  (c,s,x,y,S,T)=>{
+   c.save();c.lineCap='round';c.strokeStyle='#c08a5a';c.lineWidth=Math.max(1.5,S*.035);c.beginPath();c.moveTo(x-S*.12,y-S*.4);c.bezierCurveTo(x-S*.05,y-S*.86,x+S*.55,y-S*.8,x+S*.52,y-S*.12);c.stroke();
+   c.strokeStyle='#ffd9a8';c.lineWidth=Math.max(1,S*.012);c.beginPath();c.moveTo(x-S*.12,y-S*.43);c.bezierCurveTo(x-S*.05,y-S*.89,x+S*.55,y-S*.83,x+S*.52,y-S*.15);c.stroke();
+   for(let i=0;i<2;i++){const p=(T*.5+i*.5)%1,px=x+S*.52,sz=S*.04*Math.min(1,p/.3),yy=y-S*.08+(p<.3?0:(p-.3)/.7*S*.82);
+     c.fillStyle=hexA(i?'#dfe8ff':'#e8a860',.95);c.beginPath();c.moveTo(px,yy-sz*2);c.quadraticCurveTo(px+sz*1.2,yy,px,yy+sz);c.quadraticCurveTo(px-sz*1.2,yy,px,yy-sz*2);c.fill();
+     if(p>.93){const q=(p-.93)/.07;c.strokeStyle=hexA('#dfe8ff',1-q);c.lineWidth=1;c.beginPath();c.ellipse(px,y+S*.76,S*.25*q,S*.07*q,0,0,7);c.stroke()}}
+   const lv=.5+.5*Math.sin(T*.5);c.fillStyle=hexA('#dfe8ff',.35+.4*lv);c.beginPath();c.ellipse(x+S*.52,y+S*.76,S*.2,S*.05,0,0,7);c.fill();
+   c.globalCompositeOperation='lighter';motif(c,'crescent',x+S*.52,y+S*.72,S*.07*(.6+.6*lv),hexA('#ffffff',.8));c.restore()}],
+ moons3:[(c,s,x,y,S,T)=>{
+   c.save();for(let i=0;i<3;i++){const rx=S*(.5+.1*i),ry=rx*(.38+.08*i),rot=-.5+i*.55;c.strokeStyle=hexA(s.cycle[i],.3);c.lineWidth=Math.max(1,S*.014);c.beginPath();c.ellipse(x,y,rx,ry,rot,Math.PI,TAU);c.stroke()}
+   c.globalCompositeOperation='lighter';const g=c.createRadialGradient(x,y,S*.2,x,y,S*.9);g.addColorStop(0,hexA('#7f9bff',.0));g.addColorStop(.6,hexA('#f2d27a',.12));g.addColorStop(1,hexA('#ff8a5a',0));c.fillStyle=g;c.fillRect(x-S*.9,y-S*.9,S*1.8,S*1.8);c.restore()},
+  (c,s,x,y,S,T)=>{
+   c.save();const sp=[.9,.6,.45],al=Math.pow(Math.max(0,Math.cos(T*.3)),10)*Math.pow(Math.max(0,Math.cos(T*.15)),6);
+   const pos=[];for(let i=0;i<3;i++){const rx=S*(.5+.1*i),ry=rx*(.38+.08*i),rot=-.5+i*.55,t=T*sp[i]+i*2,lx=Math.cos(t)*rx,ly=Math.sin(t)*ry;pos.push([x+lx*Math.cos(rot)-ly*Math.sin(rot),y+lx*Math.sin(rot)+ly*Math.cos(rot),Math.sin(t)])}
+   c.globalCompositeOperation='lighter';
+   if(al>.05){c.strokeStyle=hexA('#ffffff',al*.5);c.lineWidth=Math.max(1,S*.02);c.beginPath();pos.forEach((q,i)=>i?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1]));c.stroke()}
+   pos.forEach((q,i)=>{const m=S*(.075-.012*i),col=s.cycle[i],g=c.createRadialGradient(q[0],q[1],0,q[0],q[1],m*3);g.addColorStop(0,hexA(col,.5));g.addColorStop(1,hexA(col,0));c.fillStyle=g;c.fillRect(q[0]-m*3,q[1]-m*3,m*6,m*6)});
+   c.globalCompositeOperation='source-over';
+   pos.forEach((q,i)=>{const m=S*(.075-.012*i),col=s.cycle[i];if(i===0){c.fillStyle=col;c.beginPath();c.arc(q[0],q[1],m,0,7);c.fill();c.fillStyle='rgba(120,90,20,.35)';c.beginPath();c.arc(q[0]-m*.3,q[1]-m*.2,m*.28,0,7);c.arc(q[0]+m*.35,q[1]+m*.3,m*.2,0,7);c.fill()}
+     else if(i===1)moonPhase(c,q[0],q[1],m,Math.floor(T*.7)%8,col,.3);
+     else{c.fillStyle=col;c.beginPath();c.arc(q[0],q[1],m,0,7);c.fill();c.strokeStyle=hexA('#ffd0a8',.7);c.lineWidth=Math.max(1,S*.016);c.beginPath();c.ellipse(q[0],q[1],m*1.7,m*.5,-.4,0,7);c.stroke()}});
+   c.restore()}],
+ brewcrown:[(c,s,x,y,S,T)=>{
+   c.save();c.globalCompositeOperation='lighter';
+   for(let i=0;i<16;i++){const t=T*.35+i*TAU/16,h=S*(.2+.1*Math.sin(T*4+i*1.7)),r0=S*.4;c.fillStyle=hexA(i%2?'#e8c25a':'#8fe04d',.55);c.beginPath();c.moveTo(x+Math.cos(t-.1)*r0,y+Math.sin(t-.1)*r0);c.quadraticCurveTo(x+Math.cos(t-.02)*(r0+h*.7),y+Math.sin(t-.02)*(r0+h*.7),x+Math.cos(t+.1*Math.sin(T*3+i))*(r0+h),y+Math.sin(t+.1*Math.sin(T*3+i))*(r0+h));c.quadraticCurveTo(x+Math.cos(t+.02)*(r0+h*.6),y+Math.sin(t+.02)*(r0+h*.6),x+Math.cos(t+.1)*r0,y+Math.sin(t+.1)*r0);c.fill()}
+   c.restore();c.fillStyle='rgba(2,8,4,.85)';c.beginPath();c.arc(x,y,S*.4,0,7);c.fill()},
+  (c,s,x,y,S,T)=>{
+   c.save();c.lineCap='round';c.lineJoin='round';
+   c.strokeStyle=hexA('#e8c25a',.95);c.lineWidth=Math.max(1.5,S*.04);c.beginPath();c.moveTo(x-S*.3,y-S*.4);c.lineTo(x+S*.3,y-S*.4);c.stroke();
+   const sp=[[-.3,.12],[-.15,.2],[0,.28],[.15,.2],[.3,.12]];sp.forEach(([dx,h],i)=>{const px=x+dx*S,gem=i%2?'#e8c25a':'#8fe04d';c.fillStyle='#e8c25a';c.beginPath();c.moveTo(px-S*.05,y-S*.4);c.lineTo(px,y-S*.4-h*S);c.lineTo(px+S*.05,y-S*.4);c.closePath();c.fill();
+     const pl=.6+.4*Math.sin(T*3+i);c.globalCompositeOperation='lighter';const gg=c.createRadialGradient(px,y-S*.4-h*S,0,px,y-S*.4-h*S,S*.07);gg.addColorStop(0,hexA(gem,pl));gg.addColorStop(1,hexA(gem,0));c.fillStyle=gg;c.fillRect(px-S*.07,y-S*.4-h*S-S*.07,S*.14,S*.14);c.globalCompositeOperation='source-over'});
+   c.globalCompositeOperation='lighter';
+   for(let i=0;i<3;i++){const p=(T*.4+i/3)%1,px=x+(i-1)*S*.2,len=S*.12+S*.08*i,yy=y-S*.36+p*S*.9;const g=c.createLinearGradient(px,yy-len,px,yy);g.addColorStop(0,hexA('#e8c25a',0));g.addColorStop(1,hexA('#ffe08a',.85*(1-p*.6)));c.strokeStyle=g;c.lineWidth=Math.max(1.5,S*.028);c.beginPath();c.moveTo(px,yy-len);c.lineTo(px,yy);c.stroke();c.fillStyle=hexA('#fff3c4',.9*(1-p*.6));c.beginPath();c.arc(px,yy,S*.022,0,7);c.fill()}
+   c.restore()}]
+};
 /* ---------- name-true looks: each skin is dressed after what it is called ---------- */
 const SXBname=['sunburst','poly','nebula','gear','wavy','dial','spiral','crescents','pillars','ripple','web','corona'];
 const SXFname=['fireflies','comets','rain','petals','lightning','drip','crown','moons','runes','smoke','radar','bubbles','dust','pendants','wings'];
@@ -2680,25 +2874,28 @@ SXF.push(
 );SXFname.push('embers','snow','coins','ghost','bats','leaves','notes','sound','bones','slash','candy','meteor','shock','flare','pumpkins');
 /* recipes: "back layers | front layers", written at the size of the rarity (Legendary 1 layer, Mythic 2, Celestial 3, Exotic 4) */
 const SXR={
-'spark/gild':'|flare','spark/abyss':'crystal|lightning','spark/starlit':'sunburst|dust,comets','spark/prism':'poly,spectrum|dust,fireflies','spark/s1_shard':'crystal|moons','spark/sh_l':'|embers','spark/sh_m':'crystal|snow','spark/sh_c':'halo|wings,dust','spark/ev_wick':'flames,corona|embers,smoke','spark/ev_will':'nebula,ripple|fireflies,ghost','spark/hw_corn':'sunburst,poly|candy,dust',
-'cinder/gild':'|embers','cinder/abyss':'flames|embers','cinder/starlit':'sunburst|meteor,embers','cinder/prism':'flames,sunburst|wings,embers','cinder/s1_harvest':'flames|leaves','cinder/ev_jack':'flames,corona|pumpkins,embers','cinder/ev_bonfire':'flames,sunburst|embers,smoke','cinder/hw_cauldron':'flames,ripple|bubbles,smoke','cinder/sh_l':'|crown','cinder/sh_m':'storm|snow','cinder/sh_c':'corona|flare,embers',
-'frost/gild':'|dust','frost/abyss':'crystal|snow','frost/starlit':'sunburst|dust,snow','frost/prism':'spectrum,pillars|dust,snow','frost/s1_hoar':'web|dust','frost/ev_chill':'storm,web|ghost,snow','frost/ev_silk':'web,poly|dust,drip','frost/hw_phantom':'storm,crystal|ghost,snow','frost/sh_l':'|snow','frost/sh_m':'poly|snow','frost/sh_c':'crystal|meteor,snow',
-'lance/gild':'|crown','lance/abyss':'crystal|slash','lance/starlit':'pillars|comets,dust','lance/prism':'flames,spiral|slash,embers','lance/s1_hollow':'ripple|ghost','lance/ev_bone':'web,dial|bones,ghost','lance/ev_scythe':'storm,disc|slash,ghost','lance/hw_pike':'flames,poly|pumpkins,bats','lance/sh_l':'|dust','lance/sh_m':'nebula|comets','lance/sh_c':'sunburst|flare,dust',
-'venom/gild':'|drip','venom/abyss':'nebula|bubbles','venom/starlit':'crescents|drip,dust','venom/prism':'vines,wavy|drip,bubbles','venom/s1_bloom':'halo|petals','venom/ev_brew':'ripple,nebula|bubbles,bats','venom/hw_apple':'vines,corona|drip,leaves','venom/sh_l':'vines|','venom/sh_m':'vines|drip','venom/sh_c':'ripple|drip,bubbles',
+'spark/gild':'|flare','spark/abyss':'crystal|lightning','spark/starlit':'sunburst|dust,comets','spark/prism':'poly,spectrum|dust,fireflies','spark/s1_shard':'crystal|moons','spark/s2_steam':'nebula|smoke','spark/sh_l':'|embers','spark/sh_m':'crystal|snow','spark/sh_c':'halo|wings,dust','spark/ev_wick':'flames,corona|embers,smoke','spark/ev_will':'nebula,ripple|fireflies,ghost','spark/hw_corn':'sunburst,poly|candy,dust',
+'cinder/gild':'|embers','cinder/abyss':'flames|embers','cinder/starlit':'sunburst|meteor,embers','cinder/prism':'flames,sunburst|wings,embers','cinder/s1_harvest':'flames|leaves','cinder/s2_hearth':'flames|smoke','cinder/ev_jack':'flames,corona|pumpkins,embers','cinder/ev_bonfire':'flames,sunburst|embers,smoke','cinder/hw_cauldron':'flames,ripple|bubbles,smoke','cinder/sh_l':'|crown','cinder/sh_m':'storm|snow','cinder/sh_c':'corona|flare,embers',
+'frost/gild':'|dust','frost/abyss':'crystal|snow','frost/starlit':'sunburst|dust,snow','frost/prism':'spectrum,pillars|dust,snow','frost/s1_hoar':'web|dust','frost/s2_dew':'crescents|drip','frost/ev_chill':'storm,web|ghost,snow','frost/ev_silk':'web,poly|dust,drip','frost/hw_phantom':'storm,crystal|ghost,snow','frost/sh_l':'|snow','frost/sh_m':'poly|snow','frost/sh_c':'crystal|meteor,snow',
+'lance/gild':'|crown','lance/abyss':'crystal|slash','lance/starlit':'pillars|comets,dust','lance/prism':'flames,spiral|slash,embers','lance/s1_hollow':'ripple|ghost','lance/s2_wand':'spiral|bubbles','lance/ev_bone':'web,dial|bones,ghost','lance/ev_scythe':'storm,disc|slash,ghost','lance/hw_pike':'flames,poly|pumpkins,bats','lance/sh_l':'|dust','lance/sh_m':'nebula|comets','lance/sh_c':'sunburst|flare,dust',
+'venom/gild':'|drip','venom/abyss':'nebula|bubbles','venom/starlit':'crescents|drip,dust','venom/prism':'vines,wavy|drip,bubbles','venom/s1_bloom':'halo|petals','venom/s2_cauldron':'ripple|smoke','venom/ev_brew':'ripple,nebula|bubbles,bats','venom/hw_apple':'vines,corona|drip,leaves','venom/sh_l':'vines|','venom/sh_m':'vines|drip','venom/sh_c':'ripple|drip,bubbles',
 'mint/gild':'|crown','mint/abyss':'gear|dust','mint/starlit':'sunburst|coins,dust','mint/prism':'spectrum,sunburst|coins,shock','mint/s1_coin':'crescents,halo|coins,dust','mint/ev_treat':'poly,web|candy,bats','mint/hw_bar':'sunburst,poly|candy,dust','mint/sh_l':'|coins','mint/sh_m':'dial|coins','mint/sh_c':'halo|moons,dust',
-'bolt/gild':'|lightning','bolt/abyss':'storm|lightning','bolt/starlit':'sunburst|lightning,embers','bolt/prism':'nebula,spiral|lightning,shock','bolt/s1_crown':'storm|crown','bolt/ev_haunt':'storm,web|lightning,ghost','bolt/hw_frank':'gear,storm|lightning,runes','bolt/sh_l':'|dust','bolt/sh_m':'storm|rain','bolt/sh_c':'spiral|dust,comets',
+'bolt/gild':'|lightning','bolt/abyss':'storm|lightning','bolt/starlit':'sunburst|lightning,embers','bolt/prism':'nebula,spiral|lightning,shock','bolt/s1_crown':'storm|crown','bolt/s2_arc':'dial|lightning','bolt/ev_haunt':'storm,web|lightning,ghost','bolt/hw_frank':'gear,storm|lightning,runes','bolt/sh_l':'|dust','bolt/sh_m':'storm|rain','bolt/sh_c':'spiral|dust,comets',
 'beacon/gild':'|crown','beacon/abyss':'ripple|sound','beacon/starlit':'halo|dust,fireflies','beacon/prism':'spectrum,beam|dust,comets','beacon/s1_light':'beam,storm|smoke,embers','beacon/ev_grave':'ripple,nebula|ghost,fireflies','beacon/hw_wisp':'nebula,halo|fireflies,ghost','beacon/sh_l':'beam|','beacon/sh_m':'beam|petals','beacon/sh_c':'sunburst|dust,fireflies',
-'comet/gild':'|comets','comet/abyss':'disc|comets','comet/starlit':'nebula|meteor,dust','comet/prism':'corona,sunburst|shock,dust','comet/s1_fall':'crescents|meteor','comet/ev_blood':'corona,disc|bats,drip','comet/hw_broom':'spiral,crescents|comets,bats','comet/sh_l':'|meteor','comet/sh_m':'disc|runes','comet/sh_c':'spectrum|dust,snow',
+'comet/gild':'|comets','comet/abyss':'disc|comets','comet/starlit':'nebula|meteor,dust','comet/prism':'corona,sunburst|shock,dust','comet/s1_fall':'crescents|meteor','comet/s2_brewstar':'spiral,ripple|bubbles,dust','comet/ev_blood':'corona,disc|bats,drip','comet/hw_broom':'spiral,crescents|comets,bats','comet/sh_l':'|meteor','comet/sh_m':'disc|runes','comet/sh_c':'spectrum|dust,snow',
 'moonwell/gild':'|leaves','moonwell/abyss':'ripple|bubbles','moonwell/starlit':'halo|moons,dust','moonwell/prism':'crescents,spectrum|dust,moons','moonwell/s1_crater':'poly|moons','moonwell/ev_harvest':'corona,halo|leaves,bats','moonwell/hw_well':'ripple,web|ghost,bubbles','moonwell/sh_l':'ripple|','moonwell/sh_m':'wavy|bubbles','moonwell/sh_c':'pillars|dust,moons',
 'bell/gild':'pillars|','bell/abyss':'nebula|notes','bell/starlit':'halo|wings,notes','bell/prism':'spectrum,halo|notes,sound','bell/ev_toll':'storm,dial|sound,bats','bell/hw_bell':'web,storm|sound,ghost','bell/sh_l':'|sound','bell/sh_m':'web|sound','bell/sh_c':'sunburst|notes,dust',
 'eclipse/gild':'corona|','eclipse/abyss':'disc|drip','eclipse/starlit':'halo|flare,dust','eclipse/prism':'disc,spiral|comets,shock','eclipse/ev_pumpkin':'corona,disc|pumpkins,bats','eclipse/hw_eve':'corona,web|bats,drip','eclipse/sh_l':'|flare','eclipse/sh_m':'disc|smoke','eclipse/sh_c':'halo|dust,moons',
+'simmer/gild':'|bubbles','simmer/abyss':'nebula|smoke','simmer/starlit':'nebula|smoke,dust','simmer/prism':'flames,ripple|bubbles,embers','simmer/s2_witch':'ripple|bubbles','simmer/sh_l':'|smoke','simmer/sh_m':'vines|bubbles','simmer/sh_c':'ripple|bubbles,dust',
+'alembic/gild':'|dust','alembic/abyss':'ripple|drip','alembic/starlit':'crescents|drip,dust','alembic/prism':'spectrum,crystal|drip,dust','alembic/s2_gilt':'gear|drip','alembic/sh_l':'|drip','alembic/sh_m':'nebula|bubbles','alembic/sh_c':'crystal|dust,bubbles',
+'philter/gild':'|moons','philter/abyss':'nebula|drip','philter/starlit':'nebula|dust,drip','philter/prism':'crescents,halo|moons,dust','philter/s2_moons':'poly,crescents|moons,runes','philter/sh_l':'|drip','philter/sh_m':'storm|drip','philter/sh_c':'halo|bubbles,dust'
 };
 function sxInit(){
   if(sxInit.done)return;sxInit.done=1;
   ORDER.forEach((t,ti)=>{let pb=(ti*5)%SXB.length,pf=(ti*7+3)%SXF.length;
     SKINS[t].forEach(s=>{
       s.sxk=(sxH(t+s.id)%1000)/1000;const L=rlv(s);
-      if(L<1||L>4||s.id==='founder')return;
+      if(L<1||L>4||s.id==='founder'||s.bx)return;
       const rc=SXR[t+'/'+s.id];
       if(rc){const [bs,fs]=rc.split('|');s.sxr=1;if(s.rar==='event')delete s.mo;s.sxb=bs?bs.split(',').map(n=>SXBname.indexOf(n)):[];s.sxf=fs?fs.split(',').map(n=>SXFname.indexOf(n)):[];return}
       const nb=L>=4?2:L>=2?1:0,nf=L>=4?2:L>=3?2:1;
@@ -2714,9 +2911,11 @@ function sxLayer(c,s,cx,cy,SS,T,col,list,fns){
   c.restore();
 }
 function sxBack(c,s,cx,cy,SS,T,col){
+  if(s.bx){c.save();SXBX[s.bx][0](c,s,cx,cy,SS,T);c.restore();return}
   sxInit();sxLayer(c,s,cx,cy,SS,T,col,s.sxb,SXB)
 }
 function sxFront(c,s,cx,cy,SS,T,col){
+  if(s.bx){c.save();SXBX[s.bx][1](c,s,cx,cy,SS,T);c.restore();return}
   sxInit();sxLayer(c,s,cx,cy,SS,T,col,s.sxf,SXF)
 }
 /* hardware on the lantern body itself, richer with rarity */
@@ -2740,7 +2939,7 @@ function sxOrn(c,s,cx,cy,SS,T,col){
   c.restore();
 }
 function skinFxBack(c,s,cx,cy,SS,T,o){
-  const L=rlv(s);if(!L)return;if(L>=5){prestigeBack(c,s,cx,cy,SS,T,o);return}const col=skinColor(s,T);
+  const L=rlv(s);if(!L)return;if(L>=5){prestigeBack(c,s,cx,cy,SS,T,o);return}const col=skinColor(s,T);if(s.bx){sxBack(c,s,cx,cy,SS,T,col);return}
   c.save();c.globalCompositeOperation='lighter';c.lineCap='round';
   if(s.id==='founder'){   /* Founders Edition: a double golden halo, each ring with a glint running the other way */
     const gg=c.createRadialGradient(cx,cy,SS*.36,cx,cy,SS*.66);gg.addColorStop(0,hexA('#ffd75e',0));gg.addColorStop(.5,hexA('#ffd75e',.1+.05*Math.sin(T*2)));gg.addColorStop(1,hexA('#ffd75e',0));
@@ -2763,7 +2962,7 @@ function skinFxBack(c,s,cx,cy,SS,T,o){
   c.restore();sxBack(c,s,cx,cy,SS,T,col);
 }
 function skinFx(c,s,cx,cy,SS,T,o){
-  sxInit();const L=rlv(s);if(!L&&s.rar!=='rare')return;if(L>=5){prestigeFront(c,s,cx,cy,SS,T,o);return}const hi=s.col2||'#ffffff';sxOrn(c,s,cx,cy,SS,T,skinColor(s,T));if(!L)return;
+  sxInit();const L=rlv(s);if(!L&&s.rar!=='rare')return;if(L>=5){prestigeFront(c,s,cx,cy,SS,T,o);return}const hi=s.col2||'#ffffff';sxOrn(c,s,cx,cy,SS,T,skinColor(s,T));if(!L)return;if(s.bx){sxFront(c,s,cx,cy,SS,T,skinColor(s,T));return}
   c.save();c.lineCap='round';
   {const p=(T*.5)%1;if(p<.4){const a=-Math.PI*.8+p/.4*Math.PI*1.6;
     c.strokeStyle=hexA('#ffffff',.9*Math.sin(p/.4*Math.PI));c.lineWidth=Math.max(1.2,SS*.05);c.beginPath();c.arc(cx,cy,SS*.33,a,a+.55);c.stroke()}}
@@ -2907,7 +3106,10 @@ const ASC={ /* each lantern's first ascension type (unlocked at Mastery 30) */
   comet:'Impact: bursts are 60% wider and stun what they hit.',
   moonwell:'Full moon: heat builds twice as fast, up to 6× damage.',
   bell:'Grand toll: 30% more range and freezes last twice as long.',
-  eclipse:'Totality: max-health damage doubles to 12%.'
+  eclipse:'Totality: max-health damage doubles to 12%.',
+  simmer:'Rolling boil: the boil-over streak can build 3 stages higher, up to +60% damage.',
+  alembic:'Grand distillation: every vial pays double gold.',
+  philter:'Panacea: brews one extra buff every wave.'
 };
 /* ---------- upgrade paths: 2 paths per lantern, 5 tiers each. Maxing both paths lets a lantern ascend. ----------
    Every tier also gives a small core boost (+15% damage, +0.05 range) on top of its own effect.
@@ -2963,7 +3165,19 @@ const UPG={
         asc:[null,['Sanctuary','Lanterns within 1 tile fire 20% faster.',{auraRate:.2,auraR:1}],['Death knell','Instantly finishes regular foes below 12% health.',{exec:.12}]]},
   eclipse:{p:[PT('Shadow',['Dark edge','+20% damage.',{dmg:1.2}],['Gravity','+1% of max health per hit.',{pct:.01}],['Void piercer','Ignores 6 armor.',{ap:6}],['Umbra','+35% damage.',{dmg:1.35}],['Black sun','+2% of max health per hit.',{pct:.02}]),
              PT('Corona',['Solar wind','+15% fire rate.',{rate:1.15}],['Long shadow','+0.5 range.',{range:.5}],['Solar flare','Strikes splash 0.8 tiles for 40% damage.',{splashR:.8,splashF:.4}],['Quick dusk','+20% fire rate.',{rate:1.2}],['Twin suns','Strikes 2 foes at once.',{multi:1}]),PT('Penumbra',['Dim light','+0.4 range.',{range:.4}],['Dusk','+15% fire rate.',{rate:1.15}],['Umbral edge','Ignores 4 armor.',{ap:4}],['Dark marks','Strikes mark foes: +10% damage from every lantern for 2 seconds.',{mark:.1,markT:2}],['Corona burst','Strikes splash 0.8 tiles for 40% damage.',{splashR:.8,splashF:.4}])],
-           asc:[null,['Event horizon','Strikes mark foes: +25% damage from every lantern for 3 seconds.',{mark:.25,markT:3}],['Sunfall','Deals 60% more damage to bosses.',{bossX:1.6}]]}
+           asc:[null,['Event horizon','Strikes mark foes: +25% damage from every lantern for 3 seconds.',{mark:.25,markT:3}],['Sunfall','Deals 60% more damage to bosses.',{bossX:1.6}]]},
+  simmer:{p:[PT('Heat',['Hotter coals','+20% damage.',{dmg:1.2}],['Rolling boil','+15% fire rate.',{rate:1.15}],['Overflow','The boil-over streak can build 3 stages higher.',{boilCap:3}],['Scalding','+30% damage.',{dmg:1.3}],['Flash point','Boiling over sets foes ablaze.',{burn:.3}]),
+             PT('Steam',['Thick steam','Boiled foes move 15% slower.',{steam:.15}],['Lingering','Steam lasts 1 second longer.',{steamT:1}],['Wide pot','+0.3 range.',{range:.3}],['Fog bank','Boiled foes move 20% slower.',{steam:.2}],['Whiteout','Leaves a puddle that slows foes for 3 seconds.',{zoneR:.9,zoneSlow:.3,zoneT:3}]),
+             PT('Broth',['Bigger pot','+0.4 range.',{range:.4}],['Ladle','+15% fire rate.',{rate:1.15}],['Salted','Boiled foes take 10% more damage from every lantern for 2 seconds.',{mark:.1,markT:2}],['Second helping','+25% damage.',{dmg:1.25}],['Cauldron','Boiling over leaves a scalding puddle for 3 seconds.',{zoneR:.9,zoneDps:.4,zoneT:3}])],
+        asc:[null,['Geyser','Deals 60% more damage to bosses.',{bossX:1.6}],['Bubble over','+0.8 range.',{range:.8}]]},
+  alembic:{p:[PT('Distill',['Fine glass','Vials fill after 2 fewer kills.',{vialN:2}],['Tight seal','Vials pay 20% more gold.',{vialG:.2}],['Reduction','Vials fill after 2 fewer kills.',{vialN:2}],['Double vial','Holds 2 more vials per wave.',{vialMax:2}],['Elixir','Vials pay 30% more gold.',{vialG:.3}]),
+             PT('Reach',['Long neck','+0.4 range.',{vR:.4}],['Wide mouth','+0.4 range.',{vR:.4}],['Spare bottles','Holds 1 more vial per wave.',{vialMax:1}],['Big flask','+0.5 range.',{vR:.5}],['Cold finger','Boss kills fill a vial at once.',{bossVial:1}]),
+             PT('Essence',['Vapor','Lanterns nearby deal 5% more damage.',{eDmg:.05}],['Steam','Lanterns nearby deal 5% more damage.',{eDmg:.05}],['Bottled lightning','Lanterns nearby fire 5% faster.',{eRate:.05}],['Concentrate','Lanterns nearby deal 5% more damage.',{eDmg:.05}],['Philosopher glass','Lanterns nearby fire 8% faster and deal 5% more damage.',{eRate:.08,eDmg:.05}])],
+        asc:[null,['Gilded glass','Vials pay 50% more gold.',{vialG:.5}],['Reservoir','Holds 3 more vials per wave.',{vialMax:3}]]},
+  philter:{p:[PT('Potency',['Strong dose','Buffs are 15% stronger.',{pStr:.15}],['Stronger dose','Buffs are 15% stronger.',{pStr:.15}],['Distilled','Buffs are 20% stronger.',{pStr:.2}],['Pure extract','Buffs are 20% stronger.',{pStr:.2}],['Elixir of ages','Buffs are 30% stronger.',{pStr:.3}]),
+             PT('Variety',['Second vial','Brews one extra buff each wave.',{pPick:1}],['Steady hand','Buffs are 10% stronger.',{pStr:.1}],['Third vial','Brews one extra buff each wave.',{pPick:1}],['Steady hand','Buffs are 10% stronger.',{pStr:.1}],['Grand blend','Brews one extra buff each wave.',{pPick:1}]),
+             PT('Reach',['Wide pour','Reaches 1 tile farther.',{pR:1}],['Steady hand','Buffs are 10% stronger.',{pStr:.1}],['Spillover','Reaches 1 tile farther.',{pR:1}],['Steady hand','Buffs are 10% stronger.',{pStr:.1}],['Flood','Reaches 1 tile farther.',{pR:1}])],
+        asc:[null,['Quicksilver','Buffs are 40% stronger.',{pStr:.4}],['Grand draught','Reaches 1 tile farther.',{pR:1}]]}
 };
 function ascInfo(type,k){if(k===0){const s=ASC[type],i=s.indexOf(': '),d=s.slice(i+2);return[s.slice(0,i),d[0].toUpperCase()+d.slice(1)]}const a=UPG[type].asc[k];return[a[0],a[1]]}
 const isAsc=t=>t.ak!=null;
@@ -3021,8 +3235,21 @@ function sap(t){
   const f=tFx(t),A=asc1(t),cap=20+(f.sCap||0)+(A?10:0),mu=mpMul('mint'),stage=Math.min(cap,(t.gs||0)+(f.sHead||0));
   return{stage,cap,grow:(1+(f.sGrow||0))*(A?2:1)*(G.m.sgrow||1)*(1+.08*ml('lo_mint')),dmg:(.04+stage*(.012+(f.sDmg||0)))*mu,rate:stage*(.006+(f.sRate||0))*mu,range:stage*(f.sRange||0),crit:stage*(f.sCrit||0),R:1+(f.sR||0)};
 }
+const PH_BUFS=['dmg','rate','range','crit'],PH_NAME={dmg:'damage',rate:'fire rate',range:'range',crit:'crit'};
+function philRoll(t){const f=tFx(t),n=1+(f.pPick||0)+(asc1(t)?1:0),pool=PH_BUFS.slice(),out=[];while(out.length<n&&pool.length)out.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);t.buf=out;return out}
+function philAura(b){const f=tFx(b),k=1+(f.pStr||0);if(!b.buf)philRoll(b);const o={R:2+(f.pR||0),dmg:0,rate:0,range:0,crit:0,mark:0};
+  for(const x of b.buf){if(x==='dmg')o.dmg=.2*k;else if(x==='rate')o.rate=.12*k;else if(x==='range')o.range=.4*k;else if(x==='crit')o.crit=.08*k}return o}
+function alembicKill(e){
+  for(const t of G.towers){if(t.type!=='alembic')continue;const f=tFx(t),R=2.2+(f.vR||0);
+    if(Math.hypot(e.x-(t.x+.5),e.y-(t.y+.5))>R)continue;
+    const need=Math.max(4,12-(f.vialN||0)),cap=3+(f.vialMax||0);if((t.vf||0)>=cap)continue;
+    t.vk=(t.vk||0)+(e.t==='boss'&&f.bossVial?need:1);
+    while(t.vk>=need&&(t.vf||0)<cap){t.vk-=need;t.vf=(t.vf||0)+1;G.fx.push({k:'t',x:t.x+.5,y:t.y,txt:'Vial full',life:.9,max:.9,col:TOWERS.alembic.color})}}
+}
 function auraOf(b){
   const f=tFx(b);
+  if(b.type==='philter')return philAura(b);
+  if(b.type==='alembic'){if(!f.eDmg&&!f.eRate)return null;return{R:2,dmg:f.eDmg||0,rate:f.eRate||0,range:0,crit:0,mark:0}}
   if(b.type==='beacon')return{R:1+(f.auraR||0)+(asc1(b)?1:0)+(G.m.auraR||0),dmg:(.15+(f.aura||0)+G.m.aura+ascBoost(b).aura+.01*ml('lo_beacon'))*mpMul('beacon'),rate:.08+(f.auraRate||0),range:f.auraRange||0,crit:f.auraCrit||0,mark:f.auraMark||0};
   if(b.type==='mint'){const o=sap(b);return{R:o.R,dmg:o.dmg,rate:o.rate,range:o.range,crit:o.crit,mark:0}}
   if(f.auraRate)return{R:f.auraR||1,dmg:0,rate:f.auraRate,range:0,crit:0,mark:0};
@@ -3037,6 +3264,8 @@ function auraAt(t){
 function tStats(t){
   const d=TOWERS[t.type],m=G.m,f=tFx(t),A=asc1(t),mb=mastBonus((G.mastL&&G.mastL[t.type])||(G.mast&&G.mast[t.type])||1),ab=ascBoost(t),core=Math.pow(CORE_DMG,f.n),mp=mpMul(t.type);
   if(t.type==='beacon'){const o=auraOf(t);return{aura:Math.round(o.dmg*100),arate:Math.round(o.rate*100),radius:o.R,arange:o.range,acrit:o.crit,amark:o.mark}}
+  if(t.type==='philter'){const o=philAura(t);return{radius:o.R,buf:(t.buf||[]).map(x=>PH_NAME[x]),pStr:Math.round((f.pStr||0)*100),pPick:1+(f.pPick||0)+(A?1:0),dmg:o.dmg,rate:o.rate,range:o.range,crit:o.crit}}
+  if(t.type==='alembic'){return{need:Math.max(4,12-(f.vialN||0)),cap:3+(f.vialMax||0),vG:Math.round(((f.vialG||0)+(A?1:0))*100),vR:+(2.2+(f.vR||0)).toFixed(1),eDmg:Math.round((f.eDmg||0)*100),eRate:Math.round((f.eRate||0)*100),have:t.vf||0,prog:t.vk||0}}
   if(t.type==='mint'){const o=sap(t);return{stage:Math.floor(o.stage),cap:o.cap,dmg:Math.round(o.dmg*100),rate:Math.round(o.rate*100),range:+o.range.toFixed(2),crit:Math.round(o.crit*1000)/10,radius:o.R,grow:+o.grow.toFixed(2)}}
   const a=auraAt(t);
   const perm=mp*(1+.05*ml('lo_'+t.type))*(G.lives<=5?1+.08*ml('lastlight'):1)*(t.p&&maxedPaths(t)>0?1+.05*ml('tempered'):1);
@@ -3046,8 +3275,9 @@ function tStats(t){
   if(t.type==='bolt')dmg*=TM.bolt||1;
   if(t.type==='lance')dmg*=m.lance;
   if(t.type==='comet')rate*=m.comet;
+  if(G.pot)dmg*=G.pot.dmg;
   return{dmg,rate,
-    range:(d.range+(f.range||0)+CORE_RANGE*f.n+a.range)*(1+.04*ml('wick'))*m.range*((m.trange&&m.trange[t.type])||1)*(TM.range||1)*(A&&t.type==='bell'?1.3:1)*ab.range,
+    range:(d.range+(f.range||0)+CORE_RANGE*f.n+a.range+(G.pot?G.pot.range:0))*(1+.04*ml('wick'))*m.range*((m.trange&&m.trange[t.type])||1)*(TM.range||1)*(A&&t.type==='bell'?1.3:1)*ab.range,
     splash:(d.splash||0)*f.splash*m.splash*(A&&t.type==='comet'?1.6:1),
     slow:Math.min(.85,((d.slow||0)+(f.slow||0)+.15*m.chill+(d.slow?.03*ml('frostbite'):0))*(TM.slow||1)),slowT:(d.slowT||0)*f.slowT*(1+.3*m.chill),
     chain:(d.chain||0)+(f.chain||0)+m.chain+(A&&t.type==='bolt'?3:0),chainKeep:f.chainKeep,
@@ -3123,6 +3353,7 @@ function bossAct(e,a,v,spawned){
   else if(a==='shield'){e.sh=e.shm=e.max*v;G.fx.push({k:'t',x:e.x,y:e.y-.5,txt:'Shielded!',life:1.2,max:1.2,col:'#8cc8ff'})}
   else if(a==='rage'){e.speed*=v;G.fx.push({k:'t',x:e.x,y:e.y-.5,txt:'Enraged!',life:1.2,max:1.2,col:'#ff6060'})}
   else if(a==='toll')bossToll(e,v[0],v[1]);
+  else if(a==='steam'){for(const o of G.foes)if(!o.dead&&o!==e&&Math.hypot(o.x-e.x,o.y-e.y)<3)o.hp=Math.min(o.max,o.hp+o.max*v);G.fx.push({k:'r',x:e.x,y:e.y,r:3,life:.7,max:.7,col:'#d8e860'});G.fx.push({k:'t',x:e.x,y:e.y-.5,txt:'Steam!',life:1.2,max:1.2,col:'#d8e860'})}
   else if(a==='blink'){G.fx.push({k:'r',x:e.x,y:e.y,r:.6,life:.4,max:.4,col:B.col});e.d=Math.min(G.path.total-.6,e.d+v)}
 }
 function bossStep(e,dt,spawned){
@@ -3160,10 +3391,10 @@ function hurt(e,dmg,raw,src,st,tw){
     if(e.B){if(e.B.die)for(let i=0;i<e.B.die[1];i++){const m=spawn(e.B.die[0],e);m.hp=m.max=m.max*.6;m.gold=0;m.d=Math.max(0,e.d-.15*i)}
       G.fx.push({k:'t',x:e.x,y:e.y-.4,txt:`${e.B.name} snuffed!`,life:2,max:2,col:e.B.col2});G.fx.push({k:'r',x:e.x,y:e.y,r:2,life:.8,max:.8,col:e.B.col})}
     if(F.carry)for(let i=0;i<F.carry;i++){const m=spawn('wisp',e);m.hp=m.max=m.max*.6;m.gold=0;m.d=Math.max(0,e.d-.15*i)}
-    let gm=G.m.goldMul*(st?st.goldX:1);for(const a of G.gAura||[])if(Math.abs(e.x-a.x)<=a.R+.5&&Math.abs(e.y-a.y)<=a.R+.5)gm*=1+a.X;
+    let gm=G.m.goldMul*(st?st.goldX:1)*(G.pot?G.pot.gold:1);for(const a of G.gAura||[])if(Math.abs(e.x-a.x)<=a.R+.5&&Math.abs(e.y-a.y)<=a.R+.5)gm*=1+a.X;
     G.gf=(G.gf||0)+e.gold*gm;{const g=Math.floor(G.gf);G.gold+=g;G.gf-=g}   /* fractions of gold carry over */
     if(e.t==='boss'){G.bossKills++;if(G.bounty)G.gold+=G.bounty;G.gold+=15*ml('bountyb');G.lives+=ml('rally')}
-    G.kills=(G.kills||0)+1;sfx('pop');gainBXP(e.t==='boss'?(e.mini?6:15):e.child||e.gold===0?.3:1);
+    G.kills=(G.kills||0)+1;if(G.towers.some(x=>x.type==='alembic'))alembicKill(e);if(S2_ON)dropPip(e);sfx('pop');gainBXP(e.t==='boss'?(e.mini?6:15):e.child||e.gold===0?.3:1);
     if(src)G.mk[src]=(G.mk[src]||0)+1;
     {const T=tw||(st&&st.tw);if(T)T.kills=(T.kills||0)+1}   /* snuffs per lantern, shown in its upgrade sheet */
     if(e.poisAsc&&e.poisT>0)for(const o of G.foes)if(!o.dead&&o!==e&&Math.hypot(o.x-e.x,o.y-e.y)<1.3){o.pois=Math.max(o.poisT>0?o.pois:0,e.pois);o.poisT=3;o.poisSrc='venom';o.poisTw=e.poisTw;o.poisAsc=true}
@@ -3201,6 +3432,15 @@ function fire(t,s,tg){
   const d=TOWERS[t.type],cx=t.x+.5,cy=t.y+.5;t.flash=.1;sfx(t.type);
   if(curSkin(t.type).rar==='prestige'&&G.time-(t._pz==null?-9:t._pz)>1.1)t._pz=G.time;   /* prestige skins answer their own shots */
   const A=asc1(t),src=t.type;
+  if(t.type==='simmer'){
+    const f=tFx(t),cap=3+(f.boilCap||0)+(A?3:0);t.bo=Math.min(cap,(t.bo||0)+1);const m=1+.1*t.bo;
+    for(const e of [...G.foes])if(!e.dead&&Math.hypot(e.x-cx,e.y-cy)<=s.range){
+      strike(e,s,s.dmg*m,src);if(e.dead)continue;
+      e.slowF=Math.max(e.slowT>0?e.slowF:0,.2+(f.steam||0));e.slowT=Math.max(e.slowT||0,1+(f.steamT||0));
+      if(f.burn){e.pois=Math.max(e.poisT>0?e.pois:0,s.dmg*f.burn);e.poisT=Math.max(e.poisT||0,2);e.poisSrc='simmer';e.poisTw=s.tw}}
+    dropZone(cx,cy,s,s.dmg,'simmer');
+    G.fx.push({k:'r',x:cx,y:cy,r:s.range,life:.4,max:.4,col:d.color});puff(cx,cy,d.color,8);return;
+  }
   if(t.type==='bell'){
     for(const e of [...G.foes])if(!e.dead&&Math.hypot(e.x-cx,e.y-cy)<=s.range){e.stunT=Math.max(e.stunT||0,e.t==='boss'?s.stun*.4:s.stun);strike(e,s,s.dmg,src)}
     G.fx.push({k:'r',x:cx,y:cy,r:s.range,life:.35,max:.35,col:d.color});return;
@@ -3306,7 +3546,7 @@ function step(dt){
     if(e.stunT>0){e.stunT-=dt;e.flash=Math.max(0,e.flash-dt);continue}
     e.flash=Math.max(0,e.flash-dt);
     const dash=F.dash&&(e.tm%F.dash[0])>F.dash[0]-F.dash[1]?F.dash[2]:1,rage=F.enrage?2-e.hp/e.max:1;
-    e.d+=e.speed*(e.slowT>0?1-e.slowF:1)*(e.hx||1)*dash*rage*(G.m.fslow||1)*dt;
+    e.d+=e.speed*(e.slowT>0?1-e.slowF:1)*(e.hx||1)*dash*rage*(G.m.fslow||1)*(G.pot?1-G.pot.slow:1)*dt;
     if(!(e.d>=0))e.d=0;   /* never let a bad number strand a foe off the trail */
     if(e.d>=P.total){e.dead=true;if(G.ward>0){G.ward--;G.fx.push({k:'r',x:e.x,y:Math.min(e.y,H-.5),r:1,life:.6,max:.6,col:'#9be3a9'});toast('Warding stone','A foe slipped through but cost no lives.')}else{G.lives-=e.t==='boss'?Math.max(1,e.lives-ml('stout')-(G.m.stout||0)):e.lives;sfx('leak')}continue}
     while(e.seg>0&&e.d<P.cum[e.seg])e.seg--;
@@ -3330,7 +3570,7 @@ function step(dt){
     if(fz)t.fz=inR.length?Math.min(1,(t.fz||0)+dt/3):Math.max(0,(t.fz||0)-dt);
     if(t.cd>0||!inR.length)continue;
     const ecl=t.type==='eclipse';inR.sort((a,b)=>ecl?b.hp-a.hp:b.d-a.d);
-    if(t.type==='bell')fire(t,s,inR[0]);else inR.slice(0,1+s.multi).forEach((e,i)=>fire(t,i?{...s,dmg:s.dmg*MULTI_F,pct:s.pct*MULTI_F}:s,e));
+    if(t.type==='bell'||t.type==='simmer')fire(t,s,inR[0]);else inR.slice(0,1+s.multi).forEach((e,i)=>fire(t,i?{...s,dmg:s.dmg*MULTI_F,pct:s.pct*MULTI_F}:s,e));
     t.cd=1/(s.rate*(1+s.frenzy*(t.fz||0)));if(G.m.dt&&Math.random()<G.m.dt)t.cd*=.15;
   }
   /* lingering ground effects: fire, acid, ice, rifts */
@@ -3359,6 +3599,7 @@ function step(dt){
   G.foes=G.foes.filter(e=>!e.dead);
   for(const f of G.fx){f.life-=dt;if(f.k==='p'||f.k==='m'){f.x+=f.vx*dt;f.y+=f.vy*dt;f.vx*=.92;f.vy*=.92}if(f.k==='t')f.y-=.6*dt}
   G.fx=G.fx.filter(f=>f.life>0);
+  if(G.pips&&G.pips.length)pipStep(dt);
   if(G.lives<=0&&G.sw>0){G.sw=0;G.lives=3;toast('Second wind','The lanterns flare back to life. You have 3 lives left.')}
   if(G.lives<=0){G.lives=0;endRun(false);return}
   if(G.state==='wave'&&!G.q.length&&!G.foes.length)endWave();
@@ -3369,6 +3610,13 @@ function endWave(){
   if(ml('compound'))G.gold+=Math.min(20*ml('compound'),Math.floor(G.gold*.01*ml('compound')));
   if(ml('regen')&&G.wave%5===0)G.lives+=ml('regen');
   for(const t of G.towers)if(t.type==='mint'){const o=sap(t),before=Math.floor(o.stage);t.gs=(t.gs||0)+o.grow;const n=sap(t);if(Math.floor(n.stage)>before)G.fx.push({k:'t',x:t.x+.5,y:t.y+.2,txt:'Grew to '+Math.floor(n.stage),life:1.2,max:1.2,col:TOWERS.mint.color})}
+  for(const t of G.towers){
+    if(t.type==='alembic'){const f=tFx(t),n=t.vf||0;if(n){const pay=Math.round(n*(8+G.wave*.9)*(1+(f.vialG||0)+(asc1(t)?1:0)));G.gold+=pay;G.fx.push({k:'t',x:t.x+.5,y:t.y-.1,txt:'+'+pay+' gold',life:1.4,max:1.4,col:TOWERS.alembic.color})}t.vf=0;t.vk=0}
+    else if(t.type==='simmer')t.bo=0;
+    else if(t.type==='philter'){const b=philRoll(t);G.fx.push({k:'t',x:t.x+.5,y:t.y-.1,txt:b.map(x=>PH_NAME[x]).join(' + '),life:1.6,max:1.6,col:TOWERS.philter.color})}}
+  if(G.pot){G.pot.left--;if(G.pot.left<=0){toast('Potion wore off',G.pot.name+' is spent.');G.pot=null}}
+  if(G.brew){G.brew.left--;if(G.brew.left<=0)finishBrew()}
+  G.pips=[];
   if(G.m.interest)G.gold+=Math.min(30*G.m.interest,Math.floor(G.gold*.08*G.m.interest));
   if(G.event){if(G.wave>(meta.bestEvent||0)){meta.bestEvent=G.wave;save()}}
   else if(G.endless){if(G.wave>(meta.bestEndless||0)){meta.bestEndless=G.wave;save()}}
@@ -3414,7 +3662,7 @@ function pathFrom(cells,pts){const cum=[0];for(let i=1;i<pts.length;i++)cum.push
 function snapRun(){
   if(!G||G.state!=='build')return;
   meta[saveKey(runMode())]={v:2,ev:G.event?EVENT.id:undefined,depth:G.depth,world:G.world,diff:G.diff,wave:G.wave,lives:G.lives,gold:G.gold,bossKills:G.bossKills,kills:G.kills||0,ward:G.ward||0,patron:G.patron||0,sw:G.sw||0,bxp:G.bxp||0,blv:G.blv||0,bpend:G.bpend||0,
-    gf:G.gf||0,towers:G.towers.map(t=>({type:t.type,x:t.x,y:t.y,p:padP(t.p),ak:t.ak==null?null:t.ak,at:t.at||0,spent:t.spent,kills:t.kills||0,gs:t.gs||0,fv:t.fv||0})),path:{cells:G.path.cells,pts:G.path.pts},ot:G.over40?{mk:G.mk40,b:G.boss40}:null,
+    gf:G.gf||0,pt:G.pantry||{},bw:G.brew||null,po:G.pot||null,towers:G.towers.map(t=>({type:t.type,x:t.x,y:t.y,p:padP(t.p),ak:t.ak==null?null:t.ak,at:t.at||0,spent:t.spent,kills:t.kills||0,gs:t.gs||0,fv:t.fv||0})),path:{cells:G.path.cells,pts:G.path.pts},ot:G.over40?{mk:G.mk40,b:G.boss40}:null,
     m:G.m,taken:G.taken,mk:G.mk,used:[...G.used],at:Date.now()};
   save();
 }
@@ -3422,7 +3670,7 @@ function resumeRun(mode){
   const k=saveKey(mode),r=meta[k];if(!r)return false;
   if(r.v!==2||(mode==='event'&&(r.ev!==EVENT.id||!evLive()))){delete meta[k];save();return false}
   newRun(r.depth,mode!=='campaign');if(mode==='event'){G.event=true}applyTheme(r.world);
-  Object.assign(G,{gf:r.gf||0,world:r.world,diff:r.diff,wave:r.wave,lives:r.lives,gold:r.gold,bossKills:r.bossKills,kills:r.kills,ward:r.ward,patron:r.patron||0,sw:r.sw||0,bxp:r.bxp||0,blv:r.blv||0,bpend:r.bpend||0,
+  G.pantry=Object.assign({},r.pt);G.brew=r.bw||null;G.pot=r.po||null;Object.assign(G,{gf:r.gf||0,world:r.world,diff:r.diff,wave:r.wave,lives:r.lives,gold:r.gold,bossKills:r.bossKills,kills:r.kills,ward:r.ward,patron:r.patron||0,sw:r.sw||0,bxp:r.bxp||0,blv:r.blv||0,bpend:r.bpend||0,
     m:Object.assign(G.m,r.m),taken:r.taken||{},mk:r.mk||{},used:new Set(r.used||[])});
   G.towers=(r.towers||[]).filter(t=>TOWERS[t.type]).map(t=>({type:t.type,x:t.x,y:t.y,p:padP(t.p),ak:t.ak==null?undefined:t.ak,at:t.at||undefined,spent:t.spent,kills:t.kills||0,gs:t.gs||0,fv:t.fv||0,cd:0}));
   if(r.ot){G.over40=true;G.mk40=r.ot.mk||{};G.boss40=r.ot.b||0}
@@ -3491,12 +3739,17 @@ const TINFO={
   comet:{how:'Fires slow, huge impacts from very long range.',good:'Bosses, big groups and covering lots of trail at once.',weak:'Fast foes, which can dodge its slow shots.',tip:'Its range lets it sit far from the trail, so save the close tiles for short-range lanterns.'},
   moonwell:{how:'Locks a beam onto one foe. The longer it holds the same foe, the hotter it burns. Ignores armor.',good:'Bosses and tanky foes that stay in range.',weak:'Swarms, since the beam resets on each new foe.',tip:'Place it where foes stay in range longest, like the inside of a U-bend.'},
   bell:{how:'Tolls to hit every foe nearby at once and freeze them in place for a moment.',good:'Clumps of foes and buying time for your damage lanterns.',weak:'Bosses, which are only frozen briefly.',tip:'Ring it next to your heavy hitters so frozen foes sit in their fire.'},
-  eclipse:{how:'Strikes the healthiest foe in range for heavy damage plus a share of its max health.',good:'Bosses and the toughest foes in each wave.',weak:'Waves of many small foes.',tip:'Let other lanterns handle the crowd. The Eclipse is your boss killer.'}};
+  eclipse:{how:'Strikes the healthiest foe in range for heavy damage plus a share of its max health.',good:'Bosses and the toughest foes in each wave.',weak:'Waves of many small foes.',tip:'Let other lanterns handle the crowd. The Eclipse is your boss killer.'},
+  simmer:{how:'Sits and simmers, then boils over to scald every foe in range and slow them with steam. Each boil-over in a wave burns a little hotter.',good:'Packed lanes and long waves, where the streak builds up.',weak:'Lone fast foes and anything far outside its small range.',tip:'Put it where the trail loops back through its range twice. Steam keeps foes in the pot longer.'},
+  alembic:{how:'Does not attack. Foes that fall nearby fill its vials, and every full vial pays gold when the wave ends.',good:'Waves of many small foes right next to your kill zone.',weak:'It adds no damage on its own and pays nothing if nothing dies near it.',tip:'Build it where your other lanterns do their killing, not at the start of the trail.'},
+  philter:{how:'Does not attack. Each wave it brews random buffs (damage, fire rate, range or crit) for every lantern around it.',good:'Clusters of lanterns packed close around it.',weak:'It is random: some waves give a buff you do not need.',tip:'Ring it with lanterns. Upgrade Variety for more buffs at once.'}};
 function openTInfo(t){
   const ty=t.type,T=TOWERS[ty],st=tStats(t),u=UPG[ty],p=padP(t.p),mL=G.mast[ty],rL=(G.mastL&&G.mastL[ty])||mL,mb=mastBonus(rL),mpN=mPrest(ty),I=TINFO[ty],AT=ascTier(t);
   const row=(k,v,d)=>`<div class="tir"><span>${k}</span><b>${v}</b><small>${d}</small></div>`;
   let stats='';
   if(ty==='beacon')stats=row('Boost',`+${st.aura}% damage, +${st.arate}% fire rate`,`For lanterns within ${st.radius} tile${st.radius>1?'s':''}.`);
+  else if(ty==='philter')stats=row('This wave',st.buf.length?st.buf.join(' + '):'Brewing','Random each wave, for lanterns within '+st.radius+' tiles.')+row('Buffs per wave',st.pPick,'Different ones each time.')+row('Strength',`+${st.pStr}%`,'On top of the base buffs.');
+  else if(ty==='alembic')stats=row('Vial',`${st.prog} of ${st.need} kills`,`${st.have} of ${st.cap} vials full this wave.`)+row('Payout',`+${st.vG}%`,'Bonus gold per full vial, paid when the wave ends.')+row('Reach',`${st.vR} tiles`,'Foes that fall inside count.')+((st.eDmg||st.eRate)?row('Essence',`+${st.eDmg}% damage, +${st.eRate}% rate`,'For lanterns nearby.'):'');
   else if(ty==='mint')stats=row('Growth',`Stage ${st.stage} of ${st.cap}`,`Grows ${st.grow===1?'1 stage':st.grow+' stages'} each wave.`)+row('Boost',`+${st.dmg}% damage, +${st.rate}% rate`,`Lanterns within ${st.radius} tile${st.radius>1?'s':''}.`)+(st.range?row('Range',`+${st.range}`,'Added to nearby lanterns.'):'')+(st.crit?row('Crit chance',`+${st.crit}%`,'Added to nearby lanterns.'):'');
   else{const dps=ty==='moonwell'?st.dmg:st.dmg*st.rate*(1+(st.multi||0)*MULTI_F);
     stats=row(ty==='moonwell'?'Beam damage':'Damage',ty==='moonwell'?`${st.dmg.toFixed(1)}/s`:st.dmg.toFixed(1),ty==='moonwell'?'Rises the longer it holds one foe.':'Per hit, before armor.')+
@@ -3553,7 +3806,7 @@ function endRun(win){
   let xp=0;for(let i=1;i<=cleared;i++)xp+=(4+Math.floor(i/4))*wk(i);   /* XP per wave grows gently; x0.25 past wave 40 */
   xp=Math.round((xp+bossEff*20+(win?150:0))*(1+.2*G.depth)*DF.rew*(1+.05*ml('school'))*perk*prBonus());
   const lvBefore=levelInfo(meta.xp).L,tierBefore=passTier();
-  meta.xp+=xp;if(!seasonOver())meta.passXp=Math.min(meta.passXp+xp,PASS_MAX_XP);
+  meta.xp+=xp;if(!seasonOver())meta.passXp=Math.min(meta.passXp+xp,tierStart(passTop()));
   const lvAfter=levelInfo(meta.xp).L,tierAfter=passTier();
   let moon=0;for(let L=lvBefore+1;L<=lvAfter;L++)moon+=lvReward(L);
   const first=win&&!meta.cleared.includes(G.depth);if(first){meta.cleared.push(G.depth);moon+=20+5*ml('pathfinder')}
@@ -3685,6 +3938,12 @@ function drawPrestige(){const T=performance.now()/1000;document.querySelectorAll
 
 /* updates (newest first; add a new entry at the top for each release) */
 const CHANGELOG=[
+  {v:'2.0.0',d:'Oct 31, 2026',major:1,kick:'Version 2.0',title:'The Simmering Moon',go:'Back to the lanterns',
+   hl:[['Season 2 begins','The Simmering Moon: a 150-tier pass with three new lanterns, Simmer, Alembic and Philter, and new Mythic and Exotic skins.'],
+       ['The cauldron','Foes drop ingredients. Mix up to three in the cauldron to brew a potion for the wave, and fill the recipe book as you discover them.'],
+       ['Eleven new worlds','The Far Hollow: the Brewmother\u2019s kitchen, then ten more worlds past the edge of the map, each with its own foe, boss and twist.'],
+       ['New music and menu themes','Every new world has its own song, and five new menu themes come with the pass.']],
+   notes:['Lanternfall 2.0: Season 2, The Simmering Moon, runs until January 31. The Season 1 pass and the Hollow Harvest event have ended.','The Season 2 pass has 150 tiers, with bonus tiers at 105, 110, 125 and 150. It has three new lanterns, ten new Mythic and Exotic skins, four hand-built Exotic looks and five menu themes.','Foes drop four ingredients: Ember Root, Moon Dew, Gloom Cap and Starlight. Mix up to three in the cauldron for a potion with damage, slow, gold or range effects. The recipe book on the title screen keeps every recipe you find.','New worlds 21 to 31, named The Far Hollow: The Simmering Hollow, Lantern Market, Tidewrack Shore, Obsidian Forge, Mirror Lake, Thornveil, Ossuary Deep, Stormglass Reach, Pale Orchard, Cinderglass Sea and The Unlit Hollow. Each has a new foe and a boss.','A Performance setting: Auto lightens effects on its own if your phone struggles, Smooth always runs light, and Full effects draws everything.','Every world and menu theme has its own music, and the harder difficulties sound eerier.']},
   {v:'1.2.0',d:'Oct 18, 2026',major:1,kick:'Version 1.2',title:'Crossroads',go:'Back to the lanterns',
    hl:[['Crossing paths','Runs can now have paths that cross over themselves, so a lantern at a crossing hits the same foes twice.'],
        ['Three paths, pick two','Every lantern has a third upgrade path, but only two can be active on a lantern. Choose your build.'],
@@ -3799,7 +4058,8 @@ const NEWS_LOCAL=[
   {id:'v1',date:'2026-10-15',tag:'Release',title:'Lanternfall 1.0 is out',body:'21 worlds with 21 bosses, 12 lanterns, a rank road to level 100 and Prestige. Thanks for playing.'},
   {id:'keep-safe',date:'2026-10-16',tag:'Tip',title:'Keep your progress safe',body:'Add Lanternfall to your home screen, and back up your save any time with Save as file in Settings. On iPhone: Share, then Add to Home Screen. On Android: the menu, then Install app.'},
   {id:'cloud-saves',date:'2026-10-17',tag:'Update',title:'Your progress can follow you now',body:'Turn on Online backup in Settings and sign in with Google, and your progress follows you to any device. Prefer to carry it yourself? Save as file and Import from file move it in a tap.',art:'cloud'},
-  {id:'v12',date:'2026-10-18',tag:'Release',title:'Lanternfall 1.2: Crossroads',body:'Paths can cross over themselves. Every lantern gets a third upgrade path, but only two can be active, and each ascension is linked to a path. The Mint is now the Sapling, a support lantern that grows every wave, and all Mint skins carried over.',art:'crossroads'}
+  {id:'v12',date:'2026-10-18',tag:'Release',title:'Lanternfall 1.2: Crossroads',body:'Paths can cross over themselves. Every lantern gets a third upgrade path, but only two can be active, and each ascension is linked to a path. The Mint is now the Sapling, a support lantern that grows every wave, and all Mint skins carried over.',art:'crossroads'},
+  {id:'v20',date:'2026-10-31',tag:'Release',title:'Lanternfall 2.0: The Simmering Moon',body:'Season 2 is here: a 150-tier pass, three new lanterns, a cauldron to brew potions in, and eleven new worlds past the edge of the map. The Season 1 pass and Hollow Harvest have ended. Thanks for playing.'},
 ];
 const NEWS_ART={
   crossroads:`<svg viewBox="0 0 320 176" role="img" aria-label="Two paths crossing with a glowing lantern at the crossing and a green sapling beside it">
@@ -3965,7 +4225,7 @@ function renderHome(){
   $('#miPr').textContent=canP?`Ready! Prestige ${ROM[P+1]} awaits`:P>=PMAX?'Prestige X · max':P?`Prestige ${ROM[P]} · shop open`:`Unlocks at level 100 · you're ${li.L}`;
   $('#miPrB').classList.toggle('rdy',canP);
   const nc=claimable().length;
-  $('#miP').textContent=evLive()?`Halloween event live!${nc?` · ${nc} to claim`:''}`:`Season 1 · tier ${passTier()}${nc?` · ${nc} to claim`:''}`;$('#miP').classList.toggle('newb',nc>0||evLive());
+  $('#miP').textContent=evLive()?`Halloween event live!${nc?` · ${nc} to claim`:''}`:`Season ${SEASON.n} · tier ${passTier()}${nc?` · ${nc} to claim`:''}`;$('#miP').classList.toggle('newb',nc>0||evLive());
   $('#miL').textContent=`${ORDER.filter(unlocked).length}/${ORDER.length} unlocked`;
   const lv=META.reduce((a,m)=>a+mlr(m.id),0),mx=META.reduce((a,m)=>a+m.max,0);
   $('#miU').textContent=`${lv}/${mx} levels`;
@@ -3974,7 +4234,8 @@ function renderHome(){
 }
 /* worlds are grouped into collections of 10 depths that fold open and shut */
 const COLLS=[{from:1,to:10,name:'The Ember Road',desc:'Marsh, ice, ash and ruin on the long road from the first forest.',col:'#ffb547'},
-  {from:11,to:20,name:'The Deep Nights',desc:'Bogs, belfries and hives under a dying moon.',col:'#b48cff'}];
+  {from:11,to:20,name:'The Deep Nights',desc:'Bogs, belfries and hives under a dying moon.',col:'#b48cff'},
+  {from:21,to:31,name:'The Far Hollow',desc:'Eleven worlds past the edge of the map: a simmering pot, markets, tides, forges and the dark between lanterns.',col:'#7fe0ff'}];
 function collOpen(){let o=null;try{o=JSON.parse(localStorage.getItem('lanternfall.colls'))}catch(e){}
   if(!Array.isArray(o)){o=[];const ci=COLLS.findIndex(C=>meta.depth>=C.from&&meta.depth<=C.to);o.push(ci<0?0:ci)}return o}
 function timeLeftTo(end){const s=Math.max(0,(end-Date.now())/1000),d=Math.floor(s/86400),h=Math.floor(s%86400/3600);return d?`${d}d ${h}h`:`${h}h ${Math.floor(s%3600/60)}m`}
@@ -4183,7 +4444,7 @@ function slideHTML(t){
   const T=TOWERS[t],un=unlocked(t),u=UNLOCKS.find(x=>x.t===t),base=SKINS[t][0].color,role=roleOf(t),ri=role.t.indexOf(t),mi=Object.assign(mastInfo(t),{G:mastGate(t)}),mp=mPrest(t),mb=mastBonus(mi.L),bd=mastBadge(mi.L),nu=MAST_UNLOCKS.find(x=>x[0]>mi.L);
   let pid=lanPrev[t]||eqSkin(t);if(hideUn&&!ownsSkin(t,pid))pid=eqSkin(t);
   const sk=SKINS[t].find(s=>s.id===pid),shown=hideUn?SKINS[t].filter(s=>ownsSkin(t,s.id)):SKINS[t],nHid=SKINS[t].length-shown.length;
-  const rows=T.passive?(t==='mint'?[['Grows','1 stage / wave']]:[['Boost','+15% damage'],['Fire rate','+8%'],['Area','8 tiles']]):
+  const rows=T.passive?(t==='mint'?[['Grows','1 stage / wave']]:t==='alembic'?[['Vials','12 kills'],['Pays','gold per wave']]:t==='philter'?[['Brews','1 buff / wave'],['Area','2 tiles']]:[['Boost','+15% damage'],['Fire rate','+8%'],['Area','8 tiles']]):
     T.beam?[['Damage','10 → 40 /s'],['Range',T.range]]:[['Damage',T.dmg],['Fire rate',T.rate+'/s'],['Range',T.range]];
   if(T.stun)rows.push(['Freeze',T.stun+'s']);if(T.pct)rows.push(['Bonus','6% max health']);
   if(T.splash)rows.push(['Burst',T.splash]);if(T.slow)rows.push(['Slow',Math.round(T.slow*100)+'%']);if(T.chain)rows.push(['Chains',T.chain]);
@@ -4192,16 +4453,16 @@ function slideHTML(t){
   let panel,bar;
   if(lanTab==='skins'){
     const tiles=shown.map(s=>{const own=ownsSkin(t,s.id),eq=eqSkin(t)===s.id;
-      const lab=eq?'Equipped':own?'Owned':s.pr&&prLv()<s.pr?`Prestige ${ROM[s.pr]}`:s.ev?'Event':s.evShop?'Event shop':s.shopOnly?'Shop':s.pass?(seasonOver()?'Shop':'Pass'):s.code?'Code':priceHTML(s),alab=eq?'Equipped':own?'Owned':s.pr&&prLv()<s.pr?`Unlocks at Prestige ${ROM[s.pr]}`:s.ev?'Halloween event pass':s.evShop?'Halloween event shop':s.shopOnly?'Shop rotation only':s.pass?'Season 1 exclusive':s.code?'Code only':`${priceOf(s)} ${s.moon?'moonstones':'embers'}`;
+      const lab=eq?'Equipped':own?'Owned':s.pr&&prLv()<s.pr?`Prestige ${ROM[s.pr]}`:s.ev?'Event':s.evShop?'Event shop':s.shopOnly?'Shop':s.pass?((s.pass===2?seasonOver():s1Over())?'Shop':'Pass'):s.code?'Code':priceHTML(s),alab=eq?'Equipped':own?'Owned':s.pr&&prLv()<s.pr?`Unlocks at Prestige ${ROM[s.pr]}`:s.ev?'Halloween event pass':s.evShop?'Halloween event shop':s.shopOnly?'Shop rotation only':s.pass?'Season '+s.pass+' exclusive':s.code?'Code only':`${priceOf(s)} ${s.moon?'moonstones':'embers'}`;
       return `<button class="skt r-${s.rar}${s.id===pid?' sel':''}${eq?' eq':''}${!own&&!canBuy(s)?' nope':''}" data-skin="${t}:${s.id}" aria-pressed="${s.id===pid}" aria-label="${s.name}, ${RAR[s.rar]}, ${alab}">
         <span class="sw${s.cycle?' spin':''}" style="${swStyle(s)}"></span><span class="sn">${s.name}</span><span class="sp">${lab}</span></button>`}).join('');
     panel=`<div class="skhead"><span>${shown.length} of ${SKINS[t].length} skins${nHid?' · unowned hidden':''}</span><button class="btn tog" data-hideun aria-pressed="${hideUn}"><span class="sw2"></span>Hide unowned</button></div><div class="skins${shown.length>10?' many':''}">${tiles}</div>`;
     const own=ownsSkin(t,pid),eq=eqSkin(t)===pid;
-    const act=!un?(T.pass?`<span class="hint" style="margin:0">${seasonOver()?'Season 1 is over. Look for this lantern in the Shop rotation.':`Season 1 Pass exclusive · premium tier ${passTierOf('tower',t)}`}</span>`:
+    const act=!un?(T.pass?`<span class="hint" style="margin:0">${T.pass===2?(seasonOver()?'Season 2 is over. Look for this lantern in the Shop rotation.':`Season 2 Pass exclusive · tier ${passTierOf('tower',t)}`):s1Over()?'Season 1 is over. Look for this lantern in the Shop rotation.':`Season 1 Pass exclusive · premium tier ${passTierOf('tower',t)}`}</span>`:
         `<button class="btn primary" data-unlock="${t}" ${meta.embers<u.base?'disabled':''}>Unlock lantern · ${EM} ${u.base}</button>`):
       eq?`<span class="hint" style="margin:0;color:var(--good)">Equipped</span>`:
       own?`<button class="btn primary" data-equip="${t}:${pid}">Equip</button>`:
-      sk.pass?`<span class="hint" style="margin:0">${seasonOver()?'Season 1 exclusive. Look for it in the Shop rotation.':`Season 1 Pass reward · tier ${passTierOf('skin',t,pid)}`}</span>`:
+      sk.pass?`<span class="hint" style="margin:0">${(sk.pass===2?seasonOver():s1Over())?`Season ${sk.pass} exclusive. Look for it in the Shop rotation.`:`Season ${sk.pass} Pass reward · tier ${passTierOf('skin',t,pid)}`}</span>`:
       sk.code?`<span class="hint" style="margin:0">Unlocked by redeeming a code in Settings</span>`:
       sk.pr&&prLv()<sk.pr?`<span class="hint" style="margin:0">Prestige skin · unlocks at Prestige ${ROM[sk.pr]} · ${MS} ${priceOf(sk)}</span>`:
       `<button class="btn primary" data-buy="${t}:${pid}" ${!canBuy(sk)?'disabled':''}>Buy · ${priceHTML(sk)}</button>`;
@@ -4221,7 +4482,7 @@ function slideHTML(t){
   }
   return `<article class="slide${un?'':' locked'}" data-t="${t}" style="--tc:${base};--rc:${role.col}" aria-label="${T.name}">
     <div class="stage"><canvas data-prev="${t}" width="360" height="360" aria-hidden="true"></canvas>${un?'':'<span class="lockt">Locked</span>'}</div>
-    <div class="info"><span class="lrole">${role.name} · ${ri+1} of ${role.t.length}${T.pass?' · Season 1':''}</span><h3 style="color:${base}">${T.name}</h3><p>${T.desc}</p>
+    <div class="info"><span class="lrole">${role.name} · ${ri+1} of ${role.t.length}${T.pass?' · Season '+T.pass:''}</span><h3 style="color:${base}">${T.name}</h3><p>${T.desc}</p>
       <dl class="stats">${rows.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl></div>
     <div class="lmast"><span class="mlvl" title="Mastery level" aria-label="Mastery level ${mi.L}"><b>${mi.L}</b></span><div class="mbody"><div class="mr"><span>${bd?`<b class="bdg">${bd}</b> `:''}${mi.L>=MAST_MAX?'Max mastery':`${mi.into} / ${mi.need} to level ${mi.L+1}`}${mp?`<span class="mpb" title="Mastery prestige ${mp}: +${mp*2}% forever"><i></i>${ROM[mp]} · +${mp*2}%</span>`:''}</span></div>
       <div class="xpbar"><i style="width:${mi.L>=MAST_MAX?100:mi.into/mi.need*100}%"></i></div><small>${nu?`Mastery ${mi.L} · next: <b>${nu[1]}</b> at ${nu[0]}`:`Mastery ${mi.L} · everything unlocked`}</small></div></div>
@@ -4301,12 +4562,19 @@ document.addEventListener('pointerdown',e=>{const c=prevCv(e);if(!c)return;c._pz
 /* pass */
 const LOCK='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 /* ===== Season 1: The Hollow Moon ===== */
-const STORY=[
+const STORY1=[
   'On the first cold night of autumn, the moon went hollow. Its light spilled out and drifted down through the forest as lanterns, and that is how the <em>lanternfall</em> began.',
   'Something else came down with the light. The <em>Moth Queen</em>, who had slept inside the moon for a hundred years, woke up hungry. She called her swarms to follow the falling glow, and every lantern they catch goes dark.',
   'The old keepers left three things behind for anyone brave enough to hold the trail: the <em>Moonwell</em>, a shard of the moon caught in still water; the <em>Hollow Bell</em> from the moon’s empty heart; and the <em>Eclipse</em>, the moon’s own shadow, the one thing the Queen fears.',
   'Keep the lanterns lit until the first of November, when the moon fills again. The night will remember who kept it.'
 ];
+const STORY2=[
+  'When the hollow moon filled again, it did not come back empty. It came back <em>simmering</em>. Warm light pooled in the old iron pot at the edge of the forest, and by morning it was bubbling.',
+  'Nobody lit it. Nobody stirs it. But foes that wander too close forget which way they were going, and the lanterns burn brighter for it. The keepers called it the <em>Cauldron Moon</em>.',
+  'Three new things came out of the steam: the <em>Simmer</em>, a pot that boils over; the <em>Alembic</em>, which turns what falls in the dark into gold; and the <em>Philter</em>, three moons in one bottle.',
+  'Something is cooking at the bottom of the deepest night, and it is not the Moth Queen. Keep the lanterns lit. The <em>Brewmother</em> is hungry for a guest.'
+];
+const STORY=S2_ON?STORY2:STORY1;
 const MENU_THEMES={
   default:{name:'Lantern Night',desc:'Follows the colors of your selected world.'},
   harvest:{name:'Harvest Moon',desc:'A huge orange moon over falling leaves.',bg:'#170b05',acc:'#ff9a3d',ac:'#ffd36b',moon:'full',fall:'leaf'},
@@ -4314,10 +4582,16 @@ const MENU_THEMES={
   starfall:{name:'Starfall',desc:'Shooting stars streak across the sky.',bg:'#05060f',acc:'#ffe9a8',ac:'#ffffff',shoot:1},
   aurora:{name:'Aurora',desc:'Ribbons of green and violet light.',bg:'#03100d',acc:'#7dffb0',ac:'#c6a8ff',aurora:1},
   eclipse:{name:'Hollow Eclipse',desc:'The hollow moon, burning at its edges.',bg:'#0b0405',acc:'#ff5a3d',ac:'#ffb36b',moon:'eclipse'},
+  gilded:{name:'Gilded Night',desc:'A gold moon over midnight blue, with shooting stars.',bg:'#070b1c',acc:'#e8c25a',ac:'#7f9bff',moon:'full',shoot:1},
+  simmering:{name:'Simmering Moon',desc:'Green-gold steam drifting up past a pale moon.',bg:'#08110b',acc:'#d8e860',ac:'#7fe0a0',moon:'full',aurora:1},
+  depths:{name:'Bubbling Depths',desc:'You are inside the cauldron. Green liquid glows below and bubbles rise past you.',bg:'#04120a',acc:'#8fe04d',ac:'#e8c25a',moon:'none',fx:'depths',flat:1},
+  stir:{name:'Moonstir',desc:'A vortex of stars turns around a ring of moon phases, as if the sky were being stirred.',bg:'#070a1c',acc:'#7f9bff',ac:'#e8c25a',moon:'none',fx:'stir',flat:1},
+  weave:{name:'Starbrew Web',desc:'A drifting web of constellations, with light running along every thread.',bg:'#05081a',acc:'#9fb4ff',ac:'#e8c25a',moon:'none',fx:'weave'},
+  brewecl:{name:'Brewmother’s Eclipse',desc:'A green-fire eclipse ringed with runes, with liquid gold dripping from the top of the sky.',bg:'#040d08',acc:'#8fe04d',ac:'#e8c25a',moon:'none',fx:'brewecl'},
   hallow:{name:'Hallow’s Eve',desc:'A pumpkin moon, falling leaves and bats on the wind.',bg:'#140814',acc:'#ff7a1a',ac:'#b48cff',moon:'full',fall:'leaf',bats:1}
 };
 /* reward table: f = free lane, p = premium lane. Milestones (every 10th tier) hold Mythic/Exotic skins or a pass lantern. */
-const PASSR=(()=>{
+const PASSR1=(()=>{
   const F=[null],P=[null];
   for(let i=1;i<=100;i++){
     F[i]=i%5===0?{k:'moon',n:5}:{k:'emb',n:20+Math.round(i*1.2/5)*5};
@@ -4332,7 +4606,26 @@ const PASSR=(()=>{
     95:th('eclipse'),100:tw('eclipse')});
   return{f:F,p:P};
 })();
-function passTierOf(k,t,id){for(const L of ['p','f'])for(let i=1;i<=100;i++){const r=PASSR[L][i];if(r.k===k&&r.t===t&&(k==='tower'||r.id===id))return i}return '?'}
+const PASSR2=(()=>{
+  const F=[null],P=[null];
+  for(let i=1;i<=100;i++){
+    F[i]=i%5===0?{k:'moon',n:5}:{k:'emb',n:20+Math.round(i*1.2/5)*5};
+    P[i]=i%5===0?{k:'moon',n:12}:{k:'emb',n:40+Math.round(i*2.4/5)*5};
+  }
+  const sk=(t,id)=>({k:'skin',t,id}),th=id=>({k:'theme',id}),tw=t=>({k:'tower',t}),mo=n=>({k:'moon',n});
+  Object.assign(F,{10:mo(25),14:th('gilded'),20:sk('simmer','ember'),30:mo(25),35:sk('alembic','ice'),40:sk('philter','sage'),50:sk('spark','s2_steam'),
+    55:sk('simmer','gild'),60:mo(25),75:sk('alembic','gild'),80:mo(25),85:sk('philter','gild'),90:mo(30),100:sk('lance','s2_wand')});
+  Object.assign(P,{1:tw('simmer'),7:sk('simmer','mist'),10:sk('cinder','s2_hearth'),20:sk('frost','s2_dew'),25:sk('venom','s2_cauldron'),30:sk('bolt','s2_arc'),
+    40:sk('simmer','s2_witch'),45:th('simmering'),50:tw('alembic'),60:sk('alembic','s2_gilt'),65:sk('simmer','abyss'),70:sk('alembic','abyss'),75:sk('philter','abyss'),
+    80:sk('comet','s2_brewstar'),90:sk('philter','dusk'),95:sk('philter','starlit'),100:tw('philter')});
+  /* bonus tiers past 100: the most unusual menu themes and exotic skins of the season */
+  Object.assign(F,{105:th('depths'),110:sk('alembic','s2_distill'),125:th('weave'),150:sk('eclipse','s2_crownb')});
+  Object.assign(P,{105:sk('cinder','s2_cheart'),110:th('stir'),125:sk('philter','s2_moons3'),150:th('brewecl')});
+  return{f:F,p:P};
+})();
+const PASSR=S2_ON?PASSR2:PASSR1;
+const PTIERS=[];for(let i=1;i<=100;i++)PTIERS.push(i);if(S2_ON)PTIERS.push(105,110,125,150);
+function passTierOf(k,t,id){for(const L of ['p','f'])for(const i of PTIERS){const r=PASSR[L][i];if(r.k===k&&r.t===t&&(k==='tower'||r.id===id))return i}return '?'}
 const skinOf=r=>SKINS[r.t].find(s=>s.id===r.id);
 function rName(r){
   if(r.k==='emb')return `${r.n} embers`;if(r.k==='moon')return `${r.n} moonstones`;
@@ -4341,9 +4634,9 @@ function rName(r){
 function rDesc(r){
   if(r.k==='emb')return 'Spend them on lanterns, skins and camp upgrades.';
   if(r.k==='moon')return 'Premium currency for the Shop and the premium pass.';
-  if(r.k==='skin'){const s=skinOf(r);return `${RAR[s.rar]} ${TOWERS[r.t].name} skin.${s.pass?' Season 1 exclusive.':''} If you already own it, you get 50 embers instead.`}
+  if(r.k==='skin'){const s=skinOf(r);return `${RAR[s.rar]} ${TOWERS[r.t].name} skin.${s.pass?` Season ${s.pass} exclusive.`:''} If you already own it, you get 50 embers instead.`}
   if(r.k==='theme')return `Menu theme. ${MENU_THEMES[r.id].desc} Equip it in Settings.`;
-  return `New lantern, only from the Season 1 Pass. ${TOWERS[r.t].desc}`;
+  return `New lantern, only from the Season ${TOWERS[r.t].pass||1} Pass. ${TOWERS[r.t].desc}`;
 }
 function owned(r){
   if(r.k==='skin')return ownsSkin(r.t,r.id);if(r.k==='theme')return !!meta.themes[r.id];if(r.k==='tower')return unlocked(r.t);return false;
@@ -4357,8 +4650,13 @@ function grant(r){
 }
 const isClaimed=(L,i)=>!!meta.claimed[L][i];
 const canClaim=(L,i)=>i<=passTier()&&!isClaimed(L,i)&&(L==='f'||meta.passPremium);
-function claimable(){const out=[];for(let i=1;i<=passTier();i++)for(const L of ['f','p'])if(canClaim(L,i))out.push([L,i]);return out}
+function claimable(){const out=[];for(const i of PTIERS)if(i<=passTier())for(const L of ['f','p'])if(canClaim(L,i))out.push([L,i]);return out}
 function claim(L,i){if(!canClaim(L,i))return;sfx('claim');grant(PASSR[L][i]);meta.claimed[L][i]=1}
+/* a new season starts a fresh pass: anything already reached in the old pass is claimed for you first */
+if(S2_ON&&(meta.passSeason||1)!==2){
+  const t1=passTier();for(let i=1;i<=t1;i++)for(const L of ['f','p'])if(!meta.claimed[L][i]&&(L==='f'||meta.passPremium))grant(PASSR1[L][i]);
+  meta.passSeason=2;meta.passXp=0;meta.passPremium=false;meta.claimed={f:{},p:{}};save();
+}
 function timeLeft(){const s=Math.max(0,(SEASON.end-Date.now())/1000),d=Math.floor(s/86400),h=Math.floor(s%86400/3600);return d?`${d}d ${h}h`:`${h}h ${Math.floor(s%3600/60)}m`}
 function slotHTML(r){
   if(r.k==='emb')return `<span class="rv">${EM}${r.n}</span>`;
@@ -4373,9 +4671,9 @@ let passSel=null,storyOpen=false,passTab=null,evSel=null;
 function evTier(){return meta.evp&&meta.evp.id===EVENT.id?meta.evp.n:0}
 function renderPassTabs(){
   if(passTab===null)passTab=evLive()?'ev':'s1';
-  const showEv=evLive()||evTier()>0;if(!showEv)passTab='s1';
+  const showEv=!S2_ON&&(evLive()||evTier()>0);if(!showEv)passTab='s1';
   $('#ptabs').hidden=!showEv;
-  $('#ptabs').innerHTML=`<button class="ptab${passTab==='s1'?' on':''}" data-ptab="s1" role="tab" aria-selected="${passTab==='s1'}"><small>Season 1</small><b>Lantern Pass</b></button>
+  $('#ptabs').innerHTML=`<button class="ptab${passTab==='s1'?' on':''}" data-ptab="s1" role="tab" aria-selected="${passTab==='s1'}"><small>Season ${SEASON.n}</small><b>Lantern Pass</b></button>
     <button class="ptab ev${passTab==='ev'?' on':''}" data-ptab="ev" role="tab" aria-selected="${passTab==='ev'}"><small>${evLive()?`Halloween event · ${timeLeftTo(EVENT.end)} left`:'Halloween event · ended'}</small><b>${EVT.name}</b></button>`;
   $('#s1wrap').hidden=passTab!=='s1';$('#evwrap').hidden=passTab!=='ev';
 }
@@ -4407,27 +4705,27 @@ function evBuy(i){const n=evTier(),c=evCost(i);if(!evLive()||i!==n+1||(meta.cand
   const r=EVR[i];toast(`Tier ${i} unlocked`,r.k==='skin'?`${skinOf(r).name} for ${TOWERS[r.t].name}. Equip it on the Lanterns page.`:`+${r.n} moonstones`);evSel=Math.min(25,i+1);renderView()}
 function renderPass(){
   renderPassTabs();if(passTab==='ev'){renderEvPass();return}
-  const tier=passTier(),into=meta.passXp-tierStart(tier),need=tierCost(tier+1),done=tier>=100,P=meta.passPremium,over=seasonOver();
-  $('#story').innerHTML=`<div class="sh"><span class="sec" style="margin:0;color:#9fb0d8">Season 1</span><b>The Hollow Moon</b></div><p>${STORY[0]}</p>
+  const tier=passTier(),into=meta.passXp-tierStart(tier),need=tierCost(tier+1),done=tier>=passTop(),P=meta.passPremium,over=seasonOver();
+  $('#story').innerHTML=`<div class="sh"><span class="sec" style="margin:0;color:#9fb0d8">Season ${SEASON.n}</span><b>${SEASON.name}</b></div><p>${STORY[0]}</p>
     ${storyOpen?STORY.slice(1).map(p=>`<p>${p}</p>`).join(''):''}<button class="btn" id="storyBtn" aria-expanded="${storyOpen}">${storyOpen?'Show less':'Read the story'}</button>`;
-  $('#psEnds').textContent=over?'Season 1 · ended':`Season 1 · ends in ${timeLeft()}`;
+  $('#psEnds').textContent=over?`Season ${SEASON.n} · ended`:`Season ${SEASON.n} · ends in ${timeLeft()}`;
   $('#psTitle').textContent=P?'Premium pass':'Free pass';
   $('#psBar').style.width=(done?100:into/need*100)+'%';
-  $('#psText').textContent=over?`Season 1 ended at tier ${tier}. You can still claim anything you reached.`:done?'Tier 100 reached. Every tier is complete.':`Tier ${tier} of 100 · ${into} / ${need} XP to tier ${tier+1}`;
+  $('#psText').textContent=over?`Season ${SEASON.n} ended at tier ${tier}. You can still claim anything you reached.`:done?`Tier ${passTop()} reached. Every tier is complete.`:`Tier ${tier} of ${passTop()} · ${into} / ${need} XP to tier ${tier+1}`;
   const b=$('#psBuy');
   if(P){b.textContent='Premium unlocked';b.disabled=true}else if(over){b.textContent='Premium closed';b.disabled=true}else{b.innerHTML=`Unlock Premium · ${MS} ${PASS_COST}`;b.disabled=meta.moon<PASS_COST}
   const n=claimable().length,c=$('#psClaim');c.textContent=n?`Claim all (${n})`:'Nothing to claim';c.disabled=!n;
   let h='';
-  for(let i=1;i<=100;i++){
-    const ms=i%10===0?' ms':'',got=i<=tier?' got':'';
+  for(const i of PTIERS){
+    const ms=i%10===0||i>100?' ms':'',got=i<=tier?' got':'';
     h+=`<div class="pt${ms}${got}"><span>${i}</span></div>`;
     for(const L of ['f','p']){const r=PASSR[L][i],cl=isClaimed(L,i),can=canClaim(L,i),sel=passSel&&passSel[0]===L&&passSel[1]===i;
       h+=`<button class="ps${L==='p'?' prem':''}${got}${slotCls(r)}${cl?' cl':''}${can?' can':''}${sel?' sel':''}${L==='p'&&P?' open':''}" data-lane="${L}" data-tier="${i}" style="${r.k==='tower'?`--tc:${SKINS[r.t][0].color}`:''}" aria-label="Tier ${i} ${L==='p'?'premium':'free'}: ${rName(r)}${cl?', claimed':can?', ready to claim':''}">${slotHTML(r)}${L==='p'&&!P?LOCK:''}</button>`}
   }
   $('#track').innerHTML=h;
-  if(!passSel){const c=claimable()[0];passSel=c||['p',Math.min(100,tier+1)]}
+  if(!passSel){const c=claimable()[0];passSel=c||['p',PTIERS.find(x=>x>tier)||PTIERS[PTIERS.length-1]]}
   renderDet();
-  requestAnimationFrame(()=>{$('#track').scrollLeft=Math.max(0,passSel[1]-2)*84});
+  requestAnimationFrame(()=>{$('#track').scrollLeft=Math.max(0,PTIERS.indexOf(passSel[1])-2)*84});
 }
 function renderDet(){
   const [L,i]=passSel,r=PASSR[L][i],P=meta.passPremium,cl=isClaimed(L,i),can=canClaim(L,i);
@@ -4464,11 +4762,12 @@ $('#psBuy').onclick=buyPass;
 
 /* shop */
 const PREM=[];ORDER.forEach(t=>SKINS[t].forEach(s=>{if(s.moon&&!s.pass&&!s.evShop&&!s.pr)PREM.push([t,s])}));
-const TOWER_PRICE={moonwell:200,bell:300,eclipse:450};
+const TOWER_PRICE={moonwell:200,bell:300,eclipse:450,simmer:250,alembic:300,philter:400};
 /* after Season 1 ends, pass skins and pass lanterns join the featured rotation */
 function shopPool(){
-  if(!seasonOver())return PREM;
-  const extra=[];ORDER.forEach(t=>{SKINS[t].forEach(s=>{if(s.pass)extra.push([t,s])});if(TOWERS[t].pass)extra.push([t,{tower:1,id:'tower',name:TOWERS[t].name+' lantern',rar:'exotic',moon:TOWER_PRICE[t]}])});
+  const over=n=>n===2?seasonOver():s1Over();
+  if(!over(1))return PREM;
+  const extra=[];ORDER.forEach(t=>{SKINS[t].forEach(s=>{if(s.pass&&over(s.pass))extra.push([t,s])});if(TOWERS[t].pass&&over(TOWERS[t].pass))extra.push([t,{tower:1,id:'tower',name:TOWERS[t].name+' lantern',rar:'exotic',moon:TOWER_PRICE[t]}])});
   return PREM.concat(extra,extra);
 }
 const FEAT_OFF=.75,PACKS=[{m:10,e:80},{m:25,e:220},{m:60,e:600}];
@@ -4500,12 +4799,12 @@ function renderShop(){
   featKey=hourIdx();renderEvShop();
   const P=meta.passPremium;
   const over=seasonOver();
-  $('#shopPass').innerHTML=over?`<div class="passcard"><div><span class="sec" style="margin:0">Season 1 · ended</span><b>The Hollow Moon</b><p>The season is over. Its exclusive skins and lanterns now appear in the featured rotation below.</p></div></div>`:
-    `<div class="passcard"><div><span class="sec" style="margin:0">Season 1 · ends in ${timeLeft()}</span><b>Premium pass</b><p>Unlock the premium lane: three exclusive lanterns (Moonwell, Hollow Bell, Eclipse), Mythic and Exotic skins, menu themes and more. Rewards you already reached become claimable right away.</p></div>
+  $('#shopPass').innerHTML=over?`<div class="passcard"><div><span class="sec" style="margin:0">Season ${SEASON.n} · ended</span><b>${SEASON.name}</b><p>The season is over. Its exclusive skins and lanterns now appear in the featured rotation below.</p></div></div>`:
+    `<div class="passcard"><div><span class="sec" style="margin:0">Season ${SEASON.n} · ends in ${timeLeft()}</span><b>Premium pass</b><p>Unlock the premium lane: three exclusive lanterns (${S2_ON?'Simmer, Alembic, Philter':'Moonwell, Hollow Bell, Eclipse'}), Mythic and Exotic skins, menu themes and more. Rewards you already reached become claimable right away.</p></div>
     <button class="btn primary" data-ppass ${P||meta.moon<PASS_COST?'disabled':''}>${P?'Owned':`Unlock · ${MS} ${PASS_COST}`}</button></div>`;
   $('#feat').innerHTML=featured().map(([t,s])=>{const k=FEAT_OFF,own=s.tower?unlocked(t):ownsSkin(t,s.id);
     return `<div class="fc r-${s.rar}"><canvas data-t="${t}" data-s="${s.tower?'base':s.id}" width="240" height="240" aria-hidden="true"></canvas>
-      <span class="rt r-${s.rar}">${s.tower?'Season 1 lantern':RAR[s.rar]}</span><b class="fn">${s.name}</b><span class="ft">${s.tower?TOWERS[t].desc:`${TOWERS[t].name} skin${s.pass?' · Season 1':''}`}</span>
+      <span class="rt r-${s.rar}">${s.tower?'Season '+TOWERS[t].pass+' lantern':RAR[s.rar]}</span><b class="fn">${s.name}</b><span class="ft">${s.tower?TOWERS[t].desc:`${TOWERS[t].name} skin${s.pass?' · Season '+s.pass:''}`}</span>
       <div class="fp"><s>${s.moon}</s><span>${MS} ${priceOf(s,k)}</span></div>
       <button class="btn primary" data-fbuy="${t}:${s.tower?'tower':s.id}" ${own||meta.moon<priceOf(s,k)?'disabled':''}>${own?'Owned':'Buy'}</button></div>`}).join('');
   $('#shopTimer').textContent=untilMidnight();
@@ -4567,6 +4866,57 @@ function skyFaller(f,T,th){
   sc.fillStyle=f.ph>4?'#c9452a':f.ph>2?th.acc:'#e8b23d';sc.beginPath();sc.ellipse(0,0,9*s,4.5*s,0,0,7);sc.fill();
   sc.strokeStyle='rgba(0,0,0,.35)';sc.lineWidth=1;sc.beginPath();sc.moveTo(-9*s,0);sc.lineTo(9*s,0);sc.stroke();sc.restore();
 }
+
+/* ---------- the pass's extreme menu themes: each one is a scene of its own ---------- */
+const FXB=Array.from({length:36},()=>({x:Math.random(),y:Math.random(),s:Math.random(),sp:.02+Math.random()*.05}));
+const FXN=Array.from({length:30},(_,i)=>({a:Math.random()*6.3,b:Math.random()*6.3,fx:.05+Math.random()*.09,fy:.04+Math.random()*.08,ph:i}));
+const FXS={
+ depths(c,T,th,dt){
+  const W=skyW,H=skyH;let g=c.createLinearGradient(0,H*.4,0,H);g.addColorStop(0,hexA(th.acc,0));g.addColorStop(1,hexA(th.acc,.34));c.fillStyle=g;c.fillRect(0,H*.4,W,H*.6);
+  c.globalCompositeOperation='lighter';
+  for(let i=0;i<5;i++){const x=((i*.23+T*.012*(i%2?1:-1))%1.3-.15)*W,y=H*(.5+.1*Math.sin(T*.2+i)),R=H*.32,sg=c.createRadialGradient(x,y,0,x,y,R);sg.addColorStop(0,hexA(i%2?th.ac:th.acc,.08));sg.addColorStop(1,hexA(th.acc,0));c.fillStyle=sg;c.fillRect(x-R,y-R,R*2,R*2)}
+  c.globalCompositeOperation='source-over';
+  for(const b of FXB){if(!RM){b.y-=dt*b.sp;if(b.y<-.06){b.y=1.06;b.x=Math.random();b.s=Math.random()}}
+    const r=3+b.s*b.s*20,x=(b.x+Math.sin(T*.8+b.s*9)*.014)*W,y=b.y*H,a=.25+.4*b.s;
+    c.strokeStyle=hexA(b.s>.5?th.ac:th.acc,a);c.lineWidth=1.2+b.s*1.4;c.beginPath();c.arc(x,y,r,0,7);c.stroke();
+    c.fillStyle=hexA(b.s>.5?th.ac:th.acc,a*.18);c.fill();c.fillStyle=hexA('#ffffff',a*.8);c.beginPath();c.arc(x-r*.35,y-r*.35,Math.max(1,r*.18),0,7);c.fill()}
+  c.strokeStyle=hexA(th.ac,.55);c.lineWidth=2;c.beginPath();for(let x=0;x<=W+10;x+=10){const y=H*.9+Math.sin(x*.02+T*1.4)*5+Math.sin(x*.047-T*.9)*3;x?c.lineTo(x,y):c.moveTo(x,y)}c.stroke();
+  c.fillStyle=hexA(mix(th.bg,th.acc,.25),.55);c.lineTo(W,H);c.lineTo(0,H);c.fill();
+ },
+ stir(c,T,th,dt){
+  const W=skyW,H=skyH,x=W*.5,y=H*.36,R=Math.min(W,H*1.3)*.55;
+  c.globalCompositeOperation='lighter';
+  const g=c.createRadialGradient(x,y,0,x,y,R);g.addColorStop(0,hexA(th.ac,.3));g.addColorStop(.35,hexA(th.acc,.12));g.addColorStop(1,hexA(th.acc,0));c.fillStyle=g;c.fillRect(0,0,W,H);
+  for(let q=0;q<3;q++)for(let i=0;i<64;i++){const f=i/64,t=T*.22+f*7+q*2.094,r=R*(.06+.94*f);c.fillStyle=hexA(q%2?th.ac:'#ffffff',(1-f)*.75);c.beginPath();c.arc(x+Math.cos(t)*r,y+Math.sin(t)*r*.62,.8+2.4*(1-f),0,7);c.fill()}
+  c.globalCompositeOperation='source-over';
+  for(let i=0;i<8;i++){const t=-T*.12+i*TAU/8,rr=R*.62;moonPhase(c,x+Math.cos(t)*rr,y+Math.sin(t)*rr*.62,Math.min(W,H)*.032,i,i%2?th.ac:'#dfe8ff',.14)}
+  c.strokeStyle=hexA(th.acc,.2);c.lineWidth=1;for(const k of [.36,.62,.9]){c.beginPath();c.ellipse(x,y,R*k,R*k*.62,0,0,7);c.stroke()}
+  const sx=x+Math.cos(T*.6)*R*.26,sy=y+Math.sin(T*.6)*R*.26*.62;c.strokeStyle=hexA('#fff3c4',.85);c.lineWidth=3;c.lineCap='round';c.beginPath();c.moveTo(sx,sy);c.lineTo(sx+Math.cos(T*.6+.8)*R*.5,sy+Math.sin(T*.6+.8)*R*.31);c.stroke();
+ },
+ weave(c,T,th,dt){
+  const W=skyW,H=skyH,P=FXN.map(n=>[(.5+.46*Math.sin(n.a+T*n.fx*2))*W,(.08+.5*(.5+.5*Math.sin(n.b+T*n.fy*2)))*H]),D=Math.min(W,H)*.34;
+  c.globalCompositeOperation='lighter';c.lineWidth=1;
+  for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){const d=Math.hypot(P[i][0]-P[j][0],P[i][1]-P[j][1]);if(d>D)continue;const a=(1-d/D);
+    c.strokeStyle=hexA((i+j)%3?th.acc:th.ac,a*.45);c.beginPath();c.moveTo(P[i][0],P[i][1]);c.lineTo(P[j][0],P[j][1]);c.stroke();
+    if((i*7+j)%5===0){const p=(T*.35+i*.13)%1;c.fillStyle=hexA('#ffffff',a*.95);c.beginPath();c.arc(P[i][0]+(P[j][0]-P[i][0])*p,P[i][1]+(P[j][1]-P[i][1])*p,2,0,7);c.fill()}}
+  P.forEach((q,i)=>{const r=5+4*(.5+.5*Math.sin(T*1.6+i)),g=c.createRadialGradient(q[0],q[1],0,q[0],q[1],r*2.4);g.addColorStop(0,hexA(i%3?'#ffffff':th.ac,.9));g.addColorStop(1,hexA(th.acc,0));c.fillStyle=g;c.fillRect(q[0]-r*2.4,q[1]-r*2.4,r*4.8,r*4.8)});
+  c.globalCompositeOperation='source-over';
+ },
+ brewecl(c,T,th,dt){
+  const W=skyW,H=skyH,x=W*.5,y=H*.3,mr=Math.min(W,H)*.15;
+  c.globalCompositeOperation='lighter';
+  for(let i=0;i<44;i++){const t=T*.12+i*TAU/44,h=mr*(.5+.55*(.5+.5*Math.sin(T*3.4+i*2.3))+(i%3?0:.5)),w=.045;
+    c.fillStyle=hexA(i%2?th.ac:th.acc,.5);c.beginPath();c.moveTo(x+Math.cos(t-w)*mr,y+Math.sin(t-w)*mr);c.quadraticCurveTo(x+Math.cos(t)*(mr+h*.6)+Math.sin(T*2+i)*3,y+Math.sin(t)*(mr+h*.6),x+Math.cos(t+Math.sin(T+i)*.05)*(mr+h),y+Math.sin(t+Math.sin(T+i)*.05)*(mr+h));c.quadraticCurveTo(x+Math.cos(t)*(mr+h*.5),y+Math.sin(t)*(mr+h*.5),x+Math.cos(t+w)*mr,y+Math.sin(t+w)*mr);c.fill()}
+  const g=c.createRadialGradient(x,y,mr,x,y,mr*2.6);g.addColorStop(0,hexA(th.acc,.35));g.addColorStop(1,hexA(th.acc,0));c.fillStyle=g;c.fillRect(0,0,W,H*.8);
+  c.globalCompositeOperation='source-over';c.fillStyle='#010503';c.beginPath();c.arc(x,y,mr,0,7);c.fill();
+  c.strokeStyle=hexA(th.ac,.8);c.lineWidth=2;c.beginPath();c.arc(x,y,mr+1,0,7);c.stroke();
+  const rr=mr*2.15;c.strokeStyle=hexA(th.ac,.4);c.lineWidth=1;c.beginPath();c.arc(x,y,rr,0,7);c.stroke();c.beginPath();c.arc(x,y,rr*.93,0,7);c.stroke();
+  c.lineWidth=1.6;for(let i=0;i<24;i++){const t=-T*.1+i*TAU/24,px=x+Math.cos(t)*rr*.965,py=y+Math.sin(t)*rr*.965,r=mr*.07,g2=(i*5)%4;c.strokeStyle=hexA(i%2?th.ac:th.acc,.55+.35*Math.sin(T*2+i));c.beginPath();
+    if(g2===0){c.moveTo(px-r,py+r);c.lineTo(px,py-r);c.lineTo(px+r,py+r);c.closePath()}else if(g2===1){c.moveTo(px-r,py);c.lineTo(px+r,py);c.moveTo(px,py-r);c.lineTo(px,py+r)}else if(g2===2){c.moveTo(px-r,py-r);c.lineTo(px+r,py-r*.3);c.lineTo(px-r,py+r*.3);c.lineTo(px+r,py+r)}else{c.arc(px,py,r,0,7)}c.stroke()}
+  c.lineCap='round';for(let i=0;i<9;i++){const dx=(i+.5)/9*W+Math.sin(i*5.3)*14,p=(T*.12*(.6+((i*37)%10)/12)+i*.31)%1,len=H*(.06+.1*((i*13)%5)/5),hy=p*H*.7-len*.2;
+    const lg=c.createLinearGradient(dx,hy-len,dx,hy);lg.addColorStop(0,hexA(th.ac,0));lg.addColorStop(1,hexA('#ffe08a',.8));c.strokeStyle=lg;c.lineWidth=2.5;c.beginPath();c.moveTo(dx,hy-len);c.lineTo(dx,hy);c.stroke();c.fillStyle=hexA('#fff3c4',.9);c.beginPath();c.arc(dx,hy,3.2,0,7);c.fill()}
+ }
+};
 function drawSky(dt){
   if(!RM)skyT+=dt;const T=skyT,th=skyPal(),c=sc;
   c.setTransform(skyD,0,0,skyD,0,0);
@@ -4577,7 +4927,7 @@ function drawSky(dt){
       for(const [w,a] of [[70,.05],[34,.07],[10,.12]]){c.strokeStyle=hexA(col,a*(.7+.3*Math.sin(T*.7+k)));c.lineWidth=w;c.beginPath();
         for(let x=-20;x<=skyW+20;x+=14){const y=y0+Math.sin(x*.005+T*.35+k*1.7)*34+Math.sin(x*.013-T*.25+k)*14;x>-20?c.lineTo(x,y):c.moveTo(x,y)}c.stroke()}}
     c.globalCompositeOperation='source-over'}
-  const mx=skyW*.8,my=skyH*.16,mr=Math.min(skyW,skyH)*(th.moon==='full'?.14:th.moon==='eclipse'?.1:.07);
+  const mx=skyW*.8,my=skyH*.16,mr=th.moon==='none'?0:Math.min(skyW,skyH)*(th.moon==='full'?.14:th.moon==='eclipse'?.1:.07);
   let mg=c.createRadialGradient(mx,my,mr*.5,mx,my,mr*5);mg.addColorStop(0,hexA(th.acc,th.moon?.3:.22));mg.addColorStop(1,hexA(th.acc,0));c.fillStyle=mg;c.fillRect(0,0,skyW,skyH*.7);
   if(th.moon==='full'){c.fillStyle=mix(th.acc,'#ffffff',.3);c.beginPath();c.arc(mx,my,mr,0,7);c.fill();
     c.fillStyle=hexA(mix(th.acc,'#000000',.25),.35);for(const [a,b,r] of [[-.3,-.2,.22],[.25,.15,.16],[-.05,.38,.12],[.35,-.35,.1]]){c.beginPath();c.arc(mx+a*mr,my+b*mr,r*mr,0,7);c.fill()}}
@@ -4587,7 +4937,8 @@ function drawSky(dt){
     c.fillStyle=mix(th.bg,'#000000',.2);c.beginPath();c.arc(mx+mr*.38,my-mr*.2,mr*.92,0,7);c.fill()}
   if(th.bats){c.fillStyle='#0a040a';for(let i=0;i<7;i++){const sp=.035+.02*(i%3),x=((T*sp+i*.17)%1.2-.1)*skyW,y=skyH*(.1+.07*i%.4)+Math.sin(T*1.3+i)*14,r=4+(i%3)*2;
     c.beginPath();motif(c,'bat',x,y,r,'#0a040a')}}
-  for(const s of stars){c.globalAlpha=.25+.6*Math.abs(Math.sin(T*.8+s.ph));c.fillStyle='#ffffff';c.fillRect(s.x*skyW,s.y*skyH,s.r,s.r)}
+  if(th.fx&&th.fx!=='depths')for(const s of stars){c.globalAlpha=.25+.6*Math.abs(Math.sin(T*.8+s.ph));c.fillStyle='#ffffff';c.fillRect(s.x*skyW,s.y*skyH,s.r,s.r)}
+  if(!th.fx)for(const s of stars){c.globalAlpha=.25+.6*Math.abs(Math.sin(T*.8+s.ph));c.fillStyle='#ffffff';c.fillRect(s.x*skyW,s.y*skyH,s.r,s.r)}
   c.globalAlpha=1;
   if(th.shoot){
     if(!RM&&Math.random()<dt*.9&&shooters.length<3)shooters.push({x:Math.random()*skyW*.9+skyW*.2,y:Math.random()*skyH*.3,vx:-(380+Math.random()*240),vy:160+Math.random()*90,life:1});
@@ -4596,9 +4947,10 @@ function drawSky(dt){
       gr.addColorStop(0,hexA('#ffffff',Math.max(0,s.life)));gr.addColorStop(1,hexA(th.acc,0));c.strokeStyle=gr;c.lineWidth=2;c.beginPath();c.moveTo(s.x,s.y);c.lineTo(s.x-s.vx*L,s.y-s.vy*L);c.stroke()}
     for(let i=shooters.length-1;i>=0;i--)if(shooters[i].life<=0)shooters.splice(i,1);
   }
+  c.globalAlpha=1;if(th.fx&&FXS[th.fx])FXS[th.fx](c,T,th,dt);c.globalAlpha=1;
   for(const f of fallers){if(!RM){f.y+=dt*.02*f.s;if(f.y>1.05){f.y=-.05;f.x=Math.random()}}}
   const layers=[{base:.66,col:mix(th.tiles[1],th.acc,.08)},{base:.76,col:mix(th.tiles[0],'#000000',.25)},{base:.87,col:mix(th.bg,'#000000',.45)}];
-  layers.forEach((L,i)=>{
+  if(!th.flat)layers.forEach((L,i)=>{
     if(i===1)for(const f of fallers)if(f.s<.95)skyFaller(f,T,th);
     c.fillStyle=L.col;c.beginPath();c.moveTo(0,skyH);
     for(let x=0;x<=skyW+8;x+=8)c.lineTo(x,L.base*skyH+ridge(x,i,T));
@@ -4648,7 +5000,7 @@ function renderSettings(){
   $('#themes').innerHTML=Object.entries(MENU_THEMES).map(([id,m])=>{const own=id==='default'||meta.themes[id],bg=m.bg||THEMES[meta.depth].bg,acc=m.acc||THEMES[meta.depth].acc;
     return `<button class="thc${cur===id?' on':''}${own?'':' lock'}" data-theme="${id}" ${own?'':'disabled'} aria-pressed="${cur===id}">
       <span class="tp" style="background:linear-gradient(${bg},${mix(bg,acc,.4)})"><i style="background:${m.moon==='eclipse'?'#000':acc};box-shadow:0 0 12px ${acc}"></i></span>
-      <span>${m.name}</span><small>${own?(cur===id?'Equipped':'Tap to equip'):id==='hallow'?'Halloween event shop':`Season 1 Pass · tier ${passTierOf('theme',undefined,id)}`}</small></button>`}).join('');
+      <span>${m.name}</span><small>${own?(cur===id?'Equipped':'Tap to equip'):id==='hallow'?'Halloween event shop':(t=>t==='?'?'Season 1 Pass (ended)':`Season ${SEASON.n} Pass · tier ${t}`)(passTierOf('theme',undefined,id))}</small></button>`}).join('');
 }
 $('#themes').onclick=e=>{const b=e.target.closest('[data-theme]');if(!b||b.disabled)return;meta.menuTheme=b.dataset.theme;save();renderSettings()};
 $('#updChk').onclick=()=>{if(upd.state==='outdated')showUpdate();else checkVersion(true)};
@@ -4782,12 +5134,12 @@ function hud(force){
   if(G&&G.foes)bossHud();
   const w=G.endless||G.over40?`${G.wave}/∞`:`${G.wave}/${MAXW}`,l=G.lives,g=G.gold;
   sheetLive();
-  if(force){bxHud()}
+  if(force){bxHud();brewHud()}
   if(force||last.w!==w){$('#wave').textContent=w;last.w=w}
   if(force||last.l!==l){$('#lives').textContent=l;$('#lives').classList.toggle('low',l<=5);last.l=l}
   if(force||last.g!==g){$('#gold').textContent=g;last.g=g;afford()}
   const st=G.state;
-  if(force||last.st!==st){last.st=st;const b=$('#send');
+  if(force||last.st!==st){last.st=st;brewHud();const b=$('#send');
     b.disabled=st!=='build';b.classList.toggle('ready',st==='build');
     b.textContent=st==='wave'?`Wave ${G.wave} …`:`Send wave ${G.wave+1}`}
 }
@@ -4822,6 +5174,8 @@ const PCOL=['var(--tc)','#bfe3ff','#e0b8ff'];
 function statLine(t,st){
   const ty=t.type;
   if(ty==='beacon')return `boosts lanterns within ${st.radius} tile${st.radius>1?'s':''}: +${st.aura}% damage, +${st.arate}% fire rate${st.arange?`, +${st.arange.toFixed(1)} range`:''}${st.acrit?`, ${Math.round(st.acrit*100)}% crit`:''}`;
+  if(ty==='philter')return `${st.buf.length?st.buf.join(' + '):'brewing'} for lanterns within ${st.radius} tiles · ${st.pPick} buff${st.pPick>1?'s':''} per wave`;
+  if(ty==='alembic')return `vial ${st.prog}/${st.need} · ${st.have}/${st.cap} full · range ${st.vR}${st.eDmg?` · +${st.eDmg}% damage nearby`:''}`;
   if(ty==='mint')return `Stage ${st.stage}/${st.cap} · +${st.dmg}% damage, +${st.rate}% fire rate nearby${st.crit?` · +${st.crit}% crit`:''}`;
   const tg=st.multi?` · ${1+st.multi} targets`:'',cr=st.crit?` · crit ${Math.round(st.crit*100)}%`:'';
   if(ty==='moonwell')return `${st.dmg.toFixed(1)} dmg/s, up to ${(st.dmg*(1+(asc1(t)?5:3)+st.heatMax)).toFixed(1)} · range ${st.range.toFixed(1)}${tg} · ignores armor`;
@@ -5089,6 +5443,10 @@ function lantern(t,cx,cy,col,c2,S2,g){
   else if(t==='lance'){ctx.moveTo(cx,cy-r*1.6);ctx.lineTo(cx+r*.6,cy-r*.5);ctx.lineTo(cx+r*.25,cy-r*.5);ctx.lineTo(cx+r*.25,cy+r*1.3);ctx.lineTo(cx-r*.25,cy+r*1.3);ctx.lineTo(cx-r*.25,cy-r*.5);ctx.lineTo(cx-r*.6,cy-r*.5)}
   else if(t==='venom'){ctx.moveTo(cx,cy-r*1.5);ctx.quadraticCurveTo(cx+r*1.2,cy+r*.1,cx,cy+r*1.1);ctx.quadraticCurveTo(cx-r*1.2,cy+r*.1,cx,cy-r*1.5)}
   else if(t==='mint'){ctx.moveTo(cx,cy+r*.1);ctx.quadraticCurveTo(cx-r*.2,cy-r*1.1,cx-r*1.35,cy-r*1.0);ctx.quadraticCurveTo(cx-r*1.2,cy+r*.1,cx,cy+r*.1);ctx.moveTo(cx,cy-r*.15);ctx.quadraticCurveTo(cx+r*.2,cy-r*1.5,cx+r*1.35,cy-r*1.3);ctx.quadraticCurveTo(cx+r*1.2,cy-r*.15,cx,cy-r*.15);ctx.fill();ctx.lineWidth=Math.max(1.5,r*.32);ctx.beginPath();ctx.moveTo(cx,cy+r*1.35);ctx.lineTo(cx,cy-r*.2);ctx.stroke();return}
+  else if(t==='simmer'){ctx.moveTo(cx-r*1.2,cy-r*.2);ctx.lineTo(cx+r*1.2,cy-r*.2);ctx.lineTo(cx+r*.9,cy+r*1.15);ctx.lineTo(cx-r*.9,cy+r*1.15);ctx.closePath();ctx.fill();ctx.fillRect(cx-r*1.45,cy-r*.55,r*2.9,r*.4);
+    ctx.lineWidth=Math.max(1.2,r*.22);ctx.beginPath();ctx.moveTo(cx-r*.4,cy-r*.8);ctx.quadraticCurveTo(cx-r*.8,cy-r*1.2,cx-r*.3,cy-r*1.55);ctx.moveTo(cx+r*.4,cy-r*.8);ctx.quadraticCurveTo(cx+r*.8,cy-r*1.2,cx+r*.3,cy-r*1.55);ctx.stroke();return}
+  else if(t==='alembic'){ctx.moveTo(cx-r*.35,cy-r*1.45);ctx.lineTo(cx+r*.35,cy-r*1.45);ctx.lineTo(cx+r*.35,cy-r*.35);ctx.lineTo(cx+r*1.25,cy+r*1.15);ctx.lineTo(cx-r*1.25,cy+r*1.15);ctx.lineTo(cx-r*.35,cy-r*.35)}
+  else if(t==='philter'){[[-1.05,.45,.55],[0,-.1,.85],[1.05,.45,.55]].forEach(([dx,dy,k])=>{ctx.beginPath();ctx.arc(cx+dx*r,cy+dy*r,r*k,0,7);ctx.fill()});return}
   else if(t==='beacon'){for(let i=0;i<8;i++){const a=i*Math.PI/4-Math.PI/2,rr=i%2?r*.45:r*1.5;ctx.lineTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr)}}
   else if(t==='comet'){ctx.arc(cx+r*.3,cy-r*.3,r*.8,0,7);ctx.fill();ctx.lineWidth=Math.max(1.5,S*.04);ctx.beginPath();ctx.moveTo(cx-r*.3,cy+r*.3);ctx.lineTo(cx-r*1.3,cy+r*1.3);ctx.stroke();return}
   else if(t==='moonwell'){ctx.arc(cx,cy,r*1.3,0,7);ctx.fill();ctx.fillStyle='#090d0e';ctx.beginPath();ctx.arc(cx+r*.6,cy-r*.35,r*1.05,0,7);ctx.fill();return}
@@ -5185,6 +5543,7 @@ function draw(){
     if(sh.type==='comet'){ctx.globalCompositeOperation='lighter';const r=S*.4,x=sh.x*S,y=sh.y*S,g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,hexA(sh.col,.9));g.addColorStop(1,hexA(sh.col,0));ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2);ctx.globalCompositeOperation='source-over'}
     ctx.fillStyle=sh.crit?'#fff2b8':sh.col;ctx.beginPath();ctx.arc(sh.x*S,sh.y*S,S*({cinder:.1,comet:.13}[sh.type]||.06),0,7);ctx.fill();
   }
+  if(G.pips)for(const q of G.pips){const c=INGR[q.k].col,bob=Math.sin(G.time*3+q.ph)*.04,a=Math.min(1,q.life/1.5);ctx.globalAlpha=a;ctx.fillStyle=hexA(c,.25);ctx.beginPath();ctx.arc(q.x*S,(q.y+bob)*S,S*.2,0,7);ctx.fill();ctx.fillStyle=c;ctx.beginPath();ctx.arc(q.x*S,(q.y+bob)*S,S*.1,0,7);ctx.fill();ctx.globalAlpha=1}
   for(const f of G.fx){const a=f.life/f.max;
     if(f.k==='p'){ctx.globalAlpha=a;ctx.fillStyle=f.col;ctx.fillRect(f.x*S-1.5,f.y*S-1.5,3,3)}
     else if(f.k==='m'){ctx.globalAlpha=a;motif(ctx,f.m,f.x*S,f.y*S,Math.max(1.5,S*.05),f.col)}
@@ -5206,6 +5565,88 @@ cv.addEventListener('pointerdown',e=>{if(e.button===2)return;
 });
 
 
+/* ---------- Season 2: ingredients, the cauldron and the recipe book ---------- */
+const INGR={root:{name:'Ember Root',col:'#ff8a3d',fx:'+8% damage'},dew:{name:'Moon Dew',col:'#7fd4ff',fx:'foes 8% slower'},gloom:{name:'Gloom Cap',col:'#a06bff',fx:'+10% gold from kills'},star:{name:'Starlight',col:'#fff3a0',fx:'+0.2 range'}};
+const IKEYS=['root','dew','gloom','star'];
+const RNAMES={'root':'Ember Tonic','dew':'Dewdrop Tonic','gloom':'Gloomcap Broth','star':'Starlight Cordial',
+ 'root+root':'Double Ember','root+dew':'Steamy Ember','root+gloom':'Burnt Toadstool','root+star':'Sunspot Tea','dew+dew':'Deep Dew','dew+gloom':'Bog Water','dew+star':'Moonlit Mist','gloom+gloom':'Midnight Mush','gloom+star':'Witch’s Gold','star+star':'Twin Stars',
+ 'root+root+root':'Pure Ember Fire','root+root+dew':'Hearthside Steam','root+root+gloom':'Smoke and Soot','root+root+star':'Falling Sparks','root+dew+dew':'Tidal Heat','root+dew+gloom':'Swamp Fever','root+dew+star':'Comet Tea','root+gloom+gloom':'Black Ember','root+gloom+star':'Gilded Flame','root+star+star':'Sun and Spark',
+ 'dew+dew+dew':'Pure Moon Dew','dew+dew+gloom':'Fog Bank Brew','dew+dew+star':'Moonpool','dew+gloom+gloom':'Deep Bog','dew+gloom+star':'Stardew Gold','dew+star+star':'Silver Rain',
+ 'gloom+gloom+gloom':'Pure Gloom','gloom+gloom+star':'Midnight Fortune','gloom+star+star':'Starlit Mushroom','star+star+star':'Pure Starlight'};
+const recKey=a=>a.slice().sort((x,y)=>IKEYS.indexOf(x)-IKEYS.indexOf(y)).join('+');
+const recRare=a=>a.length===3&&(new Set(a).size===3||new Set(a).size===1);
+function potionOf(arr){
+  const n=arr.length,P=[0,1,1.15,1.35][n]*(n===3&&new Set(arr).size===1?1.25:1),c=k=>arr.filter(x=>x===k).length;
+  const key=recKey(arr);
+  return{key,name:RNAMES[key],left:3+(n===3?1:0),dmg:1+.08*c('root')*P,slow:Math.min(.5,.08*c('dew')*P),gold:1+.10*c('gloom')*P,range:.2*c('star')*P};
+}
+const potionTxt=o=>[o.dmg>1&&`+${Math.round((o.dmg-1)*100)}% damage`,o.slow&&`foes ${Math.round(o.slow*100)}% slower`,o.gold>1&&`+${Math.round((o.gold-1)*100)}% gold`,o.range&&`+${o.range.toFixed(2)} range`].filter(Boolean).join(', ');
+function dropPip(e){
+  if(!G.pips)G.pips=[];
+  const n=e.t==='boss'?2:(Math.random()<.07*(TM.pip||1)?1:0);
+  for(let i=0;i<n&&G.pips.length<14;i++)G.pips.push({x:e.x+(Math.random()-.5)*.4,y:e.y+(Math.random()-.5)*.4,k:IKEYS[Math.floor(Math.random()*4)],life:9,ph:Math.random()*6});
+}
+function takePip(q){G.pantry=G.pantry||{};G.pantry[q.k]=(G.pantry[q.k]||0)+1;q.gone=1;G.fx.push({k:'t',x:q.x,y:q.y-.2,txt:'+1 '+INGR[q.k].name,life:.9,max:.9,col:INGR[q.k].col});sfx('coin');brewHud()}
+function pipStep(dt){
+  const sims=G.towers.filter(t=>t.type==='simmer');
+  for(const q of G.pips){q.life-=dt;
+    for(const t of sims){const cx=t.x+.5,cy=t.y+.5,R=tStats(t).range+2,d=Math.hypot(cx-q.x,cy-q.y);
+      if(d<=R){if(d<.35){takePip(q);break}q.x+=(cx-q.x)/d*3*dt;q.y+=(cy-q.y)/d*3*dt;break}}}
+  G.pips=G.pips.filter(q=>q.life>0&&!q.gone);
+}
+function finishBrew(){
+  const o=potionOf(G.brew.ing);G.pot=o;G.brew=null;
+  const R=meta.recipes||(meta.recipes={}),first=!R[o.key];R[o.key]=(R[o.key]||0)+1;save();
+  toast(first?'New recipe: '+o.name:o.name+' is ready',potionTxt(o)+` for ${o.left} waves.`);sfx('upgrade');brewHud();
+}
+let cdSel=[],cdTab='brew';
+const pantryN=()=>G&&G.pantry?IKEYS.reduce((a,k)=>a+(G.pantry[k]||0),0):0;
+function brewHud(){
+  const b=$('#brewBtn');if(!b)return;
+  const on=!!(S2_ON&&G&&G.state!=='camp'&&G.state!=='over'&&(pantryN()||G.brew||G.pot));
+  b.hidden=!on;if(on)b.textContent=G.brew?'Brewing…':G.pot?`${G.pot.name} · ${G.pot.left}`:`Brew · ${pantryN()}`;
+  if(!$('#cauldron').hidden)renderCauldron();
+}
+function renderCauldron(){
+  const bk=cdTab==='book';$('#cdBrew').hidden=bk;$('#cdBook').hidden=!bk;
+  $('#cdTabB').classList.toggle('on',!bk);$('#cdTabR').classList.toggle('on',bk);$('#cdT').textContent=bk?'Recipe book':'Brew';
+  const R=meta.recipes||{};
+  if(bk){
+    const all=[];for(let i=0;i<4;i++)for(let j=i;j<4;j++){all.push([IKEYS[i],IKEYS[j]]);for(let k=j;k<4;k++)all.push([IKEYS[i],IKEYS[j],IKEYS[k]])}
+    for(let i=0;i<4;i++)all.push([IKEYS[i]]);
+    all.sort((a,b)=>a.length-b.length);
+    const got=all.filter(a=>R[recKey(a)]).length;$('#cdBkN').textContent=`${got} of ${all.length} recipes found. Brew new mixes to fill the book. It stays with you between runs.`;
+    $('#cdRecs').innerHTML=all.map(a=>{const k=recKey(a),n=R[k],o=potionOf(a);
+      return `<div class="crec${n?'':' lk'}" style="--c:${INGR[a[0]].col}"><span class="dots">${a.map(x=>`<i style="--c:${INGR[x].col}"></i>`).join('')}</span><b>${n?o.name:'???'}${recRare(a)?' <span class="rare">Rare</span>':''}</b><span>${n?'×'+n:''}</span><small>${n?potionTxt(o)+' · '+o.left+' waves':a.map(x=>INGR[x].name).join(' + ')}</small></div>`}).join('');
+    return;
+  }
+  const have=k=>(G&&G.pantry&&G.pantry[k])||0,used=k=>cdSel.filter(x=>x===k).length;
+  $('#cdPantry').innerHTML=IKEYS.map(k=>`<button class="cq" data-ing="${k}" style="--c:${INGR[k].col}" aria-label="Add ${INGR[k].name}" ${have(k)-used(k)<=0||cdSel.length>=3?'aria-disabled="true"':''}><i></i><b>${have(k)-used(k)}</b><small>${INGR[k].name}</small></button>`).join('');
+  $('#cdSlots').innerHTML=[0,1,2].map(i=>cdSel[i]?`<button class="cslot on" data-slot="${i}" style="--c:${INGR[cdSel[i]].col}" aria-label="Remove ${INGR[cdSel[i]].name}">${INGR[cdSel[i]].name}</button>`:`<button class="cslot" disabled>empty</button>`).join('');
+  const o=cdSel.length?potionOf(cdSel):null,known=o&&R[o.key];
+  $('#cdPre').innerHTML=o?(known?`<b>${o.name}</b> · ${potionTxt(o)} · ${o.left} waves`:`<b>A new recipe</b> <em>Brew it to find out what it does.</em>`):`<em>Tap ingredients to add them to the pot.</em>`;
+  const can=G&&G.state==='build'&&cdSel.length&&!G.brew;
+  $('#cdGo').disabled=!can;$('#cdGo').textContent=G&&G.brew?'Brewing…':'Brew';
+  $('#cdSt').textContent=G?(G.brew?'Your potion is cooking. It will be ready when this wave ends.':G.pot?`Active: ${G.pot.name} (${potionTxt(G.pot)}) for ${G.pot.left} more wave${G.pot.left>1?'s':''}.`:(G.state!=='build'?'You can brew between waves.':'')):'Open the Recipe book to see what you have found.';
+}
+function openCauldron(tab){cdTab=tab||'brew';if(G&&G.state==='camp')cdTab='book';cdSel=[];show('cauldron');renderCauldron()}
+$('#brewBtn').onclick=()=>openCauldron('brew');
+$('#cdClose').onclick=()=>hide('cauldron');
+$('#cdTabB').onclick=()=>{if(G&&G.state!=='camp'){cdTab='brew';renderCauldron()}};$('#cdTabR').onclick=()=>{cdTab='book';renderCauldron()};
+$('#cauldron').addEventListener('click',e=>{
+  let b;
+  if((b=e.target.closest('[data-ing]'))&&b.getAttribute('aria-disabled')!=='true'){cdSel.push(b.dataset.ing);renderCauldron()}
+  else if((b=e.target.closest('[data-slot]'))){cdSel.splice(+b.dataset.slot,1);renderCauldron()}
+});
+$('#cdGo').onclick=()=>{if(!G||G.state!=='build'||G.brew||!cdSel.length)return;
+  for(const k of cdSel)G.pantry[k]--;G.brew={ing:cdSel.slice(),left:1};cdSel=[];sfx('buy');snapRun();brewHud();renderCauldron()};
+$('#miRec').onclick=()=>{sfx('menu');openCauldron('book')};$('#miRec').hidden=!S2_ON;
+/* tapping an ingredient on the board collects it */
+cv.addEventListener('pointerdown',e=>{
+  if(!G||!G.pips||!G.pips.length||G.state==='camp'||G.state==='over'||paused)return;
+  const r=cv.getBoundingClientRect();let x=(e.clientX-r.left)/S,y=(e.clientY-r.top)/S;if(ROT){const sx=x;x=W-y;y=sx}
+  const q=G.pips.find(q=>Math.hypot(q.x-x,q.y-y)<.6);if(q)takePip(q);
+},true);
 /* ---------- 0.21.0: first-run tutorial ---------- */
 let tutI=-1,tutHL=null,tutBase=0,tutPing=0;
 const tSum=()=>G.towers.reduce((a,t)=>a+(t.p?t.p.reduce((x,y)=>x+(y||0),0):0),0);

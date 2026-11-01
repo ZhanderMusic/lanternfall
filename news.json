@@ -36,6 +36,13 @@
       "title": "Lanternfall 1.2: Crossroads",
       "body": "Paths can cross over themselves. Every lantern gets a third upgrade path, but only two can be active, and each ascension is linked to a path. The Mint is now the Sapling, a support lantern that grows every wave, and all Mint skins carried over.",
       "art": "crossroads"
+    },
+    {
+      "id": "v20",
+      "date": "2026-10-31",
+      "tag": "Release",
+      "title": "Lanternfall 2.0: The Simmering Moon",
+      "body": "Season 2 is here: a 150-tier pass, three new lanterns, a cauldron to brew potions in, and eleven new worlds past the edge of the map. The Season 1 pass and Hollow Harvest have ended. Thanks for playing."
     }
   ]
 }

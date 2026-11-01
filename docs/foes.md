@@ -65,6 +65,17 @@ Every world has its own boss with its own name, look and tricks. A health bar at
 | 18 | Frozen Abyss | **Rime Titan**, The Endless Winter | Can’t be slowed, carries a thick shield and cleanses itself every 2 seconds. |
 | 19 | Eclipse Spire | **Shade Sovereign**, Crown of Night | Fades in and out, calls eclipse shades and silences lanterns near it. |
 | 20 | The Hollow Moon | **The Moth Queen**, She Who Woke Hungry | The Queen herself. Shielded and always calling her swarm. At two thirds she summons a cloud of moths, and at one third she rages, silences lanterns around her and shields again. Costs 8 lives if she gets through. |
+| 21 | The Simmering Hollow | **The Brewmother**, Keeper of the Pot | She stirs the pot at the bottom of the night. Shielded and slowly healing, she calls wisps out of the steam, and at half health a wave of steam heals every foe nearby. At one third she rages and calls a brood. Costs up to 6 lives if she gets through. Costs 6 lives if it gets through. |
+| 22 | Lantern Market | **The Night Broker**, Merchant of Embers | Dodges a quarter of all shots, keeps calling peddlers and drops three more when it falls. Costs 8 lives if it gets through. |
+| 23 | Tidewrack Shore | **The Tidemother**, The Drowning Song | Slows slide off her and she heals as she walks. At half health she calls wisps and shields up again. Costs 8 lives if it gets through. |
+| 24 | Obsidian Forge | **Slagheart**, The Forge That Walks | Heavy armor, can’t be stunned and speeds up as it cracks. Two slag brutes crawl out of it when it falls. Costs 8 lives if it gets through. |
+| 25 | Mirror Lake | **The Lake Twin**, Mirror of the Drowned | Fades out, flickers down the trail and calls mirror shades. Hit it while it is solid. Costs 8 lives if it gets through. |
+| 26 | Thornveil | **The Thorn Regent**, Crown of Brambles | Shrugs off poison, heals and keeps spawning bramble imps. At half health a huge thicket of them arrives. Costs 8 lives if it gets through. |
+| 27 | Ossuary Deep | **The Bonewarden**, Keeper of the Ossuary | Plates every foe near it with +5 armor and heals. Two ossuary knights join it at half health. Costs 8 lives if it gets through. |
+| 28 | Stormglass Reach | **The Stormglass Roc**, Wrath of the Reach | Dashes at triple speed, shakes off slows and poison, and its thunder silences lanterns near it. Costs 8 lives if it gets through. |
+| 29 | Pale Orchard | **The Pale Gardener**, Tender of Nothing | Heals every foe around it and grows rotfruit. Shields itself at half health. Costs 8 lives if it gets through. |
+| 30 | Cinderglass Sea | **The Cinderglass Leviathan**, The Molten Tide | Speeds up as it cracks. At two thirds it calls cinder crabs, and at one third it rages and shields again. Costs up to 6 lives. Costs 6 lives if it gets through. |
+| 31 | The Unlit Hollow | **The Unlit One**, Absence at the Lantern’s Edge | The last dark. Shielded, healing and fading in and out, it keeps calling unlit ones. At half health it silences lanterns around it, and at one third it rages. Costs up to 10 lives if it gets through. Costs 10 lives if it gets through. |
 
 Some bosses change the base numbers: the Elder Moth has 55% health, the Ironroot Ancient 120% (+5 armor, 20% slower), the Rime Titan 110%, the Tideshell Warden +2 armor and the Ember Lord +6 armor.
 
@@ -96,6 +107,16 @@ Every depth introduces a new foe. It appears in the very first wave of its world
 | 18 | Frozen Abyss | **Rime wraith** | 55 | slow | 0 | 1 | Shakes off slows, stuns and poison every 2 seconds. |
 | 19 | Eclipse Spire | **Eclipse shade** | 70 | slow | 1 | 1 | Calls a moth out of the dark every few seconds. |
 | 20 | The Hollow Moon | **Moon titan** | 260 | very slow | 6 | 5 | Huge, shielded, armored and can’t be slowed. Costs 5 lives. |
+| 22 | Lantern Market | **Night peddler** | 48 | normal | 1 | 1 | Dodges one shot in five and drops two wisps when snuffed. |
+| 23 | Tidewrack Shore | **Tide wrack** | 56 | normal | 0 | 1 | Slows slide right off it, and it heals steadily on the way. |
+| 24 | Obsidian Forge | **Slag brute** | 105 | slow | 6 | 2 | Heavy plating, can’t be stunned and speeds up as it cracks. Costs 2 lives. |
+| 25 | Mirror Lake | **Mirror shade** | 36 | fast | 0 | 1 | Fades out now and then and dodges one shot in five. |
+| 26 | Thornveil | **Bramble imp** | 18 | very fast | 0 | 1 | Fast, shrugs off poison and arrives in threes. |
+| 27 | Ossuary Deep | **Ossuary knight** | 85 | slow | 4 | 1 | Pulls itself back together once after being snuffed. |
+| 28 | Stormglass Reach | **Stormcaller** | 42 | fast | 0 | 1 | Dashes ahead and shakes off slows, stuns and poison every few seconds. |
+| 29 | Pale Orchard | **Rotfruit** | 72 | normal | 0 | 1 | Shielded, and it heals foes around it. Snuff it first. |
+| 30 | Cinderglass Sea | **Cinder crab** | 70 | normal | 3 | 1 | Gives nearby foes +3 armor and speeds up as it takes damage. |
+| 31 | The Unlit Hollow | **Unlit one** | 95 | normal | 3 | 3 | Fades out, calls wisps out of the dark and heals itself. Costs 3 lives. |
 
 ## Event foes
 

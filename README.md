@@ -8,7 +8,7 @@
   <img alt="Phone, tablet and desktop" src="https://img.shields.io/badge/phone%20%C2%B7%20tablet%20%C2%B7%20desktop-installable%20%26%20offline-7fd4ff?style=for-the-badge&labelColor=15181b">
 </p>
 
-<h3 align="center">Build, upgrade and ascend your lanterns. Hold the trail through 21 worlds.<br>Lose the night, keep your embers, and come back stronger.</h3>
+<h3 align="center">Build, upgrade and ascend your lanterns. Hold the trail through 32 worlds.<br>Lose the night, keep your embers, and come back stronger.</h3>
 
 <p align="center">
   <img src="media/gameplay.gif" alt="A wave in Glimmer Caves: ascended lanterns firing at moths, beetles and shellbacks" width="330">
@@ -25,6 +25,13 @@ The Halloween event runs until **November 1**. Pick it on the Play page for an e
 Every wave you hold pays **candy**, which only drops here. Spend it on a **free 25-tier event pass** packed with Event skins, or pick up the **Hallow's Eve** set in the shop: an Event skin for every lantern and a matching menu theme.
 
 ---
+
+## 🌙 2.0 · The Simmering Moon (Oct 31, 2026)
+
+- **Season 2** begins November 1 with a 150-tier pass, three new lanterns (Simmer, Alembic and Philter), new Mythic and Exotic skins and five menu themes.
+- **The cauldron:** foes drop ingredients, and you brew them into potions. The Recipe book keeps every recipe you find.
+- **The Far Hollow:** eleven new worlds, 21 to 31, each with its own foe, boss, twist and music.
+- **Performance setting:** Auto, Smooth or Full effects.
 
 ## 🌙 1.2 · Crossroads (Oct 18, 2026)
 
@@ -62,14 +69,14 @@ The full update history is in the **Updates** tab in the game and in the [docs](
 
 <p align="center"><img src="media/screens1.png" alt="Camp, world collections, the Lanterns page and a boon pick" width="100%"></p>
 
-### 12 lanterns, each with real choices
+### 15 lanterns, each with real choices
 Sparks, Cinders, Frost, Lances, Venom, Saplings, Bolts, Beacons, Comets, plus three Season 1 lanterns: the Moonwell's burning beam, the Hollow Bell's freezing toll and the Eclipse. Lanterns are grouped into **Damage, Area, Control and Support**, and every one has:
 
 - **Two upgrade paths, five tiers each.** 120 upgrades in all, from crits and armor piercing to burning ground and multi-shot.
 - **Three ascension types** once both paths are maxed, and **merges** that forge Ascended II and III.
 - **Mastery from 1 to 100.** Playing a lantern unlocks its later tiers and ascensions, plus a Radiant look at 100.
 
-### 21 worlds, 24 kinds of foes
+### 32 worlds, 34 kinds of foes
 Every world has its own look and a rule twist: fog that shortens your range, ice that speeds foes up, swarms, plating, healing tides. Every depth also brings a **new foe with its own trick**.
 
 <p align="center"><img src="media/foes.png" alt="Every foe in the game, from the Bog lurker to the Moon titan, plus the Halloween creatures" width="88%"></p>

@@ -1,11 +1,12 @@
 {
-  "version": "1.2.0",
-  "date": "Oct 18, 2026",
+  "version": "2.0.0",
+  "date": "Oct 31, 2026",
   "major": true,
-  "title": "Crossroads",
+  "title": "The Simmering Moon",
   "notes": [
-    "Runs can have crossing paths.",
-    "Every lantern has three upgrade paths, but only two can be active. Each ascension is linked to a path.",
-    "The Mint is now the Sapling. All its skins carried over."
+    "Season 2 begins November 1: a 150-tier pass with three new lanterns, Simmer, Alembic and Philter.",
+    "The cauldron: foes drop ingredients you brew into potions, and the Recipe book keeps every recipe you find.",
+    "The Far Hollow: eleven new worlds, each with its own foe, boss, twist and music.",
+    "A new Performance setting: Auto, Smooth or Full effects."
   ]
 }

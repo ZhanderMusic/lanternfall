@@ -19,6 +19,7 @@ On the Play page, worlds are grouped into collections you can collapse:
 
 - **The Ember Road** (depths 1–10): Marsh, ice, ash and ruin on the long road from the first forest.
 - **The Deep Nights** (depths 11–20): Bogs, belfries and hives under a dying moon.
+- **The Far Hollow** (depths 21–31): Eleven worlds past the edge of the map: a simmering pot, markets, tides, forges and the dark between lanterns.
 
 ## All worlds
 
@@ -45,10 +46,21 @@ On the Play page, worlds are grouped into collections you can collapse:
 | 18 | **Frozen Abyss** | Whiteout. Foes 18% faster, towers reach 10% less. | Rime wraith |
 | 19 | **Eclipse Spire** | Shadow tide. Rifts open, foes heal and wear +3 armor. | Eclipse shade |
 | 20 | **The Hollow Moon** | The last night. Fog, ice, plating, swarms, healing and tougher foes, all at once. | Moon titan |
+| 21 | **The Simmering Hollow** | The Brewmother’s kitchen. Thick steam: foes are 10% faster and heal slowly, and ingredients drop twice as often. | – |
+| 22 | **Lantern Market** | Haggling. Kills give 20% less gold and foes are 8% faster. | Night peddler |
+| 23 | **Tidewrack Shore** | Undertow. Slows are 40% weaker and foes are 6% faster. | Tide wrack |
+| 24 | **Obsidian Forge** | Slag plating. Every foe wears +5 armor and is 5% tougher. | Slag brute |
+| 25 | **Mirror Lake** | Reflections. Wisps come in pairs and foes are 10% faster. | Mirror shade |
+| 26 | **Thornveil** | Brambles. Broods split into six and swarms are 25% larger. | Bramble imp |
+| 27 | **Ossuary Deep** | Grave chill. Foes heal 1% each second and wear +3 armor. | Ossuary knight |
+| 28 | **Stormglass Reach** | Lightning. Bolt lanterns hit 30% harder and foes are 12% faster. | Stormcaller |
+| 29 | **Pale Orchard** | Blight. Foes have 15% more health and swarms are 15% larger. | Rotfruit |
+| 30 | **Cinderglass Sea** | Heat haze. Towers reach 10% less and rifts open in the glass. | Cinder crab |
+| 31 | **The Unlit Hollow** | The dark between lanterns. Rifts, plating, healing, swarms and speed, all at once. | Unlit one |
 
 Every world also has its own look, ambience and music track.
 
-Every world also has its own **boss** on every 5th wave. See [World bosses](foes.md#world-bosses) for all 21.
+Every world also has its own **boss** on every 5th wave. See [World bosses](foes.md#bosses) for all 32.
 
 ## Modes
 
